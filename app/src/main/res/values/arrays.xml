@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="non_commerce_days">
+        <item>2018_11_03,whole_day</item>
+        <item>2018_18_03,whole_day</item>
+        <item>2018_30_03,14,Wielki Piątek</item>
+        <item>2018_31_03,whole_day</item>
+        <item>2018_08_04,whole_day</item>
+        <item>2018_15_04,whole_day</item>
+        <item>2018_22_04,whole_day</item>
+        <item>2018_13_05,whole_day</item>
+        <item>2018_10_06,whole_day</item>
+        <item>2018_17_06,whole_day</item>
+        <item>2018_08_07,whole_day</item>
+        <item>2018_15_07,whole_day</item>
+        <item>2018_22_07,whole_day</item>
+        <item>2018_12_08,whole_day</item>
+        <item>2018_19_08,whole_day</item>
+        <item>2018_09_09,whole_day</item>
+        <item>2018_16_09,whole_day</item>
+        <item>2018_23_09,whole_day</item>
+        <item>2018_14_10,whole_day</item>
+        <item>2018_21_10,whole_day</item>
+        <item>2018_18_11,whole_day</item>
+        <item>2018_09_12,whole_day</item>
+        <item>2018_24_12,14,Wigilia</item>
+    </string-array>
+    <string-array name="national_holidays">
+        <item>2018_01_04,Wielkanoc</item>
+        <item>2018_02_04,Poniedziałek Wielkanocny</item>
+        <item>2018_01_05,Święto Pracy</item>
+        <item>2018_03_05,Święto Konstytucji 3 Maja</item>
+        <item>2018_20_05,Zielone Świątki</item>
+        <item>2018_31_05,Boże Ciało</item>
+        <item>2018_15_08,Wniebowzięcie Najświętszej Maryi Panny</item>
+        <item>2018_01_11,Wszystkich Świętych</item>
+        <item>2018_11_11,Święto Niepodległości</item>
+        <item>2018_25_12,Boże Narodzenie</item>
+        <item>2018_26_12,Boże Narodzenie</item>
+    </string-array>
+</resources>
