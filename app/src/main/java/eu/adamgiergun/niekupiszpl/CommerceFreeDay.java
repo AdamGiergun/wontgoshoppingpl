@@ -23,12 +23,11 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
         return this.startTime.compareTo(another.startTime);
     }
 
-    public String getDayString() {
-        return startTime.get(Calendar.MONTH) + "-" + startTime.get(Calendar.DAY_OF_MONTH);
-        //return DateFormat.getDateInstance().format(startTime.getTime());
+    String getDayString() {
+        return DateFormat.getDateInstance().format(startTime.getTime());
     }
 
-    public String getTimeString(Context context) {
+    String getTimeString(Context context) {
         int hour = startTime.get(Calendar.HOUR_OF_DAY);
         if (hour == 0)
             return context.getString(R.string.whole_day);
@@ -53,7 +52,7 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
         int day = Integer.valueOf(date.substring(YEAR_STRING_END + 1, DAY_STRING_END));
         startTime.set(Calendar.DAY_OF_MONTH, day);
 
-        int month = Integer.valueOf(date.substring(DAY_STRING_END + 1, DATE_STRING_END));
+        int month = Integer.valueOf(date.substring(DAY_STRING_END + 1, DATE_STRING_END)) - 1;
         startTime.set(Calendar.MONTH, month);
     }
 
