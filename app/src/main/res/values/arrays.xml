@@ -1,41 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY sunday "Sunday">
+    <!ENTITY new_year "New Year's Day">
+    <!ENTITY epiphany "Epiphany">
+    <!ENTITY good_friday "Good Friday">
+    <!ENTITY easter_sunday "Easter Sunday">
+    <!ENTITY easter_monday "Easter Monday">
+    <!ENTITY labour_day "Labour Day">
+    <!ENTITY constitution_day "Constitution Day">
+    <!ENTITY whit_sunday "Whit Sunday">
+    <!ENTITY corpus_christi "Corpus Christi">
+    <!ENTITY assumption "Assumption of Mary">
+    <!ENTITY all_saints "All Saints' Day">
+    <!ENTITY independence_day "Independence Day">
+    <!ENTITY christmas_eve "Christmas Eve">
+    <!ENTITY christmas_day "Christmas Day">
+    <!ENTITY second_day_of_christmas "Second Day of Christmas">
+]>
 <resources>
     <string-array name="non_commerce_days">
-        <item>2018_11_03,whole_day</item>
-        <item>2018_18_03,whole_day</item>
-        <item>2018_30_03,14,Wielki Piątek</item>
-        <item>2018_31_03,whole_day</item>
-        <item>2018_08_04,whole_day</item>
-        <item>2018_15_04,whole_day</item>
-        <item>2018_22_04,whole_day</item>
-        <item>2018_13_05,whole_day</item>
-        <item>2018_10_06,whole_day</item>
-        <item>2018_17_06,whole_day</item>
-        <item>2018_08_07,whole_day</item>
-        <item>2018_15_07,whole_day</item>
-        <item>2018_22_07,whole_day</item>
-        <item>2018_12_08,whole_day</item>
-        <item>2018_19_08,whole_day</item>
-        <item>2018_09_09,whole_day</item>
-        <item>2018_16_09,whole_day</item>
-        <item>2018_23_09,whole_day</item>
-        <item>2018_14_10,whole_day</item>
-        <item>2018_21_10,whole_day</item>
-        <item>2018_18_11,whole_day</item>
-        <item>2018_09_12,whole_day</item>
-        <item>2018_24_12,14,Wigilia</item>
+        <item>2018_11_03,whole_day,&sunday;</item>
+        <item>2018_18_03,whole_day,&sunday;</item>
+        <item>2018_30_03,14,&good_friday;</item>
+        <item>2018_31_03,whole_day,&sunday;</item>
+        <item>2018_08_04,whole_day,&sunday;</item>
+        <item>2018_15_04,whole_day,&sunday;</item>
+        <item>2018_22_04,whole_day,&sunday;</item>
+        <item>2018_13_05,whole_day,&sunday;</item>
+        <item>2018_10_06,whole_day,&sunday;</item>
+        <item>2018_17_06,whole_day,&sunday;</item>
+        <item>2018_08_07,whole_day,&sunday;</item>
+        <item>2018_15_07,whole_day,&sunday;</item>
+        <item>2018_22_07,whole_day,&sunday;</item>
+        <item>2018_12_08,whole_day,&sunday;</item>
+        <item>2018_19_08,whole_day,&sunday;</item>
+        <item>2018_09_09,whole_day,&sunday;</item>
+        <item>2018_16_09,whole_day,&sunday;</item>
+        <item>2018_23_09,whole_day,&sunday;</item>
+        <item>2018_14_10,whole_day,&sunday;</item>
+        <item>2018_21_10,whole_day,&sunday;</item>
+        <item>2018_18_11,whole_day,&sunday;</item>
+        <item>2018_09_12,whole_day,&sunday;</item>
+        <item>2018_24_12,14,&christmas_eve;</item>
     </string-array>
     <string-array name="national_holidays">
-        <item>2018_01_04,Wielkanoc</item>
-        <item>2018_02_04,Poniedziałek Wielkanocny</item>
-        <item>2018_01_05,Święto Pracy</item>
-        <item>2018_03_05,Święto Konstytucji 3 Maja</item>
-        <item>2018_20_05,Zielone Świątki</item>
-        <item>2018_31_05,Boże Ciało</item>
-        <item>2018_15_08,Wniebowzięcie Najświętszej Maryi Panny</item>
-        <item>2018_01_11,Wszystkich Świętych</item>
-        <item>2018_11_11,Święto Niepodległości</item>
-        <item>2018_25_12,Boże Narodzenie</item>
-        <item>2018_26_12,Boże Narodzenie</item>
+        <item>2018_01_01,&new_year;</item>
+        <item>2018_06_01,&epiphany;</item>
+        <item>2018_01_04,&easter_sunday;</item>
+        <item>2018_02_04,&easter_monday;</item>
+        <item>2018_01_05,&labour_day;</item>
+        <item>2018_03_05,&constitution_day;</item>
+        <item>2018_20_05,&whit_sunday;</item>
+        <item>2018_31_05,&corpus_christi;</item>
+        <item>2018_15_08,&assumption;</item>
+        <item>2018_01_11,&all_saints;</item>
+        <item>2018_11_11,&independence_day;</item>
+        <item>2018_25_12,&christmas_day;</item>
+        <item>2018_26_12,&second_day_of_christmas;</item>
     </string-array>
 </resources>

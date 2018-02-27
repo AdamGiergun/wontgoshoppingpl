@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 
 class ListOfCommerceFreeDays extends ArrayList<CommerceFreeDay> {
@@ -11,14 +12,18 @@ class ListOfCommerceFreeDays extends ArrayList<CommerceFreeDay> {
     private ListOfCommerceFreeDays(Resources resources, int idOfArray) {
         super();
         String[] array = resources.getStringArray(idOfArray);
+        Calendar yesterday = getYesterday();
         for (String item : array) {
-            this.add(new CommerceFreeDay(resources, item));
+            CommerceFreeDay day = new CommerceFreeDay(item);
+            if (day.getStartTime().compareTo(yesterday) > 0)
+                this.add(day);
         }
     }
 
-    private void addArray(Resources resources, int idOfArray) {
-        ListOfCommerceFreeDays addon = new ListOfCommerceFreeDays(resources, idOfArray);
-        this.addAll(addon);
+    private Calendar getYesterday() {
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DAY_OF_MONTH, -1);
+        return yesterday;
     }
 
     static ListOfCommerceFreeDays getListOfCommerceFreeDays(Context context, boolean includeHolidays) {
@@ -29,5 +34,9 @@ class ListOfCommerceFreeDays extends ArrayList<CommerceFreeDay> {
         }
         Collections.sort(nonCommerceDays);
         return nonCommerceDays;
+    }
+
+    private void addArray(Resources resources, int idOfArray) {
+        this.addAll(new ListOfCommerceFreeDays(resources, idOfArray));
     }
 }

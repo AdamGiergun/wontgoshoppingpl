@@ -8,12 +8,12 @@ import android.widget.TextView;
 
 import eu.adamgiergun.niekupiszpl.DayFragment.OnListFragmentInteractionListener;
 
-public class MyDayRecyclerViewAdapter extends RecyclerView.Adapter<MyDayRecyclerViewAdapter.ViewHolder> {
+public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerViewAdapter.ViewHolder> {
 
     private final ListOfCommerceFreeDays days;
     private final OnListFragmentInteractionListener listener;
 
-    public MyDayRecyclerViewAdapter(ListOfCommerceFreeDays days, OnListFragmentInteractionListener listener) {
+    DayRecyclerViewAdapter(ListOfCommerceFreeDays days, OnListFragmentInteractionListener listener) {
         this.days = days;
         this.listener = listener;
     }
@@ -49,13 +49,13 @@ public class MyDayRecyclerViewAdapter extends RecyclerView.Adapter<MyDayRecycler
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView dayView;
-        public final TextView timeView;
-        public final TextView nameView;
-        public CommerceFreeDay day;
+        final View mView;
+        final TextView dayView;
+        final TextView timeView;
+        final TextView nameView;
+        CommerceFreeDay day;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             dayView = view.findViewById(R.id.date);

@@ -11,12 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class DayFragment extends Fragment {
 
     // TODO: Customize parameter argument names
@@ -62,7 +56,7 @@ public class DayFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            recyclerView.setAdapter(new MyDayRecyclerViewAdapter(getListOfCommerceFreeDays(), listener));
+            recyclerView.setAdapter(new DayRecyclerViewAdapter(getListOfCommerceFreeDays(), listener));
         }
         return view;
     }

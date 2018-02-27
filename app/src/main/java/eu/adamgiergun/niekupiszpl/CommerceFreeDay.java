@@ -1,7 +1,6 @@
 package eu.adamgiergun.niekupiszpl;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
 import java.text.DateFormat;
@@ -13,14 +12,18 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
     private String name;
     private Calendar startTime;
 
-    CommerceFreeDay(Resources resources, String item) {
+    CommerceFreeDay(String item) {
         setDay(item);
-        setTime(resources, item);
+        setTime(item);
     }
 
     @Override
     public int compareTo(@NonNull CommerceFreeDay another) {
         return this.startTime.compareTo(another.startTime);
+    }
+
+    Calendar getStartTime() {
+        return startTime;
     }
 
     String getDayString() {
@@ -56,24 +59,23 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
         startTime.set(Calendar.MONTH, month);
     }
 
-    private void setTime(Resources resources, String item) {
+    private void setTime(String item) {
         startTime.set(Calendar.MINUTE, 0);
-        int hour = getHourAndSetName(resources, item);
+        int hour = getHourAndSetName(item);
         startTime.set(Calendar.HOUR_OF_DAY, hour);
     }
 
-    private int getHourAndSetName(Resources resources, String item) {
-        String data = item.substring(DATE_STRING_END + 1, item.length());
+    private int getHourAndSetName(String item) {
+        String data = item.substring(DATE_STRING_END + 1);
         int hour = 0;
         try {
             hour = Integer.parseInt(data.substring(0,2));
             name = data.substring(3, data.length());
         } catch (NumberFormatException e) {
-            if (data.equals("whole_day"))
-                name = resources.getString(R.string.day_of_limited_commerce);
-            else
-                name = data;
+            e.printStackTrace();
         }
+        int cutPoint = data.indexOf(",") + 1;
+        name = data.substring(cutPoint);
         return hour;
     }
 }
