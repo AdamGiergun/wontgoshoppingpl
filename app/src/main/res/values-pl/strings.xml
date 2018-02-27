@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name">Nie Kupisz PL</string>
     <string name="day_of_limited_commerce">Dzień ograniczeń w handlu</string>
+    <string name="whole_day">Cały dzień</string>
+    <string name="since">Od</string>
 </resources>

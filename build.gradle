@@ -17,9 +17,9 @@ allprojects {
     repositories {
         google()
         jcenter()
-        flatDir {
-            dirs 'C:\\Users\\Adam\\AndroidStudioProjects\\MyLibraries\\mylibrary\\build\\outputs\\aar'
-        }
+//        flatDir {
+//            dirs 'C:\\Users\\Adam\\AndroidStudioProjects\\MyLibraries\\mylibrary\\build\\outputs\\aar'
+//        }
     }
 }
 

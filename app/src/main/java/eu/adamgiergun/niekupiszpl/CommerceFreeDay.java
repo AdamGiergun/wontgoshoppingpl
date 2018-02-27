@@ -1,18 +1,43 @@
 package eu.adamgiergun.niekupiszpl;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 
-class CommerceFreeDay {
-    String name;
-    Calendar startTime;
-
+class CommerceFreeDay implements Comparable<CommerceFreeDay>{
     private static int DATE_STRING_END = 10;
+
+    private String name;
+    private Calendar startTime;
 
     CommerceFreeDay(Resources resources, String item) {
         setDay(item);
         setTime(resources, item);
+    }
+
+    @Override
+    public int compareTo(@NonNull CommerceFreeDay another) {
+        return this.startTime.compareTo(another.startTime);
+    }
+
+    public String getDayString() {
+        return startTime.get(Calendar.MONTH) + "-" + startTime.get(Calendar.DAY_OF_MONTH);
+        //return DateFormat.getDateInstance().format(startTime.getTime());
+    }
+
+    public String getTimeString(Context context) {
+        int hour = startTime.get(Calendar.HOUR_OF_DAY);
+        if (hour == 0)
+            return context.getString(R.string.whole_day);
+        else
+            return context.getString(R.string.since) + " " + hour + ":00";
+    }
+
+    public String getName() {
+        return name;
     }
 
     private void setDay(String item) {
