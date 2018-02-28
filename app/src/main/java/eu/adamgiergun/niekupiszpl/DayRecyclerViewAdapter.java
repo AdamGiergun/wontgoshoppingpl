@@ -1,5 +1,6 @@
 package eu.adamgiergun.niekupiszpl;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.*;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        CardView view = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_day, parent, false);
         return new ViewHolder(view);
     }
@@ -31,7 +32,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
         holder.timeView.setText(day.getTimeString(holder.timeView.getContext()));
         holder.nameView.setText(day.getName());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
@@ -47,15 +48,15 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
+        final CardView cardView;
         final TextView dayView;
         final TextView timeView;
         final TextView nameView;
         CommerceFreeDay day;
 
-        ViewHolder(View view) {
+        ViewHolder(CardView view) {
             super(view);
-            mView = view;
+            cardView = view;
             dayView = view.findViewById(R.id.date);
             timeView = view.findViewById(R.id.time);
             nameView = view.findViewById(R.id.name);
