@@ -3,9 +3,7 @@ package eu.adamgiergun.niekupiszpl;
 import android.content.Context;
 import android.content.res.Resources;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
+import java.util.*;
 
 class ListOfCommerceFreeDays extends ArrayList<CommerceFreeDay> {
 
