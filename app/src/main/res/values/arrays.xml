@@ -10,12 +10,12 @@
     <!ENTITY constitution_day "Constitution Day">
     <!ENTITY whit_sunday "Whit Sunday">
     <!ENTITY corpus_christi "Corpus Christi">
-    <!ENTITY assumption "Assumption of Mary">
+    <!ENTITY assumption "Assumption of&#160;Mary">
     <!ENTITY all_saints "All Saints' Day">
     <!ENTITY independence_day "Independence Day">
     <!ENTITY christmas_eve "Christmas Eve">
     <!ENTITY christmas_day "Christmas Day">
-    <!ENTITY second_day_of_christmas "Second Day of Christmas">
+    <!ENTITY second_day_of_christmas "Second Day of&#160;Christmas">
 ]>
 <resources>
     <string-array name="non_commerce_days">

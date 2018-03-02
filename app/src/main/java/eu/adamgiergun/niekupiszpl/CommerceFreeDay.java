@@ -35,7 +35,7 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
         if (hour == 0)
             return context.getString(R.string.whole_day);
         else
-            return context.getString(R.string.since) + " " + hour + ":00";
+            return context.getString(R.string.since) + hour + ":00";
     }
 
     public String getName() {
