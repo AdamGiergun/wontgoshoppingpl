@@ -42,6 +42,10 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
         return name;
     }
 
+    boolean addToGoogleCalendar() {
+        return true;
+    }
+
     private void setDay(String item) {
         startTime = Calendar.getInstance();
 
