@@ -15,16 +15,16 @@ import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
 public class MainActivity extends AppCompatActivity implements DayFragment.OnListFragmentInteractionListener {
 
-    private boolean isCalendarPermissionGranted;
-
-    boolean isCalendarPermissionGranted() {
-        return isCalendarPermissionGranted;
-    }
+    private boolean isCalendarPermissionRequestedBySettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkCalendarPermission();
+        if (checkCalendarPermission())
+            setCalendarButton();
+        else if (isSystemAtLeastMarshmallow()) {
+            requestWriteCalendarPermission();
+        }
         setContentView(R.layout.activity_main);
     }
 
@@ -49,6 +49,17 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
     }
 
     public void settings(MenuItem menuitem) {
+        if (checkCalendarPermission()) {
+            startSettingsActivity();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                isCalendarPermissionRequestedBySettings = true;
+                requestWriteCalendarPermission();
+            }
+        }
+    }
+
+    private void startSettingsActivity() {
         Intent intent = new Intent(
                 getBaseContext(),
                 SettingsActivity.class);
@@ -78,17 +89,9 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
                 .show();
     }
 
-    private void checkCalendarPermission() {
-        isCalendarPermissionGranted = false;
-        if (isSystemAtLeastMarshmallow()) {
-            if (isWriteCalendarGranted()) {
-                setCalendarButton();
-            } else {
-                requestWriteCalendarPermission();
-            }
-        } else {
-            setCalendarButton();
-        }
+    private boolean checkCalendarPermission() {
+        isCalendarPermissionRequestedBySettings = false;
+        return !isSystemAtLeastMarshmallow() || isWriteCalendarGranted();
     }
 
     private boolean isSystemAtLeastMarshmallow() {
@@ -108,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
     }
 
     private void setCalendarButton() {
-        isCalendarPermissionGranted = true;
+
     }
 
     @Override
@@ -116,7 +119,11 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setCalendarButton();
+                if (isCalendarPermissionRequestedBySettings) {
+                    startSettingsActivity();
+                } else {
+                    setCalendarButton();
+                }
             } else {
                 showInfo(eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, true);
             }
