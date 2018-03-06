@@ -1,13 +1,12 @@
 package eu.adamgiergun.niekupiszpl;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
-import eu.adamgiergun.mylibrary.AppCompatPreferenceActivity;
+import eu.adamgiergun.mylibrary.*;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
@@ -29,6 +28,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
+            setSummaries();
+        }
+
+        private void setSummaries() {
+            IntegerDialogPreference daysBefore = (IntegerDialogPreference) findPreference(getString(R.string.default_reminder_days_before_preference_key));
+            daysBefore.setSummary(daysBefore.toString());
         }
     }
 
