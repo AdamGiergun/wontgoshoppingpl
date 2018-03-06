@@ -5,4 +5,5 @@
     <string name="since">Since\n</string>
     <string name="info_added_to_calendar">Added to calendar</string>
     <string name="error_adding_to_calendar_failed">Error.\nNot added to calendar.</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

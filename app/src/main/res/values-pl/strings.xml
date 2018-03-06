@@ -6,4 +6,5 @@
     <string name="since">Od\n</string>
     <string name="info_added_to_calendar">Dodano do kalendarza</string>
     <string name="error_adding_to_calendar_failed">Bład.\nNie dodano do kalendarza.</string>
+    <string name="title_activity_settings">Ustawienia</string>
 </resources>

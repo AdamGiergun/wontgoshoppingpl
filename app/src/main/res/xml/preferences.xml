@@ -1,0 +1,33 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <!-- A 'parent' preference, which enables/disables child preferences (below)
+         when checked/unchecked. -->
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="@string/use_google_calendar_preference_key"
+        android:summary="@string/google_calendar_preference_summary"
+        android:title="@string/google_calendar_preference_title"/>
+
+    <!-- NOTE: Listed below preferences will be enabled only when the checkbox above is checked. -->
+    <eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreference
+        android:dependency="@string/use_google_calendar_preference_key"
+        android:key="@string/default_calendar_preference_key"
+        android:title="@string/default_calendar_preference_title"/>
+
+    <eu.adamgiergun.mylibrary.IntegerDialogPreference
+        android:defaultValue="1"
+        android:dependency="@string/use_google_calendar_preference_key"
+        android:key="@string/default_reminder_days_before_preference_key"
+        android:title="@string/default_reminder_days_before_preference_title"
+        custom:minValue="0"
+        custom:maxValue="364"/>
+
+    <eu.adamgiergun.mylibrary.calendarmanagement.TimePreference
+        android:defaultValue="@string/default_reminder_time_preference_default_value"
+        android:dependency="@string/use_google_calendar_preference_key"
+        android:key="@string/default_reminder_time_preference_key"
+        android:title="@string/default_reminder_time_preference_title"/>
+
+</PreferenceScreen>

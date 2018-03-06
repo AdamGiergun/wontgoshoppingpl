@@ -1,11 +1,14 @@
 package eu.adamgiergun.niekupiszpl;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.*;
 import android.support.annotation.*;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
@@ -23,6 +26,33 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
         super.onCreate(savedInstanceState);
         checkCalendarPermission();
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(
+                R.menu.main_activity_actions,
+                menu
+        );
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings:
+                settings(item);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void settings(MenuItem menuitem) {
+        Intent intent = new Intent(
+                getBaseContext(),
+                SettingsActivity.class);
+        startActivity(intent);
     }
 
     @Override
