@@ -1,5 +1,7 @@
 package eu.adamgiergun.niekupiszpl;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.NavUtils;
@@ -43,5 +45,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private void ifSuperReturnsFalseNavigateUpFromSameTask(boolean superResult) {
         if (!superResult)
             NavUtils.navigateUpFromSameTask(this);
+    }
+
+    static boolean checkIfUseGoogleCalendarIsEnabled(Context context) {
+        String key = context.getString(R.string.use_google_calendar_preference_key);
+        SharedPreferences prefs = context.getSharedPreferences("eu.adamgiergun.niekupiszpl_preferences", Context.MODE_PRIVATE);
+        return prefs.getBoolean(key, false);
     }
 }

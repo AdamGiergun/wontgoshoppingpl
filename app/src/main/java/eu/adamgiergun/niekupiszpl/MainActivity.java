@@ -68,10 +68,15 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
 
     @Override
     public void onListFragmentInteraction(CommerceFreeDay day) {
-        if (day.addToGoogleCalendar())
-            showInfo(R.string.info_added_to_calendar, false);
-        else
-            showInfo(R.string.error_adding_to_calendar_failed, false);
+        boolean useGoogleCalendar = SettingsActivity.checkIfUseGoogleCalendarIsEnabled(getBaseContext());
+        if (useGoogleCalendar) {
+            if (day.addToGoogleCalendar())
+                showInfo(R.string.info_added_to_calendar, false);
+            else
+                showInfo(R.string.error_adding_to_calendar_failed, false);
+        } else {
+            startSettingsActivity();
+        }
     }
 
     private void showInfo(int info, boolean length_long) {
