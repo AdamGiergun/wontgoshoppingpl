@@ -2,8 +2,11 @@
 <resources>
     <string name="app_name">Nie Kupisz PL</string>
     <string name="day_of_limited_commerce">Dzień ograniczeń w handlu</string>
+    <string name="days_of_limited_commerce">Dni ograniczeń w handlu</string>
+    <string name="holidays">Święta</string>
     <string name="whole_day">Cały\ndzień</string>
     <string name="since">Od\n</string>
+    <string name="title_choose_events">Wybierz zdarzenia, które mają zostać dodane do kalendarza</string>
     <string name="info_added_to_calendar">Dodano do kalendarza</string>
     <string name="error_adding_to_calendar_failed">Bład.\nNie dodano do kalendarza.</string>
     <string name="title_activity_settings">Ustawienia</string>

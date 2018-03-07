@@ -3,7 +3,7 @@
     <!ENTITY sunday "Sunday">
     <!ENTITY new_year "New Year's Day">
     <!ENTITY epiphany "Epiphany">
-    <!ENTITY good_friday "Good Friday">
+    <!ENTITY holy_saturday "Holy Saturday">
     <!ENTITY easter_sunday "Easter Sunday">
     <!ENTITY easter_monday "Easter Monday">
     <!ENTITY labour_day "Labour Day">
@@ -21,8 +21,7 @@
     <string-array name="non_commerce_days">
         <item>2018_11_03,whole_day,&sunday;</item>
         <item>2018_18_03,whole_day,&sunday;</item>
-        <item>2018_30_03,14,&good_friday;</item>
-        <item>2018_31_03,whole_day,&sunday;</item>
+        <item>2018_31_03,14,&holy_saturday;</item>
         <item>2018_08_04,whole_day,&sunday;</item>
         <item>2018_15_04,whole_day,&sunday;</item>
         <item>2018_22_04,whole_day,&sunday;</item>
@@ -43,7 +42,7 @@
         <item>2018_09_12,whole_day,&sunday;</item>
         <item>2018_24_12,14,&christmas_eve;</item>
     </string-array>
-    <string-array name="national_holidays">
+    <string-array name="holidays">
         <item>2018_01_01,&new_year;</item>
         <item>2018_06_01,&epiphany;</item>
         <item>2018_01_04,&easter_sunday;</item>

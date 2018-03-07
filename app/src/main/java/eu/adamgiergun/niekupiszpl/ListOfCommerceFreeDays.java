@@ -28,7 +28,7 @@ class ListOfCommerceFreeDays extends ArrayList<CommerceFreeDay> {
         Resources resources = context.getResources();
         ListOfCommerceFreeDays nonCommerceDays = new ListOfCommerceFreeDays(resources, R.array.non_commerce_days);
         if (includeHolidays) {
-            nonCommerceDays.addArray(resources, R.array.national_holidays);
+            nonCommerceDays.addArray(resources, R.array.holidays);
         }
         Collections.sort(nonCommerceDays);
         return nonCommerceDays;

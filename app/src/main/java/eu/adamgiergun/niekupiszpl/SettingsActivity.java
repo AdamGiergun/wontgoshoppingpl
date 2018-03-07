@@ -19,9 +19,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 new SettingsFragment()).commit();
     }
 
-    /**
-     * Fragment for settings.
-     */
     public static class SettingsFragment extends PreferenceFragment {
 
         @Override
