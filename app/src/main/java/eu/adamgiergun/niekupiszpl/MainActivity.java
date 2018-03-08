@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
 
             final boolean[] checkedItems = new boolean[2];
             checkedItems[0] = true;
+            checkedItems[1] = SettingsActivity.showHolidays(getActivity().getBaseContext());
 
             DialogInterface.OnMultiChoiceClickListener listener = new DialogInterface.OnMultiChoiceClickListener() {
                 @Override

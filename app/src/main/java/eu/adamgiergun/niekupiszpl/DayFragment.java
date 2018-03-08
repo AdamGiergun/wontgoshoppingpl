@@ -58,8 +58,9 @@ public class DayFragment extends Fragment {
     }
 
     private ListOfCommerceFreeDays getListOfCommerceFreeDays() {
-        boolean includeHolidays = true;
-        return ListOfCommerceFreeDays.getListOfCommerceFreeDays(getContext(), includeHolidays);
+        Context context = getContext();
+        boolean includeHolidays = SettingsActivity.showHolidays(context);
+        return ListOfCommerceFreeDays.getListOfCommerceFreeDays(context, includeHolidays);
     }
 
     @Override
