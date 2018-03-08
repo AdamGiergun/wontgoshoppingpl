@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
     }
 
     private void addEverythingToCalendar() {
-        boolean useGoogleCalendar = SettingsActivity.checkIfUseGoogleCalendarIsEnabled(getBaseContext());
+        boolean useGoogleCalendar = SettingsActivity.useGoogleCalendar(getBaseContext());
         if (useGoogleCalendar) {
             askForKindsOfEventsAddedToCalendar();
         } else {
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
 
     @Override
     public void onListFragmentInteraction(CommerceFreeDay day) {
-        boolean useGoogleCalendar = SettingsActivity.checkIfUseGoogleCalendarIsEnabled(getBaseContext());
+        boolean useGoogleCalendar = SettingsActivity.useGoogleCalendar(getBaseContext());
         if (useGoogleCalendar) {
             if (day.addToGoogleCalendar())
                 showInfo(R.string.info_added_to_calendar, false);

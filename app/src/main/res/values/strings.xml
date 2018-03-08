@@ -9,4 +9,9 @@
     <string name="info_added_to_calendar">Added to calendar</string>
     <string name="error_adding_to_calendar_failed">Error.\nNot added to calendar.</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_show_holidays">Show holidays</string>
+    <string name="summary_show_holidays_on">Show holidays on the list, too</string>
+    <string name="summary_show_holidays_off">Don\'t show holidays on the list</string>
+
+    <string name="default_preferences_name" translatable="false">eu.adamgiergun.niekupiszpl_preferences</string>
 </resources>

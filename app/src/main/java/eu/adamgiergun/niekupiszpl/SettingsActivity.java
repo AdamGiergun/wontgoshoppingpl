@@ -49,9 +49,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             NavUtils.navigateUpFromSameTask(this);
     }
 
-    static boolean checkIfUseGoogleCalendarIsEnabled(Context context) {
+    static boolean useGoogleCalendar(Context context) {
         String key = context.getString(R.string.use_google_calendar_preference_key);
-        SharedPreferences prefs = context.getSharedPreferences("eu.adamgiergun.niekupiszpl_preferences", Context.MODE_PRIVATE);
-        return prefs.getBoolean(key, false);
+        return getBooleanValueOfPreference(context,key, false);
+    }
+
+    static boolean showHolidays(Context context) {
+        String key = "include_holidays";
+        return getBooleanValueOfPreference(context,key, true);
+    }
+
+    private static boolean getBooleanValueOfPreference(Context context, String key, boolean defaultValue) {
+        String preferencesName = context.getString(R.string.default_preferences_name);
+        SharedPreferences prefs = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+        return prefs.getBoolean(key, defaultValue);
     }
 }
