@@ -1,19 +1,19 @@
 package eu.adamgiergun.niekupiszpl;
 
 import android.Manifest;
-import android.app.*;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.os.*;
 import android.support.annotation.*;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.*;
 import android.view.*;
 import android.widget.*;
 
+import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
-public class MainActivity extends AppCompatActivity implements DayFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener, DayFragment.OnListFragmentInteractionListener {
 
     private boolean isCalendarPermissionRequestedBySettings;
 
@@ -81,9 +81,8 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
     }
 
     private void askForKindsOfEventsAddedToCalendar() {
-        AskForKindsOfEventsToAddToCalendarDialogFragment dialogFragment = new AskForKindsOfEventsToAddToCalendarDialogFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        dialogFragment.show(ft, "dialog");
+        AppCompatDialogFragment dialogFragment = new AskForKindsOfEventsToAddToCalendar();
+        dialogFragment.show(getSupportFragmentManager(), "dialog");
     }
 
     @Override
@@ -135,8 +134,6 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
         requestPermissions(listOfRequestedPermissions, permissionTypeCode);
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -153,18 +150,32 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
         }
     }
 
-    public static class AskForKindsOfEventsToAddToCalendarDialogFragment extends DialogFragment {
+    @Override
+    public void onDialogPositiveClick(AppCompatDialogFragment dialog) {
+        if (dialog instanceof AskForKindsOfEventsToAddToCalendar) {
+            AppCompatDialogFragment dialogFragment = new AskForReminderSettings();
+            dialogFragment.show(getSupportFragmentManager(), "dialog");
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(AppCompatDialogFragment dialog) {
+        showInfo(R.string.info_cancelled, false);
+    }
+
+    public static class AskForKindsOfEventsToAddToCalendar extends NoticeDialogFragment {
         private Button dialogButtonPositive;
 
+        @NonNull
         @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
+        public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             CharSequence[] items = new CharSequence[]
                     {getString(R.string.days_of_limited_commerce),
                     getString(R.string.holidays)};
 
             final boolean[] checkedItems = new boolean[2];
             checkedItems[0] = true;
-            checkedItems[1] = SettingsActivity.showHolidays(getActivity().getBaseContext());
+            checkedItems[1] = SettingsActivity.showHolidays(getContext());
 
             DialogInterface.OnMultiChoiceClickListener listener = new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
@@ -174,17 +185,17 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
                 }
             };
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(R.string.title_choose_events)
                     .setMultiChoiceItems(items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // FIRE ZE MISSILES!
+                            noticeDialogListener.onDialogPositiveClick(AskForKindsOfEventsToAddToCalendar.this);
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // User cancelled the dialog
+                            noticeDialogListener.onDialogNegativeClick(AskForKindsOfEventsToAddToCalendar.this);
                         }
                     });
             AlertDialog dialog = builder.create();
@@ -199,6 +210,55 @@ public class MainActivity extends AppCompatActivity implements DayFragment.OnLis
             return false;
         }
     }
+
+    public static class AskForReminderSettings extends NoticeDialogFragment {
+
+        @NonNull
+        @Override
+        public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder
+                    .setTitle(R.string.title_choose_events)
+                    .setView(R.layout.reminder_settings_dialog_view)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            noticeDialogListener.onDialogNegativeClick(AskForReminderSettings.this);
+                        }
+                    });
+
+            return builder.create();
+        }
+    }
+/*
+    public static class AskForReminderTime extends NoticeDialogFragment {
+
+        @NonNull
+        @Override
+        public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+            builder.setTitle(R.string.title_choose_events)
+                    .setView(R.layout.reminder_settings_dialog_view)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            ((MainActivity) getActivity()).showInfo(R.string.info_cancelled,false);
+                        }
+                    });
+
+            return builder.create();
+        }
+    }
+    */
     /*
 
     public void askForAddingToGoogleCalendar(View view) {
