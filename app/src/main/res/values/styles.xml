@@ -21,6 +21,15 @@
 
     <style name="MyTextViewStyle" parent="AppTheme">
         <item name="android:layout_margin">@dimen/text_margin</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="MyEditTextStyle" parent="MyTextViewStyle">
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="MyTextViewStyleInList" parent="MyTextViewStyle">
+        <item name="android:layout_margin">@dimen/text_margin</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">?attr/textAppearanceListItem</item>

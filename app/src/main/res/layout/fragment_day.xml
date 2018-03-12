@@ -16,23 +16,23 @@
         <TextView
             android:id="@+id/date"
             android:layout_weight="@dimen/date_field_weight"
-            style="@style/MyTextViewStyle"/>
+            style="@style/MyTextViewStyleInList"/>
 
         <TextView
             android:id="@+id/time"
             android:layout_weight="@dimen/time_field_weight"
-            style="@style/MyTextViewStyle"
+            style="@style/MyTextViewStyleInList"
             android:layout_gravity="center_vertical"
             android:textAlignment="center"/>
 
         <TextView
             android:layout_weight="@dimen/separator_field_weight"
-            style="@style/MyTextViewStyle"/>
+            style="@style/MyTextViewStyleInList"/>
 
         <TextView
             android:id="@+id/name"
             android:layout_weight="@dimen/name_field_weight"
-            style="@style/MyTextViewStyle"
+            style="@style/MyTextViewStyleInList"
             android:layout_gravity="center_vertical"
             android:textAlignment="center"/>
     </LinearLayout>

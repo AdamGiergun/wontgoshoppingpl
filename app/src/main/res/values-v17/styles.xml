@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyTextViewStyle" parent="AppTheme">
+        <item name="android:layout_margin">@dimen/text_margin</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:textAlignment">gravity</item>
+    </style>
+
+    <style name="MyEditTextStyle" parent="MyTextViewStyle">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textAlignment">gravity</item>
+    </style>
+</resources>
