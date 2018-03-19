@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="cardBackgroundColor">#FF0000</color>
     <color name="cardTextColor">#FFFFFF</color>
+    <color name="editableFieldColor">#BEBEBE</color>
 </resources>

@@ -3,12 +3,12 @@
 
     <style name="MyTextViewStyle" parent="AppTheme">
         <item name="android:layout_margin">@dimen/text_margin</item>
-        <item name="android:gravity">bottom</item>
-        <item name="android:textAlignment">gravity</item>
+        <item name="android:textAppearance">?attr/textAppearanceLargePopupMenu</item>
     </style>
 
     <style name="MyEditTextStyle" parent="MyTextViewStyle">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textAlignment">gravity</item>
+        <item name="android:background">@color/editableFieldColor</item>
     </style>
 </resources>

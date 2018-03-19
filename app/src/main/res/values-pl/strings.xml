@@ -6,11 +6,15 @@
     <string name="holidays">Święta</string>
     <string name="whole_day">Cały\ndzień</string>
     <string name="since">Od\n</string>
-    <string name="title_choose_events">Wybierz zdarzenia, które mają zostać dodane do kalendarza</string>
+    <string name="title_choose_events">Zdarzenia dodawane do kalendarza</string>
     <string name="info_added_to_calendar">Dodano do kalendarza</string>
     <string name="error_adding_to_calendar_failed">Bład.\nNie dodano do kalendarza.</string>
     <string name="title_activity_settings">Ustawienia</string>
     <string name="title_show_holidays">Pokazuj święta</string>
     <string name="summary_show_holidays_on">Pokazuj na liście również święta</string>
     <string name="summary_show_holidays_off">Nie pokazuj na liście świąt</string>
+    <string name="remind_me">Przypomnij mi</string>
+    <string name="days_before">dni wcześniej,</string>
+    <string name="at">o</string>
+    <string name="title_reminder">Przypomnienie</string>
 </resources>

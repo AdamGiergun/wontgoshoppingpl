@@ -64,4 +64,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         SharedPreferences prefs = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
         return prefs.getBoolean(key, defaultValue);
     }
+
+    protected static Integer getIntegerValueOfPreference(Context context, String key, int defaultValue) {
+        String preferencesName = context.getString(R.string.default_preferences_name);
+        SharedPreferences prefs = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+        return prefs.getInt(key, defaultValue);
+    }
+
+    protected static String getStringValueOfPreference(Context context, String key, String defaultValue) {
+        String preferencesName = context.getString(R.string.default_preferences_name);
+        SharedPreferences prefs = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+        return prefs.getString(key, defaultValue);
+    }
 }

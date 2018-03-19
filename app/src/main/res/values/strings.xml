@@ -5,7 +5,7 @@
     <string name="holidays">Holidays</string>
     <string name="whole_day">Whole\nday</string>
     <string name="since">Since\n</string>
-    <string name="title_choose_events">Choose events to be added to calendar</string>
+    <string name="title_choose_events">Events to be added to calendar</string>
     <string name="info_added_to_calendar">Added to calendar</string>
     <string name="error_adding_to_calendar_failed">Error.\nNot added to calendar.</string>
     <string name="title_activity_settings">Settings</string>
@@ -14,4 +14,9 @@
     <string name="summary_show_holidays_off">Don\'t show holidays on the list</string>
 
     <string name="default_preferences_name" translatable="false">eu.adamgiergun.niekupiszpl_preferences</string>
+    <string name="remind_me">Remind me</string>
+    <string name="days_before">days before,</string>
+    <string name="at">at</string>
+    <string name="dot" translatable="false">.</string>
+    <string name="title_reminder">Reminder</string>
 </resources>

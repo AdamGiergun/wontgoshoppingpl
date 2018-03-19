@@ -1,12 +1,14 @@
 package eu.adamgiergun.niekupiszpl;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.os.*;
 import android.support.annotation.*;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.*;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.*;
 import android.widget.*;
 
@@ -218,8 +220,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder
-                    .setTitle(R.string.title_choose_events)
-                    .setView(R.layout.reminder_settings_dialog_view)
+                    .setTitle(R.string.title_reminder)
+                    .setView(getDialogView())
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // FIRE ZE MISSILES!
@@ -232,6 +234,28 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                     });
 
             return builder.create();
+        }
+
+        private View getDialogView() {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            @SuppressLint("InflateParams")
+            View view = inflater.inflate(R.layout.reminder_settings_dialog_view, null);
+
+            AppCompatTextView daysView = view.findViewById(R.id.numberOfDaysBeforeView);
+            int daysValue = SettingsActivity.getIntegerValueOfPreference(
+                    getContext(),
+                    getString(R.string.default_reminder_days_before_preference_key),
+                    getActivity().getResources().getInteger(R.integer.reminder_days_before_default_value)
+            );
+            daysView.setText(String.valueOf(daysValue));
+
+            AppCompatTextView timeView = view.findViewById(R.id.timeView);
+            String timeValue = SettingsActivity.getStringValueOfPreference(
+                    getContext(), getString(R.string.default_reminder_time_preference_key),
+                    getString(R.string.default_reminder_time_preference_default_value)
+            );
+            timeView.setText(timeValue);
+            return view;
         }
     }
 /*
