@@ -242,18 +242,11 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             View view = inflater.inflate(R.layout.reminder_settings_dialog_view, null);
 
             AppCompatTextView daysView = view.findViewById(R.id.numberOfDaysBeforeView);
-            int daysValue = SettingsActivity.getIntegerValueOfPreference(
-                    getContext(),
-                    getString(R.string.default_reminder_days_before_preference_key),
-                    getActivity().getResources().getInteger(R.integer.reminder_days_before_default_value)
-            );
+            int daysValue = SettingsActivity.getReminderDaysFromPreferences(getContext());
             daysView.setText(String.valueOf(daysValue));
 
             AppCompatTextView timeView = view.findViewById(R.id.timeView);
-            String timeValue = SettingsActivity.getStringValueOfPreference(
-                    getContext(), getString(R.string.default_reminder_time_preference_key),
-                    getString(R.string.default_reminder_time_preference_default_value)
-            );
+            String timeValue = SettingsActivity.getReminderTime(getContext());
             timeView.setText(timeValue);
             return view;
         }

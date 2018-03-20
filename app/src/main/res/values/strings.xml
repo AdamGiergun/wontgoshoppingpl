@@ -19,4 +19,5 @@
     <string name="at">at</string>
     <string name="dot" translatable="false">.</string>
     <string name="title_reminder">Reminder</string>
+    <string name="include_holidays_preference_key" translatable="false">include_holidays</string>
 </resources>

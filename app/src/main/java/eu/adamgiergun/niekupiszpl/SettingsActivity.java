@@ -1,6 +1,7 @@
 package eu.adamgiergun.niekupiszpl;
 
 import android.content.*;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.NavUtils;
@@ -55,25 +56,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     static boolean showHolidays(Context context) {
-        String key = "include_holidays";
+        String key = context.getString(R.string.include_holidays_preference_key);
         return getBooleanValueOfPreference(context,key, true);
     }
 
     private static boolean getBooleanValueOfPreference(Context context, String key, boolean defaultValue) {
-        String preferencesName = context.getString(R.string.default_preferences_name);
-        SharedPreferences prefs = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(context);
         return prefs.getBoolean(key, defaultValue);
     }
-
-    protected static Integer getIntegerValueOfPreference(Context context, String key, int defaultValue) {
+    
+    private static SharedPreferences getSharedPreferences(Context context) {
         String preferencesName = context.getString(R.string.default_preferences_name);
-        SharedPreferences prefs = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+    }
+
+    static Integer getReminderDaysFromPreferences(Context context) {
+        SharedPreferences prefs = getSharedPreferences(context);
+        String key = context.getString(R.string.default_reminder_days_before_preference_key);
+        Resources resources = context.getResources();
+        int defaultValue = resources.getInteger(R.integer.reminder_days_before_default_value);        
         return prefs.getInt(key, defaultValue);
     }
 
-    protected static String getStringValueOfPreference(Context context, String key, String defaultValue) {
-        String preferencesName = context.getString(R.string.default_preferences_name);
-        SharedPreferences prefs = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+    static String getReminderTime(Context context) {
+        SharedPreferences prefs = getSharedPreferences(context);
+        String key = context.getString(R.string.default_reminder_time_preference_key);
+        String defaultValue = context.getString(R.string.default_reminder_time_preference_default_value);
         return prefs.getString(key, defaultValue);
     }
+    
 }
