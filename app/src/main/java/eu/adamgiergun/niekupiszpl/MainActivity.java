@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         if (useGoogleCalendar) {
             askForKindsOfEventsAddedToCalendar();
         } else {
-            startSettingsActivity();
+            startSettingsActivityIfCalendarPermissionGranted();
         }
     }
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             else
                 showInfo(R.string.error_adding_to_calendar_failed, false);
         } else {
-            startSettingsActivity();
+            startSettingsActivityIfCalendarPermissionGranted();
         }
     }
 
