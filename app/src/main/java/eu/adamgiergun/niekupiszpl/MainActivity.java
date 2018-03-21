@@ -19,6 +19,10 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     private ActionCallingRequest lastActionCallingRequest;
     private CommerceFreeDay lastTouchedDayFromList;
+    private boolean addCommerceFreeDays;
+    private boolean addHolidays;
+    private int reminderDaysBefore;
+    private String reminderTime;
 
     private enum ActionCallingRequest {
         SETTINGS,
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                 }
                 return true;
             case R.id.calendar:
-                addEverythingToCalendarIfConditionsAreMet();
+                startWizardForAddingEventsToCalendarIfConditionsAreMet();
                 return true;
             case R.id.help:
                 startHelpActivity();
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     }
 
-    private void addEverythingToCalendarIfConditionsAreMet() {
+    private void startWizardForAddingEventsToCalendarIfConditionsAreMet() {
         if (checkCalendarPermissions(ActionCallingRequest.ADD_ALL_EVENTS)) {
             boolean useGoogleCalendar = SettingsActivity.isUseGoogleCalendarSet(getBaseContext());
             if (useGoogleCalendar) {
@@ -164,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                         addDayToCalendarDisplayingInfo(lastTouchedDayFromList);
                         break;
                     case ADD_ALL_EVENTS:
-                        addEverythingToCalendarIfConditionsAreMet();
+                        startWizardForAddingEventsToCalendarIfConditionsAreMet();
                         break;
                     default:
                         break;
@@ -188,9 +192,30 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     @Override
     public void onDialogPositiveClick(AppCompatDialogFragment dialog) {
         if (dialog instanceof AskForKindsOfEventsToAddToCalendar) {
-            AppCompatDialogFragment dialogFragment = new AskForReminderSettings();
-            dialogFragment.show(getSupportFragmentManager(), "dialog");
+            getUserChoicesOfDaysAddedToCalendar(dialog);
+            startAskingForReminderSettings();
         }
+        if (dialog instanceof AskForReminderSettings) {
+            getReminderParameters(dialog);
+            //TODO add all events
+        }
+    }
+
+    private void getUserChoicesOfDaysAddedToCalendar(AppCompatDialogFragment dialog) {
+        AskForKindsOfEventsToAddToCalendar myDialog = (AskForKindsOfEventsToAddToCalendar) dialog;
+        addCommerceFreeDays = myDialog.addCommerceFreeDays();
+        addHolidays = myDialog.addHolidays();
+    }
+
+    private void startAskingForReminderSettings() {
+        AppCompatDialogFragment dialogFragment = new AskForReminderSettings();
+        dialogFragment.show(getSupportFragmentManager(), "dialog");
+    }
+
+    private void getReminderParameters(AppCompatDialogFragment dialog) {
+        AskForReminderSettings myDialog = (AskForReminderSettings) dialog;
+        reminderDaysBefore = myDialog.getReminderDaysBefore();
+        reminderTime = myDialog.getReminderTime();
     }
 
     @Override
@@ -200,6 +225,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     public static class AskForKindsOfEventsToAddToCalendar extends NoticeDialogFragment {
         private Button dialogButtonPositive;
+        private boolean addCommerceFreeDays;
+        private boolean addHolidays;
 
         @NonNull
         @Override
@@ -225,6 +252,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                     .setMultiChoiceItems(items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            addCommerceFreeDays = checkedItems[0];
+                            addHolidays = checkedItems[1];
                             noticeDialogListener.onDialogPositiveClick(AskForKindsOfEventsToAddToCalendar.this);
                         }
                     })
@@ -244,9 +273,19 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                 if (value) return true;
             return false;
         }
+
+        boolean addCommerceFreeDays() {
+            return addCommerceFreeDays;
+        }
+
+        boolean addHolidays() {
+            return addHolidays;
+        }
     }
 
     public static class AskForReminderSettings extends NoticeDialogFragment {
+        private int reminderDaysBefore;
+        private String reminderTime;
 
         @NonNull
         @Override
@@ -257,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                     .setView(getDialogView())
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // FIRE ZE MISSILES!
+                            noticeDialogListener.onDialogPositiveClick(AskForReminderSettings.this);
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -275,14 +314,23 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             View view = inflater.inflate(R.layout.reminder_settings_dialog_view, null);
 
             AppCompatTextView daysView = view.findViewById(R.id.numberOfDaysBeforeView);
-            int daysValue = SettingsActivity.getReminderDaysFromPreferences(getContext());
-            daysView.setText(String.valueOf(daysValue));
+            reminderDaysBefore = SettingsActivity.getReminderDaysFromPreferences(getContext());
+            daysView.setText(String.valueOf(reminderDaysBefore));
 
             AppCompatTextView timeView = view.findViewById(R.id.timeView);
-            String timeValue = SettingsActivity.getReminderTime(getContext());
-            timeView.setText(timeValue);
+            reminderTime = SettingsActivity.getReminderTime(getContext());
+            timeView.setText(reminderTime);
             return view;
         }
+
+        int getReminderDaysBefore() {
+            return reminderDaysBefore;
+        }
+
+        String getReminderTime() {
+            return reminderTime;
+        }
+
     }
 /*
     public static class AskForReminderTime extends NoticeDialogFragment {
