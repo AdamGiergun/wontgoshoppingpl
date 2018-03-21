@@ -92,16 +92,20 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         if (checkCalendarPermissions(ActionCallingRequest.ADD_ONE_EVENT)) {
             boolean useGoogleCalendar = SettingsActivity.isUseGoogleCalendarSet(getBaseContext());
             if (useGoogleCalendar) {
-                if (day.addToGoogleCalendar())
-                    showInfo(R.string.info_added_to_calendar, false);
-                else
-                    showInfo(R.string.error_adding_to_calendar_failed, false);
+                addDayToCalendarDisplayingInfo(day);
             } else {
                 startSettingsActivity();
             }
         } else {
             lastTouchedDayFromList = day;
         }
+    }
+
+    private void addDayToCalendarDisplayingInfo(CommerceFreeDay day) {
+        if (day.addToGoogleCalendar())
+            showInfo(R.string.info_added_to_calendar, false);
+        else
+            showInfo(R.string.error_adding_to_calendar_failed, false);
     }
 
     private void showInfo(int info, boolean length_long) {
@@ -157,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                         startSettingsActivity();
                         break;
                     case ADD_ONE_EVENT:
-                        lastTouchedDayFromList.addToGoogleCalendar();
+                        addDayToCalendarDisplayingInfo(lastTouchedDayFromList);
                         break;
                     case ADD_ALL_EVENTS:
                         addEverythingToCalendarIfConditionsAreMet();
