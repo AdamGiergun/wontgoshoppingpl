@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             NavUtils.navigateUpFromSameTask(this);
     }
 
-    static boolean useGoogleCalendar(Context context) {
+    static boolean isUseGoogleCalendarSet(Context context) {
         String key = context.getString(R.string.use_google_calendar_preference_key);
         return getBooleanValueOfPreference(context,key, false);
     }

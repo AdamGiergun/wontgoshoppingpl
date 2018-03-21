@@ -17,7 +17,14 @@ import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
 public class MainActivity extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener, DayFragment.OnListFragmentInteractionListener {
 
-    private boolean isCalendarPermissionRequestedBySettings;
+    private ActionCallingRequest lastActionCallingRequest;
+    private CommerceFreeDay lastTouchedDayFromList;
+
+    private enum ActionCallingRequest {
+        SETTINGS,
+        ADD_ALL_EVENTS,
+        ADD_ONE_EVENT
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,27 +45,18 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings:
-                startSettingsActivityIfCalendarPermissionGranted();
+                if (checkCalendarPermissions(ActionCallingRequest.SETTINGS)) {
+                    startSettingsActivity();
+                }
                 return true;
             case R.id.calendar:
-                addEverythingToCalendar();
+                addEverythingToCalendarIfConditionsAreMet();
                 return true;
             case R.id.help:
                 startHelpActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void startSettingsActivityIfCalendarPermissionGranted() {
-        if (checkCalendarPermission()) {
-            startSettingsActivity();
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                isCalendarPermissionRequestedBySettings = true;
-                requestWriteCalendarPermission();
-            }
         }
     }
 
@@ -73,12 +71,14 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     }
 
-    private void addEverythingToCalendar() {
-        boolean useGoogleCalendar = SettingsActivity.useGoogleCalendar(getBaseContext());
-        if (useGoogleCalendar) {
-            askForKindsOfEventsAddedToCalendar();
-        } else {
-            startSettingsActivityIfCalendarPermissionGranted();
+    private void addEverythingToCalendarIfConditionsAreMet() {
+        if (checkCalendarPermissions(ActionCallingRequest.ADD_ALL_EVENTS)) {
+            boolean useGoogleCalendar = SettingsActivity.isUseGoogleCalendarSet(getBaseContext());
+            if (useGoogleCalendar) {
+                askForKindsOfEventsAddedToCalendar();
+            } else {
+                startSettingsActivity();
+            }
         }
     }
 
@@ -89,14 +89,18 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     @Override
     public void onListFragmentInteraction(CommerceFreeDay day) {
-        boolean useGoogleCalendar = SettingsActivity.useGoogleCalendar(getBaseContext());
-        if (useGoogleCalendar) {
-            if (day.addToGoogleCalendar())
-                showInfo(R.string.info_added_to_calendar, false);
-            else
-                showInfo(R.string.error_adding_to_calendar_failed, false);
+        if (checkCalendarPermissions(ActionCallingRequest.ADD_ONE_EVENT)) {
+            boolean useGoogleCalendar = SettingsActivity.isUseGoogleCalendarSet(getBaseContext());
+            if (useGoogleCalendar) {
+                if (day.addToGoogleCalendar())
+                    showInfo(R.string.info_added_to_calendar, false);
+                else
+                    showInfo(R.string.error_adding_to_calendar_failed, false);
+            } else {
+                startSettingsActivity();
+            }
         } else {
-            startSettingsActivityIfCalendarPermissionGranted();
+            lastTouchedDayFromList = day;
         }
     }
 
@@ -108,30 +112,37 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             length = Toast.LENGTH_SHORT;
         }
 
-        Toast.makeText(
-                getBaseContext(),
-                info,
-                length)
+        Toast.makeText(getBaseContext(), info, length)
                 .show();
     }
 
-    private boolean checkCalendarPermission() {
-        isCalendarPermissionRequestedBySettings = false;
-        return !isSystemAtLeastMarshmallow() || isWriteCalendarGranted();
+    private boolean checkCalendarPermissions(ActionCallingRequest actionCallingRequest) {
+        lastActionCallingRequest = actionCallingRequest;
+        if (!isSystemAtLeastMarshmallow() || areCalendarPermissionsGranted()) {
+            return true;
+        } else {
+            requestCalendarPermissions(actionCallingRequest);
+            return false;
+        }
     }
 
     private boolean isSystemAtLeastMarshmallow() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
-    private boolean isWriteCalendarGranted() {
-        int permissionCheck = ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.WRITE_CALENDAR);
-        return permissionCheck == PackageManager.PERMISSION_GRANTED;
+    private boolean areCalendarPermissionsGranted() {
+        return isPermissionGranted(Manifest.permission.READ_CALENDAR) && isPermissionGranted(Manifest.permission.WRITE_CALENDAR) ;
+    }
+
+    private boolean isPermissionGranted(String permission) {
+        int permissionState = ContextCompat.checkSelfPermission(getBaseContext(), permission);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestWriteCalendarPermission() {
-        String[] listOfRequestedPermissions = new String[]{Manifest.permission.WRITE_CALENDAR};
+    private void requestCalendarPermissions(ActionCallingRequest actionCallingRequest) {
+        lastActionCallingRequest = actionCallingRequest;
+        String[] listOfRequestedPermissions = new String[]{Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR};
         int permissionTypeCode = PermissionType.CALENDAR.getCode();
         requestPermissions(listOfRequestedPermissions, permissionTypeCode);
     }
@@ -140,16 +151,34 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionType.CALENDAR.getCode()) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (isCalendarPermissionRequestedBySettings) {
-                    startSettingsActivity();
-                } else {
-                    //TODO what to do when touching event caused request
+            if (areAllPermissionsGranted(grantResults)) {
+                switch (lastActionCallingRequest) {
+                    case SETTINGS:
+                        startSettingsActivity();
+                        break;
+                    case ADD_ONE_EVENT:
+                        lastTouchedDayFromList.addToGoogleCalendar();
+                        break;
+                    case ADD_ALL_EVENTS:
+                        addEverythingToCalendarIfConditionsAreMet();
+                        break;
+                    default:
+                        break;
                 }
             } else {
                 showInfo(eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, true);
             }
         }
+    }
+
+    private boolean areAllPermissionsGranted(int[] grantResults) {
+        boolean result = true;
+        boolean permissionGranted;
+        for (int grantResult : grantResults) {
+            permissionGranted = (grantResult == PackageManager.PERMISSION_GRANTED);
+            result = result && permissionGranted;
+        }
+        return result;
     }
 
     @Override
