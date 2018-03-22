@@ -1,9 +1,15 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/include_holidays_preference_key"
+        android:title="@string/title_show_holidays"
+        android:summaryOn="@string/summary_show_holidays_on"
+        android:summaryOff="@string/summary_show_holidays_off"/>
+
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
-
     <SwitchPreference
         android:defaultValue="false"
         android:key="@string/use_google_calendar_preference_key"
@@ -33,12 +39,5 @@
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_reminder_time_preference_key"
         android:title="@string/default_reminder_time_preference_title"/>
-
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="@string/include_holidays_preference_key"
-        android:title="@string/title_show_holidays"
-        android:summaryOn="@string/summary_show_holidays_on"
-        android:summaryOff="@string/summary_show_holidays_off"/>
 
 </PreferenceScreen>

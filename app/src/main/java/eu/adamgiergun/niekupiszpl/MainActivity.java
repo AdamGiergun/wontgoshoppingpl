@@ -106,10 +106,24 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     private void addDayToCalendarDisplayingInfo(CommerceFreeDay day) {
+        setReminderParametersFromPreferences();
+        setReminderParametersToDay(day);
+
         if (day.addToGoogleCalendar())
             showInfo(R.string.info_added_to_calendar, false);
         else
             showInfo(R.string.error_adding_to_calendar_failed, false);
+    }
+
+    private void setReminderParametersFromPreferences() {
+        Context context = getBaseContext();
+        reminderDaysBefore = SettingsActivity.getReminderDaysFromPreferences(context);
+        reminderTime = SettingsActivity.getReminderTime(context);
+    }
+
+    private void setReminderParametersToDay(CommerceFreeDay day) {
+        day.setReminderDaysBefore(reminderDaysBefore);
+        day.setReminderTime(reminderTime);
     }
 
     private void showInfo(int info, boolean length_long) {

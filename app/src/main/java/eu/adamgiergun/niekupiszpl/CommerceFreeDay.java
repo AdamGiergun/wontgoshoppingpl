@@ -11,6 +11,8 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
 
     private String name;
     private Calendar startTime;
+    private int reminderDaysBefore;
+    private String reminderTime;
 
     CommerceFreeDay(String item) {
         setDay(item);
@@ -38,8 +40,16 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
             return context.getString(R.string.since) + hour + ":00";
     }
 
-    public String getName() {
+    String getName() {
         return name;
+    }
+
+    void setReminderDaysBefore (int daysBefore) {
+        reminderDaysBefore = daysBefore;
+    }
+
+    void setReminderTime (String time) {
+        reminderTime = time;
     }
 
     boolean addToGoogleCalendar() {
