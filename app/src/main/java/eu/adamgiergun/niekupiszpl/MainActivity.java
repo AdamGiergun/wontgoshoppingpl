@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     private void startHelpActivity() {
-
+        //TODO help
     }
 
     private void startWizardForAddingEventsToCalendarIfConditionsAreMet() {

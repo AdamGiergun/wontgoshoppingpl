@@ -15,8 +15,9 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
     private String reminderTime;
 
     CommerceFreeDay(String item) {
-        setDay(item);
-        setTime(item);
+        String[] pieces = item.split(",");
+        setDay(pieces[0]);
+        setTimeAndName(pieces[1], pieces[2]);
     }
 
     @Override
@@ -56,40 +57,34 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
         return true;
     }
 
-    private void setDay(String item) {
+    private void setDay(String date) {
         startTime = Calendar.getInstance();
+        String[] pieces = date.split("_");
 
-        String date = item.substring(0, DATE_STRING_END);
-
-        int YEAR_STRING_END = 4;
-        int year = Integer.valueOf(date.substring(0, YEAR_STRING_END));
+        int year = Integer.valueOf(pieces[0]);
         startTime.set(Calendar.YEAR, year);
 
-        int DAY_STRING_END = 7;
-        int day = Integer.valueOf(date.substring(YEAR_STRING_END + 1, DAY_STRING_END));
+        int day = Integer.valueOf(pieces[1]);
         startTime.set(Calendar.DAY_OF_MONTH, day);
 
-        int month = Integer.valueOf(date.substring(DAY_STRING_END + 1, DATE_STRING_END)) - 1;
+        int month = Integer.valueOf(pieces[2]) - 1;
         startTime.set(Calendar.MONTH, month);
     }
 
-    private void setTime(String item) {
+    private void setTimeAndName(String time, String name) {
         startTime.set(Calendar.MINUTE, 0);
-        int hour = getHourAndSetName(item);
-        startTime.set(Calendar.HOUR_OF_DAY, hour);
+        startTime.set(Calendar.HOUR_OF_DAY, getHour(time));
+
+        this.name = name;
     }
 
-    private int getHourAndSetName(String item) {
-        String data = item.substring(DATE_STRING_END + 1);
-        int hour = 0;
+    private int getHour(String time) {
+        int hour;
         try {
-            hour = Integer.parseInt(data.substring(0,2));
-            name = data.substring(3, data.length());
+            hour = Integer.parseInt(time);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            hour = 0;
         }
-        int cutPoint = data.indexOf(",") + 1;
-        name = data.substring(cutPoint);
         return hour;
     }
 }

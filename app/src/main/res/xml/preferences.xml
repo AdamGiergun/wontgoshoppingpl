@@ -32,7 +32,7 @@
         android:dialogLayout="@app:layout/integer_dialog_preference_layout"
         app:minValue="0"
         app:maxValue="364"
-        app:defaultValue="@integer/reminder_days_before_default_value"/>
+        app:defValue="@integer/reminder_days_before_default_value"/>
 
     <eu.adamgiergun.mylibrary.calendarmanagement.TimePreference
         android:defaultValue="@string/default_reminder_time_preference_default_value"
