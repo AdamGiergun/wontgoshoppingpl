@@ -9,7 +9,6 @@
     android:layout_marginRight="5dp"
     tools:context="eu.adamgiergun.niekupiszpl.MainActivity">
 
-
     <fragment
         android:id="@+id/list_of_days_fragment"
         android:name="eu.adamgiergun.niekupiszpl.DayFragment"
