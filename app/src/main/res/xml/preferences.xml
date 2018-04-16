@@ -1,7 +1,7 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreference
+    <android.support.v14.preference.SwitchPreference
         android:defaultValue="true"
         android:key="@string/include_holidays_preference_key"
         android:title="@string/title_show_holidays"
@@ -10,7 +10,7 @@
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
-    <SwitchPreference
+    <android.support.v14.preference.SwitchPreference
         android:defaultValue="false"
         android:key="@string/use_google_calendar_preference_key"
         android:summaryOn="@string/google_calendar_preference_summary_on"
@@ -23,7 +23,7 @@
         android:key="@string/default_calendar_preference_key"
         android:title="@string/default_calendar_preference_title"/>
 
-    <eu.adamgiergun.mylibrary.IntegerDialogPreference
+    <eu.adamgiergun.mylibrary.NewIntegerDialogPreference
         android:defaultValue="@integer/reminder_days_before_default_value"
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_reminder_days_before_preference_key"
@@ -34,10 +34,10 @@
         app:maxValue="364"
         app:defValue="@integer/reminder_days_before_default_value"/>
 
-    <eu.adamgiergun.mylibrary.calendarmanagement.TimePreference
+    <eu.adamgiergun.mylibrary.calendarmanagement.NewTimePreference
         android:defaultValue="@string/default_reminder_time_preference_default_value"
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_reminder_time_preference_key"
         android:title="@string/default_reminder_time_preference_title"/>
 
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>

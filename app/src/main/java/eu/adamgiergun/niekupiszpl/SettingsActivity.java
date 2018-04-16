@@ -3,24 +3,28 @@ package eu.adamgiergun.niekupiszpl;
 import android.content.*;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.MenuItem;
 
 import eu.adamgiergun.mylibrary.*;
 
-public class SettingsActivity extends AppCompatPreferenceActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Display the fragment as the main content.
-        getFragmentManager().beginTransaction().replace(android.R.id.content,
+        getSupportFragmentManager().beginTransaction().replace(
+                android.R.id.content,
                 new SettingsFragment()).commit();
     }
 
-    public static class SettingsFragment extends PreferenceFragment {
+    public static class SettingsFragment extends PreferenceFragmentCompat {
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -29,26 +33,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             setSummaries();
         }
 
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.preferences, rootKey);
+            setSummaries();
+        }
+
         private void setSummaries() {
-            IntegerDialogPreference daysBefore = (IntegerDialogPreference) findPreference(getString(R.string.default_reminder_days_before_preference_key));
+            NewIntegerDialogPreference daysBefore = (NewIntegerDialogPreference) findPreference(getString(R.string.default_reminder_days_before_preference_key));
             daysBefore.setSummary(daysBefore.toString());
         }
-    }
 
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
-            ifSuperReturnsFalseNavigateUpFromSameTask(super.onMenuItemSelected(featureId, item));
-            return true;
+        @Override
+        public void onDisplayPreferenceDialog(Preference preference) {
+            if (preference instanceof NewIntegerDialogPreference) {
+                //DialogFragment dialogFragment = SettingsFragment.newInstance(preference.getKey());
+                //dialogFragment.setTargetFragment(this, 0);
+                //dialogFragment.show(getFragmentManager(), null);
+            } else super.onDisplayPreferenceDialog(preference);
         }
-        return super.onMenuItemSelected(featureId, item);
     }
 
-    private void ifSuperReturnsFalseNavigateUpFromSameTask(boolean superResult) {
-        if (!superResult)
-            NavUtils.navigateUpFromSameTask(this);
-    }
 
     static boolean isUseGoogleCalendarSet(Context context) {
         String key = context.getString(R.string.use_google_calendar_preference_key);
