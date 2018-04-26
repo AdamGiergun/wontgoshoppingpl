@@ -3,13 +3,9 @@ package eu.adamgiergun.niekupiszpl;
 import android.content.*;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.view.MenuItem;
-
 import eu.adamgiergun.mylibrary.*;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -17,25 +13,14 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Display the fragment as the main content.
-        getSupportFragmentManager().beginTransaction().replace(
-                android.R.id.content,
-                new SettingsFragment()).commit();
+        setContentView(R.layout.settings_activity);
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
-            setSummaries();
-        }
-
-        @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.preferences, rootKey);
+            addPreferencesFromResource(R.xml.preferences);
             setSummaries();
         }
 
@@ -47,9 +32,9 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onDisplayPreferenceDialog(Preference preference) {
             if (preference instanceof NewIntegerDialogPreference) {
-                //DialogFragment dialogFragment = SettingsFragment.newInstance(preference.getKey());
-                //dialogFragment.setTargetFragment(this, 0);
-                //dialogFragment.show(getFragmentManager(), null);
+/*                NewIntegerDialogPreference dialogFragment = NewIntegerDialogPreference.newInstance(preference.getKey(), getContext());
+                dialogFragment.setTargetFragment(this, 0);
+                dialogFragment.show(getFragmentManager(), null);*/
             } else super.onDisplayPreferenceDialog(preference);
         }
     }

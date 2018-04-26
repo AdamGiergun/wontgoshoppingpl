@@ -1,20 +1,20 @@
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:app="http://schemas.android.com/apk/res-auto">
+                                                xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v14.preference.SwitchPreference
+    <android.support.v7.preference.SwitchPreferenceCompat
         android:defaultValue="true"
         android:key="@string/include_holidays_preference_key"
-        android:title="@string/title_show_holidays"
+        android:summaryOff="@string/summary_show_holidays_off"
         android:summaryOn="@string/summary_show_holidays_on"
-        android:summaryOff="@string/summary_show_holidays_off"/>
+        android:title="@string/title_show_holidays"/>
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
-    <android.support.v14.preference.SwitchPreference
+    <android.support.v7.preference.SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="@string/use_google_calendar_preference_key"
-        android:summaryOn="@string/google_calendar_preference_summary_on"
         android:summaryOff="@string/google_calendar_preference_summary_off"
+        android:summaryOn="@string/google_calendar_preference_summary_on"
         android:title="@string/google_calendar_preference_title"/>
 
     <!-- NOTE: Listed below preferences will be enabled only when the checkbox above is checked. -->
@@ -26,13 +26,13 @@
     <eu.adamgiergun.mylibrary.NewIntegerDialogPreference
         android:defaultValue="@integer/reminder_days_before_default_value"
         android:dependency="@string/use_google_calendar_preference_key"
-        android:key="@string/default_reminder_days_before_preference_key"
-        android:title="@string/default_reminder_days_before_preference_title"
-        android:numeric="integer"
         android:dialogLayout="@app:layout/integer_dialog_preference_layout"
-        app:minValue="0"
+        android:key="@string/default_reminder_days_before_preference_key"
+        android:numeric="integer"
+        android:title="@string/default_reminder_days_before_preference_title"
+        app:defValue="@integer/reminder_days_before_default_value"
         app:maxValue="364"
-        app:defValue="@integer/reminder_days_before_default_value"/>
+        app:minValue="0"/>
 
     <eu.adamgiergun.mylibrary.calendarmanagement.NewTimePreference
         android:defaultValue="@string/default_reminder_time_preference_default_value"
