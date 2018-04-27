@@ -4,24 +4,56 @@ import android.content.*;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.*;
+
 import eu.adamgiergun.mylibrary.*;
+import eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreference;
 
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PreferenceManager.setDefaultValues(getBaseContext(), R.xml.preferences, false);
         setContentView(R.layout.settings_activity);
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat {
+    public static class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.preferences);
             setSummaries();
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            getPreferenceScreen()
+                    .getSharedPreferences()
+                    .unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            getPreferenceScreen()
+                    .getSharedPreferences()
+                    .registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+            if (key.equals(getString(R.string.default_calendar_preference_key))) {
+                Preference connectionPref = findPreference(key);
+                if (connectionPref instanceof CalendarsListPreference) {
+                    CharSequence calendarId = sharedPreferences.getString(key, "0");
+                    //getString(R.string.calendar_not_set));
+                    CharSequence summary = ((CalendarsListPreference) connectionPref).getCalendarName(calendarId);
+                    connectionPref.setSummary(summary);
+                }
+            }
         }
 
         private void setSummaries() {
