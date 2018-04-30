@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.*;
 
 import eu.adamgiergun.mylibrary.*;
-import eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreference;
+import eu.adamgiergun.mylibrary.calendarmanagement.NewCalendarsListPreference;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -47,10 +47,10 @@ public class SettingsActivity extends AppCompatActivity {
 
             if (key.equals(getString(R.string.default_calendar_preference_key))) {
                 Preference connectionPref = findPreference(key);
-                if (connectionPref instanceof CalendarsListPreference) {
+                if (connectionPref instanceof NewCalendarsListPreference) {
                     CharSequence calendarId = sharedPreferences.getString(key, "0");
                     //getString(R.string.calendar_not_set));
-                    CharSequence summary = ((CalendarsListPreference) connectionPref).getCalendarName(calendarId);
+                    CharSequence summary = ((NewCalendarsListPreference) connectionPref).getCalendarName(calendarId);
                     connectionPref.setSummary(summary);
                 }
             }

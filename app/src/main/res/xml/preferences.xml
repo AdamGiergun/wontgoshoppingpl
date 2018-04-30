@@ -18,7 +18,7 @@
         android:title="@string/google_calendar_preference_title"/>
 
     <!-- NOTE: Listed below preferences will be enabled only when the checkbox above is checked. -->
-    <eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreference
+    <eu.adamgiergun.mylibrary.calendarmanagement.NewCalendarsListPreference
         android:defaultValue="@string/calendar_not_set"
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_calendar_preference_key"
