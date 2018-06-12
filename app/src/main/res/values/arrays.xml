@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE resources [
     <!ENTITY sunday "Sunday">
-    <!ENTITY new_year "New Year's Day">
+    <!ENTITY new_year "New Year\'s Day">
     <!ENTITY epiphany "Epiphany">
     <!ENTITY holy_saturday "Holy Saturday">
     <!ENTITY easter_sunday "Easter Sunday">
@@ -11,7 +11,7 @@
     <!ENTITY whit_sunday "Whit Sunday">
     <!ENTITY corpus_christi "Corpus Christi">
     <!ENTITY assumption "Assumption of&#160;Mary">
-    <!ENTITY all_saints "All Saints' Day">
+    <!ENTITY all_saints "All Saints\' Day">
     <!ENTITY independence_day "Independence Day">
     <!ENTITY christmas_eve "Christmas Eve">
     <!ENTITY christmas_day "Christmas Day">
