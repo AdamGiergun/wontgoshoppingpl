@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.android.tools.build:gradle:3.1.4'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -17,9 +17,13 @@ allprojects {
     repositories {
         google()
         jcenter()
-//        flatDir {
-//            dirs 'C:\\Users\\Adam\\AndroidStudioProjects\\MyLibraries\\mylibrary\\build\\outputs\\aar'
-//        }
+        maven {
+            credentials {
+                username BB_USERNAME
+                password BB_PASSWORD
+            }
+            url "https://api.bitbucket.org/1.0/repositories/adam_giergun/mylibrary_aar/raw/releases/"
+        }
     }
 }
 

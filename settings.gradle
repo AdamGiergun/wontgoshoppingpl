@@ -1,2 +1,1 @@
-include ':app', ':mylibrary'
-project (':mylibrary').projectDir = new File('C:\\Users\\Adam\\AndroidStudioProjects\\MyLibraries\\mylibrary')
+include ':app'
