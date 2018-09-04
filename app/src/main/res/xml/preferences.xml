@@ -24,7 +24,7 @@
         android:key="@string/default_calendar_preference_key"
         android:title="@string/default_calendar_preference_title"/>
 
-    <eu.adamgiergun.mylibrary.NewIntegerDialogPreference
+    <eu.adamgiergun.mylibrary.IntegerDialogPreferenceNew
         android:defaultValue="@integer/reminder_days_before_default_value"
         android:dependency="@string/use_google_calendar_preference_key"
         android:dialogLayout="@app:layout/integer_dialog_preference_layout"

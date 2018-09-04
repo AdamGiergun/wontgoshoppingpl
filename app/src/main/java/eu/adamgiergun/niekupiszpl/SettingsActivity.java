@@ -59,23 +59,21 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         private void setSummaries() {
-            NewIntegerDialogPreference daysBefore = (NewIntegerDialogPreference) findPreference(getString(R.string.default_reminder_days_before_preference_key));
+            IntegerDialogPreferenceNew daysBefore = (IntegerDialogPreferenceNew) findPreference(getString(R.string.default_reminder_days_before_preference_key));
             daysBefore.setSummary(daysBefore.toString());
         }
 
         @Override
         public void onDisplayPreferenceDialog(Preference preference) {
             DialogFragment dialogFragment = null;
-            if (preference instanceof NewIntegerDialogPreference) {
-//                dialogFragment = NewIntegerDialogPreference.newInstance(preference.getKey(), getContext());
+            if (preference instanceof IntegerDialogPreferenceNew) {
+                dialogFragment = new IntegerPreferenceDialogFragmentCompat();
             } else if (preference instanceof TimePreferenceNew) {
                 dialogFragment = new TimePreferenceDialogFragmentCompat();
-                Bundle bundle = new Bundle(1);
-                bundle.putString("key", preference.getKey());
-                dialogFragment.setArguments(bundle);
             }
 
             if (dialogFragment != null) {
+                setDialogFragmentArguments(dialogFragment, preference.getKey());
                 dialogFragment.setTargetFragment(this, 0);
                 if (this.getFragmentManager() != null) {
                     dialogFragment.show(this.getFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
@@ -83,6 +81,12 @@ public class SettingsActivity extends AppCompatActivity {
             } else {
                 super.onDisplayPreferenceDialog(preference);
             }
+        }
+
+        private void setDialogFragmentArguments(DialogFragment dialogFragment, String key) {
+            Bundle bundle = new Bundle(1);
+            bundle.putString("key", key);
+            dialogFragment.setArguments(bundle);
         }
     }
 
