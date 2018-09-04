@@ -35,7 +35,7 @@
         app:maxValue="364"
         app:minValue="0"/>
 
-    <eu.adamgiergun.mylibrary.calendarmanagement.NewTimePreference
+    <eu.adamgiergun.mylibrary.calendarmanagement.TimePreferenceNew
         android:defaultValue="@string/default_reminder_time_preference_default_value"
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_reminder_time_preference_key"

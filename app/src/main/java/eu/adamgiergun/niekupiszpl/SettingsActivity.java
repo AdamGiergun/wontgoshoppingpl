@@ -3,11 +3,13 @@ package eu.adamgiergun.niekupiszpl;
 import android.content.*;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.*;
 
 import eu.adamgiergun.mylibrary.*;
-import eu.adamgiergun.mylibrary.calendarmanagement.NewCalendarsListPreference;
+import eu.adamgiergun.mylibrary.calendarmanagement.*;
+
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -63,11 +65,24 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public void onDisplayPreferenceDialog(Preference preference) {
+            DialogFragment dialogFragment = null;
             if (preference instanceof NewIntegerDialogPreference) {
-/*                NewIntegerDialogPreference dialogFragment = NewIntegerDialogPreference.newInstance(preference.getKey(), getContext());
+//                dialogFragment = NewIntegerDialogPreference.newInstance(preference.getKey(), getContext());
+            } else if (preference instanceof TimePreferenceNew) {
+                dialogFragment = new TimePreferenceDialogFragmentCompat();
+                Bundle bundle = new Bundle(1);
+                bundle.putString("key", preference.getKey());
+                dialogFragment.setArguments(bundle);
+            }
+
+            if (dialogFragment != null) {
                 dialogFragment.setTargetFragment(this, 0);
-                dialogFragment.show(getFragmentManager(), null);*/
-            } else super.onDisplayPreferenceDialog(preference);
+                if (this.getFragmentManager() != null) {
+                    dialogFragment.show(this.getFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
+                }
+            } else {
+                super.onDisplayPreferenceDialog(preference);
+            }
         }
     }
 
