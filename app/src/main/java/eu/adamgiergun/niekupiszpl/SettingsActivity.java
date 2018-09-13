@@ -3,9 +3,10 @@ package eu.adamgiergun.niekupiszpl;
 import android.content.*;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.*;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.preference.*;
 
 import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;

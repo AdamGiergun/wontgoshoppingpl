@@ -2,10 +2,11 @@ package eu.adamgiergun.niekupiszpl;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.*;
 import android.view.*;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.*;
 
 public class DayFragment extends Fragment {
 
@@ -52,13 +53,12 @@ public class DayFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            recyclerView.setAdapter(new DayRecyclerViewAdapter(getListOfCommerceFreeDays(), listener));
+            recyclerView.setAdapter(new DayRecyclerViewAdapter(getListOfCommerceFreeDays(context), listener));
         }
         return view;
     }
 
-    private ListOfCommerceFreeDays getListOfCommerceFreeDays() {
-        Context context = getContext();
+    private ListOfCommerceFreeDays getListOfCommerceFreeDays(Context context) {
         boolean includeHolidays = SettingsActivity.showHolidays(context);
         return ListOfCommerceFreeDays.getListOfCommerceFreeDays(context, includeHolidays);
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
@@ -9,14 +9,14 @@
                                              android:paddingStart="@dimen/reminder_view_padding">
 
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/spacer1"
         android:layout_width="match_parent"
         android:layout_height="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/numberOfDaysBeforePrefix"
         style="@style/MyTextViewStyle"
         android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spacer1"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/numberOfDaysBeforeView"
         style="@style/MyEditTextStyle"
         android:layout_width="30dp"
@@ -35,7 +35,7 @@
         app:layout_constraintLeft_toRightOf="@+id/numberOfDaysBeforePrefix"
         app:layout_constraintTop_toBottomOf="@id/spacer1"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/numberOfDaysBeforeSuffix"
         style="@style/MyTextViewStyle"
         android:layout_width="wrap_content"
@@ -44,14 +44,14 @@
         app:layout_constraintLeft_toRightOf="@+id/numberOfDaysBeforeView"
         app:layout_constraintTop_toBottomOf="@id/spacer1"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/spacer2"
         android:layout_width="match_parent"
         android:layout_height="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/numberOfDaysBeforeSuffix"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timeViewPrefix"
         style="@style/MyTextViewStyle"
         android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
         app:layout_constraintRight_toLeftOf="@id/timeView"
         app:layout_constraintTop_toBottomOf="@id/spacer2"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timeView"
         style="@style/MyEditTextStyle"
         android:layout_width="60dp"
@@ -70,7 +70,7 @@
         app:layout_constraintRight_toLeftOf="@id/timeViewSuffix"
         app:layout_constraintTop_toBottomOf="@+id/spacer2"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timeViewSuffix"
         style="@style/MyTextViewStyle"
         android:layout_width="wrap_content"
@@ -79,4 +79,4 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spacer2"/>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

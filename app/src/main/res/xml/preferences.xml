@@ -1,7 +1,7 @@
-<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                                                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.preference.SwitchPreferenceCompat
+    <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
         android:key="@string/include_holidays_preference_key"
         android:summaryOff="@string/summary_show_holidays_off"
@@ -10,7 +10,7 @@
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
-    <android.support.v7.preference.SwitchPreferenceCompat
+    <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="@string/use_google_calendar_preference_key"
         android:summaryOff="@string/google_calendar_preference_summary_off"
@@ -41,4 +41,4 @@
         android:key="@string/default_reminder_time_preference_key"
         android:title="@string/default_reminder_time_preference_title"/>
 
-</android.support.v7.preference.PreferenceScreen>
+</androidx.preference.PreferenceScreen>

@@ -5,12 +5,13 @@ import android.annotation.SuppressLint;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.os.*;
-import android.support.annotation.*;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.*;
-import android.support.v7.widget.AppCompatTextView;
 import android.view.*;
 import android.widget.*;
+
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
