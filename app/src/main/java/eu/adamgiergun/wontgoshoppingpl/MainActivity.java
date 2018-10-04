@@ -1,4 +1,4 @@
-package eu.adamgiergun.niekupiszpl;
+package eu.adamgiergun.wontgoshoppingpl;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

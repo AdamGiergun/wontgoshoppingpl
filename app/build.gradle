@@ -5,11 +5,11 @@ android {
     //buildToolsVersion '28.0.2'
 
     defaultConfig {
-        applicationId "eu.adamgiergun.niekupiszpl"
+        applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
-        versionName "0.3.13.1"
+        versionName "0.3.14.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

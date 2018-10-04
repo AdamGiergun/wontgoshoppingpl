@@ -1,4 +1,4 @@
-package eu.adamgiergun.niekupiszpl;
+package eu.adamgiergun.wontgoshoppingpl;
 
 import android.view.*;
 import android.widget.TextView;
@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import eu.adamgiergun.niekupiszpl.DayFragment.OnListFragmentInteractionListener;
+import eu.adamgiergun.wontgoshoppingpl.DayFragment.OnListFragmentInteractionListener;
 
 public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerViewAdapter.ViewHolder> {
 

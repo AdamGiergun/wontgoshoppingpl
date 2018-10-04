@@ -1,4 +1,4 @@
-package eu.adamgiergun.niekupiszpl;
+package eu.adamgiergun.wontgoshoppingpl;
 
 import org.junit.Test;
 

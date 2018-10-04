@@ -1,4 +1,4 @@
-package eu.adamgiergun.niekupiszpl;
+package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("eu.adamgiergun.niekupiszpl", appContext.getPackageName());
+        assertEquals("eu.adamgiergun.wontgoshoppingpl", appContext.getPackageName());
     }
 }

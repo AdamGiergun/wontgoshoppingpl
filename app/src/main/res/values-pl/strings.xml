@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Nie Kupisz PL</string>
+    <string name="app_name">Nie zrobisz zakupów</string>
     <string name="day_of_limited_commerce">Dzień ograniczeń w handlu</string>
     <string name="days_of_limited_commerce">Dni ograniczeń w handlu</string>
     <string name="holidays">Święta</string>

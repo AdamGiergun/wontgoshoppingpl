@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wan\'t Buy PL</string>
+    <string name="app_name">Wan\'t Go Shopping PL</string>
     <string name="day_of_limited_commerce">Day of trade restrictions</string>
     <string name="days_of_limited_commerce">Days of trade restrictions</string>
     <string name="holidays">Holidays</string>
@@ -13,7 +13,7 @@
     <string name="summary_show_holidays_on">Show holidays on the list, too</string>
     <string name="summary_show_holidays_off">Don\'t show holidays on the list</string>
 
-    <string name="default_preferences_name" translatable="false">eu.adamgiergun.niekupiszpl_preferences</string>
+    <string name="default_preferences_name" translatable="false">eu.adamgiergun.wontgoshoppingpl_preferences</string>
     <string name="remind_me">Remind me</string>
     <string name="days_before">days before,</string>
     <string name="at">at</string>

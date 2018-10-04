@@ -1,4 +1,4 @@
-package eu.adamgiergun.niekupiszpl;
+package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.*;
 import android.content.res.Resources;
