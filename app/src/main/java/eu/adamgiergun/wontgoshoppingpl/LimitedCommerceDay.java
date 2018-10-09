@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-class CommerceFreeDay implements Comparable<CommerceFreeDay>{
+class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     private static int DATE_STRING_END = 10;
 
     private String name;
@@ -15,14 +15,14 @@ class CommerceFreeDay implements Comparable<CommerceFreeDay>{
     private int reminderDaysBefore;
     private String reminderTime;
 
-    CommerceFreeDay(String item) {
+    LimitedCommerceDay(String item) {
         String[] pieces = item.split(",");
         setDay(pieces[0]);
         setTimeAndName(pieces[1], pieces[2]);
     }
 
     @Override
-    public int compareTo(@NonNull CommerceFreeDay another) {
+    public int compareTo(@NonNull LimitedCommerceDay another) {
         return this.startTime.compareTo(another.startTime);
     }
 

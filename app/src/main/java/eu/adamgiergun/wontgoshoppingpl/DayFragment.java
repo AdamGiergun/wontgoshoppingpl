@@ -53,14 +53,14 @@ public class DayFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            recyclerView.setAdapter(new DayRecyclerViewAdapter(getListOfCommerceFreeDays(context), listener));
+            recyclerView.setAdapter(new DayRecyclerViewAdapter(getListOfLimitedCommerceDays(context), listener));
         }
         return view;
     }
 
-    private ListOfCommerceFreeDays getListOfCommerceFreeDays(Context context) {
+    private ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context) {
         boolean includeHolidays = SettingsActivity.showHolidays(context);
-        return ListOfCommerceFreeDays.getListOfCommerceFreeDays(context, includeHolidays);
+        return ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(context, includeHolidays, true);
     }
 
     @Override
@@ -91,6 +91,6 @@ public class DayFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(CommerceFreeDay day);
+        void onListFragmentInteraction(LimitedCommerceDay day);
     }
 }

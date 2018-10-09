@@ -19,8 +19,8 @@ import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 public class MainActivity extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener, DayFragment.OnListFragmentInteractionListener {
 
     private ActionCallingRequest lastActionCallingRequest;
-    private CommerceFreeDay lastTouchedDayFromList;
-    private boolean addCommerceFreeDays;
+    private LimitedCommerceDay lastTouchedDayFromList;
+    private boolean addLimitedCommerceDays;
     private boolean addHolidays;
     private int reminderDaysBefore;
     private String reminderTime;
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     @Override
-    public void onListFragmentInteraction(CommerceFreeDay day) {
+    public void onListFragmentInteraction(LimitedCommerceDay day) {
         if (checkCalendarPermissions(ActionCallingRequest.ADD_ONE_EVENT)) {
             boolean useGoogleCalendar = SettingsActivity.isUseGoogleCalendarSet(getBaseContext());
             if (useGoogleCalendar) {
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         }
     }
 
-    private void addDayToCalendarDisplayingInfo(CommerceFreeDay day) {
+    private void addDayToCalendarDisplayingInfo(LimitedCommerceDay day) {
         setReminderParametersFromPreferences();
         setReminderParametersToDay(day);
 
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         reminderTime = SettingsActivity.getReminderTime(context);
     }
 
-    private void setReminderParametersToDay(CommerceFreeDay day) {
+    private void setReminderParametersToDay(LimitedCommerceDay day) {
         day.setReminderDaysBefore(reminderDaysBefore);
         day.setReminderTime(reminderTime);
     }
@@ -212,13 +212,19 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         }
         if (dialog instanceof AskForReminderSettings) {
             getReminderParameters(dialog);
-            //TODO add all events
+            ListOfLimitedCommerceDays listOfLimitedCommerceDaysToAddToCalendar =
+                    ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(this, addHolidays, addLimitedCommerceDays);
+            for (LimitedCommerceDay limitedCommerceDay: listOfLimitedCommerceDaysToAddToCalendar) {
+                limitedCommerceDay.setReminderDaysBefore(reminderDaysBefore);
+                limitedCommerceDay.setReminderTime(reminderTime);
+                limitedCommerceDay.addToGoogleCalendar();
+            }
         }
     }
 
     private void getUserChoicesOfDaysAddedToCalendar(AppCompatDialogFragment dialog) {
         AskForKindsOfEventsToAddToCalendar myDialog = (AskForKindsOfEventsToAddToCalendar) dialog;
-        addCommerceFreeDays = myDialog.addCommerceFreeDays();
+        addLimitedCommerceDays = myDialog.addLimitedCommerceDays();
         addHolidays = myDialog.addHolidays();
     }
 
@@ -240,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     public static class AskForKindsOfEventsToAddToCalendar extends NoticeDialogFragment {
         private Button dialogButtonPositive;
-        private boolean addCommerceFreeDays;
+        private boolean addLimitedCommerceDays;
         private boolean addHolidays;
 
         @NonNull
@@ -267,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                     .setMultiChoiceItems(items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            addCommerceFreeDays = checkedItems[0];
+                            addLimitedCommerceDays = checkedItems[0];
                             addHolidays = checkedItems[1];
                             noticeDialogListener.onDialogPositiveClick(AskForKindsOfEventsToAddToCalendar.this);
                         }
@@ -289,8 +295,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             return false;
         }
 
-        boolean addCommerceFreeDays() {
-            return addCommerceFreeDays;
+        boolean addLimitedCommerceDays() {
+            return addLimitedCommerceDays;
         }
 
         boolean addHolidays() {

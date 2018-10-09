@@ -50,10 +50,10 @@ public class SettingsActivity extends AppCompatActivity {
 
             if (key.equals(getString(R.string.default_calendar_preference_key))) {
                 Preference connectionPref = findPreference(key);
-                if (connectionPref instanceof NewCalendarsListPreference) {
+                if (connectionPref instanceof CalendarsListPreferenceNew) {
                     CharSequence calendarId = sharedPreferences.getString(key, "0");
                     //getString(R.string.calendar_not_set));
-                    CharSequence summary = ((NewCalendarsListPreference) connectionPref).getCalendarName(calendarId);
+                    CharSequence summary = ((CalendarsListPreferenceNew) connectionPref).getCalendarName(calendarId);
                     connectionPref.setSummary(summary);
                 }
             }

@@ -11,10 +11,10 @@ import eu.adamgiergun.wontgoshoppingpl.DayFragment.OnListFragmentInteractionList
 
 public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerViewAdapter.ViewHolder> {
 
-    private final ListOfCommerceFreeDays days;
+    private final ListOfLimitedCommerceDays days;
     private final OnListFragmentInteractionListener listener;
 
-    DayRecyclerViewAdapter(ListOfCommerceFreeDays days, OnListFragmentInteractionListener listener) {
+    DayRecyclerViewAdapter(ListOfLimitedCommerceDays days, OnListFragmentInteractionListener listener) {
         this.days = days;
         this.listener = listener;
     }
@@ -29,7 +29,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        CommerceFreeDay day = days.get(position);
+        LimitedCommerceDay day = days.get(position);
         holder.day = day;
         holder.dayView.setText(day.getDayString());
         holder.timeView.setText(day.getTimeString(holder.timeView.getContext()));
@@ -55,7 +55,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
         final TextView dayView;
         final TextView timeView;
         final TextView nameView;
-        CommerceFreeDay day;
+        LimitedCommerceDay day;
 
         ViewHolder(CardView view) {
             super(view);
