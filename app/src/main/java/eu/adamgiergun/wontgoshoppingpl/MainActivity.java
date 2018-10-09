@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     private void startSettingsActivity() {
         Intent intent = new Intent(
-                getBaseContext(),
+                this,
                 SettingsActivity.class);
         startActivity(intent);
     }
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     private void startWizardForAddingEventsToCalendarIfConditionsAreMet() {
         if (checkCalendarPermissions(ActionCallingRequest.ADD_ALL_EVENTS)) {
-            boolean useGoogleCalendar = SettingsActivity.isUseGoogleCalendarSet(getBaseContext());
+            boolean useGoogleCalendar = SettingsActivity.isUseGoogleCalendarSet(this);
             if (useGoogleCalendar) {
                 askForKindsOfEventsAddedToCalendar();
             } else {
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     @Override
     public void onListFragmentInteraction(LimitedCommerceDay day) {
         if (checkCalendarPermissions(ActionCallingRequest.ADD_ONE_EVENT)) {
-            boolean useGoogleCalendar = SettingsActivity.isUseGoogleCalendarSet(getBaseContext());
+            boolean useGoogleCalendar = SettingsActivity.isUseGoogleCalendarSet(this);
             if (useGoogleCalendar) {
                 addDayToCalendarDisplayingInfo(day);
             } else {
@@ -117,9 +117,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     private void setReminderParametersFromPreferences() {
-        Context context = getBaseContext();
-        reminderDaysBefore = SettingsActivity.getReminderDaysFromPreferences(context);
-        reminderTime = SettingsActivity.getReminderTime(context);
+        reminderDaysBefore = SettingsActivity.getReminderDaysFromPreferences(this);
+        reminderTime = SettingsActivity.getReminderTime(this);
     }
 
     private void setReminderParametersToDay(LimitedCommerceDay day) {
@@ -134,8 +133,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         } else {
             length = Toast.LENGTH_SHORT;
         }
-
-        Toast.makeText(getBaseContext(), info, length)
+        Toast.makeText(this, info, length)
                 .show();
     }
 
@@ -158,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     private boolean isPermissionGranted(String permission) {
-        int permissionState = ContextCompat.checkSelfPermission(getBaseContext(), permission);
+        int permissionState = ContextCompat.checkSelfPermission(this, permission);
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -411,7 +409,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         String calendarId = preferences.getString(getString(R.string.default_calendar_key), getString(eu.adamgiergun.mylibrary.R.string.id_for_default_calendar_not_set));
         if (calendarId.equals(getString(eu.adamgiergun.mylibrary.R.string.id_for_default_calendar_not_set))) {
             Toast.makeText(
-                    getBaseContext(),
+                    this,
                     getString(R.string.error_default_calendar_not_selected),
                     Toast.LENGTH_SHORT)
                     .show();
@@ -460,15 +458,15 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     private void addToGoogleCalendar(SimpleCalendarEvent calendarEvent) {
-        if (calendarEvent == null || calendarEvent.addCalendarEventToCalendar(getBaseContext()) == SimpleCalendarEvent.NON_EXISTING)
+        if (calendarEvent == null || calendarEvent.addCalendarEventToCalendar(this) == SimpleCalendarEvent.NON_EXISTING)
             Toast.makeText(
-                    getBaseContext(),
+                    this,
                     getString(R.string.error_not_added_to_calendar),
                     Toast.LENGTH_SHORT)
                     .show();
         else
             Toast.makeText(
-                    getBaseContext(),
+                    this,
                     getString(R.string.info_added_to_calendar),
                     Toast.LENGTH_SHORT)
                     .show();
