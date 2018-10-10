@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
+import android.graphics.Color;
 import android.view.*;
 import android.widget.TextView;
 
@@ -43,6 +44,11 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
                 }
             }
         });
+        if (day.isHoliday()) {
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#FF0000"));
+        } else {
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#FF1493"));
+        }
     }
 
     @Override

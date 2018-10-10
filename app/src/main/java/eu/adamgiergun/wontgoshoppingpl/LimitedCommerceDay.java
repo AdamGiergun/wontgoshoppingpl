@@ -14,6 +14,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     private Calendar startTime;
     private int reminderDaysBefore;
     private String reminderTime;
+    private boolean isHoliday;
 
     LimitedCommerceDay(String item) {
         String[] pieces = item.split(",");
@@ -87,5 +88,13 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
             hour = 0;
         }
         return hour;
+    }
+
+    void setHoliday(boolean isHoliday) {
+        this.isHoliday = isHoliday;
+    }
+
+    boolean isHoliday() {
+        return isHoliday;
     }
 }

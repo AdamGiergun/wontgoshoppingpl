@@ -17,7 +17,6 @@
         <item name="contentPaddingLeft">1dp</item>
         <item name="contentPaddingRight">1dp</item>
         <item name="cardUseCompatPadding">true</item>
-        <item name="cardBackgroundColor">@color/cardBackgroundColor</item>
     </style>
 
     <style name="MyTextViewStyle" parent="AppTheme">

@@ -13,6 +13,10 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         Calendar yesterday = getYesterday();
         for (String item : array) {
             LimitedCommerceDay day = new LimitedCommerceDay(item);
+            if (idOfArray == R.array.holidays)
+                day.setHoliday(true);
+            else
+                day.setHoliday(false);
             if (day.getStartTime().compareTo(yesterday) > 0)
                 this.add(day);
         }
