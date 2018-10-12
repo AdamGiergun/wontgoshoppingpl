@@ -59,7 +59,8 @@ public class DayFragment extends Fragment {
     }
 
     private ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context) {
-        boolean includeHolidays = SettingsActivity.showHolidays(context);
+        AppPreferences appPreferences = new AppPreferences(context);
+        boolean includeHolidays = appPreferences.showHolidays(context);
         return ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(context, includeHolidays, true);
     }
 

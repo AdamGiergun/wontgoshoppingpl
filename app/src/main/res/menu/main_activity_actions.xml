@@ -19,6 +19,6 @@
         android:id="@+id/help"
         android:icon="@android:drawable/ic_menu_help"
         android:title="@string/title_activity_settings"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>

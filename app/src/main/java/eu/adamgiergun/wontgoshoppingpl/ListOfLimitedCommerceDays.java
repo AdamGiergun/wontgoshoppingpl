@@ -17,7 +17,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
                 day.setHoliday(true);
             else
                 day.setHoliday(false);
-            if (day.getStartTime().compareTo(yesterday) > 0)
+            if (day.getCalendar().compareTo(yesterday) > 0)
                 this.add(day);
         }
     }

@@ -20,4 +20,5 @@
     <string name="dot" translatable="false">.</string>
     <string name="title_reminder">Reminder</string>
     <string name="include_holidays_preference_key" translatable="false">include_holidays</string>
+    <string name="make_purchases_earlier">make purchases earlier!</string>
 </resources>

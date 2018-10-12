@@ -90,41 +90,4 @@ public class SettingsActivity extends AppCompatActivity {
             dialogFragment.setArguments(bundle);
         }
     }
-
-
-    static boolean isUseGoogleCalendarSet(Context context) {
-        String key = context.getString(R.string.use_google_calendar_preference_key);
-        return getBooleanValueOfPreference(context,key, false);
-    }
-
-    static boolean showHolidays(Context context) {
-        String key = context.getString(R.string.include_holidays_preference_key);
-        return getBooleanValueOfPreference(context,key, true);
-    }
-
-    private static boolean getBooleanValueOfPreference(Context context, String key, boolean defaultValue) {
-        SharedPreferences prefs = getSharedPreferences(context);
-        return prefs.getBoolean(key, defaultValue);
-    }
-    
-    private static SharedPreferences getSharedPreferences(Context context) {
-        String preferencesName = context.getString(R.string.default_preferences_name);
-        return context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
-    }
-
-    static Integer getReminderDaysFromPreferences(Context context) {
-        SharedPreferences prefs = getSharedPreferences(context);
-        String key = context.getString(R.string.default_reminder_days_before_preference_key);
-        Resources resources = context.getResources();
-        int defaultValue = resources.getInteger(R.integer.reminder_days_before_default_value);        
-        return prefs.getInt(key, defaultValue);
-    }
-
-    static String getReminderTime(Context context) {
-        SharedPreferences prefs = getSharedPreferences(context);
-        String key = context.getString(R.string.default_reminder_time_preference_key);
-        String defaultValue = context.getString(R.string.default_reminder_time_preference_default_value);
-        return prefs.getString(key, defaultValue);
-    }
-    
 }
