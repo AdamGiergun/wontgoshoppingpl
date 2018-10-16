@@ -9,6 +9,7 @@
     <string name="title_choose_events">Zdarzenia dodawane do kalendarza</string>
     <string name="info_added_to_calendar">Dodano do kalendarza</string>
     <string name="error_adding_to_calendar_failed">Bład.\nNie dodano do kalendarza.</string>
+    <string name="error_sth_went_wrong">Błąd.\nCoś poszło źle.</string>
     <string name="title_activity_settings">Ustawienia</string>
     <string name="title_show_holidays">Pokazuj święta</string>
     <string name="summary_show_holidays_on">Pokazuj na liście również święta</string>

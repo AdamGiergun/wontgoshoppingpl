@@ -5,6 +5,8 @@ import android.content.res.Resources;
 
 import java.util.*;
 
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
+
 class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
     private ListOfLimitedCommerceDays(Resources resources, int idOfArray) {
@@ -17,7 +19,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
                 day.setHoliday(true);
             else
                 day.setHoliday(false);
-            if (day.getCalendar().compareTo(yesterday) > 0)
+            if (day.compareTo(yesterday) > 0)
                 this.add(day);
         }
     }
@@ -45,5 +47,40 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
     private void addHolidaysArray(Resources resources) {
         this.addAll(new ListOfLimitedCommerceDays(resources, R.array.holidays));
+    }
+
+    boolean addToCalendar(int reminderDaysBefore, SimpleTime reminderTime, Context context) {
+        skipConsecutiveDays();
+        boolean result = true;
+        for (LimitedCommerceDay limitedCommerceDay : this) {
+            if (limitedCommerceDay.isReminderNeeded()) {
+                limitedCommerceDay.setReminderDaysBefore(reminderDaysBefore);
+                limitedCommerceDay.setReminderTime(reminderTime);
+                result = result && limitedCommerceDay.addToGoogleCalendar(context);
+            }
+        }
+        return result;
+    }
+
+    private void skipConsecutiveDays() {
+        ListIterator<LimitedCommerceDay> iterator = listIterator();
+        LimitedCommerceDay day, nextDay, previousDay;
+        if (iterator.hasNext()) {
+            day = iterator.next();
+            while (iterator.hasNext()) {
+                nextDay = iterator.next();
+                previousDay = day;
+                while (nextDay.isDay(previousDay.getTomorrow())) {
+                    nextDay.setReminderNeeded(false);
+                    day.addToDescription(nextDay.getDescription());
+                    if (iterator.hasNext()) {
+                        previousDay = nextDay;
+                    } else {
+                        day = nextDay;
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

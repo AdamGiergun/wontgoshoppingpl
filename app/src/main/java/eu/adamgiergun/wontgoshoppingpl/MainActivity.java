@@ -112,11 +112,14 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private void addDayToCalendarDisplayingInfo(LimitedCommerceDay day) {
         setReminderParametersFromPreferences();
         setReminderParametersToDay(day);
+        displayInfo(day.addToGoogleCalendar(this), R.string.info_added_to_calendar, R.string.error_adding_to_calendar_failed);
+    }
 
-        if (day.addToGoogleCalendar(this))
-            showInfo(R.string.info_added_to_calendar, false);
+    private void displayInfo(boolean resultIsPositive, int positiveInfo, int negativeInfo) {
+        if (resultIsPositive)
+            showInfo(positiveInfo, false);
         else
-            showInfo(R.string.error_adding_to_calendar_failed, false);
+            showInfo(negativeInfo, false);
     }
 
     private void setReminderParametersFromPreferences() {
@@ -215,11 +218,10 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             getReminderParameters(dialog);
             ListOfLimitedCommerceDays listOfLimitedCommerceDaysToAddToCalendar =
                     ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(this, addHolidays, addLimitedCommerceDays);
-            for (LimitedCommerceDay limitedCommerceDay: listOfLimitedCommerceDaysToAddToCalendar) {
-                limitedCommerceDay.setReminderDaysBefore(reminderDaysBefore);
-                limitedCommerceDay.setReminderTime(reminderTime);
-                limitedCommerceDay.addToGoogleCalendar(this);
-            }
+            boolean resultIsPositive = listOfLimitedCommerceDaysToAddToCalendar.addToCalendar(
+                    reminderDaysBefore,
+                    reminderTime, this);
+            displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
         }
     }
 

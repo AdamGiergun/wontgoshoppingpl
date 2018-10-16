@@ -32,7 +32,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         LimitedCommerceDay day = days.get(position);
         holder.day = day;
-        holder.dayView.setText(day.getDayString());
+        holder.dayView.setText(day.getDateString());
         holder.timeView.setText(day.getTimeString(holder.timeView.getContext()));
         holder.nameView.setText(day.getName());
 
