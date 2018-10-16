@@ -15,7 +15,7 @@
     <!ENTITY independence_day "Święto Niepodległości">
     <!ENTITY christmas_eve "Wigilia">
     <!ENTITY christmas_day "Boże Narodzenie">
-    <!ENTITY second_day_of_christmas "Boże Narodzenie">
+    <!ENTITY second_day_of_christmas "Boże Narodzenie (2&#160;dzień)">
     ]>
 <resources>
     <string-array name="non_commerce_days">

@@ -50,7 +50,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
     }
 
     boolean addToCalendar(int reminderDaysBefore, SimpleTime reminderTime, Context context) {
-        skipConsecutiveDays();
+        skipReminderForConsecutiveDays();
         boolean result = true;
         for (LimitedCommerceDay limitedCommerceDay : this) {
             if (limitedCommerceDay.isReminderNeeded()) {
@@ -62,21 +62,24 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return result;
     }
 
-    private void skipConsecutiveDays() {
+    private void skipReminderForConsecutiveDays() {
         ListIterator<LimitedCommerceDay> iterator = listIterator();
         LimitedCommerceDay day, nextDay, previousDay;
         if (iterator.hasNext()) {
             day = iterator.next();
+            nextDay = day;
             while (iterator.hasNext()) {
-                nextDay = iterator.next();
+                day = nextDay;
                 previousDay = day;
+                nextDay = iterator.next();
                 while (nextDay.isDay(previousDay.getTomorrow())) {
                     nextDay.setReminderNeeded(false);
+                    day.incrementNoOfConsecutiveDays();
                     day.addToDescription(nextDay.getDescription());
                     if (iterator.hasNext()) {
                         previousDay = nextDay;
+                        nextDay = iterator.next();
                     } else {
-                        day = nextDay;
                         break;
                     }
                 }

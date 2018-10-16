@@ -10,12 +10,14 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     private static int DATE_STRING_END = 10;
 
     private String name;
     private Calendar calendar;
+    private int noOfConsecutiveDays;
     private SimpleTime time;
     private int reminderDaysBefore;
     private SimpleTime reminderTime;
@@ -30,6 +32,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         name = pieces[2];
         description = name;
         isReminderNeeded = true;
+        noOfConsecutiveDays = 0;
     }
 
     private void setDay(String date) {
@@ -74,7 +77,9 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     }
 
     String getDateString() {
-        return DateFormat.getDateInstance().format(calendar.getTime());
+        String date = DateFormat.getDateInstance().format(calendar.getTime());
+        String nameOfWeekday = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        return date + "\n" + nameOfWeekday;
     }
 
     String getTimeString(Context context) {
@@ -94,6 +99,10 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         return tomorrow;
     }
 
+    void incrementNoOfConsecutiveDays() {
+        noOfConsecutiveDays++;
+    }
+
     boolean isDay(Calendar day) {
         return day.compareTo(this.calendar) == 0;
     }
@@ -110,9 +119,16 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(getDefaultCalendarIdFromPreferences(context));
         calendarEvent.setTitle(description + " - " + context.getString(R.string.make_purchases_earlier));
         calendarEvent.setStartCalendar(calendar, time);
-        calendarEvent.setEndCalendar(calendar, new SimpleTime("24:00"));
+        setEndCalendar(calendarEvent);
         calendarEvent.addReminder(CalendarContract.Reminders.METHOD_ALERT, reminderDaysBefore, reminderTime);
         return (calendarEvent.write(context) > 0L);
+    }
+
+    private void setEndCalendar(SimpleCalendarEvent calendarEvent) {
+        Calendar endCalendar = (Calendar) calendar.clone();
+        if (noOfConsecutiveDays > 0)
+            endCalendar.add(Calendar.DAY_OF_YEAR, noOfConsecutiveDays);
+        calendarEvent.setEndCalendar(endCalendar, new SimpleTime("24:00"));
     }
 
     private String getDefaultCalendarIdFromPreferences(Context context) {
