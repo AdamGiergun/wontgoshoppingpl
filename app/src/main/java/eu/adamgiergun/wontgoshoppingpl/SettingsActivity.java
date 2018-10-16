@@ -1,7 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.*;
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +9,6 @@ import androidx.preference.*;
 
 import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
-
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -21,7 +19,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.settings_activity);
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public static class SettingsFragment extends BasePreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
