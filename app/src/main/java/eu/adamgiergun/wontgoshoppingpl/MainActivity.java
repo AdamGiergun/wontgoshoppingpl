@@ -10,6 +10,7 @@ import android.widget.*;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     void setupAds() {
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
