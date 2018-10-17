@@ -21,6 +21,4 @@
     <string name="title_reminder">Reminder</string>
     <string name="include_holidays_preference_key" translatable="false">include_holidays</string>
     <string name="make_purchases_earlier">make purchases earlier!</string>
-
-    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
