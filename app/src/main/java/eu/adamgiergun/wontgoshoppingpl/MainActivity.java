@@ -8,6 +8,9 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -38,6 +41,13 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appPreferences = new AppPreferences(this);
+        setupAds();
+    }
+
+    void setupAds() {
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     @Override
@@ -272,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                 }
             };
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
             builder.setTitle(R.string.title_choose_events)
                     .setMultiChoiceItems(items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -315,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
             builder
                     .setTitle(R.string.title_reminder)
                     .setView(getDialogView())

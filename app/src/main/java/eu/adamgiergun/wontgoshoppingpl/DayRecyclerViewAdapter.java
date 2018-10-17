@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
-import android.graphics.Color;
 import android.view.*;
 import android.widget.TextView;
 
@@ -45,9 +44,11 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
             }
         });
         if (day.isHoliday()) {
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#FF0000"));
+            //holder.cardView.setCardBackgroundColor(Color.parseColor("#FF0000"));
+            holder.cardView.setBackgroundResource(R.drawable.card_bg_red);
         } else {
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#FF1493"));
+            //holder.cardView.setCardBackgroundColor(Color.parseColor("#FF1493"));
+            holder.cardView.setBackgroundResource(R.drawable.card_bg_orange);
         }
     }
 
