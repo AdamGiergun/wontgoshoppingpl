@@ -168,9 +168,13 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     private void addDayToCalendarDisplayingInfo(LimitedCommerceDay day) {
-        setReminderParametersFromPreferences();
-        setReminderParametersToDay(day);
-        displayInfo(day.addToGoogleCalendar(this), R.string.info_added_to_calendar, R.string.error_adding_to_calendar_failed);
+        if (appPreferences.isUseGoogleCalendarSet(this)) {
+            setReminderParametersFromPreferences();
+            setReminderParametersToDay(day);
+            displayInfo(day.addToGoogleCalendar(this), R.string.info_added_to_calendar, R.string.error_adding_to_calendar_failed);
+        } else {
+            startSettingsActivity();
+        }
     }
 
     private void displayInfo(boolean resultIsPositive, int positiveInfo, int negativeInfo) {
