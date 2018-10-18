@@ -15,7 +15,7 @@
         <item name="contentPaddingLeft">2dp</item>
         <item name="contentPaddingRight">2dp</item>
         <item name="cardUseCompatPadding">true</item>
-        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
     <style name="MyTextViewStyle" parent="AppTheme">
