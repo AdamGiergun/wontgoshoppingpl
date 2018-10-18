@@ -8,8 +8,8 @@ android {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 5
-        versionName "0.6.0.1"
+        versionCode 6
+        versionName "0.6.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -23,7 +23,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'eu.adamgiergun:mylibrary:0.99.77.0@aar'
+    implementation 'eu.adamgiergun:mylibrary:0.99.78.0@aar'
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'

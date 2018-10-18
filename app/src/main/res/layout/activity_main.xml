@@ -8,6 +8,12 @@
     android:layout_marginRight="3dp"
     tools:context="eu.adamgiergun.wontgoshoppingpl.MainActivity">
 
+    <FrameLayout
+        android:id="@+id/ask_for_look"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/recycler_view"
         android:layout_width="0dp"

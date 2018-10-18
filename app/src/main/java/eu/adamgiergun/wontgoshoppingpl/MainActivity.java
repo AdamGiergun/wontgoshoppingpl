@@ -3,7 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 /*  TODO niedziele handlowe
     TODO potwierdzenie dodania pojedynczej daty do kalendarza
     TODO reklamy po dodaniu do kalendarza
-    TODO wybór wyglądu
+    TODO osobne sekcje w ustawieniach dla wyglądu i kalendarza
  */
 
 import android.Manifest;
@@ -24,6 +24,8 @@ import androidx.appcompat.app.*;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
@@ -66,7 +68,17 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     @Override
     protected void onResume() {
         super.onResume();
-        setLook();
+        if (appPreferences.isFirstRun(this)) {
+            View view = findViewById(R.id.ask_for_look);
+            view.setVisibility(View.VISIBLE);
+            view = findViewById(R.id.recycler_view);
+            view.setVisibility(View.GONE);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.ask_for_look, new AskForLook());
+            ft.commit();
+        } else {
+            setLook();
+        }
     }
 
     private void setLook() {
@@ -386,7 +398,6 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                             noticeDialogListener.onDialogNegativeClick(AskForReminderSettings.this);
                         }
                     });
-
             return builder.create();
         }
 
@@ -413,7 +424,29 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         SimpleTime getReminderTime() {
             return reminderTime;
         }
+    }
 
+    public static class AskForLook extends Fragment {
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.ask_for_look_fragment, container, false);
+        }
+    }
+
+    public void onButtonMiniClicked(View view){
+        setPreferencesValues(false);
+    }
+
+    public void onButtonRichClicked(View view){
+        setPreferencesValues(true);
+    }
+
+    private void setPreferencesValues(boolean isLookRich) {
+        AppPreferences appPreferences = new AppPreferences(this);
+        appPreferences.setLookRich(this, isLookRich);
+        appPreferences.setFirstRun(this, false);
+        recreate();
     }
 /*
     public static class AskForReminderTime extends NoticeDialogFragment {
