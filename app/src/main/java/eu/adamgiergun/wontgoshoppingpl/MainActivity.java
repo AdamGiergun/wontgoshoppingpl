@@ -1,5 +1,10 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
+/*  TODO niedziele handlowe
+    TODO potwierdzenie dodania pojedynczej daty do kalendarza
+    TODO reklamy po dodaniu do kalendarza
+ */
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.*;
