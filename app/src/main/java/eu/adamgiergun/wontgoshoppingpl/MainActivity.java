@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
         appPreferences = new AppPreferences(this);
-        if (appPreferences.isStyleRich(this)) {
+        if (appPreferences.isLookRich(this)) {
             theme.applyStyle(R.style.AppThemeCustomizationsRich, true);
         } else {
             theme.applyStyle(R.style.AppThemeCustomizationsMini, true);
@@ -60,12 +60,17 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setStyle();
         setupAds();
     }
 
-    private void setStyle() {
-        if (appPreferences.isStyleRich(this)) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setLook();
+    }
+
+    private void setLook() {
+        if (appPreferences.isLookRich(this)) {
             View recyclerView = findViewById(R.id.recycler_view);
             recyclerView.setBackgroundResource(R.drawable.bg_red);
             View adViewLayout = findViewById(R.id.adViewLayout);
@@ -314,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             };
 
             AlertDialog.Builder builder;
-            if (appPreferences.isStyleRich(getContext())) {
+            if (appPreferences.isLookRich(getContext())) {
                 builder = new AlertDialog.Builder(getContext());
             } else {
                 builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
@@ -363,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder;
             AppPreferences appPreferences = new AppPreferences(getContext());
-            if (appPreferences.isStyleRich(getContext())) {
+            if (appPreferences.isLookRich(getContext())) {
                 builder = new AlertDialog.Builder(getContext());
             } else {
                 builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);

@@ -17,8 +17,8 @@ class AppPreferences extends MyAppPreferences {
         return getBooleanValueOfPreference(key, true);
     }
 
-    boolean isStyleRich(Context context) {
-        String key = context.getString(R.string.app_style_preference_key);
+    boolean isLookRich(Context context) {
+        String key = context.getString(R.string.app_look_preference_key);
         return getBooleanValueOfPreference(key, false);
     }
 }

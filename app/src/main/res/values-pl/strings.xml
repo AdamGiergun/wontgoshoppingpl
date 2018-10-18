@@ -20,7 +20,7 @@
     <string name="title_reminder">Przypomnienie</string>
     <string name="make_purchases_earlier">zrób zakupy wcześniej!</string>
 
-    <string name="title_app_style">Styl aplikacji</string>
-    <string name="summary_app_style_mini">Mini</string>
-    <string name="summary_app_style_rich">Bogaty</string>
+    <string name="title_app_look">Wygląd aplikacji</string>
+    <string name="summary_app_look_mini">Mini</string>
+    <string name="summary_app_look_rich">Bogaty</string>
 </resources>

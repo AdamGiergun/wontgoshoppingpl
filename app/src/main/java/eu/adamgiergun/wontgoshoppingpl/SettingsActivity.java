@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.*;
 
@@ -17,7 +18,7 @@ public class SettingsActivity extends AppCompatActivity {
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
         AppPreferences appPreferences = new AppPreferences(this);
-        if (appPreferences.isStyleRich(this)) {
+        if (appPreferences.isLookRich(this)) {
             theme.applyStyle(R.style.AppThemeCustomizationsRich, true);
         } else {
             theme.applyStyle(R.style.AppThemeCustomizationsMini, true);
@@ -30,6 +31,12 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.settings_activity);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        NavUtils.navigateUpFromSameTask(this);
     }
 
     public static class SettingsFragment extends BasePreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -67,6 +74,8 @@ public class SettingsActivity extends AppCompatActivity {
                     CharSequence summary = ((CalendarsListPreferenceNew) connectionPref).getCalendarName(calendarId);
                     connectionPref.setSummary(summary);
                 }
+            } else if (key.equals(getString(R.string.app_look_preference_key))) {
+                getActivity().recreate();
             }
         }
 
