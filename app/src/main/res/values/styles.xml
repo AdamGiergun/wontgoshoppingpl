@@ -3,10 +3,20 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
+
+    <style name="AppThemeCustomizationsMini">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryMini</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkMini</item>
+    </style>
+
+    <style name="AppThemeCustomizationsRich">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryRich</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkRich</item>
     </style>
 
     <style name="MyCardViewStyle" parent="AppTheme">

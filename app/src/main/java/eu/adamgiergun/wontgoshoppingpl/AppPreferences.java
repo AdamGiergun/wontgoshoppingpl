@@ -16,4 +16,9 @@ class AppPreferences extends MyAppPreferences {
         String key = context.getString(R.string.include_holidays_preference_key);
         return getBooleanValueOfPreference(key, true);
     }
+
+    boolean isStyleRich(Context context) {
+        String key = context.getString(R.string.app_style_preference_key);
+        return getBooleanValueOfPreference(key, false);
+    }
 }

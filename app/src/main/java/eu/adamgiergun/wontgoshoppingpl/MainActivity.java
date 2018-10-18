@@ -3,12 +3,14 @@ package eu.adamgiergun.wontgoshoppingpl;
 /*  TODO niedziele handlowe
     TODO potwierdzenie dodania pojedynczej daty do kalendarza
     TODO reklamy po dodaniu do kalendarza
+    TODO wybór wyglądu
  */
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.*;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -43,14 +45,35 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        appPreferences = new AppPreferences(this);
+        if (appPreferences.isStyleRich(this)) {
+            theme.applyStyle(R.style.AppThemeCustomizationsRich, true);
+        } else {
+            theme.applyStyle(R.style.AppThemeCustomizationsMini, true);
+        }
+        return theme;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        appPreferences = new AppPreferences(this);
+        setStyle();
         setupAds();
     }
 
-    void setupAds() {
+    private void setStyle() {
+        if (appPreferences.isStyleRich(this)) {
+            View recyclerView = findViewById(R.id.recycler_view);
+            recyclerView.setBackgroundResource(R.drawable.bg_red);
+            View adViewLayout = findViewById(R.id.adViewLayout);
+            adViewLayout.setBackgroundResource(R.drawable.bg_red);
+        }
+    }
+
+    private void setupAds() {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this, getString(R.string.sample_admob_app_id));
         AdView mAdView = findViewById(R.id.adView);
@@ -290,7 +313,12 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                 }
             };
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
+            AlertDialog.Builder builder;
+            if (appPreferences.isStyleRich(getContext())) {
+                builder = new AlertDialog.Builder(getContext());
+            } else {
+                builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
+            }
             builder.setTitle(R.string.title_choose_events)
                     .setMultiChoiceItems(items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -333,7 +361,13 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
+            AlertDialog.Builder builder;
+            AppPreferences appPreferences = new AppPreferences(getContext());
+            if (appPreferences.isStyleRich(getContext())) {
+                builder = new AlertDialog.Builder(getContext());
+            } else {
+                builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
+            }
             builder
                     .setTitle(R.string.title_reminder)
                     .setView(getDialogView())

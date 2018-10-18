@@ -1,6 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.*;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,18 @@ import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        AppPreferences appPreferences = new AppPreferences(this);
+        if (appPreferences.isStyleRich(this)) {
+            theme.applyStyle(R.style.AppThemeCustomizationsRich, true);
+        } else {
+            theme.applyStyle(R.style.AppThemeCustomizationsMini, true);
+        }
+        return theme;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

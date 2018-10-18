@@ -52,8 +52,10 @@ public class DayFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
-            recyclerView.setAdapter(new DayRecyclerViewAdapter(getListOfLimitedCommerceDays(context), listener));
+            DayRecyclerViewAdapter dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getListOfLimitedCommerceDays(context), listener);
+            boolean isStyleRich = new AppPreferences(getContext()).isStyleRich(getContext());
+            dayRecyclerViewAdapter.setStyleRich(isStyleRich);
+            recyclerView.setAdapter(dayRecyclerViewAdapter);
         }
         return view;
     }

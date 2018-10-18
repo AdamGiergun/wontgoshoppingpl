@@ -21,4 +21,9 @@
     <string name="title_reminder">Reminder</string>
     <string name="include_holidays_preference_key" translatable="false">include_holidays</string>
     <string name="make_purchases_earlier">make purchases earlier!</string>
+
+    <string name="app_style_preference_key" translatable="false">app_style</string>
+    <string name="title_app_style">App style</string>
+    <string name="summary_app_style_mini">Mini</string>
+    <string name="summary_app_style_rich">Rich</string>
 </resources>

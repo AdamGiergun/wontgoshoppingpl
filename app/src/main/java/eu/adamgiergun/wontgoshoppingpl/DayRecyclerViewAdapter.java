@@ -1,5 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.*;
 import android.widget.TextView;
 
@@ -13,10 +15,16 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
     private final ListOfLimitedCommerceDays days;
     private final OnListFragmentInteractionListener listener;
+    private boolean isStyleRich;
 
     DayRecyclerViewAdapter(ListOfLimitedCommerceDays days, OnListFragmentInteractionListener listener) {
         this.days = days;
         this.listener = listener;
+        isStyleRich = false;
+    }
+
+    void setStyleRich(boolean styleRich) {
+        isStyleRich = styleRich;
     }
 
     @NonNull
@@ -43,12 +51,21 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
                 }
             }
         });
-        if (day.isHoliday()) {
-            //holder.cardView.setCardBackgroundColor(Color.parseColor("#FF0000"));
-            holder.cardView.setBackgroundResource(R.drawable.card_bg_red);
+        if (isStyleRich) {
+            if (day.isHoliday()) {
+                holder.cardView.setBackgroundResource(R.drawable.card_bg_red);
+            } else {
+                holder.cardView.setBackgroundResource(R.drawable.card_bg_orange);
+            }
         } else {
-            //holder.cardView.setCardBackgroundColor(Color.parseColor("#FF1493"));
-            holder.cardView.setBackgroundResource(R.drawable.card_bg_orange);
+            if (day.isHoliday()) {
+                holder.cardView.setCardBackgroundColor(Color.parseColor("#FF0000"));
+            } else {
+                holder.cardView.setCardBackgroundColor(Color.parseColor("#FF1493"));
+            }
+            float density = Resources.getSystem().getDisplayMetrics().density;
+            holder.cardView.setRadius(8*density);
+            holder.cardView.setCardElevation(4*density);
         }
     }
 

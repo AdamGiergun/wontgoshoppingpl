@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@android:color/holo_orange_light</color>
-    <color name="colorPrimaryDark">@android:color/holo_orange_dark</color>
+    <color name="colorPrimaryMini">#3F51B5</color>
+    <color name="colorPrimaryDarkMini">#303F9F</color>
+    <color name="colorPrimaryRich">@android:color/holo_orange_light</color>
+    <color name="colorPrimaryDarkRich">@android:color/holo_orange_dark</color>
     <color name="colorAccent">#FF4081</color>
     <color name="holidayCardBackgroundColor">#FF0000</color>
     <color name="nonHolidayCardBackgroundColor">#FFC0CB</color>
