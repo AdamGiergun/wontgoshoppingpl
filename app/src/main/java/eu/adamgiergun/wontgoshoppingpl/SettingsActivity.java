@@ -1,17 +1,26 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
+import android.Manifest;
 import android.content.*;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.*;
 
 import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
+import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
 public class SettingsActivity extends AppCompatActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
@@ -33,6 +42,11 @@ public class SettingsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.settings_activity);
+        Intent intent = getIntent();
+        boolean startWithNotificationPreferenceFragment = intent.getBooleanExtra("startWithNotificationPreferenceFragment", false);
+        if (startWithNotificationPreferenceFragment) {
+            startFragmentTransaction(new NotificationPreferenceFragment());
+        }
     }
 
     @Override
@@ -47,42 +61,126 @@ public class SettingsActivity extends AppCompatActivity
         }
     }
 
-    public static class SettingsFragment extends BasePreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+    @Override
+    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
+        String headerTitle = pref.getTitle().toString();
+        if (headerTitle.equals(getString(R.string.pref_header_look))) {
+            return startFragmentTransaction(new LookPreferenceFragment());
+        } else if (headerTitle.equals(getString(R.string.pref_header_notifications))) {
+            if (checkCalendarPermissions()) {
+                return startFragmentTransaction(new NotificationPreferenceFragment());
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private boolean startFragmentTransaction(PreferenceFragmentCompat fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.settingsFragment, fragment);
+        int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        if (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE)
+            ft.addToBackStack(null);
+        ft.commit();
+        return true;
+    }
+
+    private boolean checkCalendarPermissions() {
+        if (!isSystemAtLeastMarshmallow() || areCalendarPermissionsGranted()) {
+            return true;
+        } else {
+            requestCalendarPermissions();
+            return false;
+        }
+    }
+
+    private boolean isSystemAtLeastMarshmallow() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
+    private boolean areCalendarPermissionsGranted() {
+        return isPermissionGranted(Manifest.permission.READ_CALENDAR) && isPermissionGranted(Manifest.permission.WRITE_CALENDAR) ;
+    }
+
+    private boolean isPermissionGranted(String permission) {
+        int permissionState = ContextCompat.checkSelfPermission(this, permission);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestCalendarPermissions() {
+        String[] listOfRequestedPermissions = new String[]{Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR};
+        int permissionTypeCode = PermissionType.CALENDAR.getCode();
+        requestPermissions(listOfRequestedPermissions, permissionTypeCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PermissionType.CALENDAR.getCode()) {
+            if (areAllPermissionsGranted(grantResults)) {
+                startFragmentTransaction(new NotificationPreferenceFragment());
+            } else {
+                Toast.makeText(this, eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private boolean areAllPermissionsGranted(int[] grantResults) {
+        boolean result = true;
+        boolean permissionGranted;
+        for (int grantResult : grantResults) {
+            permissionGranted = (grantResult == PackageManager.PERMISSION_GRANTED);
+            result = result && permissionGranted;
+        }
+        return result;
+    }
+
+    public static class SettingsHeadersFragment extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.pref_headers);
         }
+    }
 
+    public static class LookPreferenceFragment extends BasePreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
         @Override
-        public void onPause() {
-            super.onPause();
-            getPreferenceScreen()
-                    .getSharedPreferences()
-                    .unregisterOnSharedPreferenceChangeListener(this);
-        }
-
-        @Override
-        public void onResume() {
-            super.onResume();
-            getPreferenceScreen()
-                    .getSharedPreferences()
-                    .registerOnSharedPreferenceChangeListener(this);
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.pref_look, rootKey);
         }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (key.equals(getString(R.string.app_look_preference_key))) {
+                getActivity().recreate();
+            }
+        }
+    }
 
+    public static class NotificationPreferenceFragment extends BasePreferenceFragmentCompat {
+
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.pref_notification, rootKey);
+            setSummaries();
+        }
+
+        private void setSummaries() {
+            IntegerDialogPreferenceNew daysBefore = (IntegerDialogPreferenceNew) findPreference(getString(R.string.default_reminder_days_before_preference_key));
+            daysBefore.setSummary(daysBefore.toString());
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(getString(R.string.default_calendar_preference_key))) {
                 Preference connectionPref = findPreference(key);
                 if (connectionPref instanceof CalendarsListPreferenceNew) {
                     CharSequence calendarId = sharedPreferences.getString(key, "0");
-                    //getString(R.string.calendar_not_set));
                     CharSequence summary = ((CalendarsListPreferenceNew) connectionPref).getCalendarName(calendarId);
                     connectionPref.setSummary(summary);
                 }
-            } else if (key.equals(getString(R.string.app_look_preference_key))) {
-                getActivity().recreate();
             }
         }
 
@@ -110,46 +208,6 @@ public class SettingsActivity extends AppCompatActivity
             Bundle bundle = new Bundle(1);
             bundle.putString("key", key);
             dialogFragment.setArguments(bundle);
-        }
-    }
-
-    public static class LookPreferenceFragment extends BasePreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.pref_look, rootKey);
-        }
-
-    }
-
-    public static class NotificationPreferenceFragment extends BasePreferenceFragmentCompat {
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.pref_notification, rootKey);
-            setSummaries();
-        }
-
-        private void setSummaries() {
-            IntegerDialogPreferenceNew daysBefore = (IntegerDialogPreferenceNew) findPreference(getString(R.string.default_reminder_days_before_preference_key));
-            daysBefore.setSummary(daysBefore.toString());
-        }
-    }
-
-    @Override
-    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
-        String headerTitle = pref.getTitle().toString();
-        if (headerTitle.equals(getString(R.string.pref_header_look))) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.settingsFragment, new LookPreferenceFragment());
-            ft.addToBackStack(null);
-            ft.commit();
-            return true;
-        } else if (headerTitle.equals(getString(R.string.pref_header_notifications))) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.settingsFragment, new NotificationPreferenceFragment());
-            ft.addToBackStack(null);
-            ft.commit();
-            return true;
-        } else {
-            return false;
         }
     }
 }

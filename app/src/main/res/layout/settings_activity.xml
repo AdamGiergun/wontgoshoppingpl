@@ -3,7 +3,7 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <fragment android:name="eu.adamgiergun.wontgoshoppingpl.SettingsActivity$SettingsFragment"
+    <fragment android:name="eu.adamgiergun.wontgoshoppingpl.SettingsActivity$SettingsHeadersFragment"
               android:id="@+id/settingsFragment"
               android:layout_width="match_parent"
               android:layout_height="match_parent" />

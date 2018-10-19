@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private AppPreferences appPreferences;
 
     private enum ActionCallingRequest {
-        SETTINGS,
         ADD_ALL_EVENTS,
         ADD_ONE_EVENT
     }
@@ -111,9 +110,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings:
-                if (checkCalendarPermissions(ActionCallingRequest.SETTINGS)) {
-                    startSettingsActivity();
-                }
+                startSettingsActivity(false);
                 return true;
             case R.id.calendar:
                 startWizardForAddingEventsToCalendarIfConditionsAreMet();
@@ -126,10 +123,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         }
     }
 
-    private void startSettingsActivity() {
-        Intent intent = new Intent(
-                this,
-                SettingsActivity.class);
+    private void startSettingsActivity(boolean startWithNotificationPreferenceFragment) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        intent.putExtra("startWithNotificationPreferenceFragment", startWithNotificationPreferenceFragment);
         startActivity(intent);
     }
 
@@ -143,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             if (useGoogleCalendar) {
                 askForKindsOfEventsAddedToCalendar();
             } else {
-                startSettingsActivity();
+                startSettingsActivity(true);
             }
         }
     }
@@ -160,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             if (useGoogleCalendar) {
                 addDayToCalendarDisplayingInfo(day);
             } else {
-                startSettingsActivity();
+                startSettingsActivity(true);
             }
         } else {
             lastTouchedDayFromList = day;
@@ -173,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             setReminderParametersToDay(day);
             displayInfo(day.addToGoogleCalendar(this), R.string.info_added_to_calendar, R.string.error_adding_to_calendar_failed);
         } else {
-            startSettingsActivity();
+            startSettingsActivity(true);
         }
     }
 
@@ -194,9 +190,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         day.setReminderTime(reminderTime);
     }
 
-    private void showInfo(int info, boolean length_long) {
+    private void showInfo(int info, boolean isLengthLong) {
         int length;
-        if (length_long) {
+        if (isLengthLong) {
             length = Toast.LENGTH_LONG;
         } else {
             length = Toast.LENGTH_SHORT;
@@ -242,9 +238,6 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
                 switch (lastActionCallingRequest) {
-                    case SETTINGS:
-                        startSettingsActivity();
-                        break;
                     case ADD_ONE_EVENT:
                         addDayToCalendarDisplayingInfo(lastTouchedDayFromList);
                         break;
