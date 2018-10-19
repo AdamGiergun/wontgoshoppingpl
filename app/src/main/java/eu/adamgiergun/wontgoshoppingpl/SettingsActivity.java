@@ -80,11 +80,16 @@ public class SettingsActivity extends AppCompatActivity
     private boolean startFragmentTransaction(PreferenceFragmentCompat fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.settingsFragment, fragment);
-        int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        if (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE)
+        if (isScreenSizeLesserThanLarge()) {
             ft.addToBackStack(null);
+        }
         ft.commit();
         return true;
+    }
+
+    private boolean isScreenSizeLesserThanLarge() {
+        int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        return (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE);
     }
 
     private boolean checkCalendarPermissions() {
@@ -155,7 +160,9 @@ public class SettingsActivity extends AppCompatActivity
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(getString(R.string.app_look_preference_key))) {
-                getActivity().recreate();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         }
     }
