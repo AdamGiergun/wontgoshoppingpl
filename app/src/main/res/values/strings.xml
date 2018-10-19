@@ -28,4 +28,7 @@
     <string name="summary_app_look_rich">Rich</string>
 
     <string name="ask_for_look">\nChoose your preferred look.\nYou may change it later in Settings.\n</string>
+
+    <string name="pref_header_look">Look</string>
+    <string name="pref_header_notifications">Notifications</string>
 </resources>

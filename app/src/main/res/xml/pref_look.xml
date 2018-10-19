@@ -1,0 +1,17 @@
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="@string/include_holidays_preference_key"
+        android:summaryOff="@string/summary_show_holidays_off"
+        android:summaryOn="@string/summary_show_holidays_on"
+        android:title="@string/title_show_holidays" />
+
+    <androidx.preference.SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="@string/app_look_preference_key"
+        android:summaryOff="@string/summary_app_look_mini"
+        android:summaryOn="@string/summary_app_look_rich"
+        android:title="@string/title_app_look" />
+
+</androidx.preference.PreferenceScreen>

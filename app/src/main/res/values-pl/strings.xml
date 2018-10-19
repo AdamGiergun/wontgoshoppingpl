@@ -23,5 +23,9 @@
     <string name="title_app_look">Wygląd aplikacji</string>
     <string name="summary_app_look_mini">Mini</string>
     <string name="summary_app_look_rich">Bogaty</string>
+
     <string name="ask_for_look">\nWybierz wygląd aplikacji.\nMożesz zmienić go później w Ustawieniach.\n</string>
+
+    <string name="pref_header_look">Wygląd</string>
+    <string name="pref_header_notifications">Powiadomienia</string>
 </resources>

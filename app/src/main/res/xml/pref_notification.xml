@@ -1,0 +1,37 @@
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- A 'parent' preference, which enables/disables child preferences (below)
+         when checked/unchecked. -->
+    <androidx.preference.SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="@string/use_google_calendar_preference_key"
+        android:summaryOff="@string/google_calendar_preference_summary_off"
+        android:summaryOn="@string/google_calendar_preference_summary_on"
+        android:title="@string/google_calendar_preference_title" />
+
+    <!-- NOTE: Listed below preferences will be enabled only when the checkbox above is checked.
+        android:defaultValue="@string/calendar_not_set"-->
+    <eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreferenceNew
+        android:dependency="@string/use_google_calendar_preference_key"
+        android:key="@string/default_calendar_preference_key"
+        android:title="@string/default_calendar_preference_title" />
+
+    <eu.adamgiergun.mylibrary.IntegerDialogPreferenceNew
+        android:defaultValue="@integer/reminder_days_before_default_value"
+        android:dependency="@string/use_google_calendar_preference_key"
+        android:dialogLayout="@app:layout/integer_dialog_preference_layout"
+        android:key="@string/default_reminder_days_before_preference_key"
+        android:numeric="integer"
+        android:title="@string/default_reminder_days_before_preference_title"
+        app:defValue="@integer/reminder_days_before_default_value"
+        app:maxValue="364"
+        app:minValue="0" />
+
+    <eu.adamgiergun.mylibrary.calendarmanagement.TimePreferenceNew
+        android:defaultValue="@string/default_reminder_time_preference_default_value"
+        android:dependency="@string/use_google_calendar_preference_key"
+        android:key="@string/default_reminder_time_preference_key"
+        android:title="@string/default_reminder_time_preference_title" />
+
+</androidx.preference.PreferenceScreen>
