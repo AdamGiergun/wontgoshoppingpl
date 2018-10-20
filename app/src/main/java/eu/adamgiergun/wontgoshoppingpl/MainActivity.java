@@ -3,7 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 /*  TODO niedziele handlowe
     TODO potwierdzenie dodania pojedynczej daty do kalendarza
     TODO reklamy po dodaniu do kalendarza
-    TODO osobne sekcje w ustawieniach dla wyglądu i kalendarza
+    TODO odświeżanie listy głównej zaraz po zmianie ustawienia o pokazywaniu świąt
  */
 
 import android.Manifest;
