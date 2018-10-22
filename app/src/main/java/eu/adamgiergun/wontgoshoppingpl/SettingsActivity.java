@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.*;
 
@@ -24,6 +27,17 @@ import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
 public class SettingsActivity extends AppCompatActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+
+    private static String HEADERS = "headers";
+    private static String HEADERS_LOOK = "headersLook";
+    private static String HEADERS_NOTIFICATIONS = "headersNotifications";
+    private static String LOOK = "look";
+    private static String NOTIFICATIONS = "notifications";
+    private String newHeadersFragment;
+    private String newSettingsFragment;
+    private ArrayList<FragmentWithTag> headersFragments;
+    private ArrayList<FragmentWithTag> settingsFragments;
+    private boolean startWithNotificationPreferenceFragment;
 
     @Override
     public Resources.Theme getTheme() {
@@ -43,10 +57,55 @@ public class SettingsActivity extends AppCompatActivity
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.settings_activity);
         Intent intent = getIntent();
-        boolean startWithNotificationPreferenceFragment = intent.getBooleanExtra("startWithNotificationPreferenceFragment", false);
-        if (startWithNotificationPreferenceFragment) {
-            startFragmentTransaction(new NotificationPreferenceFragment());
+        startWithNotificationPreferenceFragment = intent.getBooleanExtra("startWithNotificationPreferenceFragment", false);
+
+        settingsFragments = new ArrayList<>();
+        if (isScreenSizeLesserThanLarge()) {
+            settingsFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS));
+            newSettingsFragment = HEADERS;
+        } else {
+            headersFragments = new ArrayList<>();
+            headersFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS));
+            addFragments(R.id.headersFragment, headersFragments);
+            newSettingsFragment = LOOK;
         }
+
+        settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), LOOK));
+        if (areCalendarPermissionsGranted()) {
+            settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS));
+        }
+        addFragments(R.id.settingsFragment, settingsFragments);
+    }
+
+    private void addFragments(int container, ArrayList<FragmentWithTag> list) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        for (FragmentWithTag fragmentWithTag : list) {
+            ft.add(container, fragmentWithTag.fragment, fragmentWithTag.tag);
+            ft.detach(fragmentWithTag.fragment);
+        }
+        ft.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (startWithNotificationPreferenceFragment) {
+            newSettingsFragment = NOTIFICATIONS;
+        }
+        switchFragment(null, newSettingsFragment);
+    }
+
+    private boolean switchFragment(String fromTag, String toTag) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (fromTag != null)
+            fragmentTransaction.detach(getSupportFragmentManager().findFragmentByTag(fromTag));
+        Fragment toFragment = getSupportFragmentManager().findFragmentByTag(toTag);
+        fragmentTransaction.attach(toFragment);
+        if (isScreenSizeLesserThanLarge() && fromTag!=null)
+            fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        getSupportFragmentManager().executePendingTransactions();
+        return true;
     }
 
     @Override
@@ -65,10 +124,18 @@ public class SettingsActivity extends AppCompatActivity
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
         String headerTitle = pref.getTitle().toString();
         if (headerTitle.equals(getString(R.string.pref_header_look))) {
-            return startFragmentTransaction(new LookPreferenceFragment());
+            if (isScreenSizeLesserThanLarge()) {
+                return switchFragment(HEADERS, LOOK);
+            } else {
+                return switchFragment(NOTIFICATIONS, LOOK);
+            }
         } else if (headerTitle.equals(getString(R.string.pref_header_notifications))) {
             if (checkCalendarPermissions()) {
-                return startFragmentTransaction(new NotificationPreferenceFragment());
+                if (isScreenSizeLesserThanLarge()) {
+                    return switchFragment(HEADERS, NOTIFICATIONS);
+                } else {
+                    return switchFragment(LOOK, NOTIFICATIONS);
+                }
             } else {
                 return false;
             }
@@ -126,7 +193,13 @@ public class SettingsActivity extends AppCompatActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
-                startFragmentTransaction(new NotificationPreferenceFragment());
+                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS));
+                addFragments(R.id.settingsFragment, settingsFragments);
+                if (isScreenSizeLesserThanLarge()) {
+                    switchFragment(HEADERS, NOTIFICATIONS);
+                } else {
+                    switchFragment(LOOK, NOTIFICATIONS);
+                }
             } else {
                 Toast.makeText(this, eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
             }
@@ -149,9 +222,11 @@ public class SettingsActivity extends AppCompatActivity
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.pref_headers);
         }
+
     }
 
     public static class LookPreferenceFragment extends BasePreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.pref_look, rootKey);
@@ -168,6 +243,7 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     public static class NotificationPreferenceFragment extends BasePreferenceFragmentCompat {
+        String tag = SettingsActivity.NOTIFICATIONS;
 
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.pref_notification, rootKey);
@@ -215,6 +291,16 @@ public class SettingsActivity extends AppCompatActivity
             Bundle bundle = new Bundle(1);
             bundle.putString("key", key);
             dialogFragment.setArguments(bundle);
+        }
+    }
+
+    private class FragmentWithTag {
+        PreferenceFragmentCompat fragment;
+        String tag;
+
+        FragmentWithTag(PreferenceFragmentCompat fragment, String tag) {
+            this.fragment = fragment;
+            this.tag = tag;
         }
     }
 }

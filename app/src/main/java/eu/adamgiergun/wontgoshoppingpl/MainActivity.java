@@ -4,6 +4,7 @@ package eu.adamgiergun.wontgoshoppingpl;
     TODO potwierdzenie dodania pojedynczej daty do kalendarza
     TODO reklamy po dodaniu do kalendarza
     TODO odświeżanie listy głównej zaraz po zmianie ustawienia o pokazywaniu świąt
+    TODO podświetlanie aktywnej sekcji ustawień na tabletach
  */
 
 import android.Manifest;
@@ -136,7 +137,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private void startWizardForAddingEventsToCalendarIfConditionsAreMet() {
         if (checkCalendarPermissions(ActionCallingRequest.ADD_ALL_EVENTS)) {
             boolean useGoogleCalendar = appPreferences.isUseGoogleCalendarSet(this);
-            if (useGoogleCalendar) {
+            boolean isCalendarSet;
+            isCalendarSet = !appPreferences.getDefaultCalendarId(this).equals(getString(R.string.id_for_default_calendar_not_set));
+            if (useGoogleCalendar && isCalendarSet) {
                 askForKindsOfEventsAddedToCalendar();
             } else {
                 startSettingsActivity(true);
