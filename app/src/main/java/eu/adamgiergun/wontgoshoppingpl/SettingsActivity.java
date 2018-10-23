@@ -33,10 +33,6 @@ public class SettingsActivity extends AppCompatActivity
     private static String HEADERS_NOTIFICATIONS = "headersNotifications";
     private static String LOOK = "look";
     private static String NOTIFICATIONS = "notifications";
-    private String newHeadersFragment;
-    private String newSettingsFragment;
-    private ArrayList<FragmentWithTag> headersFragments;
-    private ArrayList<FragmentWithTag> settingsFragments;
     private boolean startWithNotificationPreferenceFragment;
 
     @Override
@@ -59,20 +55,19 @@ public class SettingsActivity extends AppCompatActivity
         Intent intent = getIntent();
         startWithNotificationPreferenceFragment = intent.getBooleanExtra("startWithNotificationPreferenceFragment", false);
 
-        settingsFragments = new ArrayList<>();
+        ArrayList<FragmentWithTag> settingsFragments = new ArrayList<>();
         if (isScreenSizeLesserThanLarge()) {
-            settingsFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS));
-            newSettingsFragment = HEADERS;
+            settingsFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS, false));
+            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), LOOK, true));
         } else {
-            headersFragments = new ArrayList<>();
-            headersFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS));
+            ArrayList<FragmentWithTag> headersFragments = new ArrayList<>();
+            headersFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS, false));
             addFragments(R.id.headersFragment, headersFragments);
-            newSettingsFragment = LOOK;
+            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), LOOK, false));
         }
 
-        settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), LOOK));
         if (areCalendarPermissionsGranted()) {
-            settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS));
+            settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS, true));
         }
         addFragments(R.id.settingsFragment, settingsFragments);
     }
@@ -81,26 +76,34 @@ public class SettingsActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         for (FragmentWithTag fragmentWithTag : list) {
             ft.add(container, fragmentWithTag.fragment, fragmentWithTag.tag);
-            ft.detach(fragmentWithTag.fragment);
+            if (fragmentWithTag.detach)
+                ft.detach(fragmentWithTag.fragment);
         }
         ft.commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (startWithNotificationPreferenceFragment) {
-            newSettingsFragment = NOTIFICATIONS;
+            startWithNotificationPreferenceFragment = false;
+            if (isScreenSizeLesserThanLarge()) {
+                switchFragment(HEADERS, NOTIFICATIONS);
+            } else {
+                switchFragment(LOOK, NOTIFICATIONS);
+            }
         }
-        switchFragment(null, newSettingsFragment);
     }
 
     private boolean switchFragment(String fromTag, String toTag) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if (fromTag != null)
-            fragmentTransaction.detach(getSupportFragmentManager().findFragmentByTag(fromTag));
-        Fragment toFragment = getSupportFragmentManager().findFragmentByTag(toTag);
-        fragmentTransaction.attach(toFragment);
+        if (fromTag != null) {
+            Fragment oldFragment = getSupportFragmentManager().findFragmentByTag(fromTag);
+            fragmentTransaction.detach(oldFragment);
+        }
+        Fragment newFragment = getSupportFragmentManager().findFragmentByTag(toTag);
+        fragmentTransaction.attach(newFragment);
         if (isScreenSizeLesserThanLarge() && fromTag!=null)
             fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -144,16 +147,6 @@ public class SettingsActivity extends AppCompatActivity
         }
     }
 
-    private boolean startFragmentTransaction(PreferenceFragmentCompat fragment) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.settingsFragment, fragment);
-        if (isScreenSizeLesserThanLarge()) {
-            ft.addToBackStack(null);
-        }
-        ft.commit();
-        return true;
-    }
-
     private boolean isScreenSizeLesserThanLarge() {
         int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         return (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE);
@@ -193,8 +186,9 @@ public class SettingsActivity extends AppCompatActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
-                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS));
-                addFragments(R.id.settingsFragment, settingsFragments);
+                ArrayList<FragmentWithTag> newFragments = new ArrayList<>();
+                newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS, true));
+                addFragments(R.id.settingsFragment, newFragments);
                 if (isScreenSizeLesserThanLarge()) {
                     switchFragment(HEADERS, NOTIFICATIONS);
                 } else {
@@ -297,10 +291,12 @@ public class SettingsActivity extends AppCompatActivity
     private class FragmentWithTag {
         PreferenceFragmentCompat fragment;
         String tag;
+        boolean detach;
 
-        FragmentWithTag(PreferenceFragmentCompat fragment, String tag) {
+        FragmentWithTag(PreferenceFragmentCompat fragment, String tag, boolean detach) {
             this.fragment = fragment;
             this.tag = tag;
+            this.detach = detach;
         }
     }
 }
