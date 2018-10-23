@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <fragment
+    <LinearLayout
         android:id="@+id/settingsFragment"
-        android:name="eu.adamgiergun.wontgoshoppingpl.SettingsActivity$SettingsHeadersFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:tag="header" />
+        android:orientation="vertical" />
 </LinearLayout>

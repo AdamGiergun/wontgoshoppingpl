@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.*;
 
@@ -28,12 +29,17 @@ import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 public class SettingsActivity extends AppCompatActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
-    private static String HEADERS = "headers";
-    private static String HEADERS_LOOK = "headersLook";
-    private static String HEADERS_NOTIFICATIONS = "headersNotifications";
-    private static String LOOK = "look";
-    private static String NOTIFICATIONS = "notifications";
+    private static final String HEADERS = "headers";
+    private static final String HEADERS_WIDE = "headersWide";
+    private static final String HEADERS_LOOK = "headersLook";
+    private static final String HEADERS_NOTIFICATIONS = "headersNotifications";
+    private static final String LOOK = "look";
+    private static final String NOTIFICATIONS = "notifications";
+    private static final String LOOK_WIDE = "lookWide";
+    private static final String NOTIFICATIONS_WIDE = "notificationsWide";
     private boolean startWithNotificationPreferenceFragment;
+    private int settingsFragmentId;
+    private static String lastFragment = HEADERS;
 
     @Override
     public Resources.Theme getTheme() {
@@ -52,24 +58,76 @@ public class SettingsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.settings_activity);
+        if (isScreenNotWideEnough()) {
+            switch (lastFragment) {
+                case HEADERS_WIDE:
+                    lastFragment = HEADERS;
+                    break;
+                case LOOK_WIDE:
+                    lastFragment = LOOK;
+                    break;
+                case NOTIFICATIONS_WIDE:
+                    lastFragment = NOTIFICATIONS;
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (lastFragment) {
+                case HEADERS:
+                    lastFragment = HEADERS_WIDE;
+                    break;
+                case LOOK:
+                    lastFragment = LOOK_WIDE;
+                    removeFragmentFromBackStack(LOOK);
+                    break;
+                case NOTIFICATIONS:
+                    lastFragment = NOTIFICATIONS_WIDE;
+                    removeFragmentFromBackStack(NOTIFICATIONS);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         Intent intent = getIntent();
         startWithNotificationPreferenceFragment = intent.getBooleanExtra("startWithNotificationPreferenceFragment", false);
 
         ArrayList<FragmentWithTag> settingsFragments = new ArrayList<>();
-        if (isScreenSizeLesserThanLarge()) {
-            settingsFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS, false));
-            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), LOOK, true));
+        if (isScreenNotWideEnough()) {
+            settingsFragmentId = R.id.settingsFragment;
+            settingsFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS, shouldBeDetached(HEADERS)));
+            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), LOOK, shouldBeDetached(LOOK)));
+            if (areCalendarPermissionsGranted()) {
+                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS, shouldBeDetached(NOTIFICATIONS)));
+            }
         } else {
+            settingsFragmentId = R.id.settingsWideFragment;
             ArrayList<FragmentWithTag> headersFragments = new ArrayList<>();
-            headersFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS, false));
+            headersFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), HEADERS_WIDE, shouldBeDetached(HEADERS_WIDE)));
             addFragments(R.id.headersFragment, headersFragments);
-            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), LOOK, false));
+            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), LOOK_WIDE, shouldBeDetached(LOOK_WIDE)));
+            if (areCalendarPermissionsGranted()) {
+                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS_WIDE, shouldBeDetached(NOTIFICATIONS_WIDE)));
+            }
         }
+        addFragments(settingsFragmentId, settingsFragments);
+    }
 
-        if (areCalendarPermissionsGranted()) {
-            settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS, true));
+    private boolean shouldBeDetached(String fragmentTag) {
+        if (isScreenNotWideEnough()) {
+            return !lastFragment.equals(fragmentTag);
+        } else {
+            if (fragmentTag.equals(HEADERS_WIDE)) {
+                return false;
+            } else {
+                if (lastFragment.equals(HEADERS_WIDE) && fragmentTag.equals(LOOK_WIDE)) {
+                    return false;
+                } else {
+                    return !lastFragment.equals(fragmentTag);
+                }
+            }
         }
-        addFragments(R.id.settingsFragment, settingsFragments);
     }
 
     private void addFragments(int container, ArrayList<FragmentWithTag> list) {
@@ -86,13 +144,24 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (startWithNotificationPreferenceFragment) {
+/*        if (startWithNotificationPreferenceFragment) {
             startWithNotificationPreferenceFragment = false;
-            if (isScreenSizeLesserThanLarge()) {
+            if (isScreenNotWideEnough()) {
                 switchFragment(HEADERS, NOTIFICATIONS);
             } else {
-                switchFragment(LOOK, NOTIFICATIONS);
+                switchFragment(LOOK_WIDE, NOTIFICATIONS_WIDE);
             }
+        }*/
+        if (startWithNotificationPreferenceFragment) {
+            startWithNotificationPreferenceFragment = false;
+            if (isScreenNotWideEnough()) {
+                lastFragment = NOTIFICATIONS;
+            } else {
+                switchFragment(LOOK_WIDE, NOTIFICATIONS_WIDE);
+            }
+        }
+        if (isScreenNotWideEnough()) {
+            switchFragment(HEADERS, lastFragment);
         }
     }
 
@@ -104,7 +173,8 @@ public class SettingsActivity extends AppCompatActivity
         }
         Fragment newFragment = getSupportFragmentManager().findFragmentByTag(toTag);
         fragmentTransaction.attach(newFragment);
-        if (isScreenSizeLesserThanLarge() && fromTag!=null)
+        lastFragment = toTag;
+        if (isScreenNotWideEnough() && fromTag!=null && !toTag.equals(HEADERS))
             fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         getSupportFragmentManager().executePendingTransactions();
@@ -124,20 +194,50 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed() {
+        if (isScreenNotWideEnough() && !lastFragment.equals(HEADERS)) {
+            removeFragmentFromBackStack(lastFragment);
+            switchFragment(lastFragment, HEADERS);
+/*            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction trans = manager.beginTransaction();
+            Fragment lastFrag = manager.findFragmentByTag(lastFragment);
+            trans.detach(lastFrag);
+            trans.commit();
+            manager.popBackStack();
+            manager.executePendingTransactions();
+            lastFragment = HEADERS;
+*/
+        } else {
+            lastFragment = HEADERS;
+            super.onBackPressed();
+        }
+    }
+
+    private void removeFragmentFromBackStack(String tag) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction trans = manager.beginTransaction();
+        Fragment fragment = manager.findFragmentByTag(tag);
+        trans.detach(fragment);
+        trans.commit();
+        manager.popBackStack();
+        manager.executePendingTransactions();
+    }
+
+    @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
         String headerTitle = pref.getTitle().toString();
         if (headerTitle.equals(getString(R.string.pref_header_look))) {
-            if (isScreenSizeLesserThanLarge()) {
+            if (isScreenNotWideEnough()) {
                 return switchFragment(HEADERS, LOOK);
             } else {
-                return switchFragment(NOTIFICATIONS, LOOK);
+                return switchFragment(NOTIFICATIONS_WIDE, LOOK_WIDE);
             }
         } else if (headerTitle.equals(getString(R.string.pref_header_notifications))) {
             if (checkCalendarPermissions()) {
-                if (isScreenSizeLesserThanLarge()) {
+                if (isScreenNotWideEnough()) {
                     return switchFragment(HEADERS, NOTIFICATIONS);
                 } else {
-                    return switchFragment(LOOK, NOTIFICATIONS);
+                    return switchFragment(LOOK_WIDE, NOTIFICATIONS_WIDE);
                 }
             } else {
                 return false;
@@ -147,9 +247,14 @@ public class SettingsActivity extends AppCompatActivity
         }
     }
 
-    private boolean isScreenSizeLesserThanLarge() {
-        int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        return (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE);
+    private boolean isScreenNotWideEnough() {
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            return false;
+        } else {
+            int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+            return (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE);
+        }
     }
 
     private boolean checkCalendarPermissions() {
@@ -187,12 +292,14 @@ public class SettingsActivity extends AppCompatActivity
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
                 ArrayList<FragmentWithTag> newFragments = new ArrayList<>();
-                newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS, true));
-                addFragments(R.id.settingsFragment, newFragments);
-                if (isScreenSizeLesserThanLarge()) {
+                if (isScreenNotWideEnough()) {
+                    newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS, true));
+                    addFragments(settingsFragmentId, newFragments);
                     switchFragment(HEADERS, NOTIFICATIONS);
                 } else {
-                    switchFragment(LOOK, NOTIFICATIONS);
+                    newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), NOTIFICATIONS_WIDE, true));
+                    addFragments(settingsFragmentId, newFragments);
+                    switchFragment(LOOK_WIDE, NOTIFICATIONS_WIDE);
                 }
             } else {
                 Toast.makeText(this, eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
@@ -237,7 +344,6 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     public static class NotificationPreferenceFragment extends BasePreferenceFragmentCompat {
-        String tag = SettingsActivity.NOTIFICATIONS;
 
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.pref_notification, rootKey);

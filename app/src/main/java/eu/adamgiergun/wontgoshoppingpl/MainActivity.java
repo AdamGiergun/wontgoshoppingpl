@@ -5,6 +5,7 @@ package eu.adamgiergun.wontgoshoppingpl;
     TODO reklamy po dodaniu do kalendarza
     TODO odświeżanie listy głównej zaraz po zmianie ustawienia o pokazywaniu świąt
     TODO podświetlanie aktywnej sekcji ustawień na tabletach
+    TODO rozdzielenie tagów fragmentów ustawień według trybów portret/panorama
  */
 
 import android.Manifest;
