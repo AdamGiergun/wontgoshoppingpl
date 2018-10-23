@@ -138,8 +138,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private void startWizardForAddingEventsToCalendarIfConditionsAreMet() {
         if (checkCalendarPermissions(ActionCallingRequest.ADD_ALL_EVENTS)) {
             boolean useGoogleCalendar = appPreferences.isUseGoogleCalendarSet(this);
-            boolean isCalendarSet;
-            isCalendarSet = !appPreferences.getDefaultCalendarId(this).equals(getString(R.string.id_for_default_calendar_not_set));
+            boolean isCalendarSet = appPreferences.isCalendarSet(this);
             if (useGoogleCalendar && isCalendarSet) {
                 askForKindsOfEventsAddedToCalendar();
             } else {
@@ -157,7 +156,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     public void onListFragmentInteraction(LimitedCommerceDay day) {
         if (checkCalendarPermissions(ActionCallingRequest.ADD_ONE_EVENT)) {
             boolean useGoogleCalendar = appPreferences.isUseGoogleCalendarSet(this);
-            if (useGoogleCalendar) {
+            boolean isCalendarSet = appPreferences.isCalendarSet(this);
+            if (useGoogleCalendar && isCalendarSet) {
                 addDayToCalendarDisplayingInfo(day);
             } else {
                 startSettingsActivity(true);
