@@ -7,11 +7,11 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -32,8 +32,8 @@ public class SettingsActivity extends AppCompatActivity
 
     private static final String HEADERS = "headers";
     private static final String HEADERS_LAND = "headersWide";
-    private static final String HEADERS_LOOK = "headersLook";
-    private static final String HEADERS_NOTIFICATIONS = "headersNotifications";
+    //private static final String HEADERS_LOOK = "headersLook";
+    //private static final String HEADERS_NOTIFICATIONS = "headersNotifications";
     private static final String LOOK = "look";
     private static final String NOTIFICATIONS = "notifications";
     private static final String LOOK_LAND = "lookWide";
@@ -60,6 +60,7 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        removeAllFragments();
         if (isScreenSizeLesserThanLarge())
             popBackStackCompletely();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -121,7 +122,16 @@ public class SettingsActivity extends AppCompatActivity
         }
         settingsFragmentId = getSettingsFragmentId();
         addFragments(settingsFragmentId, settingsFragments);
-        testBS("endOnCreate");
+    }
+
+    private void removeAllFragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        for (Fragment fragment : fragments)
+            fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     private void popBackStackCompletely() {
@@ -156,7 +166,6 @@ public class SettingsActivity extends AppCompatActivity
         }
         ft.commit();
         getSupportFragmentManager().executePendingTransactions();
-        testBS("endAddFragments");
     }
 
     private int getSettingsFragmentId() {
@@ -189,23 +198,23 @@ public class SettingsActivity extends AppCompatActivity
         if (isScreenNotWideEnough()) {
             switchFragment(headers, lastFragment);
         }
-        testBS("endOnResume");
     }
 
     private boolean switchFragment(String fromTag, String toTag) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (fromTag != null) {
             Fragment oldFragment = getSupportFragmentManager().findFragmentByTag(fromTag);
-            fragmentTransaction.detach(oldFragment);
+            if (oldFragment != null)
+                fragmentTransaction.detach(oldFragment);
         }
         Fragment newFragment = getSupportFragmentManager().findFragmentByTag(toTag);
-        fragmentTransaction.attach(newFragment);
+        if (newFragment != null)
+            fragmentTransaction.attach(newFragment);
         lastFragment = toTag;
         if (isScreenNotWideEnough() && fromTag!=null && !toTag.equals(HEADERS))
             fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         getSupportFragmentManager().executePendingTransactions();
-        testBS("endSwitchFragment");
         return true;
     }
 
@@ -222,7 +231,6 @@ public class SettingsActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        testBS("startOnBackPressed");
         if (isScreenNotWideEnough() && !lastFragment.equals(HEADERS)) {
             super.onBackPressed();
             switchFragment(lastFragment, HEADERS);
@@ -233,25 +241,8 @@ public class SettingsActivity extends AppCompatActivity
         }
     }
 
-
-    private void testBS(String place) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Log.d("BACKSTACK", String.valueOf(fragmentManager.getBackStackEntryCount()) + "_" + place);
-    }
-
-    private void removeFragmentFromBackStack(String tag) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction trans = manager.beginTransaction();
-        Fragment fragment = manager.findFragmentByTag(tag);
-        trans.detach(fragment);
-        trans.commit();
-        manager.popBackStack();
-        manager.executePendingTransactions();
-    }
-
     @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
-        testBS("startOnPreferenceStartFragment");
         String headerTitle = pref.getTitle().toString();
         if (headerTitle.equals(getString(R.string.pref_header_look))) {
             if (isScreenNotWideEnough()) {
@@ -324,7 +315,6 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        testBS("startOnRequestPermissionsResult");
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
                 ArrayList<FragmentWithTag> newFragments = new ArrayList<>();
@@ -372,6 +362,7 @@ public class SettingsActivity extends AppCompatActivity
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(getString(R.string.app_look_preference_key))) {
+                lastFragment = HEADERS;
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
