@@ -238,7 +238,7 @@ public class SettingsActivity extends AppCompatActivity
         } else {
             lastFragment = HEADERS;
             super.onBackPressed();
-            //super.onBackPressed();
+            super.onBackPressed();
         }
     }
 
