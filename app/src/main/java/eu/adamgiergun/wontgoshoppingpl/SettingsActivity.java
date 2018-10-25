@@ -17,6 +17,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,10 @@ import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
 public class SettingsActivity extends AppCompatActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     private static final String HEADERS = "headers";
     private static final String HEADERS_LAND = "headersWide";
