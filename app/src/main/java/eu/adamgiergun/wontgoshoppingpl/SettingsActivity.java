@@ -5,6 +5,7 @@ import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -350,6 +351,21 @@ public class SettingsActivity extends AppCompatActivity
             addPreferencesFromResource(R.xml.pref_headers);
         }
 
+        @Override
+        public boolean onPreferenceTreeClick(Preference preference) {
+            String title = preference.getTitle().toString();
+            SettingsActivity activity = (SettingsActivity) getActivity();
+            if (activity != null && !activity.isScreenNotWideEnough()) {
+                if (title.equals(getString(R.string.pref_header_look))) {
+                    getListView().getChildAt(0).setBackgroundColor(Color.LTGRAY);
+                    getListView().getChildAt(1).setBackgroundColor(Color.TRANSPARENT);
+                } else {
+                    getListView().getChildAt(1).setBackgroundColor(Color.LTGRAY);
+                    getListView().getChildAt(0).setBackgroundColor(Color.TRANSPARENT);
+                }
+            }
+            return super.onPreferenceTreeClick(preference);
+        }
     }
 
     public static class LookPreferenceFragment extends BasePreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
