@@ -52,12 +52,16 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
     boolean addToCalendar(int reminderDaysBefore, SimpleTime reminderTime, Context context) {
         skipReminderForConsecutiveDays();
         boolean result = true;
+//        int counter = 0; //for testing only
         for (LimitedCommerceDay limitedCommerceDay : this) {
             if (limitedCommerceDay.isReminderNeeded()) {
                 limitedCommerceDay.setReminderDaysBefore(reminderDaysBefore);
                 limitedCommerceDay.setReminderTime(reminderTime);
                 result = result && limitedCommerceDay.addToGoogleCalendar(context);
+//                counter++; //for testing only
             }
+//            if(counter == 3)
+//                break; //for testing only
         }
         return result;
     }

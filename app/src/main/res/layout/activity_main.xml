@@ -26,11 +26,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:id="@+id/list_of_days_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+<!--
         <fragment
             android:id="@+id/list_of_days_fragment"
             android:name="eu.adamgiergun.wontgoshoppingpl.DayFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+-->
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

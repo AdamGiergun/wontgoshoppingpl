@@ -1,11 +1,9 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
-/*  TODO niedziele handlowe
-    TODO potwierdzenie dodania pojedynczej daty do kalendarza
+/*
+    TODO niedziele handlowe (zielone)
     TODO reklamy po dodaniu do kalendarza
     TODO odświeżanie listy głównej zaraz po zmianie ustawienia o pokazywaniu świąt
-    TODO podświetlanie aktywnej sekcji ustawień na tabletach
-    TODO rozdzielenie tagów fragmentów ustawień według trybów portret/panorama
  */
 
 import android.Manifest;
@@ -41,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private int reminderDaysBefore;
     private SimpleTime reminderTime;
     private AppPreferences appPreferences;
+    private boolean addList;
 
     private enum ActionCallingRequest {
         ADD_ALL_EVENTS,
@@ -79,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             ft.commit();
         } else {
             setLook();
+            addFragment(R.id.list_of_days_fragment, new DayFragment());
         }
     }
 
@@ -89,6 +89,16 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             View adViewLayout = findViewById(R.id.adViewLayout);
             adViewLayout.setBackgroundResource(R.drawable.bg_red);
         }
+    }
+
+    private void addFragment(int container, Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment oldFragment = getSupportFragmentManager().findFragmentByTag("list");
+        if (oldFragment != null)
+            ft.detach(oldFragment);
+        ft.add(container, fragment, "list");
+        ft.commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     private void setupAds() {
@@ -115,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                 startSettingsActivity(false);
                 return true;
             case R.id.calendar:
+                addList = true;
                 startWizardForAddingEventsToCalendarIfConditionsAreMet();
                 return true;
             case R.id.help:
@@ -158,7 +169,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             boolean useGoogleCalendar = appPreferences.isUseGoogleCalendarSet(this);
             boolean isCalendarSet = appPreferences.isCalendarSet(this);
             if (useGoogleCalendar && isCalendarSet) {
-                addDayToCalendarDisplayingInfo(day);
+                lastTouchedDayFromList = day;
+                addList = false;
+                askForReminderSettings();
             } else {
                 startSettingsActivity(true);
             }
@@ -167,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         }
     }
 
-    private void addDayToCalendarDisplayingInfo(LimitedCommerceDay day) {
+    private void addDayToCalendar(LimitedCommerceDay day) {
         if (appPreferences.isUseGoogleCalendarSet(this)) {
             setReminderParametersFromPreferences();
             setReminderParametersToDay(day);
@@ -243,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             if (areAllPermissionsGranted(grantResults)) {
                 switch (lastActionCallingRequest) {
                     case ADD_ONE_EVENT:
-                        addDayToCalendarDisplayingInfo(lastTouchedDayFromList);
+                        addDayToCalendar(lastTouchedDayFromList);
                         break;
                     case ADD_ALL_EVENTS:
                         startWizardForAddingEventsToCalendarIfConditionsAreMet();
@@ -271,17 +284,25 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     public void onDialogPositiveClick(AppCompatDialogFragment dialog) {
         if (dialog instanceof AskForKindsOfEventsToAddToCalendar) {
             getUserChoicesOfDaysAddedToCalendar(dialog);
-            startAskingForReminderSettings();
+            askForReminderSettings();
         }
         if (dialog instanceof AskForReminderSettings) {
             getReminderParameters(dialog);
-            ListOfLimitedCommerceDays listOfLimitedCommerceDaysToAddToCalendar =
-                    ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(this, addHolidays, addLimitedCommerceDays);
-            boolean resultIsPositive = listOfLimitedCommerceDaysToAddToCalendar.addToCalendar(
-                    reminderDaysBefore,
-                    reminderTime, this);
-            displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
+            if (addList) {
+                addListToCalendar();
+            } else {
+                addDayToCalendar(lastTouchedDayFromList);
+            }
         }
+    }
+
+    private void addListToCalendar() {
+        ListOfLimitedCommerceDays listOfLimitedCommerceDaysToAddToCalendar =
+                ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(this, addHolidays, addLimitedCommerceDays);
+        boolean resultIsPositive = listOfLimitedCommerceDaysToAddToCalendar.addToCalendar(
+                reminderDaysBefore,
+                reminderTime, this);
+        displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
     }
 
     private void getUserChoicesOfDaysAddedToCalendar(AppCompatDialogFragment dialog) {
@@ -290,8 +311,16 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         addHolidays = myDialog.addHolidays();
     }
 
-    private void startAskingForReminderSettings() {
-        AppCompatDialogFragment dialogFragment = new AskForReminderSettings();
+    private void askForReminderSettings() {
+        AskForReminderSettings dialogFragment = new AskForReminderSettings();
+        dialogFragment.setAddList(addList);
+        if (!addList) {
+            if (lastTouchedDayFromList.isHoliday()) {
+                dialogFragment.setDayDescription(lastTouchedDayFromList.getDescription());
+            } else {
+                dialogFragment.setDayDescription(lastTouchedDayFromList.getDateString());
+            }
+        }
         dialogFragment.show(getSupportFragmentManager(), "dialog");
     }
 
@@ -375,6 +404,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     public static class AskForReminderSettings extends NoticeDialogFragment {
         private int reminderDaysBefore;
         private SimpleTime reminderTime;
+        private boolean addList;
+        private String dayDescription;
 
         @NonNull
         @Override
@@ -386,8 +417,14 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             } else {
                 builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
             }
+            String title;
+            if (addList) {
+                title = getString(R.string.title_reminder);
+            } else {
+                title = getString(R.string.title_reminder_of) + " " + dayDescription ;
+            }
             builder
-                    .setTitle(R.string.title_reminder)
+                    .setTitle(title)
                     .setView(getDialogView())
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -424,6 +461,14 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
         SimpleTime getReminderTime() {
             return reminderTime;
+        }
+
+        void setAddList(boolean addList) {
+            this.addList = addList;
+        }
+
+        void setDayDescription(String dayDescription) {
+            this.dayDescription = dayDescription;
         }
     }
 
@@ -472,102 +517,6 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
             return builder.create();
         }
-    }
-    */
-    /*
-
-    public void askForAddingToGoogleCalendar(View view) {
-        calendarEvent = getCalendarEvent();
-
-        if (calendarEvent != null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.ask_if_repeated)
-                    .setView(setupRepetitionOptionsView())
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            addToGoogleCalendar(calendarEvent);
-                        }
-                    })
-                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            calendarEvent.setNoRepetition();
-                            addToGoogleCalendar(calendarEvent);
-                        }
-                    })
-                    .setNeutralButton(android.R.string.cancel, null);
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            buttonPositiveInRepetitionDialog = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            buttonPositiveInRepetitionDialog.setEnabled(false);
-        }
-    }
-
-    public SimpleCalendarEvent getCalendarEvent() {
-        String calendarId = preferences.getString(getString(R.string.default_calendar_key), getString(eu.adamgiergun.mylibrary.R.string.id_for_default_calendar_not_set));
-        if (calendarId.equals(getString(eu.adamgiergun.mylibrary.R.string.id_for_default_calendar_not_set))) {
-            Toast.makeText(
-                    this,
-                    getString(R.string.error_default_calendar_not_selected),
-                    Toast.LENGTH_SHORT)
-                    .show();
-            return null;
-        } else {
-            SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(calendarId);
-
-            calendarEvent.setTitle(getString(R.string.investment));
-            Calendar expiryDate = getToday();
-            switch (Investment.getTimeUnit()) {
-                case DAY:
-                    expiryDate.add(Calendar.DATE, Investment.getInterval().intValue());
-                    break;
-                case WEEK:
-                    expiryDate.add(Calendar.DATE, 7 * Investment.getInterval().intValue());
-                    break;
-                case MONTH:
-                    expiryDate.add(Calendar.MONTH, Investment.getInterval().intValue());
-                    break;
-                case YEAR:
-                    expiryDate.add(Calendar.YEAR, Investment.getInterval().intValue());
-                    break;
-                default:
-                    break;
-            }
-            int startHour = 23;
-            int startMinute = 0;
-            calendarEvent.setStartCalendar(expiryDate, startHour, startMinute);
-
-            String reminderTime = preferences.getString(getString(R.string.default_reminder_time_key), getString(R.string.default_reminder_time_value));
-            int reminderInMinutes = getTimeDifferenceInMinutes(
-                    TimePreference.getHour(reminderTime),
-                    TimePreference.getMinute(reminderTime),
-                    startHour,
-                    startMinute);
-            calendarEvent.addReminder(
-                    new SimpleCalendarEventReminder(
-                            CalendarContract.Reminders.METHOD_ALERT,
-                            SimpleCalendarEventReminder.Measure.MINUTE,
-                            reminderInMinutes
-                    )
-            );
-
-            return calendarEvent;
-        }
-    }
-
-    private void addToGoogleCalendar(SimpleCalendarEvent calendarEvent) {
-        if (calendarEvent == null || calendarEvent.addCalendarEventToCalendar(this) == SimpleCalendarEvent.NON_EXISTING)
-            Toast.makeText(
-                    this,
-                    getString(R.string.error_not_added_to_calendar),
-                    Toast.LENGTH_SHORT)
-                    .show();
-        else
-            Toast.makeText(
-                    this,
-                    getString(R.string.info_added_to_calendar),
-                    Toast.LENGTH_SHORT)
-                    .show();
     }
     */
 }
