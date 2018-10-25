@@ -362,9 +362,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
             AlertDialog.Builder builder;
             if (appPreferences.isLookRich(getContext())) {
-                builder = new AlertDialog.Builder(getContext());
-            } else {
                 builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
+            } else {
+                builder = new AlertDialog.Builder(getContext());
             }
             builder.setTitle(R.string.title_choose_events)
                     .setMultiChoiceItems(items, checkedItems, listener)
@@ -413,9 +413,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             AlertDialog.Builder builder;
             AppPreferences appPreferences = new AppPreferences(getContext());
             if (appPreferences.isLookRich(getContext())) {
-                builder = new AlertDialog.Builder(getContext());
-            } else {
                 builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
+            } else {
+                builder = new AlertDialog.Builder(getContext());
             }
             String title;
             if (addList) {
