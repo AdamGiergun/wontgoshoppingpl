@@ -12,11 +12,13 @@ import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.*;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import androidx.annotation.*;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private SimpleTime reminderTime;
     private AppPreferences appPreferences;
     private boolean addList;
+    private InterstitialAd mInterstitialAd;
 
     private enum ActionCallingRequest {
         ADD_ALL_EVENTS,
@@ -107,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.sample_interstitial_ad_unit_id));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     @Override
@@ -182,11 +188,20 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     private void addDayToCalendar(LimitedCommerceDay day) {
         if (appPreferences.isUseGoogleCalendarSet(this)) {
+            showBigAd();
             setReminderParametersFromPreferences();
             setReminderParametersToDay(day);
             displayInfo(day.addToGoogleCalendar(this), R.string.info_added_to_calendar, R.string.error_adding_to_calendar_failed);
         } else {
             startSettingsActivity(true);
+        }
+    }
+
+    private void showBigAd() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            Log.d("TAG", "The interstitial wasn't loaded yet.");
         }
     }
 
@@ -297,6 +312,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     private void addListToCalendar() {
+        showBigAd();
         ListOfLimitedCommerceDays listOfLimitedCommerceDaysToAddToCalendar =
                 ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(this, addHolidays, addLimitedCommerceDays);
         boolean resultIsPositive = listOfLimitedCommerceDaysToAddToCalendar.addToCalendar(
