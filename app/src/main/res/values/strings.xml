@@ -22,7 +22,7 @@
     <string name="title_reminder">Reminder</string>
     <string name="title_reminder_of">Reminder of:</string>
     <string name="include_holidays_preference_key" translatable="false">include_holidays</string>
-    <string name="make_purchases_earlier">make purchases earlier!</string>
+    <string name="go_shopping_earlier">go shopping earlier!</string>
 
     <string name="app_look_preference_key" translatable="false">app_look</string>
     <string name="title_app_look">App look</string>

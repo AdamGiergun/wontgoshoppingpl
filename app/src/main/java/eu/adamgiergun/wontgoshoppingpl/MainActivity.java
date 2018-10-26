@@ -2,9 +2,10 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 /*
     TODO niedziele handlowe (zielone)
-    TODO usuń wszystko w ustawieniach
+    TODO "usuń wszystko z Kalendarza" w ustawieniach
     TODO grupa info w ustawieniach
     TODO dodawanie do kalendarza filtr daty
+    TODO zmiana ustawień przypomnień w dialogu podczas dodawania
  */
 
 import android.Manifest;

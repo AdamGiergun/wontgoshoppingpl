@@ -117,7 +117,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
 
     boolean addToGoogleCalendar(Context context) {
         SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(getDefaultCalendarIdFromPreferences(context));
-        calendarEvent.setTitle(description + " - " + context.getString(R.string.make_purchases_earlier));
+        calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
         calendarEvent.setStartCalendar(calendar, time);
         setEndCalendar(calendarEvent);
         calendarEvent.addReminder(CalendarContract.Reminders.METHOD_ALERT, reminderDaysBefore, reminderTime);
