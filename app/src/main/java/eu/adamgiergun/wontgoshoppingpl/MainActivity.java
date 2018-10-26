@@ -2,8 +2,9 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 /*
     TODO niedziele handlowe (zielone)
-    TODO reklamy po dodaniu do kalendarza
-    TODO odświeżanie listy głównej zaraz po zmianie ustawienia o pokazywaniu świąt
+    TODO usuń wszystko w ustawieniach
+    TODO grupa info w ustawieniach
+    TODO dodawanie do kalendarza filtr daty
  */
 
 import android.Manifest;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private AppPreferences appPreferences;
     private boolean addList;
     private InterstitialAd mInterstitialAd;
+    private boolean lastShowHolidays;
 
     private enum ActionCallingRequest {
         ADD_ALL_EVENTS,
@@ -65,12 +67,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setupAds();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        setupBannerAds();
+        lastShowHolidays = appPreferences.showHolidays(this);
         if (appPreferences.isFirstRun(this)) {
             View view = findViewById(R.id.ask_for_look);
             view.setVisibility(View.VISIBLE);
@@ -79,10 +77,23 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.ask_for_look, new AskForLook());
             ft.commit();
+            getSupportFragmentManager().executePendingTransactions();
         } else {
-            setLook();
             addFragment(R.id.list_of_days_fragment, new DayFragment());
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupInterstitialAds();
+        boolean newShowHolidays = appPreferences.showHolidays(this);
+        if (!appPreferences.isFirstRun(this) && lastShowHolidays != newShowHolidays) {
+            addFragment(R.id.list_of_days_fragment, new DayFragment());
+        }
+        lastShowHolidays = newShowHolidays;
+        setLook();
+
     }
 
     private void setLook() {
@@ -104,15 +115,23 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         getSupportFragmentManager().executePendingTransactions();
     }
 
-    private void setupAds() {
+    private void setupBannerAds() {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this, getString(R.string.sample_admob_app_id));
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+    }
+
+    private void setupInterstitialAds() {
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.sample_interstitial_ad_unit_id));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        loadInterstitialAd();
+    }
+
+    private void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequest);
     }
 
     @Override
@@ -202,6 +221,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             mInterstitialAd.show();
         } else {
             Log.d("TAG", "The interstitial wasn't loaded yet.");
+        }
+        if (!mInterstitialAd.isLoading()) {
+            loadInterstitialAd();
         }
     }
 
