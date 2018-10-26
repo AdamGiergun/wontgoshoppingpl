@@ -1,7 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
 /*
-    TODO niedziele handlowe (zielone)
     TODO "usuń wszystko z Kalendarza" w ustawieniach
     TODO grupa info w ustawieniach
     TODO dodawanie do kalendarza filtr daty
@@ -14,7 +13,6 @@ import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.*;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
@@ -22,6 +20,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+
+import java.util.ArrayList;
 
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
@@ -34,18 +34,19 @@ import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
+import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay.Type.*;
+
 public class MainActivity extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener, DayFragment.OnListFragmentInteractionListener {
 
     private ActionCallingRequest lastActionCallingRequest;
     private LimitedCommerceDay lastTouchedDayFromList;
-    private boolean addLimitedCommerceDays;
-    private boolean addHolidays;
+    private ArrayList<LimitedCommerceDay.Type> typesToBeAddedToCalendar;
+    private ArrayList<LimitedCommerceDay.Type> lastTypesToBeDisplayed;
     private int reminderDaysBefore;
     private SimpleTime reminderTime;
     private AppPreferences appPreferences;
     private boolean addList;
     private InterstitialAd mInterstitialAd;
-    private boolean lastShowHolidays;
 
     private enum ActionCallingRequest {
         ADD_ALL_EVENTS,
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupBannerAds();
-        lastShowHolidays = appPreferences.showHolidays(this);
+        lastTypesToBeDisplayed = getTypesToBeDisplayed();
         if (appPreferences.isFirstRun(this)) {
             View view = findViewById(R.id.ask_for_look);
             view.setVisibility(View.VISIBLE);
@@ -84,17 +85,27 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         }
     }
 
+    private ArrayList<LimitedCommerceDay.Type> getTypesToBeDisplayed() {
+        ArrayList<LimitedCommerceDay.Type> types = new ArrayList<>();
+        if (appPreferences.showNonCommerceSundays(this))
+            types.add(NON_COMMERCE_DAY);
+        if (appPreferences.showHolidays(this))
+            types.add(HOLIDAY);
+        if (appPreferences.showCommerceSundays(this))
+            types.add(COMMERCE_SUNDAY);
+        return types;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         setupInterstitialAds();
-        boolean newShowHolidays = appPreferences.showHolidays(this);
-        if (!appPreferences.isFirstRun(this) && lastShowHolidays != newShowHolidays) {
+        ArrayList<LimitedCommerceDay.Type> newTypesToBeDisplayed = getTypesToBeDisplayed();
+        if (!appPreferences.isFirstRun(this) && lastTypesToBeDisplayed.size() != newTypesToBeDisplayed.size()) {
             addFragment(R.id.list_of_days_fragment, new DayFragment());
         }
-        lastShowHolidays = newShowHolidays;
+        lastTypesToBeDisplayed = newTypesToBeDisplayed;
         setLook();
-
     }
 
     private void setLook() {
@@ -220,8 +231,6 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private void showBigAd() {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
-        } else {
-            Log.d("TAG", "The interstitial wasn't loaded yet.");
         }
         if (!mInterstitialAd.isLoading()) {
             loadInterstitialAd();
@@ -337,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private void addListToCalendar() {
         showBigAd();
         ListOfLimitedCommerceDays listOfLimitedCommerceDaysToAddToCalendar =
-                ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(this, addHolidays, addLimitedCommerceDays);
+                ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(this, typesToBeAddedToCalendar);
         boolean resultIsPositive = listOfLimitedCommerceDaysToAddToCalendar.addToCalendar(
                 reminderDaysBefore,
                 reminderTime, this);
@@ -346,15 +355,14 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     private void getUserChoicesOfDaysAddedToCalendar(AppCompatDialogFragment dialog) {
         AskForKindsOfEventsToAddToCalendar myDialog = (AskForKindsOfEventsToAddToCalendar) dialog;
-        addLimitedCommerceDays = myDialog.addLimitedCommerceDays();
-        addHolidays = myDialog.addHolidays();
+        typesToBeAddedToCalendar = myDialog.getLimitedCommerceDayTypes();
     }
 
     private void askForReminderSettings() {
         AskForReminderSettings dialogFragment = new AskForReminderSettings();
         dialogFragment.setAddList(addList);
         if (!addList) {
-            if (lastTouchedDayFromList.isHoliday()) {
+            if (lastTouchedDayFromList.getType() == HOLIDAY) {
                 dialogFragment.setDayDescription(lastTouchedDayFromList.getDescription());
             } else {
                 dialogFragment.setDayDescription(lastTouchedDayFromList.getDateString());
@@ -376,20 +384,24 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     public static class AskForKindsOfEventsToAddToCalendar extends NoticeDialogFragment {
         private Button dialogButtonPositive;
-        private boolean addLimitedCommerceDays;
+        private boolean addCommerceSundays;
         private boolean addHolidays;
+        private boolean addNonCommerceDays;
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             CharSequence[] items = new CharSequence[]
                     {getString(R.string.days_of_limited_commerce),
-                    getString(R.string.holidays)};
+                    getString(R.string.holidays),
+                    getString(R.string.commerce_sundays)};
 
-            final boolean[] checkedItems = new boolean[2];
-            checkedItems[0] = true;
-            AppPreferences appPreferences = new AppPreferences(getContext());
-            checkedItems[1] = appPreferences.showHolidays(getContext());
+            Context context = getContext();
+            AppPreferences appPreferences = new AppPreferences(context);
+            final boolean[] checkedItems = new boolean[3];
+            checkedItems[0] = appPreferences.showNonCommerceSundays(context);
+            checkedItems[1] = appPreferences.showHolidays(context);
+            checkedItems[2] = appPreferences.showCommerceSundays(context);
 
             DialogInterface.OnMultiChoiceClickListener listener = new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
@@ -409,8 +421,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                     .setMultiChoiceItems(items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            addLimitedCommerceDays = checkedItems[0];
+                            addNonCommerceDays = checkedItems[0];
                             addHolidays = checkedItems[1];
+                            addCommerceSundays = checkedItems[2];
                             noticeDialogListener.onDialogPositiveClick(AskForKindsOfEventsToAddToCalendar.this);
                         }
                     })
@@ -422,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             AlertDialog dialog = builder.create();
             dialog.show();
             dialogButtonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            dialogButtonPositive.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
             return dialog;
         }
 
@@ -431,12 +445,15 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             return false;
         }
 
-        boolean addLimitedCommerceDays() {
-            return addLimitedCommerceDays;
-        }
-
-        boolean addHolidays() {
-            return addHolidays;
+        ArrayList<LimitedCommerceDay.Type>  getLimitedCommerceDayTypes() {
+            ArrayList<LimitedCommerceDay.Type> types = new ArrayList<>();
+            if (addNonCommerceDays)
+                types.add(NON_COMMERCE_DAY);
+            if (addHolidays)
+                types.add(HOLIDAY);
+            if (addCommerceSundays)
+                types.add(COMMERCE_SUNDAY);
+            return types;
         }
     }
 

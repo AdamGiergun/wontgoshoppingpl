@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.*;
 import android.widget.TextView;
@@ -51,20 +52,37 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
             }
         });
         if (isLookRich) {
-            if (day.isHoliday()) {
-                holder.cardView.setBackgroundResource(R.drawable.card_bg_red);
-            } else {
-                holder.cardView.setBackgroundResource(R.drawable.card_bg_orange);
+            switch (day.getType()) {
+                case HOLIDAY:
+                    holder.cardView.setBackgroundResource(R.drawable.card_bg_red);
+                    break;
+                case NON_COMMERCE_DAY:
+                    holder.cardView.setBackgroundResource(R.drawable.card_bg_orange);
+                    break;
+                case COMMERCE_SUNDAY:
+                    holder.cardView.setBackgroundResource(R.drawable.card_bg_green);
+                    break;
+                default:
+                    break;
             }
         } else {
-            if (day.isHoliday()) {
-                holder.cardView.setCardBackgroundColor(Color.parseColor("#FF0000"));
-            } else {
-                holder.cardView.setCardBackgroundColor(Color.parseColor("#FF1493"));
+            Resources resources = holder.cardView.getResources();
+            switch (day.getType()) {
+                case HOLIDAY:
+                    holder.cardView.setCardBackgroundColor(Color.parseColor("#FF0000"));
+                    break;
+                case NON_COMMERCE_DAY:
+                    holder.cardView.setCardBackgroundColor(Color.parseColor("#FF1493"));
+                    break;
+                case COMMERCE_SUNDAY:
+                    holder.cardView.setCardBackgroundColor(resources.getColor(android.R.color.holo_green_dark));
+                    break;
+                default:
+                    break;
             }
             float density = holder.cardView.getContext().getResources().getDisplayMetrics().density;
-            holder.cardView.setRadius(8*density);
-            holder.cardView.setCardElevation(4*density);
+            holder.cardView.setRadius(8 * density);
+            holder.cardView.setCardElevation(4 * density);
         }
     }
 

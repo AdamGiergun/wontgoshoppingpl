@@ -10,8 +10,18 @@ class AppPreferences extends MyAppPreferences {
         super(context);
     }
 
+    boolean showCommerceSundays(Context context) {
+        String key = context.getString(R.string.include_commerce_sundays_preference_key);
+        return getBoolean(key, true);
+    }
+
     boolean showHolidays(Context context) {
         String key = context.getString(R.string.include_holidays_preference_key);
+        return getBoolean(key, true);
+    }
+
+    boolean showNonCommerceSundays(Context context) {
+        String key = context.getString(R.string.include_non_commerce_days_preference_key);
         return getBoolean(key, true);
     }
 

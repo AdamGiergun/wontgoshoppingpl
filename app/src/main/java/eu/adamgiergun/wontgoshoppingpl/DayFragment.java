@@ -2,68 +2,55 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.*;
 
+import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay.Type.*;
+
 public class DayFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener listener;
 
     public DayFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static DayFragment newInstance(int columnCount) {
-        DayFragment fragment = new DayFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_day_list, container, false);
-
-        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//            Calendar calStart = Calendar.getInstance();
             DayRecyclerViewAdapter dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getListOfLimitedCommerceDays(context), listener);
             boolean isLookRich = new AppPreferences(getContext()).isLookRich(getContext());
             dayRecyclerViewAdapter.setLookRich(isLookRich);
             recyclerView.setAdapter(dayRecyclerViewAdapter);
+/*            Calendar calEnd = Calendar.getInstance();
+            Long timeDifference = calEnd.getTimeInMillis() - calStart.getTimeInMillis();
+            Log.d("TIME", String.valueOf(timeDifference));
+*/
         }
         return view;
     }
 
     private ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context) {
         AppPreferences appPreferences = new AppPreferences(context);
-        boolean includeHolidays = appPreferences.showHolidays(context);
-        return ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(context, includeHolidays, true);
+        ArrayList<LimitedCommerceDay.Type> types = new ArrayList<>();
+        if (appPreferences.showHolidays(context))
+            types.add(HOLIDAY);
+        if (appPreferences.showNonCommerceSundays(context))
+            types.add(NON_COMMERCE_DAY);
+        if (appPreferences.showCommerceSundays(context))
+            types.add(COMMERCE_SUNDAY);
+        return ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(context, types);
     }
 
     @Override

@@ -7,21 +7,12 @@ import java.util.*;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 
+import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay.Type.*;
+
 class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
-    private ListOfLimitedCommerceDays(Resources resources, int idOfArray) {
+    private ListOfLimitedCommerceDays() {
         super();
-        String[] array = resources.getStringArray(idOfArray);
-        Calendar yesterday = getYesterday();
-        for (String item : array) {
-            LimitedCommerceDay day = new LimitedCommerceDay(item);
-            if (idOfArray == R.array.holidays)
-                day.setHoliday(true);
-            else
-                day.setHoliday(false);
-            if (day.compareTo(yesterday) > 0)
-                this.add(day);
-        }
     }
 
     private Calendar getYesterday() {
@@ -30,23 +21,52 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return yesterday;
     }
 
-    static ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context, boolean includeHolidays, boolean includeOtherLimitedCommerceDays) {
+    static ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context, ArrayList<LimitedCommerceDay.Type> includedDaysTypes) {
         Resources resources = context.getResources();
-        ListOfLimitedCommerceDays nonCommerceDays;
-        if (includeOtherLimitedCommerceDays) {
-            nonCommerceDays = new ListOfLimitedCommerceDays(resources, R.array.non_commerce_days);
-            if (includeHolidays) {
-                nonCommerceDays.addHolidaysArray(resources);
+        ListOfLimitedCommerceDays days = new ListOfLimitedCommerceDays();
+        Iterator<LimitedCommerceDay.Type> typeIterator = includedDaysTypes.iterator();
+        LimitedCommerceDay.Type type;
+        while (typeIterator.hasNext()) {
+            type = typeIterator.next();
+            switch (type) {
+                case NON_COMMERCE_DAY:
+                    days.addArray(resources, R.array.non_commerce_days);
+                    break;
+                case COMMERCE_SUNDAY:
+                    days.addArray(resources, R.array.commerce_sundays);
+                    break;
+                case HOLIDAY:
+                    days.addArray(resources, R.array.holidays);
+                    break;
+                default:
+                    break;
             }
-        } else {
-            nonCommerceDays = new ListOfLimitedCommerceDays(resources, R.array.holidays);
         }
-        Collections.sort(nonCommerceDays);
-        return nonCommerceDays;
+        Collections.sort(days);
+        return days;
     }
 
-    private void addHolidaysArray(Resources resources) {
-        this.addAll(new ListOfLimitedCommerceDays(resources, R.array.holidays));
+    private void addArray(Resources resources, int idOfArray) {
+        String[] array = resources.getStringArray(idOfArray);
+        Calendar yesterday = getYesterday();
+        LimitedCommerceDay day;
+        for (String item : array) {
+            day = new LimitedCommerceDay(item);
+            if (day.compareTo(yesterday) > 0) {
+                switch (idOfArray) {
+                    case R.array.holidays:
+                        day.setType(HOLIDAY);
+                        break;
+                    case R.array.non_commerce_days:
+                        day.setType(NON_COMMERCE_DAY);
+                        break;
+                    case R.array.commerce_sundays:
+                        day.setType(COMMERCE_SUNDAY);
+                        break;
+                }
+                this.add(day);
+            }
+        }
     }
 
     boolean addToCalendar(int reminderDaysBefore, SimpleTime reminderTime, Context context) {
@@ -76,7 +96,8 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
                 day = nextDay;
                 previousDay = day;
                 nextDay = iterator.next();
-                while (nextDay.isDay(previousDay.getTomorrow())) {
+                while ((nextDay.getType() != COMMERCE_SUNDAY)
+                        && nextDay.isDay(previousDay.getTomorrow())) {
                     nextDay.setReminderNeeded(false);
                     day.incrementNoOfConsecutiveDays();
                     day.addToDescription(nextDay.getDescription());

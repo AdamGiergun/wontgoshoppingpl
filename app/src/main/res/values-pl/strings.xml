@@ -12,15 +12,26 @@
     <string name="error_sth_went_wrong">Błąd.\nCoś poszło źle.</string>
     <string name="title_activity_settings">Ustawienia</string>
     <string name="title_activity_help">Pomoc</string>
+
     <string name="title_show_holidays">Pokazuj święta</string>
-    <string name="summary_show_holidays_on">Pokazuj na liście również święta</string>
-    <string name="summary_show_holidays_off">Nie pokazuj na liście świąt</string>
+    <string name="summary_show_holidays_on">Pokazuj na liście</string>
+    <string name="summary_show_holidays_off">Nie pokazuj na liście</string>
+
+    <string name="title_show_non_commerce_days">Pokazuj dni z ograniczeniami w handlu</string>
+    <string name="summary_show_non_commerce_days_on">Pokazuj na liście</string>
+    <string name="summary_show_non_commerce_days_off">Nie pokazuj na liście</string>
+
+    <string name="title_show_commerce_sundays">Pokazuj niedziele handlowe</string>
+    <string name="summary_show_commerce_sundays_on">Pokazuj na liście</string>
+    <string name="summary_show_commerce_sundays_off">Nie pokazuj na liście</string>
+
     <string name="remind_me">Przypomnij mi</string>
     <string name="days_before">dni wcześniej,</string>
     <string name="at">o</string>
     <string name="title_reminder">Przypomnienie</string>
     <string name="title_reminder_of">Przypomnienie o:</string>
     <string name="go_shopping_earlier">zrób zakupy wcześniej!</string>
+    <string name="go_shopping">zrób zakupy!</string>
 
     <string name="title_app_look">Wygląd aplikacji</string>
     <string name="summary_app_look_mini">Mini</string>
@@ -30,4 +41,5 @@
 
     <string name="pref_header_look">Wygląd</string>
     <string name="pref_header_notifications">Powiadomienia</string>
+    <string name="commerce_sundays">Niedziele handlowe</string>
 </resources>

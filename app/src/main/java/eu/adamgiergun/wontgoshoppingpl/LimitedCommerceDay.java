@@ -13,7 +13,12 @@ import java.util.Calendar;
 import java.util.Locale;
 
 class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
-    private static int DATE_STRING_END = 10;
+
+    enum Type {
+        NON_COMMERCE_DAY,
+        HOLIDAY,
+        COMMERCE_SUNDAY
+    }
 
     private String name;
     private Calendar calendar;
@@ -21,9 +26,9 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     private SimpleTime time;
     private int reminderDaysBefore;
     private SimpleTime reminderTime;
-    private boolean isHoliday;
     private String description;
     private boolean isReminderNeeded;
+    private Type type;
 
     LimitedCommerceDay(String item) {
         String[] pieces = item.split(",");
@@ -117,7 +122,11 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
 
     boolean addToGoogleCalendar(Context context) {
         SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(getDefaultCalendarIdFromPreferences(context));
-        calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
+        if (type == Type.COMMERCE_SUNDAY) {
+            calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping));
+        } else {
+            calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
+        }
         calendarEvent.setStartCalendar(calendar, time);
         setEndCalendar(calendarEvent);
         calendarEvent.addReminder(CalendarContract.Reminders.METHOD_ALERT, reminderDaysBefore, reminderTime);
@@ -136,19 +145,19 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         return appPreferences.getDefaultCalendarId(context);
     }
 
-    boolean isHoliday() {
-        return isHoliday;
-    }
-
-    void setHoliday(boolean isHoliday) {
-        this.isHoliday = isHoliday;
-    }
-
     boolean isReminderNeeded() {
         return isReminderNeeded;
     }
 
     void setReminderNeeded(boolean isReminderNeeded) {
         this.isReminderNeeded = isReminderNeeded;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 }
