@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         super.onResume();
         setupInterstitialAds();
         LimitedCommerceDayType.TypesList newTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(this);
-        if (!appPreferences.isFirstRun(this) && lastTypesToBeDisplayed.size() != newTypesToBeDisplayed.size()) {
+        if (!appPreferences.isFirstRun(this) && !lastTypesToBeDisplayed.equals(newTypesToBeDisplayed)) {
             addFragment(R.id.list_of_days_fragment, new DayFragment());
         }
         lastTypesToBeDisplayed = newTypesToBeDisplayed;
