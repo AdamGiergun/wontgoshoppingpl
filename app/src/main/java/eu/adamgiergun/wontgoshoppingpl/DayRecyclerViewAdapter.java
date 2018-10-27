@@ -2,11 +2,13 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.*;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import eu.adamgiergun.wontgoshoppingpl.DayFragment.OnListFragmentInteractionListener;
@@ -52,34 +54,40 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
             }
         });
         if (isLookRich) {
+            int backgroundResource;
             switch (day.getType()) {
                 case HOLIDAY:
-                    holder.cardView.setBackgroundResource(R.drawable.card_bg_red);
+                    backgroundResource = R.drawable.card_bg_red;
                     break;
                 case NON_COMMERCE_DAY:
-                    holder.cardView.setBackgroundResource(R.drawable.card_bg_orange);
+                    backgroundResource = R.drawable.card_bg_orange;
                     break;
                 case COMMERCE_SUNDAY:
-                    holder.cardView.setBackgroundResource(R.drawable.card_bg_green);
+                    backgroundResource = R.drawable.card_bg_green;
                     break;
                 default:
+                    backgroundResource = 0;
                     break;
             }
+            holder.cardView.setBackgroundResource(backgroundResource);
         } else {
-            Resources resources = holder.cardView.getResources();
+            int color;
             switch (day.getType()) {
                 case HOLIDAY:
-                    holder.cardView.setCardBackgroundColor(Color.parseColor("#FF0000"));
+                    color = Color.parseColor("#FF0000");
                     break;
                 case NON_COMMERCE_DAY:
-                    holder.cardView.setCardBackgroundColor(Color.parseColor("#FF1493"));
+                    color = Color.parseColor("#FF1493");
                     break;
                 case COMMERCE_SUNDAY:
-                    holder.cardView.setCardBackgroundColor(resources.getColor(android.R.color.holo_green_dark));
+                    color = ContextCompat.getColor(holder.cardView.getContext(), android.R.color.holo_green_dark);
                     break;
                 default:
+                    color = 0;
                     break;
             }
+            holder.cardView.setCardBackgroundColor(color);
+
             float density = holder.cardView.getContext().getResources().getDisplayMetrics().density;
             holder.cardView.setRadius(8 * density);
             holder.cardView.setCardElevation(4 * density);
