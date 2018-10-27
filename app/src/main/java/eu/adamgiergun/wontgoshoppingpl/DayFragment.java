@@ -2,17 +2,11 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.*;
-
-import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay.Type.*;
 
 public class DayFragment extends Fragment {
 
@@ -30,7 +24,7 @@ public class DayFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 //            Calendar calStart = Calendar.getInstance();
             DayRecyclerViewAdapter dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getListOfLimitedCommerceDays(context), listener);
-            boolean isLookRich = new AppPreferences(getContext()).isLookRich(getContext());
+            boolean isLookRich = new AppPreferences(context).isLookRich(context);
             dayRecyclerViewAdapter.setLookRich(isLookRich);
             recyclerView.setAdapter(dayRecyclerViewAdapter);
 /*            Calendar calEnd = Calendar.getInstance();
@@ -43,13 +37,7 @@ public class DayFragment extends Fragment {
 
     private ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context) {
         AppPreferences appPreferences = new AppPreferences(context);
-        ArrayList<LimitedCommerceDay.Type> types = new ArrayList<>();
-        if (appPreferences.showHolidays(context))
-            types.add(HOLIDAY);
-        if (appPreferences.showNonCommerceSundays(context))
-            types.add(NON_COMMERCE_DAY);
-        if (appPreferences.showCommerceSundays(context))
-            types.add(COMMERCE_SUNDAY);
+        LimitedCommerceDayType.TypesList types = appPreferences.getLimitedCommerceDayTypes(context);
         return ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(context, types);
     }
 

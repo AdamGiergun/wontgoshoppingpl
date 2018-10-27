@@ -21,27 +21,23 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
-import java.util.ArrayList;
-
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
-
-import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay.Type.*;
 
 public class MainActivity extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener, DayFragment.OnListFragmentInteractionListener {
 
     private ActionCallingRequest lastActionCallingRequest;
     private LimitedCommerceDay lastTouchedDayFromList;
-    private ArrayList<LimitedCommerceDay.Type> typesToBeAddedToCalendar;
-    private ArrayList<LimitedCommerceDay.Type> lastTypesToBeDisplayed;
+    private LimitedCommerceDayType.TypesList typesToBeAddedToCalendar;
+    private LimitedCommerceDayType.TypesList lastTypesToBeDisplayed;
     private int reminderDaysBefore;
     private SimpleTime reminderTime;
     private AppPreferences appPreferences;
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupBannerAds();
-        lastTypesToBeDisplayed = getTypesToBeDisplayed();
+        lastTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(this);
         if (appPreferences.isFirstRun(this)) {
             View view = findViewById(R.id.ask_for_look);
             view.setVisibility(View.VISIBLE);
@@ -85,22 +81,11 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         }
     }
 
-    private ArrayList<LimitedCommerceDay.Type> getTypesToBeDisplayed() {
-        ArrayList<LimitedCommerceDay.Type> types = new ArrayList<>();
-        if (appPreferences.showNonCommerceSundays(this))
-            types.add(NON_COMMERCE_DAY);
-        if (appPreferences.showHolidays(this))
-            types.add(HOLIDAY);
-        if (appPreferences.showCommerceSundays(this))
-            types.add(COMMERCE_SUNDAY);
-        return types;
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         setupInterstitialAds();
-        ArrayList<LimitedCommerceDay.Type> newTypesToBeDisplayed = getTypesToBeDisplayed();
+        LimitedCommerceDayType.TypesList newTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(this);
         if (!appPreferences.isFirstRun(this) && lastTypesToBeDisplayed.size() != newTypesToBeDisplayed.size()) {
             addFragment(R.id.list_of_days_fragment, new DayFragment());
         }
@@ -362,11 +347,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         AskForReminderSettings dialogFragment = new AskForReminderSettings();
         dialogFragment.setAddList(addList);
         if (!addList) {
-            if (lastTouchedDayFromList.getType() == HOLIDAY) {
-                dialogFragment.setDayDescription(lastTouchedDayFromList.getDescription());
-            } else {
-                dialogFragment.setDayDescription(lastTouchedDayFromList.getDateString());
-            }
+            dialogFragment.setDayDescription(
+                    lastTouchedDayFromList.getDescriptionForDialog());
         }
         dialogFragment.show(getSupportFragmentManager(), "dialog");
     }
@@ -399,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             Context context = getContext();
             AppPreferences appPreferences = new AppPreferences(context);
             final boolean[] checkedItems = new boolean[3];
-            checkedItems[0] = appPreferences.showNonCommerceSundays(context);
+            checkedItems[0] = appPreferences.showNonCommerceDays(context);
             checkedItems[1] = appPreferences.showHolidays(context);
             checkedItems[2] = appPreferences.showCommerceSundays(context);
 
@@ -445,15 +427,11 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             return false;
         }
 
-        ArrayList<LimitedCommerceDay.Type>  getLimitedCommerceDayTypes() {
-            ArrayList<LimitedCommerceDay.Type> types = new ArrayList<>();
-            if (addNonCommerceDays)
-                types.add(NON_COMMERCE_DAY);
-            if (addHolidays)
-                types.add(HOLIDAY);
-            if (addCommerceSundays)
-                types.add(COMMERCE_SUNDAY);
-            return types;
+        LimitedCommerceDayType.TypesList getLimitedCommerceDayTypes() {
+            return LimitedCommerceDayType.getTypes(
+                    addNonCommerceDays,
+                    addHolidays,
+                    addCommerceSundays);
         }
     }
 

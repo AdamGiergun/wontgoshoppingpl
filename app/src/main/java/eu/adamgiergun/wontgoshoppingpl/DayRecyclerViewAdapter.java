@@ -1,8 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.Build;
 import android.view.*;
 import android.widget.TextView;
 

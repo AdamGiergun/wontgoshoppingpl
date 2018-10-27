@@ -3,11 +3,15 @@ package eu.adamgiergun.wontgoshoppingpl;
 import android.content.Context;
 import android.content.res.Resources;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 
-import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay.Type.*;
+import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDayType.*;
 
 class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
@@ -21,11 +25,11 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return yesterday;
     }
 
-    static ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context, ArrayList<LimitedCommerceDay.Type> includedDaysTypes) {
+    static ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context, TypesList includedDaysTypes) {
         Resources resources = context.getResources();
         ListOfLimitedCommerceDays days = new ListOfLimitedCommerceDays();
-        Iterator<LimitedCommerceDay.Type> typeIterator = includedDaysTypes.iterator();
-        LimitedCommerceDay.Type type;
+        Iterator<LimitedCommerceDayType> typeIterator = includedDaysTypes.iterator();
+        LimitedCommerceDayType type;
         while (typeIterator.hasNext()) {
             type = typeIterator.next();
             switch (type) {

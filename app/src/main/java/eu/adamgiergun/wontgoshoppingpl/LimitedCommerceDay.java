@@ -14,12 +14,6 @@ import java.util.Locale;
 
 class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
 
-    enum Type {
-        NON_COMMERCE_DAY,
-        HOLIDAY,
-        COMMERCE_SUNDAY
-    }
-
     private String name;
     private Calendar calendar;
     private int noOfConsecutiveDays;
@@ -28,7 +22,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     private SimpleTime reminderTime;
     private String description;
     private boolean isReminderNeeded;
-    private Type type;
+    private LimitedCommerceDayType type;
 
     LimitedCommerceDay(String item) {
         String[] pieces = item.split(",");
@@ -81,6 +75,14 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         return description;
     }
 
+    String getDescriptionForDialog() {
+        if (type == LimitedCommerceDayType.HOLIDAY) {
+            return description;
+        } else {
+            return getDateString();
+        }
+    }
+
     String getDateString() {
         String date = DateFormat.getDateInstance().format(calendar.getTime());
         String nameOfWeekday = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
@@ -122,7 +124,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
 
     boolean addToGoogleCalendar(Context context) {
         SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(getDefaultCalendarIdFromPreferences(context));
-        if (type == Type.COMMERCE_SUNDAY) {
+        if (type == LimitedCommerceDayType.COMMERCE_SUNDAY) {
             calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping));
         } else {
             calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
@@ -153,11 +155,11 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         this.isReminderNeeded = isReminderNeeded;
     }
 
-    public Type getType() {
+    public LimitedCommerceDayType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(LimitedCommerceDayType type) {
         this.type = type;
     }
 }

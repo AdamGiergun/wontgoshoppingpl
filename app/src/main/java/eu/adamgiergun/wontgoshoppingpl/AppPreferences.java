@@ -20,7 +20,7 @@ class AppPreferences extends MyAppPreferences {
         return getBoolean(key, true);
     }
 
-    boolean showNonCommerceSundays(Context context) {
+    boolean showNonCommerceDays(Context context) {
         String key = context.getString(R.string.include_non_commerce_days_preference_key);
         return getBoolean(key, true);
     }
@@ -33,5 +33,12 @@ class AppPreferences extends MyAppPreferences {
     void setLookRich(Context context, boolean value) {
         String key = context.getString(R.string.app_look_preference_key);
         putBoolean(key, value);
+    }
+
+    LimitedCommerceDayType.TypesList getLimitedCommerceDayTypes(Context context) {
+        return LimitedCommerceDayType.getTypes(
+                showNonCommerceDays(context),
+                showHolidays(context),
+                showCommerceSundays(context));
     }
 }
