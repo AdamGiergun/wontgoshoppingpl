@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private AppPreferences appPreferences;
     private boolean addList;
     private InterstitialAd mInterstitialAd;
+//    private Calendar calStart;
 
     private enum ActionCallingRequest {
         ADD_ALL_EVENTS,
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     @Override
     public Resources.Theme getTheme() {
+//        calStart = Calendar.getInstance();
         Resources.Theme theme = super.getTheme();
         appPreferences = new AppPreferences(this);
         if (appPreferences.isLookRich(this)) {
@@ -67,17 +69,15 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         setContentView(R.layout.activity_main);
         setupBannerAds();
         lastTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(this);
+
+//        Calendar calEnd = Calendar.getInstance();
+//        String timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
+//        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
+
         if (appPreferences.isFirstRun(this)) {
-            View view = findViewById(R.id.ask_for_look);
-            view.setVisibility(View.VISIBLE);
-            view = findViewById(R.id.recycler_view);
-            view.setVisibility(View.GONE);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.ask_for_look, new AskForLook());
-            ft.commit();
-            getSupportFragmentManager().executePendingTransactions();
+            addFragment(R.id.main_fragment, new AskForLook());
         } else {
-            addFragment(R.id.list_of_days_fragment, new DayFragment());
+            addFragment(R.id.main_fragment, new DayFragment());
         }
     }
 
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         setupInterstitialAds();
         LimitedCommerceDayType.TypesList newTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(this);
         if (!appPreferences.isFirstRun(this) && !lastTypesToBeDisplayed.equals(newTypesToBeDisplayed)) {
-            addFragment(R.id.list_of_days_fragment, new DayFragment());
+            addFragment(R.id.main_fragment, new DayFragment());
         }
         lastTypesToBeDisplayed = newTypesToBeDisplayed;
         setLook();
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     private void setLook() {
         if (appPreferences.isLookRich(this)) {
-            View recyclerView = findViewById(R.id.recycler_view);
+            View recyclerView = findViewById(R.id.main_view);
             recyclerView.setBackgroundResource(R.drawable.bg_red);
             View adViewLayout = findViewById(R.id.adViewLayout);
             adViewLayout.setBackgroundResource(R.drawable.bg_red);

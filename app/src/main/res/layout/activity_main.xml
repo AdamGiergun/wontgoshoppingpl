@@ -6,16 +6,8 @@
     android:layout_height="match_parent"
     tools:context="eu.adamgiergun.wontgoshoppingpl.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/ask_for_look"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:visibility="gone" />
-
     <LinearLayout
-        android:id="@+id/recycler_view"
+        android:id="@+id/main_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="3dp"
@@ -27,17 +19,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/list_of_days_fragment"
+            android:id="@+id/main_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
-<!--
-        <fragment
-            android:id="@+id/list_of_days_fragment"
-            android:name="eu.adamgiergun.wontgoshoppingpl.DayFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
--->
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
