@@ -1,11 +1,11 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
-import android.provider.CalendarContract;
 
 import androidx.annotation.NonNull;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 
 import java.text.DateFormat;
@@ -18,10 +18,9 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     private Calendar calendar;
     private int noOfConsecutiveDays;
     private SimpleTime time;
-    private int reminderDaysBefore;
-    private SimpleTime reminderTime;
+    private SimpleReminder reminder;
     private String description;
-    private boolean isReminderNeeded;
+    private boolean reminderNeeded;
     private LimitedCommerceDayType type;
 
     LimitedCommerceDay(String item) {
@@ -30,7 +29,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         setDay(pieces[0]);
         name = pieces[2];
         description = name;
-        isReminderNeeded = true;
+        reminderNeeded = true;
         noOfConsecutiveDays = 0;
     }
 
@@ -114,12 +113,8 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         return day.compareTo(this.calendar) == 0;
     }
 
-    void setReminderDaysBefore (int daysBefore) {
-        reminderDaysBefore = daysBefore;
-    }
-
-    void setReminderTime (SimpleTime time) {
-        reminderTime = time;
+    void setReminder(SimpleReminder reminder) {
+        this.reminder = reminder;
     }
 
     boolean addToGoogleCalendar(Context context) {
@@ -131,7 +126,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         }
         calendarEvent.setStartCalendar(calendar, time);
         setEndCalendar(calendarEvent);
-        calendarEvent.addReminder(CalendarContract.Reminders.METHOD_ALERT, reminderDaysBefore, reminderTime);
+        calendarEvent.addReminder(reminder);
         return (calendarEvent.write(context) > 0L);
     }
 
@@ -148,11 +143,11 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     }
 
     boolean isReminderNeeded() {
-        return isReminderNeeded;
+        return reminderNeeded;
     }
 
-    void setReminderNeeded(boolean isReminderNeeded) {
-        this.isReminderNeeded = isReminderNeeded;
+    void setReminderNotNeeded() {
+        this.reminderNeeded = false;
     }
 
     public LimitedCommerceDayType getType() {

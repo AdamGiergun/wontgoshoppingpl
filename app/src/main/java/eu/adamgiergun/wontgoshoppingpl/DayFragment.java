@@ -42,7 +42,7 @@ public class DayFragment extends Fragment {
     private ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context) {
         AppPreferences appPreferences = new AppPreferences(context);
         LimitedCommerceDayType.TypesList types = appPreferences.getLimitedCommerceDayTypes(context);
-        return ListOfLimitedCommerceDays.getListOfLimitedCommerceDays(context, types);
+        return ListOfLimitedCommerceDays.getList(context, types);
     }
 
     @Override

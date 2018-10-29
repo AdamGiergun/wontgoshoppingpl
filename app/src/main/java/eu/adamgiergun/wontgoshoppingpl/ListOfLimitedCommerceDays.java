@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 
 import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDayType.*;
 
@@ -25,7 +25,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return yesterday;
     }
 
-    static ListOfLimitedCommerceDays getListOfLimitedCommerceDays(Context context, TypesList includedDaysTypes) {
+    static ListOfLimitedCommerceDays getList(Context context, TypesList includedDaysTypes) {
         Resources resources = context.getResources();
         ListOfLimitedCommerceDays days = new ListOfLimitedCommerceDays();
         Iterator<LimitedCommerceDayType> typeIterator = includedDaysTypes.iterator();
@@ -73,19 +73,14 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         }
     }
 
-    boolean addToCalendar(int reminderDaysBefore, SimpleTime reminderTime, Context context) {
+    boolean addToCalendar(Context context, SimpleReminder reminder) {
         skipReminderForConsecutiveDays();
         boolean result = true;
-//        int counter = 0; //for testing only
-        for (LimitedCommerceDay limitedCommerceDay : this) {
-            if (limitedCommerceDay.isReminderNeeded()) {
-                limitedCommerceDay.setReminderDaysBefore(reminderDaysBefore);
-                limitedCommerceDay.setReminderTime(reminderTime);
-                result = result && limitedCommerceDay.addToGoogleCalendar(context);
-//                counter++; //for testing only
+        for (LimitedCommerceDay day : this) {
+            if (day.isReminderNeeded()) {
+                day.setReminder(reminder);
+                result = result && day.addToGoogleCalendar(context);
             }
-//            if(counter == 3)
-//                break; //for testing only
         }
         return result;
     }
@@ -102,7 +97,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
                 nextDay = iterator.next();
                 while ((nextDay.getType() != COMMERCE_SUNDAY)
                         && nextDay.isDay(previousDay.getTomorrow())) {
-                    nextDay.setReminderNeeded(false);
+                    nextDay.setReminderNotNeeded();
                     day.incrementNoOfConsecutiveDays();
                     day.addToDescription(nextDay.getDescription());
                     if (iterator.hasNext()) {
