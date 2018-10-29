@@ -5,6 +5,7 @@ package eu.adamgiergun.wontgoshoppingpl;
     TODO grupa info w ustawieniach
     TODO dodawanie do kalendarza filtr daty
     TODO zmiana ustawień przypomnień w dialogu podczas dodawania
+    TODO wyłącz dostęp do opcji w menu przed first_use
  */
 
 import android.Manifest;
@@ -21,6 +22,9 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -34,19 +38,19 @@ import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
 public class MainActivity extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener, DayFragment.OnListFragmentInteractionListener {
 
-    private ActionCallingRequest lastActionCallingRequest;
-    private LimitedCommerceDay lastTouchedDayFromList;
+    private LimitedCommerceDay lastTouchedDay;
     private LimitedCommerceDayType.TypesList typesToBeAddedToCalendar;
     private LimitedCommerceDayType.TypesList lastTypesToBeDisplayed;
     private SimpleReminder reminder;
     private AppPreferences appPreferences;
-    private boolean isListToAdd;
     private InterstitialAd mInterstitialAd;
-//    private Calendar calStart;
+    private AskForReminderSettings reminderDialog;
+    private AskForTypesAddedToCalendar typesToAddToCalendarDialog;
+    private Action actionRequestingPermissions;
 
-    private enum ActionCallingRequest {
-        ADD_ALL_EVENTS,
-        ADD_ONE_EVENT
+    private enum Action {
+        ADD_LIST,
+        ADD_DAY
     }
 
     @Override
@@ -146,8 +150,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                 startSettingsActivity(false);
                 return true;
             case R.id.calendar:
-                isListToAdd = true;
-                startWizardForAddingEventsToCalendarIfConditionsAreMet();
+                checkCalendarPermissions(Action.ADD_LIST);
                 return true;
             case R.id.help:
                 startHelpActivity();
@@ -163,53 +166,68 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         startActivity(intent);
     }
 
+    private void checkCalendarPermissions(Action action) {
+        if (isSystemLessThanMarshmallow() || areCalendarPermissionsGranted()) {
+            checkCalendarSettings(action);
+        } else {
+            requestCalendarPermissions(action);
+        }
+    }
+
+    private boolean isSystemLessThanMarshmallow() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
+    }
+
+    private boolean areCalendarPermissionsGranted() {
+        return isPermissionGranted(Manifest.permission.READ_CALENDAR) && isPermissionGranted(Manifest.permission.WRITE_CALENDAR) ;
+    }
+
+    private void checkCalendarSettings(Action action) {
+        if (isCalendarEnabledAndChosen()) {
+            switch (action) {
+                case ADD_DAY:
+                    askForReminderSettings(action);
+                    break;
+                case ADD_LIST:
+                    askForTypesAddedToCalendar();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+        startSettingsActivity(true);
+        }
+    }
+
+    private boolean isCalendarEnabledAndChosen() {
+        boolean useGoogleCalendar = appPreferences.isUseGoogleCalendarSet(this);
+        boolean isCalendarSet = appPreferences.isCalendarSet(this);
+        return useGoogleCalendar && isCalendarSet;
+    }
+
+    private void askForReminderSettings(Action action) {
+        reminderDialog = new AskForReminderSettings();
+        reminderDialog.setAction(action);
+        if (action == Action.ADD_DAY) {
+            reminderDialog.setDayDescription(
+                    lastTouchedDay.getDescriptionForDialog());
+        }
+        reminderDialog.show(getSupportFragmentManager(), "dialog");
+    }
+
+    private void askForTypesAddedToCalendar() {
+        typesToAddToCalendarDialog = new AskForTypesAddedToCalendar();
+        typesToAddToCalendarDialog.show(getSupportFragmentManager(), "dialog");
+    }
+
     private void startHelpActivity() {
         //TODO help
     }
 
-    private void startWizardForAddingEventsToCalendarIfConditionsAreMet() {
-        if (checkCalendarPermissions(ActionCallingRequest.ADD_ALL_EVENTS)) {
-            boolean useGoogleCalendar = appPreferences.isUseGoogleCalendarSet(this);
-            boolean isCalendarSet = appPreferences.isCalendarSet(this);
-            if (useGoogleCalendar && isCalendarSet) {
-                askForKindsOfEventsAddedToCalendar();
-            } else {
-                startSettingsActivity(true);
-            }
-        }
-    }
-
-    private void askForKindsOfEventsAddedToCalendar() {
-        AppCompatDialogFragment dialogFragment = new AskForKindsOfEventsToAddToCalendar();
-        dialogFragment.show(getSupportFragmentManager(), "dialog");
-    }
-
     @Override
     public void onListFragmentInteraction(LimitedCommerceDay day) {
-        if (checkCalendarPermissions(ActionCallingRequest.ADD_ONE_EVENT)) {
-            boolean useGoogleCalendar = appPreferences.isUseGoogleCalendarSet(this);
-            boolean isCalendarSet = appPreferences.isCalendarSet(this);
-            if (useGoogleCalendar && isCalendarSet) {
-                lastTouchedDayFromList = day;
-                isListToAdd = false;
-                askForReminderSettings();
-            } else {
-                startSettingsActivity(true);
-            }
-        } else {
-            lastTouchedDayFromList = day;
-        }
-    }
-
-    private void addDayToCalendar(LimitedCommerceDay day) {
-        if (appPreferences.isUseGoogleCalendarSet(this)) {
-            showBigAd();
-            reminder = appPreferences.getReminder(this, SimpleReminder.METHOD_ALERT);
-            day.setReminder(reminder);
-            displayInfo(day.addToGoogleCalendar(this), R.string.info_added_to_calendar, R.string.error_adding_to_calendar_failed);
-        } else {
-            startSettingsActivity(true);
-        }
+        lastTouchedDay = day;
+        checkCalendarPermissions(Action.ADD_DAY);
     }
 
     private void showBigAd() {
@@ -239,32 +257,14 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                 .show();
     }
 
-    private boolean checkCalendarPermissions(ActionCallingRequest actionCallingRequest) {
-        lastActionCallingRequest = actionCallingRequest;
-        if (!isSystemAtLeastMarshmallow() || areCalendarPermissionsGranted()) {
-            return true;
-        } else {
-            requestCalendarPermissions(actionCallingRequest);
-            return false;
-        }
-    }
-
-    private boolean isSystemAtLeastMarshmallow() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    }
-
-    private boolean areCalendarPermissionsGranted() {
-        return isPermissionGranted(Manifest.permission.READ_CALENDAR) && isPermissionGranted(Manifest.permission.WRITE_CALENDAR) ;
-    }
-
     private boolean isPermissionGranted(String permission) {
         int permissionState = ContextCompat.checkSelfPermission(this, permission);
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestCalendarPermissions(ActionCallingRequest actionCallingRequest) {
-        lastActionCallingRequest = actionCallingRequest;
+    private void requestCalendarPermissions(Action action) {
+        actionRequestingPermissions = action;
         String[] listOfRequestedPermissions = new String[]{Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR};
         int permissionTypeCode = PermissionType.CALENDAR.getCode();
         requestPermissions(listOfRequestedPermissions, permissionTypeCode);
@@ -275,16 +275,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
-                switch (lastActionCallingRequest) {
-                    case ADD_ONE_EVENT:
-                        addDayToCalendar(lastTouchedDayFromList);
-                        break;
-                    case ADD_ALL_EVENTS:
-                        startWizardForAddingEventsToCalendarIfConditionsAreMet();
-                        break;
-                    default:
-                        break;
-                }
+                checkCalendarSettings(actionRequestingPermissions);
             } else {
                 showInfo(eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, true);
             }
@@ -301,18 +292,28 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         return result;
     }
 
+    private void addDayToCalendar(LimitedCommerceDay day) {
+            showBigAd();
+            reminder = appPreferences.getReminder(this, SimpleReminder.METHOD_ALERT);
+            day.setReminder(reminder);
+            displayInfo(
+                    day.addToGoogleCalendar(this),
+                    R.string.info_added_to_calendar,
+                    R.string.error_adding_to_calendar_failed);
+    }
+
     @Override
     public void onDialogPositiveClick(AppCompatDialogFragment dialog) {
-        if (dialog instanceof AskForKindsOfEventsToAddToCalendar) {
-            getUserChoicesOfDaysAddedToCalendar(dialog);
-            askForReminderSettings();
+        if (dialog instanceof AskForTypesAddedToCalendar) {
+            typesToBeAddedToCalendar = typesToAddToCalendarDialog.getTypes();
+            askForReminderSettings(Action.ADD_LIST);
         }
         if (dialog instanceof AskForReminderSettings) {
-            getReminderParameters(dialog);
-            if (isListToAdd) {
+            reminder = reminderDialog.getReminder();
+            if (reminderDialog.getAction() == Action.ADD_LIST) {
                 addListToCalendar();
             } else {
-                addDayToCalendar(lastTouchedDayFromList);
+                addDayToCalendar(lastTouchedDay);
             }
         }
     }
@@ -321,36 +322,21 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         showBigAd();
         ListOfLimitedCommerceDays list =
                 ListOfLimitedCommerceDays.getList(this, typesToBeAddedToCalendar);
-        boolean resultIsPositive = list.addToCalendar(this, reminder);
+        boolean resultIsPositive = list.addToCalendar(this, reminder, reminderDialog.getTill());
         displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
     }
 
-    private void getUserChoicesOfDaysAddedToCalendar(AppCompatDialogFragment dialog) {
-        AskForKindsOfEventsToAddToCalendar myDialog = (AskForKindsOfEventsToAddToCalendar) dialog;
-        typesToBeAddedToCalendar = myDialog.getLimitedCommerceDayTypes();
-    }
-
-    private void askForReminderSettings() {
-        AskForReminderSettings dialogFragment = new AskForReminderSettings();
-        dialogFragment.setIsListToAdd(isListToAdd);
-        if (!isListToAdd) {
-            dialogFragment.setDayDescription(
-                    lastTouchedDayFromList.getDescriptionForDialog());
-        }
-        dialogFragment.show(getSupportFragmentManager(), "dialog");
-    }
-
-    private void getReminderParameters(AppCompatDialogFragment dialog) {
-        AskForReminderSettings myDialog = (AskForReminderSettings) dialog;
-        reminder = myDialog.getReminder();
-    }
 
     @Override
     public void onDialogNegativeClick(AppCompatDialogFragment dialog) {
         showInfo(R.string.info_cancelled, false);
     }
 
-    public static class AskForKindsOfEventsToAddToCalendar extends NoticeDialogFragment {
+    public void onNumberOfDaysBeforeClick(View view) {
+        //TODO stub
+    }
+
+    public static class AskForTypesAddedToCalendar extends NoticeDialogFragment {
         private Button dialogButtonPositive;
         private boolean addCommerceSundays;
         private boolean addHolidays;
@@ -392,12 +378,12 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                             addNonCommerceDays = checkedItems[0];
                             addHolidays = checkedItems[1];
                             addCommerceSundays = checkedItems[2];
-                            noticeDialogListener.onDialogPositiveClick(AskForKindsOfEventsToAddToCalendar.this);
+                            noticeDialogListener.onDialogPositiveClick(AskForTypesAddedToCalendar.this);
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            noticeDialogListener.onDialogNegativeClick(AskForKindsOfEventsToAddToCalendar.this);
+                            noticeDialogListener.onDialogNegativeClick(AskForTypesAddedToCalendar.this);
                         }
                     });
             AlertDialog dialog = builder.create();
@@ -413,7 +399,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             return false;
         }
 
-        LimitedCommerceDayType.TypesList getLimitedCommerceDayTypes() {
+        LimitedCommerceDayType.TypesList getTypes() {
             return LimitedCommerceDayType.getTypes(
                     addNonCommerceDays,
                     addHolidays,
@@ -424,8 +410,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     public static class AskForReminderSettings extends NoticeDialogFragment {
 
         private SimpleReminder reminder;
-        private boolean isListToAdd;
+        private Action action;
         private String dayDescription;
+        private Calendar till;
 
         @NonNull
         @Override
@@ -438,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                 builder = new AlertDialog.Builder(getContext());
             }
             String title;
-            if (isListToAdd) {
+            if (action == Action.ADD_LIST) {
                 title = getString(R.string.title_reminder);
             } else {
                 title = getString(R.string.title_reminder_of) + " " + dayDescription ;
@@ -463,8 +450,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         private View getDialogView() {
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View view;
-            if (isListToAdd) {
+            if (action == Action.ADD_LIST) {
                 view = inflater.inflate(R.layout.reminder_and_date_settings_dialog_view, null);
+                initializeTill(view);
             } else {
                 view = inflater.inflate(R.layout.reminder_settings_dialog_view, null);
             }
@@ -478,6 +466,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
             AppCompatTextView timeView = view.findViewById(R.id.timeView);
             timeView.setText(reminder.getTime().toString());
+
             return view;
         }
 
@@ -485,12 +474,37 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             return reminder;
         }
 
-        void setIsListToAdd(boolean isListToAdd) {
-            this.isListToAdd = isListToAdd;
+        public Action getAction() {
+            return action;
+        }
+
+        void setAction(Action action) {
+            this.action = action;
         }
 
         void setDayDescription(String dayDescription) {
             this.dayDescription = dayDescription;
+        }
+
+        Calendar getTill() {
+            return till;
+        }
+
+        private void initializeTill(View view) {
+            AppCompatTextView tillView = view.findViewById(R.id.tillDateView);
+            tillView.setText(initializeTill());
+        }
+
+        private String initializeTill() {
+            till = Calendar.getInstance();
+            till.add(Calendar.MONTH, 1);
+            till.set(Calendar.DAY_OF_MONTH, till.getActualMaximum(Calendar.DAY_OF_MONTH));
+            return getTillAsString();
+        }
+
+        private String getTillAsString() {
+            DateFormat dateFormat = DateFormat.getDateInstance();
+            return dateFormat.format(till.getTime());
         }
     }
 

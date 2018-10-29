@@ -73,13 +73,15 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         }
     }
 
-    boolean addToCalendar(Context context, SimpleReminder reminder) {
+    boolean addToCalendar(Context context, SimpleReminder reminder, Calendar till) {
         skipReminderForConsecutiveDays();
         boolean result = true;
         for (LimitedCommerceDay day : this) {
-            if (day.isReminderNeeded()) {
-                day.setReminder(reminder);
-                result = result && day.addToGoogleCalendar(context);
+            if (day.compareTo(till) <= 0) {
+                if (day.isReminderNeeded()) {
+                    day.setReminder(reminder);
+                    result = result && day.addToGoogleCalendar(context);
+                }
             }
         }
         return result;

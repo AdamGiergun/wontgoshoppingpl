@@ -28,8 +28,10 @@
     <string name="summary_show_commerce_sundays_off">Don\'t show commerce Sundays on the list</string>
 
     <string name="remind_me">Remind me</string>
-    <string name="days_before">days before,</string>
+    <string name="days_before">day(s) before,</string>
     <string name="at">at</string>
+    <string name="comma" translatable="false">,</string>
+    <string name="till">till</string>
     <string name="dot" translatable="false">.</string>
     <string name="title_reminder">Reminder</string>
     <string name="title_reminder_of">Reminder of:</string>
