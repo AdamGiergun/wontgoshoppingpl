@@ -630,6 +630,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             return builder.create();
         }
 
+        @SuppressWarnings("deprecation")
         private void initializePicker() {
             picker = new TimePicker(getContext());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -641,6 +642,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             }
         }
 
+        @SuppressWarnings("deprecation")
         private SimpleTime getTimeFromPicker() {
             SimpleTime time;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
