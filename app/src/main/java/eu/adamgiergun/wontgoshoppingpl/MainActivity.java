@@ -3,9 +3,6 @@ package eu.adamgiergun.wontgoshoppingpl;
 /*
     TODO "usuń wszystko z Kalendarza" w ustawieniach
     TODO grupa info w ustawieniach
-    TODO dodawanie do kalendarza filtr daty
-    TODO zmiana ustawień przypomnień w dialogu podczas dodawania
-    TODO wyłącz dostęp do opcji w menu przed first_use
  */
 
 import android.Manifest;
@@ -135,10 +132,13 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(
-                R.menu.main_activity_actions,
-                menu
-        );
+        if (appPreferences.isFirstRun(this)) {
+            getMenuInflater()
+                    .inflate(R.menu.main_activity_actions_first_run, menu);
+        } else {
+            getMenuInflater()
+                    .inflate(R.menu.main_activity_actions, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -317,14 +317,19 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             }
         }
 
-        if (dialog instanceof TillDateDialog) {
-            TillDateDialog tillDateDialog = (TillDateDialog) dialog;
-            reminderDialog.setTill(tillDateDialog.getDate());
+        if (dialog instanceof ReminderDaysBeforeDialog) {
+            ReminderDaysBeforeDialog reminderDaysBeforeDialog = (ReminderDaysBeforeDialog) dialog;
+            reminderDialog.setDaysBefore(reminderDaysBeforeDialog.getDaysBefore());
         }
 
         if (dialog instanceof ReminderTimeDialog) {
             ReminderTimeDialog reminderTimeDialog = (ReminderTimeDialog) dialog;
             reminderDialog.setReminderTime(reminderTimeDialog.getTime());
+        }
+
+        if (dialog instanceof TillDateDialog) {
+            TillDateDialog tillDateDialog = (TillDateDialog) dialog;
+            reminderDialog.setTill(tillDateDialog.getDate());
         }
     }
 
@@ -416,8 +421,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         private Action action;
         private String dayDescription;
         private Calendar till;
-        private AppCompatTextView tillView;
+        private AppCompatTextView daysView;
         private AppCompatTextView timeView;
+        private AppCompatTextView tillView;
 
         @NonNull
         @Override
@@ -460,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             AppPreferences appPreferences = new AppPreferences(context);
             reminder = appPreferences.getReminder(context, SimpleReminder.METHOD_ALERT);
 
-            AppCompatTextView daysView = view.findViewById(R.id.numberOfDaysBeforeView);
+            daysView = view.findViewById(R.id.numberOfDaysBeforeView);
             daysView.setText(String.valueOf(reminder.getDaysBefore()));
 
             timeView = view.findViewById(R.id.timeView);
@@ -483,6 +489,11 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
 
         private void setDayDescription(String dayDescription) {
             this.dayDescription = dayDescription;
+        }
+
+        private void setDaysBefore(int number) {
+            reminder.setDaysBefore(number);
+            daysView.setText(String.valueOf(number));
         }
 
         private void setReminderTime(SimpleTime time) {
@@ -541,7 +552,51 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     public void onNumberOfDaysBeforeClick(View view) {
+        ReminderDaysBeforeDialog reminderDaysBeforeDialog = new ReminderDaysBeforeDialog();
+        reminderDaysBeforeDialog.setDaysBefore(reminderDialog.getReminder().getDaysBefore());
+        reminderDaysBeforeDialog.show(getSupportFragmentManager(), "dialog");
+    }
 
+    public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
+        private int daysBefore;
+        private NumberPicker picker;
+
+        @NonNull
+        @Override
+        public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = getStyledBuilder();
+            initializePicker();
+            builder
+                    .setTitle(R.string.days_before)
+                    .setView(picker)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            daysBefore = picker.getValue();
+                            noticeDialogListener.onDialogPositiveClick(ReminderDaysBeforeDialog.this);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            noticeDialogListener.onDialogNegativeClick(ReminderDaysBeforeDialog.this);
+                        }
+                    });
+            return builder.create();
+        }
+
+        private void initializePicker() {
+            picker = new NumberPicker(getContext());
+            picker.setMinValue(1);
+            picker.setMaxValue(9);
+            picker.setValue(daysBefore);
+        }
+
+        private int getDaysBefore() {
+            return daysBefore;
+        }
+
+        private void setDaysBefore(int daysBefore) {
+            this.daysBefore = daysBefore;
+        }
     }
 
     public void onReminderTimeClick(View view) {
@@ -558,10 +613,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
-            final String title = getString(R.string.title_reminder);
             initializePicker();
             builder
-                    .setTitle(title)
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -605,7 +658,6 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         private void setTime(SimpleTime time) {
             this.time = time;
         }
-
     }
 
     public void onTillDateClick(View view) {
@@ -622,10 +674,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
-            String title = getString(R.string.title_reminder);
             initializePicker();
             builder
-                    .setTitle(title)
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

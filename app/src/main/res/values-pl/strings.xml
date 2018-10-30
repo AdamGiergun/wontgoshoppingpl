@@ -26,7 +26,8 @@
     <string name="summary_show_commerce_sundays_off">Nie pokazuj na liście</string>
 
     <string name="remind_me">Przypomnij mi</string>
-    <string name="days_before">dzień/dni wcześniej,</string>
+    <string name="days_before">dzień/dni wcześniej</string>
+    <string name="days_before_comma">dzień/dni wcześniej,</string>
     <string name="at">o</string>
     <string name="till">dla dni do</string>
     <string name="title_reminder">Przypomnienie</string>
