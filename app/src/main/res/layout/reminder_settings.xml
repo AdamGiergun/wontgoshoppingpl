@@ -38,7 +38,7 @@
         style="@style/MyTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/days_before_comma"
+        android:text="@string/days"
         app:layout_constraintLeft_toRightOf="@+id/numberOfDaysBeforeView"
         app:layout_constraintTop_toBottomOf="@id/spacer1" />
 
@@ -54,7 +54,7 @@
         style="@style/MyTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/at"
+        android:text="@string/before_comma_at"
         app:layout_constraintRight_toLeftOf="@id/timeView"
         app:layout_constraintTop_toBottomOf="@id/spacer2" />
 
@@ -66,9 +66,9 @@
         android:cursorVisible="false"
         android:inputType="time"
         android:onClick="onReminderTimeClick"
-        app:layout_constraintRight_toLeftOf="@id/timeViewSuffix"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spacer2" />
-
+<!--
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timeViewSuffix"
         style="@style/MyTextViewStyle"
@@ -77,5 +77,5 @@
         android:text="@string/comma"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spacer2" />
-
+-->
 </androidx.constraintlayout.widget.ConstraintLayout>

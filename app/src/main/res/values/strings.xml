@@ -29,8 +29,8 @@
 
     <string name="remind_me">Remind me</string>
     <string name="days_before">day(s) before</string>
-    <string name="days_before_comma">day(s) before,</string>
-    <string name="at">at</string>
+    <string name="days">day(s)</string>
+    <string name="before_comma_at">before, at</string>
     <string name="comma" translatable="false">,</string>
     <string name="till">of days till</string>
     <string name="dot" translatable="false">.</string>
