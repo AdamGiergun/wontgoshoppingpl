@@ -14,12 +14,14 @@
     <!ENTITY assumption "Wniebowzięcie Najświętszej Maryi&#160;Panny">
     <!ENTITY all_saints "Wszystkich Świętych">
     <!ENTITY independence_day "Święto Niepodległości">
+    <!ENTITY day_after_independence_day "dzień po Święcie Stulecia Niepodległości">
     <!ENTITY christmas_eve "Wigilia">
     <!ENTITY christmas_day "Boże Narodzenie">
     <!ENTITY second_day_of_christmas "Boże Narodzenie (2&#160;dzień)">
     ]>
 <resources>
     <string-array name="non_commerce_days">
+        <item>2018_12_11,00:00,&day_after_independence_day;</item>
         <item>2018_18_11,00:00,&non_commerce_sunday;</item>
         <item>2018_09_12,00:00,&non_commerce_sunday;</item>
         <item>2018_24_12,13:00,&christmas_eve;</item>

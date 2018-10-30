@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:onClick="onButtonMiniClicked"
+            android:onClick="onButtonMiniClick"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/mini_small" />
 
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:onClick="onButtonRichClicked"
+            android:onClick="onButtonRichClick"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/rich_small" />
     </LinearLayout>

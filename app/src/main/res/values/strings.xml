@@ -31,7 +31,7 @@
     <string name="days_before">day(s) before,</string>
     <string name="at">at</string>
     <string name="comma" translatable="false">,</string>
-    <string name="till">till</string>
+    <string name="till">of days till</string>
     <string name="dot" translatable="false">.</string>
     <string name="title_reminder">Reminder</string>
     <string name="title_reminder_of">Reminder of:</string>

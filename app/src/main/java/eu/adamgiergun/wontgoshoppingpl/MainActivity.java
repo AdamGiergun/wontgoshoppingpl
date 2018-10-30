@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     private InterstitialAd mInterstitialAd;
     private AskForReminderSettings reminderDialog;
     private AskForTypesAddedToCalendar typesToAddToCalendarDialog;
+    private TillDateDialog tillDateDialog;
     private Action actionRequestingPermissions;
+    private Calendar tillDate;
 
     private enum Action {
         ADD_LIST,
@@ -316,13 +318,17 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
                 addDayToCalendar(lastTouchedDay);
             }
         }
+        if (dialog instanceof TillDateDialog) {
+            tillDate = tillDateDialog.getDate();
+            reminderDialog.setTill(tillDate);
+        }
     }
 
     private void addListToCalendar() {
         showBigAd();
         ListOfLimitedCommerceDays list =
                 ListOfLimitedCommerceDays.getList(this, typesToBeAddedToCalendar);
-        boolean resultIsPositive = list.addToCalendar(this, reminder, reminderDialog.getTill());
+        boolean resultIsPositive = list.addToCalendar(this, reminder, tillDate);
         displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
     }
 
@@ -330,10 +336,6 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     @Override
     public void onDialogNegativeClick(AppCompatDialogFragment dialog) {
         showInfo(R.string.info_cancelled, false);
-    }
-
-    public void onNumberOfDaysBeforeClick(View view) {
-        //TODO stub
     }
 
     public static class AskForTypesAddedToCalendar extends NoticeDialogFragment {
@@ -399,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             return false;
         }
 
-        LimitedCommerceDayType.TypesList getTypes() {
+        private LimitedCommerceDayType.TypesList getTypes() {
             return LimitedCommerceDayType.getTypes(
                     addNonCommerceDays,
                     addHolidays,
@@ -413,6 +415,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         private Action action;
         private String dayDescription;
         private Calendar till;
+        private AppCompatTextView tillView;
 
         @NonNull
         @Override
@@ -452,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             View view;
             if (action == Action.ADD_LIST) {
                 view = inflater.inflate(R.layout.reminder_and_date_settings_dialog_view, null);
-                initializeTill(view);
+                initializeTillView(view);
             } else {
                 view = inflater.inflate(R.layout.reminder_settings_dialog_view, null);
             }
@@ -470,28 +473,33 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
             return view;
         }
 
-        SimpleReminder getReminder() {
+        private SimpleReminder getReminder() {
             return reminder;
         }
 
-        public Action getAction() {
+        private Action getAction() {
             return action;
         }
 
-        void setAction(Action action) {
+        private void setAction(Action action) {
             this.action = action;
         }
 
-        void setDayDescription(String dayDescription) {
+        private void setDayDescription(String dayDescription) {
             this.dayDescription = dayDescription;
         }
 
-        Calendar getTill() {
+        private Calendar getTill() {
             return till;
         }
 
-        private void initializeTill(View view) {
-            AppCompatTextView tillView = view.findViewById(R.id.tillDateView);
+        private void setTill(Calendar calendar) {
+            till = calendar;
+            tillView.setText(getTillAsString());
+        }
+
+        private void initializeTillView(View view) {
+            tillView = view.findViewById(R.id.tillDateView);
             tillView.setText(initializeTill());
         }
 
@@ -516,11 +524,11 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         }
     }
 
-    public void onButtonMiniClicked(View view){
+    public void onButtonMiniClick(View view){
         setPreferencesValues(false);
     }
 
-    public void onButtonRichClicked(View view){
+    public void onButtonRichClick(View view){
         setPreferencesValues(true);
     }
 
@@ -530,29 +538,71 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
         appPreferences.setFirstRun(this, false);
         recreate();
     }
-/*
-    public static class AskForReminderTime extends NoticeDialogFragment {
+
+    public void onNumberOfDaysBeforeClick(View view) {
+
+    }
+
+    public void onReminderTimeClick(View view) {
+
+    }
+
+    public void onTillDateClick(View view) {
+        tillDateDialog = new TillDateDialog();
+        tillDateDialog.setDate(reminderDialog.getTill());
+        tillDateDialog.show(getSupportFragmentManager(), "dialog");
+    }
+
+    public static class TillDateDialog extends NoticeDialogFragment {
+        private DatePicker picker;
+        private Calendar date;
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder;
+            AppPreferences appPreferences = new AppPreferences(getContext());
+            if (appPreferences.isLookRich(getContext())) {
+                builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
+            } else {
+                builder = new AlertDialog.Builder(getContext());
+            }
+            String title = getString(R.string.title_reminder);
+            picker = new DatePicker(getContext());
+            picker.updateDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
 
-            builder.setTitle(R.string.title_choose_events)
-                    .setView(R.layout.reminder_settings_dialog_view)
+            builder
+                    .setTitle(title)
+                    .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // FIRE ZE MISSILES!
+                            date = getDateFromPicker();
+                            noticeDialogListener.onDialogPositiveClick(TillDateDialog.this);
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            ((MainActivity) getActivity()).showInfo(R.string.info_cancelled,false);
+                            noticeDialogListener.onDialogNegativeClick(TillDateDialog.this);
                         }
                     });
-
             return builder.create();
         }
+
+        private Calendar getDateFromPicker() {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR, picker.getYear());
+            cal.set(Calendar.MONTH, picker.getMonth());
+            cal.set(Calendar.DAY_OF_MONTH, picker.getDayOfMonth());
+            return cal;
+        }
+
+        private Calendar getDate() {
+            return date;
+        }
+
+        private void setDate(Calendar date) {
+            this.date = date;
+        }
+
     }
-    */
 }
