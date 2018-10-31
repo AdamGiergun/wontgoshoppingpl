@@ -352,7 +352,9 @@ public class MainActivity extends AppCompatActivityWithTheme implements NoticeDi
 
     @Override
     public void onDialogNegativeClick(AppCompatDialogFragment dialog) {
-        showInfo(R.string.info_cancelled, false);
+        if (dialog instanceof AskForTypesAddedToCalendar || dialog instanceof AskForReminderSettings) {
+            showInfo(R.string.info_cancelled, false);
+        }
     }
 
     public static class AskForTypesAddedToCalendar extends ThisAppDialogFragment {
