@@ -29,7 +29,7 @@ import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
-public class SettingsActivity extends AppCompatActivity
+public class SettingsActivity extends AppCompatActivityWithTheme
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     static {
@@ -38,8 +38,6 @@ public class SettingsActivity extends AppCompatActivity
 
     private static final String HEADERS = "headers";
     private static final String HEADERS_LAND = "headersWide";
-    //private static final String HEADERS_LOOK = "headersLook";
-    //private static final String HEADERS_NOTIFICATIONS = "headersNotifications";
     private static final String LOOK = "look";
     private static final String NOTIFICATIONS = "notifications";
     private static final String LOOK_LAND = "lookWide";
@@ -52,20 +50,9 @@ public class SettingsActivity extends AppCompatActivity
     private String notifications;
 
     @Override
-    public Resources.Theme getTheme() {
-        Resources.Theme theme = super.getTheme();
-        AppPreferences appPreferences = new AppPreferences(this);
-        if (appPreferences.isLookRich(this)) {
-            theme.applyStyle(R.style.AppThemeCustomizationsRich, true);
-        } else {
-            theme.applyStyle(R.style.AppThemeCustomizationsMini, true);
-        }
-        return theme;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupHomeInBar();
         removeAllFragments();
         if (isScreenSizeLesserThanLarge())
             popBackStackCompletely();

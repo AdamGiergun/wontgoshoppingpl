@@ -35,7 +35,7 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
-public class MainActivity extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener, DayFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivityWithTheme implements NoticeDialogFragment.NoticeDialogListener, DayFragment.OnListFragmentInteractionListener {
 
     private static LimitedCommerceDay lastTouchedDay;
     private static LimitedCommerceDayType.TypesList typesToBeAddedToCalendar;
@@ -50,21 +50,9 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     @Override
-    public Resources.Theme getTheme() {
-//        calStart = Calendar.getInstance();
-        Resources.Theme theme = super.getTheme();
-        appPreferences = new AppPreferences(this);
-        if (appPreferences.isLookRich(this)) {
-            theme.applyStyle(R.style.AppThemeCustomizationsRich, true);
-        } else {
-            theme.applyStyle(R.style.AppThemeCustomizationsMini, true);
-        }
-        return theme;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appPreferences = new AppPreferences(this);
         setContentView(R.layout.activity_main);
         setupBannerAds();
         lastTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(this);
@@ -235,7 +223,8 @@ public class MainActivity extends AppCompatActivity implements NoticeDialogFragm
     }
 
     private void startHelpActivity() {
-        //TODO help
+        Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
     }
 
     @Override

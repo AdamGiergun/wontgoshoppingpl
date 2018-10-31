@@ -49,4 +49,17 @@
     <string name="pref_header_look">Look</string>
     <string name="pref_header_notifications">Notifications</string>
     <string name="commerce_sundays">Commerce Sundays</string>
+
+    <string name="help_text_1">Since 2018, the law introducing trade restrictions on most Sundays and selected
+        days has come into force in Poland. Only shops at railway, bus and petrol stations, and some small
+        shops can be open at that time.</string>
+    <string name="help_text_2">With this application you can view a list of such days, holidays and commercial
+        Sundays. Which types of these elements will be shown in the list can be changed in Settings (the tool icon
+        in the top bar).</string>
+    <string name="help_text_3">It is also possible to add these events, along with reminders about them,
+        to the Calendar selected in the Settings (in newer versions of Android this requires granting the application
+        access to the Calendar). You can add selected event types to a specific date (the calendar icon in the top bar),
+        or individual events (by touching any list element).</string>
+    <string name="help_text_4">When adding events, you can temporarily change the reminders settings for them.
+        The default values for reminders can be changed in the Settings.</string>
 </resources>

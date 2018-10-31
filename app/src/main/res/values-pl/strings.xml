@@ -44,4 +44,17 @@
     <string name="pref_header_look">Wygląd</string>
     <string name="pref_header_notifications">Powiadomienia</string>
     <string name="commerce_sundays">Niedziele handlowe</string>
+
+    <string name="help_text_1">Od roku 2018 weszło w życie w Polsce prawo wprowadzające ograniczenia
+        w handlu w większość niedziel i w wybrane dni. Czynne mogą wtedy być jedynie sklepy na stacjach
+        benzynowych, dworcach, oraz część małych sklepików.</string>
+    <string name="help_text_2">Dzięki tej aplikacji można przejrzeć listę takich dni, Świąt oraz niedziel
+        handlowych. Które rodzaje tych elementów będą pokazane na liście można zmienić w Ustawieniach
+        (ikonka narzędzia w górnym pasku).</string>
+    <string name="help_text_3">Jest również możliwość dodawania tych zdarzeń, wraz z przypomnieniami o nich,
+        do Kalendarza wybranego w Ustawieniach (w nowszych wersjach Androida wymaga to przydzielenia aplikacji
+        uprawnień do dostępu do Kalendarza). Dodawać można wybrane typy zdarzeń do określonej daty (ikonka
+        kalendarza w górnym pasku), bądź pojedyncze zdarzenia (przez dotknięcie elementu listy).</string>
+    <string name="help_text_4">W trakcie dodawania zdarzeń można tymczasowo zmienić ustawienia przypomnień
+        o nich. Domyślne wartości dla przypomnień można zmienić w Ustawieniach.</string>
 </resources>
