@@ -19,7 +19,10 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,15 +31,20 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.adamgiergun.wontgoshoppingpl.MainActivity" />
         </activity>
-        <activity android:name=".HelpActivity"
-            android:label="@string/title_activity_help" />
+        <activity
+            android:name=".HelpActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_help"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

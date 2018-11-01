@@ -7,6 +7,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -328,10 +329,9 @@ public class MainActivity extends AppCompatActivityWithTheme implements NoticeDi
         }
 
         if (dialog instanceof ReminderTimeDialog) {
-            ReminderTimeDialog reminderTimeDialog = (ReminderTimeDialog) dialog;
             AskForReminderSettings reminderDialog = AskForReminderSettings.getActiveInstance(getSupportFragmentManager());
             if (reminderDialog != null)
-                reminderDialog.setTime(reminderTimeDialog.getTime());
+                reminderDialog.setTime(ReminderTimeDialog.getTime());
         }
 
         if (dialog instanceof TillDateDialog) {
@@ -487,14 +487,27 @@ public class MainActivity extends AppCompatActivityWithTheme implements NoticeDi
             } else {
                 view = inflater.inflate(R.layout.reminder_settings_dialog_view, null);
             }
+            initializeReminderViews(view);
+            return view;
+        }
 
+
+        private void initializeTillView(View view) {
+            tillView = view.findViewById(R.id.tillDateView);
+            tillView.setText(getTillAsString());
+        }
+
+        private static String getTillAsString() {
+            DateFormat dateFormat = DateFormat.getDateInstance();
+            return dateFormat.format(till.getTime());
+        }
+
+        private void initializeReminderViews(View view) {
             daysView = view.findViewById(R.id.numberOfDaysBeforeView);
             daysView.setText(String.valueOf(reminder.getDaysBefore()));
 
             timeView = view.findViewById(R.id.timeView);
             timeView.setText(reminder.getTime().toString());
-
-            return view;
         }
 
         private void show(FragmentManager fragmentManager) {
@@ -539,16 +552,6 @@ public class MainActivity extends AppCompatActivityWithTheme implements NoticeDi
             till = calendar;
         }
 
-        private void initializeTillView(View view) {
-            tillView = view.findViewById(R.id.tillDateView);
-            tillView.setText(getTillAsString());
-        }
-
-        private static String getTillAsString() {
-            DateFormat dateFormat = DateFormat.getDateInstance();
-            return dateFormat.format(till.getTime());
-        }
-
         private static AskForReminderSettings getActiveInstance(FragmentManager fragmentManager) {
             return (AskForReminderSettings) fragmentManager.findFragmentByTag(TAG);
         }
@@ -584,7 +587,7 @@ public class MainActivity extends AppCompatActivityWithTheme implements NoticeDi
     }
 
     public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
-        private int daysBefore;
+        private static int daysBefore;
         private NumberPicker picker;
 
         @NonNull
@@ -621,23 +624,29 @@ public class MainActivity extends AppCompatActivityWithTheme implements NoticeDi
         }
 
         private void setDaysBefore(int daysBefore) {
-            this.daysBefore = daysBefore;
+            ReminderDaysBeforeDialog.daysBefore = daysBefore;
         }
     }
 
     public void onReminderTimeClick(View view) {
         ReminderTimeDialog reminderTimeDialog = new ReminderTimeDialog();
-        reminderTimeDialog.setTime(AskForReminderSettings.getReminder().getTime());
+        ReminderTimeDialog.setTime(AskForReminderSettings.getReminder().getTime());
         reminderTimeDialog.show(getSupportFragmentManager(), "dialog");
     }
 
     public static class ReminderTimeDialog extends ThisAppDialogFragment {
+        private static final String TAG = "ReminderTimeDialog";
         private TimePicker picker;
-        private SimpleTime time;
+        private static SimpleTime time;
+
+        public interface ReminderTimeInterface{
+            void onViewClick(String tag);
+        }
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
+            this.setRetainInstance(true);
             AlertDialog.Builder builder = getStyledBuilder();
             initializePicker();
             builder
@@ -680,12 +689,17 @@ public class MainActivity extends AppCompatActivityWithTheme implements NoticeDi
             return time;
         }
 
-        private SimpleTime getTime() {
+        @Override
+        public void onSaveInstanceState(@NonNull Bundle outState) {
+            super.onSaveInstanceState(outState);
+        }
+
+        private static SimpleTime getTime() {
             return time;
         }
 
-        private void setTime(SimpleTime time) {
-            this.time = time;
+        private static void setTime(SimpleTime time) {
+            ReminderTimeDialog.time = time;
         }
     }
 
@@ -697,7 +711,7 @@ public class MainActivity extends AppCompatActivityWithTheme implements NoticeDi
 
     public static class TillDateDialog extends ThisAppDialogFragment {
         private DatePicker picker;
-        private Calendar date;
+        private static Calendar date;
 
         @NonNull
         @Override
@@ -738,7 +752,7 @@ public class MainActivity extends AppCompatActivityWithTheme implements NoticeDi
         }
 
         private void setDate(Calendar date) {
-            this.date = date;
+            TillDateDialog.date = date;
         }
     }
 
