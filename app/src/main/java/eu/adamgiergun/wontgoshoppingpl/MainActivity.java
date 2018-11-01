@@ -435,19 +435,8 @@ public class MainActivity
             AlertDialog.Builder builder = getStyledBuilder();
             builder.setTitle(R.string.title_choose_events)
                     .setMultiChoiceItems(items, checkedItems, listener)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            addNonCommerceDays = checkedItems[0];
-                            addHolidays = checkedItems[1];
-                            addCommerceSundays = checkedItems[2];
-                            noticeDialogListener.onDialogPositiveClick(TypesAddedToCalendarDialog.this);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            noticeDialogListener.onDialogNegativeClick(TypesAddedToCalendarDialog.this);
-                        }
-                    });
+                    .setPositiveButton(android.R.string.ok, getPositiveButtonListener(this))
+                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(this));
             AlertDialog dialog = builder.create();
             dialog.show();
             dialogButtonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -498,16 +487,8 @@ public class MainActivity
             builder
                     .setTitle(title)
                     .setView(getDialogView())
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            noticeDialogListener.onDialogPositiveClick(ReminderSettingsDialog.this);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            noticeDialogListener.onDialogNegativeClick(ReminderSettingsDialog.this);
-                        }
-                    });
+                    .setPositiveButton(android.R.string.ok, getPositiveButtonListener(this))
+                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(this));
             return builder.create();
         }
 
@@ -528,7 +509,7 @@ public class MainActivity
         private void initializeTillView(View view) {
             tillView = view.findViewById(R.id.tillDateView);
             tillView.setText(getTillAsString());
-            tillView.setOnClickListener(getListener(TillDateDialog.TAG));
+            tillView.setOnClickListener(getViewListener(TillDateDialog.TAG));
         }
 
         private static String getTillAsString() {
@@ -539,11 +520,11 @@ public class MainActivity
         private void initializeReminderViews(View view) {
             daysView = view.findViewById(R.id.numberOfDaysBeforeView);
             daysView.setText(String.valueOf(reminder.getDaysBefore()));
-            daysView.setOnClickListener(getListener(ReminderDaysBeforeDialog.TAG));
+            daysView.setOnClickListener(getViewListener(ReminderDaysBeforeDialog.TAG));
 
             timeView = view.findViewById(R.id.timeView);
             timeView.setText(reminder.getTime().toString());
-            timeView.setOnClickListener(getListener(ReminderTimeDialog.TAG));
+            timeView.setOnClickListener(getViewListener(ReminderTimeDialog.TAG));
         }
 
         private void show(FragmentManager fragmentManager) {
