@@ -31,10 +31,8 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
             tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -42,9 +40,7 @@
         </activity>
         <activity
             android:name=".HelpActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/title_activity_help"
-            android:screenOrientation="portrait" />
+            android:label="@string/title_activity_help" />
     </application>
 
 </manifest>

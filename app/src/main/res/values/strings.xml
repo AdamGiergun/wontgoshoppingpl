@@ -58,7 +58,8 @@
         in the top bar).</string>
     <string name="help_text_3">It is also possible to add these events, along with reminders about them,
         to the Calendar selected in the Settings (in newer versions of Android this requires granting the application
-        access to the Calendar). You can add selected event types to a specific date (the calendar icon in the top bar),
+        access to the Calendar). Such Calendars can be added at <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r</a> (at the desktop site, not mobile). You can add selected
+        event types to a specific date (the calendar icon in the top bar),
         or individual events (by touching any list element).</string>
     <string name="help_text_4">When adding events, you can temporarily change the reminders settings for them.
         The default values for reminders can be changed in the Settings.</string>

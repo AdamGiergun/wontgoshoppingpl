@@ -53,7 +53,9 @@
         (ikonka narzędzia w górnym pasku).</string>
     <string name="help_text_3">Jest również możliwość dodawania tych zdarzeń, wraz z przypomnieniami o nich,
         do Kalendarza wybranego w Ustawieniach (w nowszych wersjach Androida wymaga to przydzielenia aplikacji
-        uprawnień do dostępu do Kalendarza). Dodawać można wybrane typy zdarzeń do określonej daty (ikonka
+        uprawnień do dostępu do Kalendarza). Takie Kalendarze można dodawać na
+        <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r</a> (wersja strony
+        na komputer, nie mobilna). Dodawać można wybrane typy zdarzeń do określonej daty (ikonka
         kalendarza w górnym pasku), bądź pojedyncze zdarzenia (przez dotknięcie elementu listy).</string>
     <string name="help_text_4">W trakcie dodawania zdarzeń można tymczasowo zmienić ustawienia przypomnień
         o nich. Domyślne wartości dla przypomnień można zmienić w Ustawieniach.</string>
