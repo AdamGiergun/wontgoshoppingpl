@@ -9,6 +9,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.*;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -46,6 +47,7 @@ public class MainActivity
     private AppPreferences appPreferences;
     private InterstitialAd mInterstitialAd;
     private Action actionRequestingPermissions;
+    private SQLiteDatabase database;
 
     private enum Action {
         ADD_LIST,
@@ -55,6 +57,7 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        database = new DatabaseHandler(this).getWritableDatabase();
         appPreferences = new AppPreferences(this);
         setContentView(R.layout.activity_main);
         setupBannerAds();
