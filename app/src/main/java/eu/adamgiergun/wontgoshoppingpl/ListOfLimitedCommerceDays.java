@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import androidx.annotation.NonNull;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 
 import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDayType.*;
@@ -47,32 +49,41 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return yesterday;
     }
 
-    static ListOfLimitedCommerceDays getList(Context context, TypesList includedDaysTypes) {
-        //DatabaseHandler databaseHandler = new DatabaseHandler(context);
-        //SQLiteDatabase db = databaseHandler.getReadableDatabase();
-
-        Resources resources = context.getResources();
-        ListOfLimitedCommerceDays days = new ListOfLimitedCommerceDays();
-        Iterator<LimitedCommerceDayType> typeIterator = includedDaysTypes.iterator();
-        LimitedCommerceDayType type;
-        while (typeIterator.hasNext()) {
-            type = typeIterator.next();
-            switch (type) {
-                case NON_COMMERCE_DAY:
-                    days.addArray(resources, R.array.non_commerce_days);
-                    break;
-                case COMMERCE_SUNDAY:
-                    days.addArray(resources, R.array.commerce_sundays);
-                    break;
-                case HOLIDAY:
-                    days.addArray(resources, R.array.holidays);
-                    break;
-                default:
-                    break;
-            }
+    static ListOfLimitedCommerceDays getList(Context context, @NonNull TypesList includedDaysTypes) {
+        DatabaseHandler databaseHandler = new DatabaseHandler(context);
+        SQLiteDatabase db = databaseHandler.getReadableDatabase();
+        String[] selectionArgs = new String[includedDaysTypes.size()];
+        Iterator<LimitedCommerceDayType> iterator = includedDaysTypes.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            selectionArgs[i++] = iterator.next().getCodeAsString();
         }
-        Collections.sort(days);
-        return days;
+        ListOfLimitedCommerceDays list = new ListOfLimitedCommerceDays();
+        LimitedCommerceDay day;
+        Cursor cursor = db.query(DBContract.Events.TABLE_NAME, null, DBContract.Events.COLUMN_NAME_TYPE_ID + "  IN (?, ?, ?)", selectionArgs, null, null, null);
+        if (cursor!=null && cursor.getCount()>0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                day = new LimitedCommerceDay(
+                        cursor.getInt(0),
+                        cursor.getString(1));
+                LimitedCommerceDayType type =
+                        LimitedCommerceDayType.getTypeByCode(
+                                cursor.getInt(2));
+                day.setType(type);
+
+                String calendarId = cursor.getString(3);
+                day.setCalendarId(calendarId);
+
+                long eventId = cursor.getLong(4);
+                day.setCalendarEventId(eventId);
+                if (day.compareTo(getYesterday()) > 0)
+                    list.add(day);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        return list;
     }
 
     private void addArray(Resources resources, int idOfArray) {
@@ -80,7 +91,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         Calendar yesterday = getYesterday();
         LimitedCommerceDay day;
         for (String item : array) {
-            day = new LimitedCommerceDay(item);
+            day = new LimitedCommerceDay(0, item);
             if (day.compareTo(yesterday) > 0) {
                 switch (idOfArray) {
                     case R.array.holidays:

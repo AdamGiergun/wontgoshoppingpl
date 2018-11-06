@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "events_db";
+    private static final String DATABASE_NAME = "events.db";
     private Context context;
 
     DatabaseHandler(@Nullable Context context) {
@@ -22,9 +22,10 @@ class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        db.execSQL(DBContract.SQL_CREATE_EVENT_TYPES);
-        db.execSQL(DBContract.SQL_CREATE_EVENTS);
-        db.execSQL(DBContract.SQL_CREATE_REMINDERS);
+        String string = DBContract.SQL_CREATE_EVENTS;
+        db.execSQL(string);
+        string = DBContract.SQL_CREATE_REMINDERS;
+        db.execSQL(string);
         fillDbWithEvents(db);
     }
 
@@ -35,12 +36,10 @@ class DatabaseHandler extends SQLiteOpenHelper {
         while (iterator.hasNext()) {
             day = iterator.next();
             contentValues = new ContentValues();
+            contentValues.put(DBContract.Events.COLUMN_NAME_ITEM,
+                    day.getItem());
             contentValues.put(DBContract.Events.COLUMN_NAME_TYPE_ID,
                     day.getType().getCodeAsString());
-            contentValues.put(DBContract.Events.COLUMN_NAME_NAME,
-                    day.getName());
-            contentValues.put(DBContract.Events.COLUMN_NAME_DATE,
-                    day.getRawDate());
             db.insertOrThrow(DBContract.Events.TABLE_NAME,
                     null,
                     contentValues);

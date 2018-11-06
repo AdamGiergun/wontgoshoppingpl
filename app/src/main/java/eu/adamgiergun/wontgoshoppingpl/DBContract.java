@@ -10,8 +10,7 @@ class DBContract {
     static abstract class Events implements BaseColumns {
         static final String TABLE_NAME = "events";
         static final String COLUMN_NAME_TYPE_ID = "type_id";
-        static final String COLUMN_NAME_NAME = "name";
-        static final String COLUMN_NAME_DATE = "date";
+        static final String COLUMN_NAME_ITEM = "item";
         static final String COLUMN_NAME_CALENDAR_ID = "calendar_id";
         static final String COLUMN_NAME_CALENDAR_EVENT_ID = "calendar_event_id";
     }
@@ -34,12 +33,11 @@ class DBContract {
     }
 */
     static final String SQL_CREATE_EVENTS =
-            "CREATE TABLE " + Events.TABLE_NAME + " (" +
+            "CREATE TABLE " + Events.TABLE_NAME + "(" +
                     Events._ID + " INTEGER PRIMARY KEY, " +
+                    Events.COLUMN_NAME_ITEM + " TEXT NOT NULL, " +
                     Events.COLUMN_NAME_TYPE_ID + " INTEGER NOT NULL, " +
-                    Events.COLUMN_NAME_NAME + " TEXT NOT NULL, " +
-                    Events.COLUMN_NAME_DATE + " TEXT NOT NULL, " +
-                    Events.COLUMN_NAME_CALENDAR_ID + " INTEGER, " +
+                    Events.COLUMN_NAME_CALENDAR_ID + " TEXT, " +
                     Events.COLUMN_NAME_CALENDAR_EVENT_ID + " INTEGER UNIQUE);";
 
     static final String SQL_DELETE_EVENTS =

@@ -14,6 +14,19 @@ enum LimitedCommerceDayType {
         this.code = code;
     }
 
+    static LimitedCommerceDayType getTypeByCode(int code) {
+        switch (code) {
+            case 0:
+                return NON_COMMERCE_DAY;
+            case 1:
+                return HOLIDAY;
+            case 2:
+                return COMMERCE_SUNDAY;
+            default:
+                return null;
+        }
+    }
+
     String getCodeAsString() {
         return String.valueOf(code);
     }

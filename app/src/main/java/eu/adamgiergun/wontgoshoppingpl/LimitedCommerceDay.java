@@ -14,6 +14,8 @@ import java.util.Locale;
 
 class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
 
+    private int dbId;
+    private String item;
     private String name;
     private Calendar calendar;
     private int noOfConsecutiveDays;
@@ -22,9 +24,12 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     private String description;
     private boolean reminderNeeded;
     private LimitedCommerceDayType type;
-    private String rawDate;
+    private String calendarId;
+    private long calendarEventId;
 
-    LimitedCommerceDay(String item) {
+    LimitedCommerceDay(int id, String item) {
+        this.dbId = id;
+        this.item = item;
         String[] pieces = item.split(",");
         time = new SimpleTime(pieces[1]);
         setDay(pieces[0]);
@@ -35,7 +40,6 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     }
 
     private void setDay(String date) {
-        rawDate = date;
         calendar = Calendar.getInstance();
         String[] subpieces = date.split("_");
 
@@ -101,10 +105,6 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         return name;
     }
 
-    String getRawDate() {
-        return rawDate;
-    }
-
     Calendar getTomorrow() {
         Calendar tomorrow = (Calendar) this.calendar.clone();
         tomorrow.add(Calendar.DAY_OF_MONTH, 1);
@@ -124,16 +124,20 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     }
 
     boolean addToGoogleCalendar(Context context) {
-        SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(getDefaultCalendarIdFromPreferences(context));
-        if (type == LimitedCommerceDayType.COMMERCE_SUNDAY) {
-            calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping));
-        } else {
-            calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
+        if (calendarEventId == SimpleCalendarEvent.NON_EXISTING) {
+            calendarId = getDefaultCalendarIdFromPreferences(context);
+            SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(calendarId);
+            if (type == LimitedCommerceDayType.COMMERCE_SUNDAY) {
+                calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping));
+            } else {
+                calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
+            }
+            calendarEvent.setStartCalendar(calendar, time);
+            setEndCalendar(calendarEvent);
+            calendarEvent.addReminder(reminder);
+            calendarEventId = calendarEvent.write(context);
         }
-        calendarEvent.setStartCalendar(calendar, time);
-        setEndCalendar(calendarEvent);
-        calendarEvent.addReminder(reminder);
-        return (calendarEvent.write(context) > 0L);
+        return (calendarEventId > 0L);
     }
 
     private void setEndCalendar(SimpleCalendarEvent calendarEvent) {
@@ -156,11 +160,31 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         this.reminderNeeded = false;
     }
 
-    public LimitedCommerceDayType getType() {
+    LimitedCommerceDayType getType() {
         return type;
     }
 
-    public void setType(LimitedCommerceDayType type) {
+    void setType(LimitedCommerceDayType type) {
         this.type = type;
+    }
+
+    String getCalendarId() {
+        return calendarId;
+    }
+
+    void setCalendarId(String calendarId) {
+        this.calendarId = calendarId;
+    }
+
+    long getCalendarEventId() {
+        return calendarEventId;
+    }
+
+    void setCalendarEventId(long calendarEventId) {
+        this.calendarEventId = calendarEventId;
+    }
+
+    public String getItem() {
+        return item;
     }
 }
