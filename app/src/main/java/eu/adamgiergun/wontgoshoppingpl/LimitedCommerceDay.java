@@ -126,20 +126,22 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     }
 
     boolean addToGoogleCalendar(Context context) {
+        calendarId = getDefaultCalendarIdFromPreferences(context);
+        SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(calendarId);
+        if (type == LimitedCommerceDayType.COMMERCE_SUNDAY) {
+            calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping));
+        } else {
+            calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
+        }
+        calendarEvent.setStartCalendar(calendar, time);
+        setEndCalendar(calendarEvent);
+        calendarEvent.addReminder(reminder);
         if (calendarEventId == SimpleCalendarEvent.NON_EXISTING) {
-            calendarId = getDefaultCalendarIdFromPreferences(context);
-            SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(calendarId);
-            if (type == LimitedCommerceDayType.COMMERCE_SUNDAY) {
-                calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping));
-            } else {
-                calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
-            }
-            calendarEvent.setStartCalendar(calendar, time);
-            setEndCalendar(calendarEvent);
-            calendarEvent.addReminder(reminder);
             calendarEventId = calendarEvent.write(context);
-
             updateEventIdInDb(context);
+        } else {
+            calendarEvent.setEventID(calendarEventId);
+            calendarEvent.writeReminders(context);
         }
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
     }
