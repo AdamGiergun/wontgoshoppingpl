@@ -1,6 +1,8 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
 
@@ -136,8 +138,10 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
             setEndCalendar(calendarEvent);
             calendarEvent.addReminder(reminder);
             calendarEventId = calendarEvent.write(context);
+
+            updateEventIdInDb(context);
         }
-        return (calendarEventId > 0L);
+        return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
     }
 
     private void setEndCalendar(SimpleCalendarEvent calendarEvent) {
@@ -150,6 +154,20 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     private String getDefaultCalendarIdFromPreferences(Context context) {
         AppPreferences appPreferences = new AppPreferences(context);
         return appPreferences.getDefaultCalendarId(context);
+    }
+
+    private void updateEventIdInDb(Context context) {
+        if (calendarEventId > SimpleCalendarEvent.NON_EXISTING) {
+            DatabaseHandler databaseHandler = new DatabaseHandler(context);
+            SQLiteDatabase db = databaseHandler.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_ID, calendarId);
+            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, calendarEventId);
+            db.update(DBContract.Events.TABLE_NAME,
+                    contentValues,
+                    DBContract.Events._ID + "=?",
+                    new String[]{String.valueOf(dbId)});
+        }
     }
 
     boolean isReminderNeeded() {
