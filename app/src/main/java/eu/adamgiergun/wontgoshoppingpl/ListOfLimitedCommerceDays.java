@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,13 +20,37 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         super();
     }
 
-    private Calendar getYesterday() {
+    static Iterator<LimitedCommerceDay> getIteratorFromResources(Context context) {
+        Resources resources = context.getResources();
+        ListOfLimitedCommerceDays days = new ListOfLimitedCommerceDays();
+        days.addArray(resources, R.array.non_commerce_days);
+        days.addArray(resources, R.array.commerce_sundays);
+        days.addArray(resources, R.array.holidays);
+        Collections.sort(days);
+        Iterator<LimitedCommerceDay> iterator = days.iterator();
+        Calendar yesterday = getYesterday();
+        LimitedCommerceDay day;
+        while (iterator.hasNext()) {
+            day = iterator.next();
+            if (yesterday.compareTo(day.getCalendar()) >= 0) {
+                days.remove(day);
+            } else {
+                break;
+            }
+        }
+        return days.iterator();
+    }
+
+    private static Calendar getYesterday() {
         Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DAY_OF_MONTH, -1);
         return yesterday;
     }
 
     static ListOfLimitedCommerceDays getList(Context context, TypesList includedDaysTypes) {
+        //DatabaseHandler databaseHandler = new DatabaseHandler(context);
+        //SQLiteDatabase db = databaseHandler.getReadableDatabase();
+
         Resources resources = context.getResources();
         ListOfLimitedCommerceDays days = new ListOfLimitedCommerceDays();
         Iterator<LimitedCommerceDayType> typeIterator = includedDaysTypes.iterator();

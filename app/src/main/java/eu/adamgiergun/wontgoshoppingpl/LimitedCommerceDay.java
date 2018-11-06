@@ -22,6 +22,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     private String description;
     private boolean reminderNeeded;
     private LimitedCommerceDayType type;
+    private String rawDate;
 
     LimitedCommerceDay(String item) {
         String[] pieces = item.split(",");
@@ -34,6 +35,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     }
 
     private void setDay(String date) {
+        rawDate = date;
         calendar = Calendar.getInstance();
         String[] subpieces = date.split("_");
 
@@ -97,6 +99,10 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
 
     String getName() {
         return name;
+    }
+
+    String getRawDate() {
+        return rawDate;
     }
 
     Calendar getTomorrow() {

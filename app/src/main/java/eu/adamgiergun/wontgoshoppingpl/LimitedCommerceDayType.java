@@ -14,6 +14,10 @@ enum LimitedCommerceDayType {
         this.code = code;
     }
 
+    String getCodeAsString() {
+        return String.valueOf(code);
+    }
+
     static class TypesList extends ArrayList<LimitedCommerceDayType> {
         TypesList() {
             super();
