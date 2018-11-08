@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Won\'t Go Shopping PL</string>
+    <string name="app_name">No Shopping PL</string>
     <string name="day_of_limited_commerce">Day of trade restrictions</string>
     <string name="days_of_limited_commerce">Days of trade restrictions</string>
     <string name="holidays">Holidays</string>
@@ -63,4 +63,8 @@
         or individual events (by touching any list element).</string>
     <string name="help_text_4">When adding events, you can temporarily change the reminders settings for them.
         The default values for reminders can be changed in the Settings.</string>
+
+    <string name="title_delete_events">Delete reminders</string>
+    <string name="summary_delete_events">Removes all events added by this app from chosen calendars</string>
+    <string name="key_delete_events" translatable="false">delete_events</string>
 </resources>

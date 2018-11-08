@@ -33,5 +33,11 @@
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_reminder_time_preference_key"
         android:title="@string/default_reminder_time_preference_title" />
-
+<!--
+    <androidx.preference.Preference
+        android:dependency="@string/use_google_calendar_preference_key"
+        android:key="@string/key_delete_events"
+        android:title="@string/title_delete_events"
+        android:summary="@string/summary_delete_events" />
+-->
 </androidx.preference.PreferenceScreen>

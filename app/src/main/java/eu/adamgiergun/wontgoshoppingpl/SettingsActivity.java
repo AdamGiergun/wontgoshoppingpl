@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,8 +15,9 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -30,7 +30,9 @@ import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
 public class SettingsActivity extends AppCompatActivityWithTheme
-        implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+        implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
+        NoticeDialogFragment.NoticeDialogListener,
+        NoticeDialogFragment.NoticeDialogViewListener {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -336,6 +338,23 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         return result;
     }
 
+    @Override
+    public void onDialogPositiveClick(NoticeDialogFragment noticeDialogFragment) {
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(NoticeDialogFragment noticeDialogFragment) {
+        Toast.
+                makeText(this, R.string.info_cancelled, Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void onViewClick(String s) {
+        //stub
+    }
+
     public static class SettingsHeadersFragment extends PreferenceFragmentCompat {
 
         @Override
@@ -427,6 +446,19 @@ public class SettingsActivity extends AppCompatActivityWithTheme
             bundle.putString("key", key);
             dialogFragment.setArguments(bundle);
         }
+
+        @Override
+        public boolean onPreferenceTreeClick(Preference preference) {
+            if (preference.getKey().equals(getString(R.string.key_delete_events))) {
+                DialogFragment dialogFragment = new ChooseCalendarsForCleaning();
+                if (this.getFragmentManager() != null) {
+                    dialogFragment.show(this.getFragmentManager(), "test");
+                }
+                return true;
+            } else {
+                return super.onPreferenceTreeClick(preference);
+            }
+        }
     }
 
     private class FragmentWithTag {
@@ -438,6 +470,19 @@ public class SettingsActivity extends AppCompatActivityWithTheme
             this.fragment = fragment;
             this.tag = tag;
             this.detach = detach;
+        }
+    }
+
+    public static class ChooseCalendarsForCleaning extends ThisAppDialogFragment {
+        @NonNull
+        @Override
+        public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = getStyledBuilder();
+            builder
+                    .setMultiChoiceItems(null, null, null)//items, checkedItems, listener)
+                    .setPositiveButton(android.R.string.ok, getPositiveButtonListener(ChooseCalendarsForCleaning.this))
+                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(ChooseCalendarsForCleaning.this));
+            return builder.create();
         }
     }
 }

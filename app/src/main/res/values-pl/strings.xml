@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Nie zrobisz zakupów</string>
+    <string name="app_name">Bez zakupów</string>
     <string name="day_of_limited_commerce">Dzień ograniczeń w handlu</string>
     <string name="days_of_limited_commerce">Dni ograniczeń w handlu</string>
     <string name="holidays">Święta</string>
@@ -59,4 +59,6 @@
         kalendarza w górnym pasku), bądź pojedyncze zdarzenia (przez dotknięcie elementu listy).</string>
     <string name="help_text_4">W trakcie dodawania zdarzeń można tymczasowo zmienić ustawienia przypomnień
         o nich. Domyślne wartości dla przypomnień można zmienić w Ustawieniach.</string>
+    <string name="title_delete_events">Usuń przypomnienia</string>
+    <string name="summary_delete_events">Usuwa wszystkie zdarzenia dodane przez tą aplikację z wybranych kalendarzy</string>
 </resources>

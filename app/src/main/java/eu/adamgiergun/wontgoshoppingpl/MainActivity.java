@@ -624,11 +624,7 @@ public class MainActivity
                             noticeDialogListener.onDialogPositiveClick(ReminderDaysBeforeDialog.this);
                         }
                     })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            noticeDialogListener.onDialogNegativeClick(ReminderDaysBeforeDialog.this);
-                        }
-                    });
+                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(ReminderDaysBeforeDialog.this));
             return builder.create();
         }
 
@@ -761,18 +757,4 @@ public class MainActivity
         }
     }
 
-    public static class ThisAppDialogFragment extends NoticeDialogFragment {
-
-        AlertDialog.Builder getStyledBuilder() {
-            Context context = getContext();
-            AppPreferences appPreferences = new AppPreferences(context);
-            AlertDialog.Builder builder;
-            if (appPreferences.isLookRich(getContext())) {
-                builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
-            } else {
-                builder = new AlertDialog.Builder(context);
-            }
-            return builder;
-        }
-    }
 }
