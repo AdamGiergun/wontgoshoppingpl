@@ -8,8 +8,8 @@
     <string name="since">Od\n</string>
     <string name="title_choose_events">Zdarzenia dodawane do kalendarza</string>
     <string name="info_added_to_calendar">Dodano do kalendarza</string>
-    <string name="error_adding_to_calendar_failed">Bład.\nNie dodano do kalendarza.</string>
-    <string name="error_sth_went_wrong">Błąd.\nCoś poszło źle.</string>
+    <string name="error_adding_to_calendar_failed">Błąd\nNie dodano do kalendarza</string>
+    <string name="error_sth_went_wrong">Błąd\nCoś poszło źle</string>
     <string name="title_activity_settings">Ustawienia</string>
     <string name="title_activity_help">Pomoc</string>
 
@@ -54,8 +54,8 @@
     <string name="help_text_3">Jest również możliwość dodawania tych zdarzeń, wraz z przypomnieniami o nich,
         do Kalendarza wybranego w Ustawieniach (w nowszych wersjach Androida wymaga to przydzielenia aplikacji
         uprawnień do dostępu do Kalendarza). Takie Kalendarze można dodawać na
-        <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r</a> (wersja strony
-        na komputer, nie mobilna). Dodawać można wybrane typy zdarzeń do określonej daty (ikonka
+        <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r</a> (pod "Dodaj kalendarz
+        znajomego", musi to być wersja strony na komputer, nie mobilna!). Dodawać można wybrane typy zdarzeń do określonej daty (ikonka
         kalendarza w górnym pasku), bądź pojedyncze zdarzenia (przez dotknięcie elementu listy).</string>
     <string name="help_text_4">W trakcie dodawania zdarzeń można tymczasowo zmienić ustawienia przypomnień
         o nich. Domyślne wartości dla przypomnień można zmienić w Ustawieniach.</string>

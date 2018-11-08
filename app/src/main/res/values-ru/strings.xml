@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Нет покупок PL</string>
+    <string name="day_of_limited_commerce">День торговых ограничений</string>
+    <string name="days_of_limited_commerce">Дни торговых ограничений</string>
+    <string name="holidays">Праздники</string>
+    <string name="whole_day">Весь\nдень</string>
+    <string name="since">С\n</string>
+    <string name="title_choose_events">События, которые нужно добавить в календарь</string>
+    <string name="info_added_to_calendar">Добавлено в календарь</string>
+    <string name="error_adding_to_calendar_failed">Ошибка\nНе добавлена в календарь.</string>
+    <string name="error_sth_went_wrong">Ошибка\nЧто-то пошло не так</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="title_activity_help">Помощь</string>
+
+    <string name="title_show_holidays">Показывать праздники</string>
+    <string name="summary_show_holidays_on">Показывать праздники в списке</string>
+    <string name="summary_show_holidays_off">Не показывать праздники в списке</string>
+
+    <string name="title_show_non_commerce_days">Показывать дни не коммерции</string>
+    <string name="summary_show_non_commerce_days_on">Показывать дни не коммерции в списке</string>
+    <string name="summary_show_non_commerce_days_off">Не показывать дни не коммерции в списке</string>
+
+    <string name="title_show_commerce_sundays">Показать торговые воскресенья</string>
+    <string name="summary_show_commerce_sundays_on">Показать торговые воскресенья в списке</string>
+    <string name="summary_show_commerce_sundays_off">Не показывать торговые воскресеньям в списке</string>
+
+    <string name="remind_me">Напомни мне</string>
+    <string name="days_before">день(ей) до</string>
+    <string name="days">день(ей)</string>
+    <string name="before_comma_at">до, в</string>
+    <string name="till">в течение дней до</string>
+    <string name="title_reminder">Напоминание</string>
+    <string name="title_reminder_of">Напоминание о:</string>
+    <string name="go_shopping_earlier">идти по магазинам раньше!</string>
+    <string name="go_shopping">идти по магазинам!</string>
+
+    <string name="title_app_look">Внешний вид приложения</string>
+    <string name="summary_app_look_mini">Мини</string>
+    <string name="summary_app_look_rich">Богатый</string>
+
+    <string name="ask_for_look">\nВыберите предпочтительный вид.\nВы можете изменить его позже в настройках.\n</string>
+
+    <string name="pref_header_look">Внешний вид</string>
+    <string name="pref_header_notifications">Уведомления</string>
+    <string name="commerce_sundays">Торговые воскресенья</string>
+
+    <string name="help_text_1">С 2018 года в Польше вступил в силу закон, устанавливающий торговые ограничения
+        в большинстве воскресений и отдельных дней. В то время можно открыть только магазины на железнодорожных,
+        автобусных и бензозаправочных станциях, а также небольшие магазины.</string>
+    <string name="help_text_2">С помощью этого приложения вы можете просмотреть список таких дней, праздников
+        и коммерческих воскресений и добавить напоминания о таких днях в свой календарь. Какие типы этих элементов
+        будут показаны в списке, можно изменить в Настройках (значок инструмента в верхней панели).</string>
+    <string name="help_text_3">Также возможно добавить эти события вместе с напоминаниями о них в календарь,
+        выбранный в настройках (в новых версиях Android это требует предоставления приложения «доступ к календарю»).
+        Такие календари можно добавить на странице <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a>
+        ("+" справа на "Добавить календарь друга", на рабочем столе, а не мобильном!). Вы можете добавлять
+        выбранные типы событий до определенной даты (значок календаря в верхней панели),
+        или отдельных событий (прикосновением к любому элементу списка).</string>
+    <string name="help_text_4">При добавлении событий вы можете временно изменить настройки напоминаний для них.
+        Значения по умолчанию для напоминаний можно изменить в настройках.</string>
+
+    <string name="title_delete_events">Удалить напоминания</string>
+    <string name="summary_delete_events">Удаляет все события, добавленные этим приложением, из выбранных календарей</string>
+</resources>
