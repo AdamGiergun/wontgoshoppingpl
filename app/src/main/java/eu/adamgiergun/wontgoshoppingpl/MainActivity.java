@@ -738,6 +738,15 @@ public class MainActivity
         private void initializePicker() {
             picker = new DatePicker(getContext());
             picker.updateDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
+            picker.setMaxDate(getMaxDate());
+        }
+
+        private long getMaxDate() {
+            Calendar maxDate = Calendar.getInstance();
+            maxDate.set(Calendar.YEAR, 2019);
+            maxDate.set(Calendar.MONTH, 11);
+            maxDate.set(Calendar.DAY_OF_MONTH, 31);
+            return maxDate.getTimeInMillis();
         }
 
         private Calendar getDateFromPicker() {
