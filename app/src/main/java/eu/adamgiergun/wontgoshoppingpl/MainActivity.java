@@ -107,7 +107,7 @@ public class MainActivity
 
     private void setupBannerAds() {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, getString(R.string.sample_admob_app_id));
+        MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -115,7 +115,7 @@ public class MainActivity
 
     private void setupInterstitialAds() {
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.sample_interstitial_ad_unit_id));
+        mInterstitialAd.setAdUnitId(getString(R.string.wgs_interstitial_ad_id));
         loadInterstitialAd();
     }
 
