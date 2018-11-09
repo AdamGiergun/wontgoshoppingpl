@@ -25,14 +25,14 @@ public class DayFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            Calendar calStart = Calendar.getInstance();
+//            Calendar calStart = Calendar.getInstance();
             DayRecyclerViewAdapter dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getListOfLimitedCommerceDays(context), listener);
             boolean isLookRich = new AppPreferences(context).isLookRich(context);
             dayRecyclerViewAdapter.setLookRich(isLookRich);
             recyclerView.setAdapter(dayRecyclerViewAdapter);
-            Calendar calEnd = Calendar.getInstance();
+/*            Calendar calEnd = Calendar.getInstance();
             String timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
-            Toast.makeText(container.getContext(), timeDifference, Toast.LENGTH_SHORT).show();
+            Toast.makeText(container.getContext(), timeDifference, Toast.LENGTH_SHORT).show();*/
 //            Log.d("LIST_TIME", String.valueOf(timeDifference));
 
         }
