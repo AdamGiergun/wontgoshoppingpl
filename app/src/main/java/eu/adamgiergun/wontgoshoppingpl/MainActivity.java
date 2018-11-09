@@ -14,6 +14,7 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
@@ -109,8 +110,25 @@ public class MainActivity
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
         AdView mAdView = findViewById(R.id.adView);
+        //setAdListener(mAdView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+    }
+
+    private void setAdListener(AdView adView) {
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                System.out.println("onAdLoaded() CALLBACK");
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                super.onAdFailedToLoad(errorCode);
+                System.out.println("onAdFailedToLoad() CALLBACK code: " + errorCode);
+            }
+        });
     }
 
     private void setupInterstitialAds() {
