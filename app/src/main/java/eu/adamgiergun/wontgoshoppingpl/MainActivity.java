@@ -14,7 +14,7 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
-import com.google.android.gms.ads.AdListener;
+//import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
@@ -114,7 +114,7 @@ public class MainActivity
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
     }
-
+/*
     private void setAdListener(AdView adView) {
         adView.setAdListener(new AdListener() {
             @Override
@@ -130,7 +130,7 @@ public class MainActivity
             }
         });
     }
-
+*/
     private void setupInterstitialAds() {
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.wgs_interstitial_ad_id));

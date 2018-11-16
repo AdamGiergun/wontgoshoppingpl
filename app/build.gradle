@@ -8,8 +8,8 @@ android {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 27
-        versionName "1.0.0.3"
+        versionCode 28
+        versionName "1.0.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -25,7 +25,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'eu.adamgiergun:mylibrary:0.99.83.6@aar'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
@@ -36,7 +36,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'com.google.firebase:firebase-core:16.0.4'
-    implementation 'com.google.firebase:firebase-ads:17.0.0'
+    implementation 'com.google.firebase:firebase-ads:17.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

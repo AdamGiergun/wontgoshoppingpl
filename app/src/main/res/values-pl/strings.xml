@@ -10,6 +10,7 @@
     <string name="info_added_to_calendar">Dodano do kalendarza</string>
     <string name="error_adding_to_calendar_failed">Błąd\nNie dodano do kalendarza</string>
     <string name="error_sth_went_wrong">Błąd\nCoś poszło źle</string>
+    <string name="title_add_to_calendar">Dodaj do kalendarza</string>
     <string name="title_activity_settings">Ustawienia</string>
     <string name="title_activity_help">Pomoc</string>
 

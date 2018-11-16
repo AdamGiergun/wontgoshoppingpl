@@ -9,6 +9,7 @@
     <string name="info_added_to_calendar">Добавлено в календарь</string>
     <string name="error_adding_to_calendar_failed">Ошибка\nНе добавлена в календарь.</string>
     <string name="error_sth_went_wrong">Ошибка\nЧто-то пошло не так</string>
+    <string name="title_add_to_calendar">Добавить в календарь</string>
     <string name="title_activity_settings">Настройки</string>
     <string name="title_activity_help">Помощь</string>
 
