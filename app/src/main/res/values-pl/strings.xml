@@ -62,4 +62,6 @@
         o nich. Domyślne wartości dla przypomnień można zmienić w Ustawieniach.</string>
     <string name="title_delete_events">Usuń przypomnienia</string>
     <string name="summary_delete_events">Usuwa wszystkie zdarzenia dodane przez tą aplikację z wybranych kalendarzy</string>
+
+    <string name="info_deleted">Usunięto</string>
 </resources>

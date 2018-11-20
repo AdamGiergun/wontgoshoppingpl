@@ -63,7 +63,6 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         setupBannerAds();
         lastTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(this);
-
 //        Calendar calEnd = Calendar.getInstance();
 //        String timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
 //        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
@@ -89,8 +88,8 @@ public class MainActivity
 
     private void setLook() {
         if (appPreferences.isLookRich(this)) {
-            View recyclerView = findViewById(R.id.main_view);
-            recyclerView.setBackgroundResource(R.drawable.bg_red);
+            View recyclerViewContainer = findViewById(R.id.main_view);
+            recyclerViewContainer.setBackgroundResource(R.drawable.bg_red);
             View adViewLayout = findViewById(R.id.adViewLayout);
             adViewLayout.setBackgroundResource(R.drawable.bg_red);
         }
@@ -783,5 +782,4 @@ public class MainActivity
             TillDateDialog.date = date;
         }
     }
-
 }

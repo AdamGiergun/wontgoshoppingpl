@@ -3,6 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -146,6 +147,15 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
     }
 
+    void deleteFromGoogleCalendar(Context context) {
+        int count = SimpleCalendarEvent.delete(calendarEventId, context, calendarId);
+        calendarEventId = SimpleCalendarEvent.NON_EXISTING;
+        updateEventIdInDb(context);
+        if (count > 0) {
+            Toast.makeText(context, context.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void setEndCalendar(SimpleCalendarEvent calendarEvent) {
         Calendar endCalendar = (Calendar) calendar.clone();
         if (noOfConsecutiveDays > 0)
@@ -159,17 +169,20 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     }
 
     private void updateEventIdInDb(Context context) {
+        DatabaseHandler databaseHandler = new DatabaseHandler(context);
+        SQLiteDatabase db = databaseHandler.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_ID, calendarId);
         if (calendarEventId > SimpleCalendarEvent.NON_EXISTING) {
-            DatabaseHandler databaseHandler = new DatabaseHandler(context);
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_ID, calendarId);
             contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, calendarEventId);
-            db.update(DBContract.Events.TABLE_NAME,
-                    contentValues,
-                    DBContract.Events._ID + "=?",
-                    new String[]{String.valueOf(dbId)});
+        } else {
+            String nullValue = null;
+            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, nullValue);
         }
+        db.update(DBContract.Events.TABLE_NAME,
+                contentValues,
+                DBContract.Events._ID + "=?",
+                new String[]{String.valueOf(dbId)});
     }
 
     boolean isReminderNeeded() {

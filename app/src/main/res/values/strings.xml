@@ -73,4 +73,6 @@
     <string name="title_delete_events">Delete reminders</string>
     <string name="summary_delete_events">Removes all events added by this app from chosen calendars</string>
     <string name="key_delete_events" translatable="false">delete_events</string>
+
+    <string name="info_deleted">Deleted</string>
 </resources>

@@ -62,4 +62,6 @@
 
     <string name="title_delete_events">Удалить напоминания</string>
     <string name="summary_delete_events">Удаляет все события, добавленные этим приложением, из выбранных календарей</string>
+
+    <string name="info_deleted">Удалено</string>
 </resources>

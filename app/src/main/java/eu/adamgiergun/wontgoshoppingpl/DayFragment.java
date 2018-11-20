@@ -14,6 +14,21 @@ import androidx.recyclerview.widget.*;
 public class DayFragment extends Fragment {
 
     private OnListFragmentInteractionListener listener;
+    private DayRecyclerViewAdapter dayRecyclerViewAdapter;
+
+    private ItemTouchHelper.SimpleCallback dayTouchHelper = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            DayRecyclerViewAdapter.ViewHolder dayViewHolder = (DayRecyclerViewAdapter.ViewHolder) viewHolder;
+            dayViewHolder.day.deleteFromGoogleCalendar(getContext());
+            dayRecyclerViewAdapter.notifyDataSetChanged();
+        }
+    };
 
     public DayFragment() {
     }
@@ -26,10 +41,13 @@ public class DayFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 //            Calendar calStart = Calendar.getInstance();
-            DayRecyclerViewAdapter dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getListOfLimitedCommerceDays(context), listener);
+            dayRecyclerViewAdapter = new DayRecyclerViewAdapter(getListOfLimitedCommerceDays(context), listener);
             boolean isLookRich = new AppPreferences(context).isLookRich(context);
             dayRecyclerViewAdapter.setLookRich(isLookRich);
             recyclerView.setAdapter(dayRecyclerViewAdapter);
+            ItemTouchHelper dayTouchHelper = new ItemTouchHelper(this.dayTouchHelper);
+            dayTouchHelper.attachToRecyclerView(recyclerView);
+
 /*            Calendar calEnd = Calendar.getInstance();
             String timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
             Toast.makeText(container.getContext(), timeDifference, Toast.LENGTH_SHORT).show();*/
