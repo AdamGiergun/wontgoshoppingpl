@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.*;
 import android.widget.TextView;
@@ -17,14 +18,22 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
     private final OnListFragmentInteractionListener listener;
     private boolean isLookRich;
 
-    DayRecyclerViewAdapter(ListOfLimitedCommerceDays days, OnListFragmentInteractionListener listener) {
+    private DayRecyclerViewAdapter(ListOfLimitedCommerceDays days, OnListFragmentInteractionListener listener) {
         this.days = days;
         this.listener = listener;
-        isLookRich = false;
     }
 
-    void setLookRich(boolean isLookRich) {
-        this.isLookRich = isLookRich;
+    static DayRecyclerViewAdapter getInstance(Context context, OnListFragmentInteractionListener listener) {
+        DayRecyclerViewAdapter dayRecyclerViewAdapter =
+                new DayRecyclerViewAdapter(
+                        ListOfLimitedCommerceDays.getList(context),
+                        listener);
+        dayRecyclerViewAdapter.setLook(context);
+        return dayRecyclerViewAdapter;
+    }
+
+    private void setLook(Context context) {
+        isLookRich = new AppPreferences(context).isLookRich(context);
     }
 
     @NonNull
@@ -98,18 +107,22 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final CardView cardView;
-        final TextView dayView;
-        final TextView timeView;
-        final TextView nameView;
-        LimitedCommerceDay day;
+        private final CardView cardView;
+        private final TextView dayView;
+        private final TextView timeView;
+        private final TextView nameView;
+        private LimitedCommerceDay day;
 
-        ViewHolder(CardView view) {
+        private ViewHolder(CardView view) {
             super(view);
             cardView = view;
             dayView = view.findViewById(R.id.date);
             timeView = view.findViewById(R.id.time);
             nameView = view.findViewById(R.id.name);
+        }
+
+        LimitedCommerceDay getDay() {
+            return day;
         }
 
         @NonNull

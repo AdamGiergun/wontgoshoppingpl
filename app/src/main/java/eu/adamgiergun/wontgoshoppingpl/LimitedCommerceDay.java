@@ -156,11 +156,13 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     }
 
     void deleteFromGoogleCalendar(Context context) {
-        int count = SimpleCalendarEvent.delete(calendarEventId, context, calendarId);
-        calendarEventId = SimpleCalendarEvent.NON_EXISTING;
-        updateEventIdInDb(context);
-        if (count > 0) {
-            Toast.makeText(context, context.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
+        if (calendarEventId != SimpleCalendarEvent.NON_EXISTING) {
+            int count = SimpleCalendarEvent.delete(calendarEventId, context, calendarId);
+            calendarEventId = SimpleCalendarEvent.NON_EXISTING;
+            updateEventIdInDb(context);
+            if (count > 0) {
+                Toast.makeText(context, context.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -203,6 +205,10 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
 
     LimitedCommerceDayType getType() {
         return type;
+    }
+
+    String getTypeCode() {
+        return type.getCodeAsString();
     }
 
     void setType(LimitedCommerceDayType type) {

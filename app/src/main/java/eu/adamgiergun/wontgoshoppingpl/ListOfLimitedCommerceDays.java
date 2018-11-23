@@ -49,6 +49,12 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return yesterday;
     }
 
+    static ListOfLimitedCommerceDays getList(Context context) {
+        AppPreferences appPreferences = new AppPreferences(context);
+        LimitedCommerceDayType.TypesList types = appPreferences.getLimitedCommerceDayTypes(context);
+        return ListOfLimitedCommerceDays.getList(context, types);
+    }
+
     static ListOfLimitedCommerceDays getList(Context context, @NonNull TypesList includedDaysTypes) {
         DatabaseHandler databaseHandler = new DatabaseHandler(context);
         SQLiteDatabase db = databaseHandler.getReadableDatabase();

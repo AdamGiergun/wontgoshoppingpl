@@ -22,32 +22,39 @@ class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String string = DBContract.SQL_CREATE_EVENTS;
-        db.execSQL(string);
-        string = DBContract.SQL_CREATE_REMINDERS;
-        db.execSQL(string);
+        db.execSQL(DBContract.SQL_CREATE_EVENTS);
+        db.execSQL(DBContract.SQL_CREATE_REMINDERS);
         fillDbWithEvents(db);
     }
 
     private void fillDbWithEvents(SQLiteDatabase db) {
         LimitedCommerceDay day;
         Iterator<LimitedCommerceDay> iterator = ListOfLimitedCommerceDays.getIteratorFromResources(context);
-        ContentValues contentValues;
         while (iterator.hasNext()) {
             day = iterator.next();
-            contentValues = new ContentValues();
-            contentValues.put(DBContract.Events.COLUMN_NAME_ITEM,
-                    day.getItem());
-            contentValues.put(DBContract.Events.COLUMN_NAME_TYPE_ID,
-                    day.getType().getCodeAsString());
-            db.insertOrThrow(DBContract.Events.TABLE_NAME,
-                    null,
-                    contentValues);
+            insertDayInDb(day, db);
         }
+    }
+
+    private void insertDayInDb(LimitedCommerceDay day, SQLiteDatabase db) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(
+                DBContract.Events.COLUMN_NAME_ITEM,
+                day.getItem());
+
+        contentValues.put(
+                DBContract.Events.COLUMN_NAME_TYPE_ID,
+                day.getTypeCode());
+
+        db.insertOrThrow(
+                DBContract.Events.TABLE_NAME,
+                null,
+                contentValues);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        //stub for possible future upgrades
     }
 }
