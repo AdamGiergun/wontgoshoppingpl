@@ -4,9 +4,6 @@ import android.provider.BaseColumns;
 
 class DBContract {
 
-    DBContract() {
-    }
-
     static abstract class Events implements BaseColumns {
         static final String TABLE_NAME = "events";
         static final String COLUMN_NAME_TYPE_ID = "type_id";
@@ -14,12 +11,7 @@ class DBContract {
         static final String COLUMN_NAME_CALENDAR_ID = "calendar_id";
         static final String COLUMN_NAME_CALENDAR_EVENT_ID = "calendar_event_id";
     }
-/*
-    static abstract class EventTypes implements BaseColumns{
-        static final String TABLE_NAME = "event_types";
-        static final String COLUMN_NAME_TYPE = "type";
-    }
-*/
+
     static abstract class Reminders implements BaseColumns {
         static final String TABLE_NAME = "events_reminders";
         static final String COLUMN_NAME_EVENT_ID = "event_id";
@@ -27,11 +19,7 @@ class DBContract {
         static final String COLUMN_NAME_MINUTE = "minute";
         static final String COLUMN_NAME_DAYS_BEFORE = "days_before";
     }
-/*
-    static abstract class EventsWithTypeNames {
-        static final String VIEW_NAME = "events_with_types_names";
-    }
-*/
+
     static final String SQL_CREATE_EVENTS =
             "CREATE TABLE " + Events.TABLE_NAME + "(" +
                     Events._ID + " INTEGER PRIMARY KEY, " +
@@ -42,15 +30,7 @@ class DBContract {
 
     static final String SQL_DELETE_EVENTS =
             "DROP TABLE IF EXISTS " + Events.TABLE_NAME + ";";
-/*
-    static final String SQL_CREATE_EVENT_TYPES =
-            "CREATE TABLE " + EventTypes.TABLE_NAME + " (" +
-                    EventTypes._ID + " INTEGER PRIMARY KEY, " +
-                    EventTypes.COLUMN_NAME_TYPE + " TEXT UNIQUE NOT NULL);";
 
-    static final String SQL_DELETE_EVENT_TYPES =
-            "DROP TABLE IF EXISTS " + EventTypes.TABLE_NAME + ";";
-*/
     static final String SQL_CREATE_REMINDERS =
             "CREATE TABLE " + Reminders.TABLE_NAME + " (" +
                     Reminders._ID + " INTEGER PRIMARY KEY, " +

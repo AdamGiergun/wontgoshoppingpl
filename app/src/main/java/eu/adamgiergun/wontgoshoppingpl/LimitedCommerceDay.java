@@ -33,18 +33,21 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     LimitedCommerceDay(int id, String item) {
         this.dbId = id;
         this.item = item;
+
         String[] pieces = item.split(",");
         time = new SimpleTime(pieces[1]);
         setDay(pieces[0]);
         name = pieces[2];
+
         description = name;
         reminderNeeded = true;
         noOfConsecutiveDays = 0;
     }
 
     private void setDay(String date) {
-        calendar = Calendar.getInstance();
         String[] subpieces = date.split("_");
+
+        calendar = Calendar.getInstance();
 
         int year = Integer.valueOf(subpieces[0]);
         calendar.set(Calendar.YEAR, year);
@@ -136,15 +139,21 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         } else {
             calendarId = defaultCalendarId;
         }
+
         SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(calendarId);
+
         if (type == LimitedCommerceDayType.COMMERCE_SUNDAY) {
             calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping));
         } else {
             calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
         }
+
         calendarEvent.setStartCalendar(calendar, time);
+
         setEndCalendar(calendarEvent);
+
         calendarEvent.addReminder(reminder);
+
         if (SimpleCalendarEvent.doesExist(calendarEventId, context, calendarId)) {
             calendarEvent.setEventID(calendarEventId);
             calendarEvent.writeReminders(context);
@@ -152,6 +161,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
             calendarEventId = calendarEvent.write(context);
             updateEventIdInDb(context);
         }
+        
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
     }
 

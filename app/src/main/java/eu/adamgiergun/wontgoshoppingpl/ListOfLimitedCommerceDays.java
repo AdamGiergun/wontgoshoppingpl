@@ -74,7 +74,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
                         cursor.getInt(0),
                         cursor.getString(1));
                 LimitedCommerceDayType type =
-                        LimitedCommerceDayType.getTypeByCode(
+                        LimitedCommerceDayType.getType(
                                 cursor.getInt(2));
                 day.setType(type);
 
