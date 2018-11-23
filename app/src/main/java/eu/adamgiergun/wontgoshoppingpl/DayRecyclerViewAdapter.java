@@ -17,6 +17,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
     private final ListOfLimitedCommerceDays days;
     private final OnListFragmentInteractionListener listener;
     private boolean isLookRich;
+    private static float density;
 
     private DayRecyclerViewAdapter(ListOfLimitedCommerceDays days, OnListFragmentInteractionListener listener) {
         this.days = days;
@@ -29,6 +30,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
                         ListOfLimitedCommerceDays.getList(context),
                         listener);
         dayRecyclerViewAdapter.setLook(context);
+        density = context.getResources().getDisplayMetrics().density;
         return dayRecyclerViewAdapter;
     }
 
@@ -47,20 +49,57 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         LimitedCommerceDay day = days.get(position);
-        holder.day = day;
-        holder.dayView.setText(day.getDateString());
-        holder.timeView.setText(day.getTimeString(holder.timeView.getContext()));
-        holder.nameView.setText(day.getName());
+        holder.setup(day);
+    }
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.onListFragmentInteraction(holder.day);
+    @Override
+    public int getItemCount() {
+        return days.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private final CardView cardView;
+        private final TextView dayView;
+        private final TextView timeView;
+        private final TextView nameView;
+        private LimitedCommerceDay day;
+
+        private ViewHolder(CardView view) {
+            super(view);
+            cardView = view;
+            dayView = view.findViewById(R.id.date);
+            timeView = view.findViewById(R.id.time);
+            nameView = view.findViewById(R.id.name);
+        }
+
+        private void setup(final LimitedCommerceDay day) {
+            this.day = day;
+            dayView.setText(day.getDateString());
+            timeView.setText(day.getTimeString(timeView.getContext()));
+            nameView.setText(day.getName());
+
+            setupCardView();
+        }
+
+        private void setupCardView() {
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != listener) {
+                        listener.onListFragmentInteraction(day);
+                    }
                 }
+            });
+            if (isLookRich) {
+                cardView.setBackgroundResource(getBackroundResource());
+            } else {
+                cardView.setCardBackgroundColor(getCardColor(cardView.getContext()));
+                cardView.setRadius(8 * density);
+                cardView.setCardElevation(4 * density);
             }
-        });
-        if (isLookRich) {
+        }
+
+        private int getBackroundResource() {
             int backgroundResource;
             switch (day.getType()) {
                 case HOLIDAY:
@@ -76,8 +115,10 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
                     backgroundResource = 0;
                     break;
             }
-            holder.cardView.setBackgroundResource(backgroundResource);
-        } else {
+            return backgroundResource;
+        }
+
+        private int getCardColor(Context context) {
             int color;
             switch (day.getType()) {
                 case HOLIDAY:
@@ -87,38 +128,13 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
                     color = Color.parseColor("#FF1493");
                     break;
                 case COMMERCE_SUNDAY:
-                    color = ContextCompat.getColor(holder.cardView.getContext(), android.R.color.holo_green_dark);
+                    color = ContextCompat.getColor(context, android.R.color.holo_green_dark);
                     break;
                 default:
                     color = 0;
                     break;
             }
-            holder.cardView.setCardBackgroundColor(color);
-
-            float density = holder.cardView.getContext().getResources().getDisplayMetrics().density;
-            holder.cardView.setRadius(8 * density);
-            holder.cardView.setCardElevation(4 * density);
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return days.size();
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private final CardView cardView;
-        private final TextView dayView;
-        private final TextView timeView;
-        private final TextView nameView;
-        private LimitedCommerceDay day;
-
-        private ViewHolder(CardView view) {
-            super(view);
-            cardView = view;
-            dayView = view.findViewById(R.id.date);
-            timeView = view.findViewById(R.id.time);
-            nameView = view.findViewById(R.id.name);
+            return color;
         }
 
         LimitedCommerceDay getDay() {
