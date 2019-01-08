@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_margin">4dp</dimen>
-    <dimen name="date_field_weight">10</dimen>
+    <dimen name="date_field_weight">13</dimen>
     <dimen name="time_field_weight">6</dimen>
     <dimen name="separator_field_weight">1</dimen>
     <dimen name="name_field_weight">13</dimen>

@@ -58,6 +58,7 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocalizedConst();
         database = new DatabaseHandler(this).getWritableDatabase();
         appPreferences = new AppPreferences(this);
         setContentView(R.layout.activity_main);
@@ -71,6 +72,21 @@ public class MainActivity
             addFragment(new AskForLook());
         } else {
             addFragment(new DayFragment());
+        }
+    }
+
+    private void setLocalizedConst() {
+        if (!LocalizedConst.isSet()) {
+            LocalizedConst.setWholeDay(getString(R.string.whole_day));
+            LocalizedConst.setSince(getString(R.string.since));
+            LocalizedConst.setHelpTexts(new String[] {
+                    getString(R.string.help_text_1),
+                    getString(R.string.help_text_2),
+                    getString(R.string.help_text_3),
+                    getString(R.string.help_text_4),
+                    getString(R.string.help_text_5),
+            });
+            LocalizedConst.setSet();
         }
     }
 

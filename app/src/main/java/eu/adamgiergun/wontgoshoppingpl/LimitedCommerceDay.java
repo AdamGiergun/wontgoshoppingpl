@@ -100,11 +100,11 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         return date + "\n" + nameOfWeekday;
     }
 
-    String getTimeString(Context context) {
+    String getTimeString() {
         if (time.getHour() == 0 && time.getMinute() == 0)
-            return context.getString(R.string.whole_day);
+            return LocalizedConst.getWholeDay();
         else
-            return context.getString(R.string.since) + time.toString();
+            return LocalizedConst.getSince() +  time.toString();
     }
 
     String getName() {

@@ -75,7 +75,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
         private void setup(final LimitedCommerceDay day) {
             this.day = day;
             dayView.setText(day.getDateString());
-            timeView.setText(day.getTimeString(timeView.getContext()));
+            timeView.setText(day.getTimeString());
             nameView.setText(day.getName());
 
             setupCardView();

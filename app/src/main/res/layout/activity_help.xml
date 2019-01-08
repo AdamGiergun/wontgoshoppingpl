@@ -19,9 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:justificationMode="inter_word"
-            android:text="@string/help_text_1"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/spacer1"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -37,9 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:justificationMode="inter_word"
-            android:text="@string/help_text_2"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/spacer2"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spacer1" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -55,9 +55,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:justificationMode="inter_word"
-            android:text="@string/help_text_3"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/spacer3"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spacer2" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -73,9 +73,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:justificationMode="inter_word"
-            android:text="@string/help_text_4"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/spacer4"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spacer3" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -91,9 +91,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:justificationMode="inter_word"
-            android:text="@string/help_text_5"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/helpTextView4"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spacer4" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
