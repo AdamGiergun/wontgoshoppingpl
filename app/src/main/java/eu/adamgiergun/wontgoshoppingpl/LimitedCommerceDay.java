@@ -104,7 +104,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         if (time.getHour() == 0 && time.getMinute() == 0)
             return LocalizedConst.getWholeDay();
         else
-            return LocalizedConst.getSince() +  time.toString();
+            return LocalizedConst.getSince() + time.toString();
     }
 
     String getName() {

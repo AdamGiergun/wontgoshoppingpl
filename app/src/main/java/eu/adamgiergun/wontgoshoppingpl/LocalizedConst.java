@@ -1,10 +1,13 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
+import java.util.Locale;
+
 class LocalizedConst {
     private static String wholeDay;
     private static String since;
+    private static String askForLook;
     private static boolean set;
-    private static String[] helpTexts;
+    private static Locale locale;
 
     static String getWholeDay() {
         return wholeDay;
@@ -30,11 +33,19 @@ class LocalizedConst {
         LocalizedConst.set = true;
     }
 
-    static String getHelpText(int index) {
-        return helpTexts[index];
+    static Locale getLocale() {
+        return locale;
     }
 
-    static void setHelpTexts(String[] helpTexts) {
-        LocalizedConst.helpTexts = helpTexts;
+    static void setLocale(Locale locale) {
+        LocalizedConst.locale = locale;
+    }
+
+    static String getAskForLook() {
+        return askForLook;
+    }
+
+    static void setAskForLook(String askForLook) {
+        LocalizedConst.askForLook = askForLook;
     }
 }

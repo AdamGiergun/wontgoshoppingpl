@@ -79,13 +79,7 @@ public class MainActivity
         if (!LocalizedConst.isSet()) {
             LocalizedConst.setWholeDay(getString(R.string.whole_day));
             LocalizedConst.setSince(getString(R.string.since));
-            LocalizedConst.setHelpTexts(new String[] {
-                    getString(R.string.help_text_1),
-                    getString(R.string.help_text_2),
-                    getString(R.string.help_text_3),
-                    getString(R.string.help_text_4),
-                    getString(R.string.help_text_5),
-            });
+            LocalizedConst.setAskForLook(getString(R.string.ask_for_look));
             LocalizedConst.setSet();
         }
     }
@@ -619,7 +613,10 @@ public class MainActivity
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.ask_for_look_fragment, container, false);
+            View view = inflater.inflate(R.layout.ask_for_look_fragment, container, false);
+            TextView textView = view.findViewById(R.id.textView);
+            textView.setText(LocalizedConst.getAskForLook());
+            return view;
         }
     }
 
