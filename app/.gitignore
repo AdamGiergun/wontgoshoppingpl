@@ -1,5 +1,2 @@
 /build
-/app-release.apk
-/proguard-rules.pro
-/release/release/app.aab
-/release/release/.directory
+/release/app.aab

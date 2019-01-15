@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Kein Einkauf PL</string>
+    <string name="day_of_limited_commerce">Tag der Handelsbeschränkungen</string>
+    <string name="days_of_limited_commerce">Tage der Handelsbeschränkungen</string>
+    <string name="holidays">Feiertage</string>
+    <string name="whole_day">Ganzer\nTag</string>
+    <string name="since">Seit\n</string>
+    <string name="title_choose_events">Ereignisse, die dem Kalender hinzugefügt werden sollen</string>
+    <string name="info_added_to_calendar">Zum Kalender hinzugefügt</string>
+    <string name="error_adding_to_calendar_failed">Fehler\nNicht zum Kalender hinzugefügt</string>
+    <string name="error_sth_went_wrong">Fehler\nEtwas ist schief gelaufen</string>
+    <string name="title_add_to_calendar">Zum Kalender hinzufügen</string>
+    <string name="title_activity_settings">die Einstellungen</string>
+    <string name="title_activity_help">Hilfe</string>
+
+    <string name="title_show_holidays">Feiertage anzeigen</string>
+    <string name="summary_show_holidays_on">Feiertage in der Liste anzeigen</string>
+    <string name="summary_show_holidays_off">Zeigen Sie keine Feiertage auf der Liste an</string>
+
+    <string name="title_show_non_commerce_days">Nicht-Handelstage anzeigen</string>
+    <string name="summary_show_non_commerce_days_on">Nicht-Handelstage in der Liste anzeigen</string>
+    <string name="summary_show_non_commerce_days_off">Zeigen Sie keine Nicht-Handelstage in der Liste an</string>
+
+    <string name="title_show_commerce_sundays">Handelssonntage anzeigen</string>
+    <string name="summary_show_commerce_sundays_on">Commerce-Sonntage auf der Liste anzeigen</string>
+    <string name="summary_show_commerce_sundays_off">Zeigen Sie keine Handelssonntage auf der Liste an</string>
+
+    <string name="remind_me">Erinnere mich</string>
+    <string name="days_before">Tag(e) zuvor</string>
+    <string name="days">Tag(e)</string>
+    <string name="before_comma_at">vor, um</string>
+    <string name="till">von Tagen bis</string>
+    <string name="title_reminder">Erinnerung</string>
+    <string name="title_reminder_of">Erinnerung an:</string>
+    <string name="go_shopping_earlier">früher einkaufen gehen!</string>
+    <string name="go_shopping">einkaufen gehen!</string>
+
+    <string name="title_app_look">Das Aussehen der Anwendung</string>
+    <string name="summary_app_look_mini">Mini</string>
+    <string name="summary_app_look_rich">Reich</string>
+
+    <string name="ask_for_look">\nWählen Sie Ihren bevorzugten Aussehen aus.\nSie können ihn später in den Einstellungen ändern.\n</string>
+
+    <string name="pref_header_look">Das Aussehen</string>
+    <string name="pref_header_notifications">Die Benachrichtigungen</string>
+    <string name="commerce_sundays">Handelssonntage</string>
+
+    <string name="help_text_1">Seit 2018 wird das Gesetz zur Einführung von Handelsbeschränkungen an den meisten
+        Sonntagen und ausgewählt Tage ist in Polen in Kraft getreten. Nur Geschäfte an Bahn-, Bus- und
+        Tankstellen und einige kleine Läden können zu dieser Zeit geöffnet sein.</string>
+    <string name="help_text_2">Mit dieser App können Sie eine Liste solcher Tage, Feiertage und kommerzieller
+        anzeigen Sonntags Welche Arten dieser Elemente in der Liste angezeigt werden, kann in den Einstellungen
+        (das Werkzeugsymbol) geändert werden in der oberen Leiste).</string>
+    <string name="help_text_3">Es ist auch möglich, diese Ereignisse zusammen mit Erinnerungen dazu hinzuzufügen,
+        auf den in den Einstellungen ausgewählten Kalender (in neueren Versionen von Android erfordert dies das
+        Erteilen der Anwendung "Zugriff auf den Kalender"). Solche Kalender können unter
+        <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> hinzugefügt werden
+        ("+" Recht auf "Einen Freundeskalender hinzufügen", auf der Desktop-Site, nicht mobil!). Sie können ausgewählt
+        hinzufügen Ereignistypen bis zu einem bestimmten Datum (das Kalendersymbol in der oberen Leiste),
+        oder einzelne Ereignisse (durch Berühren eines Listenelements).</string>
+    <string name="help_text_4">Wenn Sie Ereignisse hinzufügen, können Sie die Erinnerungseinstellungen für sie vorübergehend ändern.
+        Die Standardwerte für Erinnerungen können in den Einstellungen geändert werden.</string>
+    <string name="help_text_5">Ein zum Kalender hinzugefügter Tag kann aus dem Kalender gelöscht werden,
+        indem ein bestimmter Listeneintrag zur Seite gezogen wird.</string>
+
+    <string name="title_delete_events">Erinnerungen löschen</string>
+    <string name="summary_delete_events">Entfernt alle von dieser App hinzugefügten Ereignisse aus ausgewählten Kalendern</string>
+
+    <string name="info_deleted">Gelöscht</string>
+</resources>
