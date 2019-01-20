@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY non_commerce_sunday "Воскресіння без торгівлі">
+    <!ENTITY commerce_sunday "Торгові неділя">
+    <!ENTITY new_year "Новий рік">
+    <!ENTITY epiphany "Богоявлення">
+    <!ENTITY holy_saturday "субота свята">
+    <!ENTITY easter_sunday "Великдень">
+    <!ENTITY easter_monday "Світлий понеділок">
+    <!ENTITY labour_day "День Праці">
+    <!ENTITY constitution_day "День Конституції 3&#160;травня">
+    <!ENTITY whit_sunday "День Святої Трійці">
+    <!ENTITY corpus_christi "Свято Тіла і Крові Христових">
+    <!ENTITY assumption "Успіння Пресвятої Богородиці">
+    <!ENTITY all_saints "День всіх святих">
+    <!ENTITY independence_day "День незалежності">
+    <!ENTITY day_after_independence_day "Наступний день після Дня незалежності">
+    <!ENTITY christmas_eve "Святвечір">
+    <!ENTITY christmas_day "Різдво Христове">
+    <!ENTITY second_day_of_christmas "другий день Різдва Христового">
+    ]>
+
+<resources>
+    <string-array name="non_commerce_days">
+        <item>2018_12_11,00:00,&day_after_independence_day;</item>
+        <item>2018_18_11,00:00,&non_commerce_sunday;</item>
+        <item>2018_09_12,00:00,&non_commerce_sunday;</item>
+        <item>2018_24_12,13:00,&christmas_eve;</item>
+        <item>2019_13_01,00:00,&non_commerce_sunday;</item>
+        <item>2019_20_01,00:00,&non_commerce_sunday;</item>
+        <item>2019_03_02,00:00,&non_commerce_sunday;</item>
+        <item>2019_10_02,00:00,&non_commerce_sunday;</item>
+        <item>2019_17_02,00:00,&non_commerce_sunday;</item>
+        <item>2019_03_03,00:00,&non_commerce_sunday;</item>
+        <item>2019_10_03,00:00,&non_commerce_sunday;</item>
+        <item>2019_17_03,00:00,&non_commerce_sunday;</item>
+        <item>2019_24_03,00:00,&non_commerce_sunday;</item>
+        <item>2019_07_04,00:00,&non_commerce_sunday;</item>
+        <item>2019_20_04,13:00,&holy_saturday;</item>
+        <item>2019_05_05,00:00,&non_commerce_sunday;</item>
+        <item>2019_12_05,00:00,&non_commerce_sunday;</item>
+        <item>2019_19_05,00:00,&non_commerce_sunday;</item>
+        <item>2019_02_06,00:00,&non_commerce_sunday;</item>
+        <item>2019_16_06,00:00,&non_commerce_sunday;</item>
+        <item>2019_23_06,00:00,&non_commerce_sunday;</item>
+        <item>2019_07_07,00:00,&non_commerce_sunday;</item>
+        <item>2019_14_07,00:00,&non_commerce_sunday;</item>
+        <item>2019_21_07,00:00,&non_commerce_sunday;</item>
+        <item>2019_04_08,00:00,&non_commerce_sunday;</item>
+        <item>2019_11_08,00:00,&non_commerce_sunday;</item>
+        <item>2019_18_08,00:00,&non_commerce_sunday;</item>
+        <item>2019_01_09,00:00,&non_commerce_sunday;</item>
+        <item>2019_08_09,00:00,&non_commerce_sunday;</item>
+        <item>2019_15_09,00:00,&non_commerce_sunday;</item>
+        <item>2019_22_09,00:00,&non_commerce_sunday;</item>
+        <item>2019_06_10,00:00,&non_commerce_sunday;</item>
+        <item>2019_13_10,00:00,&non_commerce_sunday;</item>
+        <item>2019_20_10,00:00,&non_commerce_sunday;</item>
+        <item>2019_03_11,00:00,&non_commerce_sunday;</item>
+        <item>2019_10_11,00:00,&non_commerce_sunday;</item>
+        <item>2019_17_11,00:00,&non_commerce_sunday;</item>
+        <item>2019_01_12,00:00,&non_commerce_sunday;</item>
+        <item>2019_08_12,00:00,&non_commerce_sunday;</item>
+        <item>2019_24_12,13:00,&christmas_eve;</item>
+    </string-array>
+
+    <string-array name="holidays">
+        <item>2018_01_11,00:00,&all_saints;</item>
+        <item>2018_11_11,00:00,&independence_day;</item>
+        <item>2018_25_12,00:00,&christmas_day;</item>
+        <item>2018_26_12,00:00,&second_day_of_christmas;</item>
+        <item>2019_01_01,00:00,&new_year;</item>
+        <item>2019_06_01,00:00,&epiphany;</item>
+        <item>2019_21_04,00:00,&easter_sunday;</item>
+        <item>2019_22_04,00:00,&easter_monday;</item>
+        <item>2019_01_05,00:00,&labour_day;</item>
+        <item>2019_03_05,00:00,&constitution_day;</item>
+        <item>2019_09_06,00:00,&whit_sunday;</item>
+        <item>2019_20_06,00:00,&corpus_christi;</item>
+        <item>2019_15_08,00:00,&assumption;</item>
+        <item>2019_01_11,00:00,&all_saints;</item>
+        <item>2019_11_11,00:00,&independence_day;</item>
+        <item>2019_25_12,00:00,&christmas_day;</item>
+        <item>2019_26_12,00:00,&second_day_of_christmas;</item>
+    </string-array>
+
+    <string-array name="commerce_sundays">
+        <item>2018_28_10,00:00,&commerce_sunday;</item>
+        <item>2018_04_11,00:00,&commerce_sunday;</item>
+        <item>2018_25_11,00:00,&commerce_sunday;</item>
+        <item>2018_02_12,00:00,&commerce_sunday;</item>
+        <item>2018_16_12,00:00,&commerce_sunday;</item>
+        <item>2018_23_12,00:00,&commerce_sunday;</item>
+        <item>2018_30_12,00:00,&commerce_sunday;</item>
+        <item>2019_27_01,00:00,&commerce_sunday;</item>
+        <item>2019_24_02,00:00,&commerce_sunday;</item>
+        <item>2019_31_03,00:00,&commerce_sunday;</item>
+        <item>2019_14_04,00:00,&commerce_sunday;</item>
+        <item>2019_28_04,00:00,&commerce_sunday;</item>
+        <item>2019_26_05,00:00,&commerce_sunday;</item>
+        <item>2019_30_06,00:00,&commerce_sunday;</item>
+        <item>2019_28_07,00:00,&commerce_sunday;</item>
+        <item>2019_25_08,00:00,&commerce_sunday;</item>
+        <item>2019_29_09,00:00,&commerce_sunday;</item>
+        <item>2019_27_10,00:00,&commerce_sunday;</item>
+        <item>2019_24_11,00:00,&commerce_sunday;</item>
+        <item>2019_15_12,00:00,&commerce_sunday;</item>
+        <item>2019_22_12,00:00,&commerce_sunday;</item>
+        <item>2019_29_12,00:00,&commerce_sunday;</item>
+    </string-array>
+</resources>

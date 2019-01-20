@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ні покупок PL</string>
+    <string name="day_of_limited_commerce">День торгових обмежень</string>
+    <string name="days_of_limited_commerce">Дні торгових обмежень</string>
+    <string name="holidays">Свята</string>
+    <string name="whole_day">Весь\nдень</string>
+    <string name="since">З\n</string>
+    <string name="title_choose_events">Події, які потрібно додати в календар</string>
+    <string name="info_added_to_calendar">Додано в календар</string>
+    <string name="error_adding_to_calendar_failed">Помилка\nне додана в календар.</string>
+    <string name="error_sth_went_wrong">Помилка\nЧто щось пішло не так</string>
+    <string name="title_add_to_calendar">Додати в календар</string>
+    <string name="title_activity_settings">Налаштування</string>
+    <string name="title_activity_help">Допомога</string>
+
+    <string name="title_show_holidays">Показувати свята</string>
+    <string name="summary_show_holidays_on">Показувати свята в списку</string>
+    <string name="summary_show_holidays_off">Чи не показувати свята в списку</string>
+
+    <string name="title_show_non_commerce_days">Показувати дні не комерції</string>
+    <string name="summary_show_non_commerce_days_on">Показувати дні не комерції в списку</string>
+    <string name="summary_show_non_commerce_days_off">Чи не показувати дні не комерції в списку</string>
+
+    <string name="title_show_commerce_sundays">Показати торгові неділі</string>
+    <string name="summary_show_commerce_sundays_on">Показати торгові неділі в списку</string>
+    <string name="summary_show_commerce_sundays_off">Чи не показувати торгові неділях в списку</string>
+
+    <string name="remind_me">Нагадай мені</string>
+    <string name="days_before">день(їй) до</string>
+    <string name="days">день(їй)</string>
+    <string name="before_comma_at">до, в</string>
+    <string name="till">протягом днів до</string>
+    <string name="title_reminder">Нагадування</string>
+    <string name="title_reminder_of">Нагадування про:</string>
+    <string name="go_shopping_earlier">йти по магазинам раніше!</string>
+    <string name="go_shopping">йти по магазинах!</string>
+
+    <string name="title_app_look">Зовнішній вигляд програми</string>
+    <string name="summary_app_look_mini">Міні</string>
+    <string name="summary_app_look_rich">Багатий</string>
+
+    <string name="ask_for_look">\nВиберіте кращий вигляд.\nВи можете змінити його пізніше в налаштуваннях.\n</string>
+
+    <string name="pref_header_look">Зовнішній вигляд</string>
+    <string name="pref_header_notifications">Повідомлення</string>
+    <string name="commerce_sundays">Торгівельні неділі</string>
+
+    <string name="help_text_1">З 2018 року в Польщі набув чинності закон, що встановлює торговельні обмеження
+    в більшості неділь і окремих днів. У той час можна відкрити тільки магазини на залізничних,
+    автобусних і бензозаправних станціях, а також невеликі магазини.</string>
+    <string name="help_text_2">За допомогою цієї програми ви можете переглянути список таких днів, свят
+    і комерційних неділь і додати нагадування про такі дні в свій календар. Які типи цих елементів
+    будуть показані в списку, можна змінити в Налаштуваннях (значок інструменту у верхній панелі).</string>
+    <string name="help_text_3">Також можливо додати ці події разом з нагадуваннями про них в календар,
+    обраний в настройках (в нових версіях Android це вимагає надання додатки «доступ до календаря»).
+    Такі календарі можна додати на сторінці <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r </a>
+    ( "+" Праворуч на "Додати календар друга", на робочому столі, а не мобільному!). Ви можете додавати
+    обрані типи подій до певної дати (значок календаря у верхній панелі),
+    або окремих подій (дотиком до будь-якого елементу списку).</string>
+    <string name="help_text_4">При додаванні подій ви можете тимчасово змінити налаштування нагадувань для них.
+    Значення за замовчуванням для нагадувань можна змінити в настройках.</string>
+    <string name="help_text_5">День, доданий в календар, може бути видалений з нього, прокручуючи даний елемент списку в сторону.</string>
+
+    <string name="title_delete_events">Видалити нагадування</string>
+    <string name="summary_delete_events">Видаляє всі події, додані цим додатком, з обраних календарів</string>
+
+    <string name="info_deleted">Вилучено</string>
+
+</resources>
