@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Žiadne nákupy v PL</string>
+    <string name="day_of_limited_commerce">Deň obchodných obmedzení</string>
+    <string name="days_of_limited_commerce">Dni obchodných obmedzení</string>
+    <string name="holidays">Prázdniny</string>
+    <string name="since">Od\n</string>
+    <string name="whole_day">Celý\ndeň</string>
+    <string name="title_choose_events">Udalosti, ktoré sa majú pridať do kalendára</string>
+    <string name="info_added_to_calendar">Pridaná do kalendára</string>
+    <string name="error_adding_to_calendar_failed">Chyba\nNie je pridaný do kalendára</string>
+    <string name="error_sth_went_wrong">Chyba\nNiečo sa pokazilo</string>
+    <string name="title_add_to_calendar">Pridať do kalendára</string>
+    <string name="title_activity_settings">Nastavenie</string>
+    <string name="title_activity_help">Pomoc</string>
+    <string name="title_show_holidays">Zobraziť sviatky</string>
+    <string name="summary_show_holidays_on">Zobraziť sviatky v zozname</string>
+    <string name="summary_show_holidays_off">Nezobrazovať sviatky v zozname</string>
+    <string name="title_show_non_commerce_days">Zobraziť dni bez obchodovania</string>
+    <string name="summary_show_non_commerce_days_on">Zobraziť dni, ktoré nie sú obchodné v zozname</string>
+    <string name="summary_show_non_commerce_days_off">Nepoužívajte zoznam dní, ktoré nie sú obchodné</string>
+    <string name="title_show_commerce_sundays">Zobraziť obchod v nedeľu</string>
+    <string name="summary_show_commerce_sundays_on">Zobraziť obchod v nedeľu v zozname</string>
+    <string name="summary_show_commerce_sundays_off">Nezobrazovať nedeľu v obchode v zozname</string>
+    <string name="remind_me">Pripomenúť mi to</string>
+    <string name="days_before">dni pred</string>
+    <string name="days">dni</string>
+    <string name="before_comma_at">pred, o</string>
+    <string name="till">dní až</string>
+    <string name="title_reminder">Pripomienka</string>
+    <string name="title_reminder_of">Pripomienka:</string>
+    <string name="go_shopping_earlier">ísť nakupovať skôr!</string>
+    <string name="go_shopping">ísť nakupovať!</string>
+    <string name="title_app_look">Zobrazenie aplikácie</string>
+    <string name="summary_app_look_mini">Mini</string>
+    <string name="summary_app_look_rich">Bohatý</string>
+    <string name="ask_for_look">\nVyberte preferovaný vzhľad.\nNeskôr ho môžete zmeniť v časti Nastavenia.\n</string>
+    <string name="pref_header_look">Vzhľad</string>
+    <string name="pref_header_notifications">Oznámenia</string>
+    <string name="commerce_sundays">Obchod nedeľa</string>
+    <string name="help_text_1">Od roku 2018 vstúpil do platnosti v Poľsku zákon, ktorým sa zavádzajú obchodné obmedzenia vo väčšine nedele a vybraných dní. V tom čase môžu byť otvorené iba obchody na železničných, autobusových a čerpacích staniciach a niektoré malé obchody.</string>
+    <string name="help_text_2">Pomocou tejto aplikácie môžete zobraziť zoznam takýchto dní, sviatkov a obchodných nedelí. Ktoré typy týchto prvkov sa zobrazia v zozname, môžete zmeniť v nastaveniach (ikona nástroja v hornom paneli).</string>
+    <string name="help_text_3">Tiež je možné pridať tieto udalosti spolu s pripomienkami o nich do kalendára vybratého v Nastaveniach (v novších verziách Android to vyžaduje udelenie prístupu aplikácie do Kalendára). Takéto kalendáre je možné pridať na stránke <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> (+ vpravo na Pridať kalendár priateľov, na desktop site, nie mobilný!). Do vybraného dátumu môžete pridať vybrané typy udalostí (ikona kalendára v hornom paneli) alebo jednotlivé udalosti (dotykom ktoréhokoľvek prvku zoznamu).</string>
+    <string name="help_text_4">Pri pridávaní udalostí môžete dočasne zmeniť nastavenia upomienok pre tieto udalosti. Predvolené hodnoty pripomienok je možné zmeniť v nastaveniach.</string>
+    <string name="help_text_5">Deň, ktorý sa do kalendára pridal, sa z neho môže odstrániť posunutím danej položky zoznamu na stranu.</string>
+    <string name="title_delete_events">Odstrániť pripomienky</string>
+    <string name="summary_delete_events">Odstráni všetky udalosti pridané touto aplikáciou z vybratých kalendárov</string>
+    <string name="info_deleted">Vymazaný</string>
+</resources>

@@ -3,7 +3,7 @@
     <string name="wgs_main_banner_ad_id" translatable="false">ca-app-pub-2906240608882466/3453323451</string>
     <string name="wgs_interstitial_ad_id" translatable="false">ca-app-pub-2906240608882466/1013070368</string>
 
-    <string name="app_name">No Shopping PL</string>
+    <string name="app_name">No Shopping in PL</string>
     <string name="day_of_limited_commerce">Day of trade restrictions</string>
     <string name="days_of_limited_commerce">Days of trade restrictions</string>
     <string name="holidays">Holidays</string>
@@ -61,12 +61,7 @@
     <string name="help_text_2">With this app you can view a list of such days, holidays and commercial
         Sundays. Which types of these elements will be shown in the list can be changed in Settings (the tool icon
         in the top bar).</string>
-    <string name="help_text_3">It is also possible to add these events, along with reminders about them,
-        to the calendar selected in the Settings (in newer versions of Android this requires granting the application
-        "access to the Calendar"). Such calendars can be added at <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r</a>
-        ("+" right to "Add a friends calendar", at the desktop site, not mobile!). You can add selected
-        event types up to a specific date (the calendar icon in the top bar),
-        or individual events (by touching any list element).</string>
+    <string name="help_text_3">It is also possible to add these events, along with reminders about them, to the calendar selected in the Settings (in newer versions of Android this requires granting the application access to the Calendar). Such calendars can be added at <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r</a> (+ right to Add a friends calendar, at the desktop site, not mobile!). You can add selected event types up to a specific date (the calendar icon in the top bar), or individual events (by touching any list element).</string>
     <string name="help_text_4">When adding events, you can temporarily change the reminders settings for them.
         The default values for reminders can be changed in the Settings.</string>
     <string name="help_text_5">A day added to the calendar can be deleted from it by swiping a given list item to the side.</string>

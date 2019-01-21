@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Bez zakupów</string>
+    <string name="app_name">Bez zakupów w PL</string>
     <string name="day_of_limited_commerce">Dzień ograniczeń w handlu</string>
     <string name="days_of_limited_commerce">Dni ograniczeń w handlu</string>
     <string name="holidays">Święta</string>
@@ -52,12 +52,7 @@
     <string name="help_text_2">Dzięki tej aplikacji można przejrzeć listę takich dni, Świąt oraz niedziel
         handlowych. Które rodzaje tych elementów będą pokazane na liście można zmienić w Ustawieniach
         (ikonka narzędzia w górnym pasku).</string>
-    <string name="help_text_3">Jest również możliwość dodawania tych zdarzeń, wraz z przypomnieniami o nich,
-        do Kalendarza wybranego w Ustawieniach (w nowszych wersjach Androida wymaga to przydzielenia aplikacji
-        uprawnień do dostępu do Kalendarza). Takie Kalendarze można dodawać na
-        <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r</a> (pod "Dodaj kalendarz
-        znajomego", musi to być wersja strony na komputer, nie mobilna!). Dodawać można wybrane typy zdarzeń do określonej daty (ikonka
-        kalendarza w górnym pasku), bądź pojedyncze zdarzenia (przez dotknięcie elementu listy).</string>
+    <string name="help_text_3">Jest również możliwość dodawania tych zdarzeń, wraz z przypomnieniami o nich, do Kalendarza wybranego w Ustawieniach (w nowszych wersjach Androida wymaga to przydzielenia aplikacji uprawnień do dostępu do Kalendarza). Takie Kalendarze można dodawać na <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r</a> (pod Dodaj kalendarz znajomego, musi to być wersja strony na komputer, nie mobilna!). Dodawać można wybrane typy zdarzeń do określonej daty (ikonka kalendarza w górnym pasku), bądź pojedyncze zdarzenia (przez dotknięcie elementu listy).</string>
     <string name="help_text_4">W trakcie dodawania zdarzeń można tymczasowo zmienić ustawienia przypomnień
         o nich. Domyślne wartości dla przypomnień można zmienić w Ustawieniach.</string>
     <string name="help_text_5">Usuwać z kalendarza dodany do niego dzień można przeciągając dany element listy w bok.</string>
