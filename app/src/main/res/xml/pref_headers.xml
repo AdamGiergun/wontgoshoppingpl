@@ -1,11 +1,11 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
+    <androidx.preference.Preference
         android:fragment="eu.adamgiergun.wontgoshoppingpl.SettingsActivity$LookPreferenceFragment"
         android:icon="@drawable/ic_color_lens_black_24dp"
         android:title="@string/pref_header_look" />
 
-    <Preference
+    <androidx.preference.Preference
         android:fragment="eu.adamgiergun.wontgoshoppingpl.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications" />

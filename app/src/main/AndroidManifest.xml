@@ -33,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".SettingsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -44,10 +45,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.adamgiergun.wontgoshoppingpl.MainActivity" />
         </activity>
+
         <activity
             android:name=".HelpActivity"
             android:label="@string/title_activity_help" />
+
         <activity android:name="com.google.android.gms.ads.AdActivity" />
+        <!--
+                <activity
+                    android:name="com.google.android.gms.ads.AdActivity"
+                    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                    tools:replace="android:theme"/>
+        -->
     </application>
 
 </manifest>
