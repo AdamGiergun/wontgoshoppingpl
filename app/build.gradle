@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -8,8 +9,8 @@ android {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 41
-        versionName "1.1.4.0"
+        versionCode 42
+        versionName "1.1.4.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk"//, "lt"
         //vectorDrawables.useSupportLibrary = true
@@ -20,6 +21,10 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            // Disable fabric build ID generation for debug builds
+            ext.enableCrashlytics = false
         }
     }
 }
