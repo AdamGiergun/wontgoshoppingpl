@@ -35,7 +35,7 @@
 
     <style name="MyEditTextStyle" parent="MyTextViewStyle">
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:background">@color/editableFieldColor</item>
+        <item name="android:background">@color/colorEditableField</item>
     </style>
 
     <style name="MyTextViewStyleInList" parent="MyTextViewStyle">
@@ -43,7 +43,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">?attr/textAppearanceListItem</item>
-        <item name="android:textColor">@color/cardTextColor</item>
+        <item name="android:textColor">@color/colorCardText</item>
     </style>
 
     <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">

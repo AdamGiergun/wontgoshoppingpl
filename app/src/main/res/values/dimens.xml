@@ -8,4 +8,10 @@
     <dimen name="reminder_view_padding">16dp</dimen>
     <dimen name="reminder_dialog_spacing">12dp</dimen>
 
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+
 </resources>

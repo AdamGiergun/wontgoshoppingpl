@@ -88,6 +88,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
                 cursor.moveToNext();
             }
             cursor.close();
+            db.close();
         }
         return list;
     }

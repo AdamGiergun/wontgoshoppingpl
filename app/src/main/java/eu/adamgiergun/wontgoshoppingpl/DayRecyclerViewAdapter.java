@@ -1,13 +1,11 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.*;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import eu.adamgiergun.wontgoshoppingpl.DayFragment.OnListFragmentInteractionListener;
@@ -74,7 +72,7 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
 
         private void setup(final LimitedCommerceDay day) {
             this.day = day;
-            dayView.setText(day.getDateString());
+            dayView.setText(day.getDateAndWeekdayString());
             timeView.setText(day.getTimeString());
             nameView.setText(day.getName());
 
@@ -91,50 +89,14 @@ public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerView
                 }
             });
             if (isLookRich) {
-                cardView.setBackgroundResource(getBackroundResource());
+                cardView.setBackgroundResource(day.getBackgroundResource());
             } else {
-                cardView.setCardBackgroundColor(getCardColor(cardView.getContext()));
+                cardView.setCardBackgroundColor(
+                        day.getBackgroundColor(
+                                cardView.getContext()));
                 cardView.setRadius(8 * density);
                 cardView.setCardElevation(4 * density);
             }
-        }
-
-        private int getBackroundResource() {
-            int backgroundResource;
-            switch (day.getType()) {
-                case HOLIDAY:
-                    backgroundResource = R.drawable.card_bg_red;
-                    break;
-                case NON_COMMERCE_DAY:
-                    backgroundResource = R.drawable.card_bg_orange;
-                    break;
-                case COMMERCE_SUNDAY:
-                    backgroundResource = R.drawable.card_bg_green;
-                    break;
-                default:
-                    backgroundResource = 0;
-                    break;
-            }
-            return backgroundResource;
-        }
-
-        private int getCardColor(Context context) {
-            int color;
-            switch (day.getType()) {
-                case HOLIDAY:
-                    color = Color.parseColor("#FF0000");
-                    break;
-                case NON_COMMERCE_DAY:
-                    color = Color.parseColor("#FF1493");
-                    break;
-                case COMMERCE_SUNDAY:
-                    color = ContextCompat.getColor(context, android.R.color.holo_green_dark);
-                    break;
-                default:
-                    color = 0;
-                    break;
-            }
-            return color;
         }
 
         LimitedCommerceDay getDay() {

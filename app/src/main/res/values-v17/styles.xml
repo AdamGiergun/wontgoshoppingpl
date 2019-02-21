@@ -9,6 +9,6 @@
     <style name="MyEditTextStyle" parent="MyTextViewStyle">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textAlignment">gravity</item>
-        <item name="android:background">@color/editableFieldColor</item>
+        <item name="android:background">@color/colorEditableField</item>
     </style>
 </resources>

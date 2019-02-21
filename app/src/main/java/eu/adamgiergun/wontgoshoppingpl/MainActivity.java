@@ -85,6 +85,13 @@ public class MainActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (database != null)
+            database.close();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         setupInterstitialAds();

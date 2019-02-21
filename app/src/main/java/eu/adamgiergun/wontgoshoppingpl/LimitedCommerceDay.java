@@ -2,7 +2,9 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,7 +17,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
+class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
 
     private int dbId;
     private String item;
@@ -45,17 +47,17 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
     }
 
     private void setDay(String date) {
-        String[] subpieces = date.split("_");
+        String[] subPieces = date.split("_");
 
         calendar = Calendar.getInstance();
 
-        int year = Integer.valueOf(subpieces[0]);
+        int year = Integer.valueOf(subPieces[0]);
         calendar.set(Calendar.YEAR, year);
 
-        int day = Integer.valueOf(subpieces[1]);
+        int day = Integer.valueOf(subPieces[1]);
         calendar.set(Calendar.DAY_OF_MONTH, day);
 
-        int month = Integer.valueOf(subpieces[2]) - 1;
+        int month = Integer.valueOf(subPieces[2]) - 1;
         calendar.set(Calendar.MONTH, month);
 
         calendar.set(Calendar.HOUR, 0);
@@ -90,14 +92,17 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
         if (type == LimitedCommerceDayType.HOLIDAY) {
             return description;
         } else {
-            return getDateString();
+            return getDateAndWeekdayString();
         }
     }
 
-    String getDateString() {
-        String date = DateFormat.getDateInstance().format(calendar.getTime());
+    String getDateAndWeekdayString() {
         String nameOfWeekday = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-        return date + "\n" + nameOfWeekday;
+        return getDateString() + "\n" + nameOfWeekday;
+    }
+
+    private String getDateString() {
+        return DateFormat.getDateInstance().format(calendar.getTime());
     }
 
     String getTimeString() {
@@ -161,7 +166,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
             calendarEventId = calendarEvent.write(context);
             updateEventIdInDb(context);
         }
-        
+
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
     }
 
@@ -243,5 +248,109 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay>{
 
     public String getItem() {
         return item;
+    }
+
+    int getBackgroundResource() {
+        int backgroundResource;
+        switch (getType()) {
+            case HOLIDAY:
+                backgroundResource = R.drawable.card_bg_red;
+                break;
+            case NON_COMMERCE_DAY:
+                backgroundResource = R.drawable.card_bg_orange;
+                break;
+            case COMMERCE_SUNDAY:
+                backgroundResource = R.drawable.card_bg_green;
+                break;
+            default:
+                backgroundResource = 0;
+                break;
+        }
+        return backgroundResource;
+    }
+
+    int getBackgroundColor(Context context) {
+        int color;
+        Resources resources = context.getResources();
+        switch (getType()) {
+            case HOLIDAY:
+                color = getColor(resources, R.color.colorHoliday);
+                break;
+            case NON_COMMERCE_DAY:
+                color = getColor(resources, R.color.colorNonCommerceDay);
+                break;
+            case COMMERCE_SUNDAY:
+                color = getColor(resources, R.color.colorCommerceSunday);
+                break;
+            default:
+                color = 0;
+                break;
+        }
+        return color;
+    }
+
+    @SuppressWarnings("deprecation")
+    private int getColor(Resources resources, int id) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return resources.getColor(id, null);
+        } else {
+            return resources.getColor(id);
+        }
+    }
+
+    static LimitedCommerceDay getNextDay(Context context) {
+        ListOfLimitedCommerceDays days =
+                ListOfLimitedCommerceDays.getList(
+                        context,
+                        LimitedCommerceDayType.getTypes(true, true, true));
+        return days.get(0);
+    }
+
+    CharSequence getWidgetText() {
+        /*String string = getDateString() + "\nPL: ";
+        switch (getType()) {
+            case HOLIDAY:
+                string += calendar.get(Calendar.DAY_OF_WEEK) + " " + description;
+                break;
+            case NON_COMMERCE_DAY:
+                if (calendar.get(Calendar.DAY_OF_WEEK) == 1)
+                    string += description;
+                else
+                    string += calendar.get(Calendar.DAY_OF_WEEK) + " " + description;
+                break;
+            case COMMERCE_SUNDAY:
+                string += description;
+                break;
+            default:
+                break;
+        }*/
+        return getDateString() + "\nPL: " + description;
+    }
+
+    int getWidgetLayout(Context context) {
+        boolean isLookRich = new AppPreferences(context).isLookRich(context);
+        if (isLookRich) {
+            switch (getType()) {
+                case HOLIDAY:
+                    return R.layout.app_widget_bg_red;
+                case NON_COMMERCE_DAY:
+                    return R.layout.app_widget_bg_orange;
+                case COMMERCE_SUNDAY:
+                    return R.layout.app_widget_bg_green;
+                default:
+                    return 0;
+            }
+        } else {
+            switch (getType()) {
+                case HOLIDAY:
+                    return R.layout.app_widget_color_red;
+                case NON_COMMERCE_DAY:
+                    return R.layout.app_widget_color_pink;
+                case COMMERCE_SUNDAY:
+                    return R.layout.app_widget_color_green;
+                default:
+                    return 0;
+            }
+        }
     }
 }
