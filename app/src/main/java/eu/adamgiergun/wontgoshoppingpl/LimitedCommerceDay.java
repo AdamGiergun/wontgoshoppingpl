@@ -307,6 +307,8 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
     }
 
     CharSequence getWidgetText() {
+        return getDateString() + "\nPL: " + description;
+
         /*String string = getDateString() + "\nPL: ";
         switch (getType()) {
             case HOLIDAY:
@@ -323,34 +325,20 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
                 break;
             default:
                 break;
-        }*/
-        return getDateString() + "\nPL: " + description;
+        }
+        return string;
+        */
     }
 
     int getWidgetLayout(Context context) {
-        boolean isLookRich = new AppPreferences(context).isLookRich(context);
-        if (isLookRich) {
-            switch (getType()) {
-                case HOLIDAY:
-                    return R.layout.app_widget_bg_red;
-                case NON_COMMERCE_DAY:
-                    return R.layout.app_widget_bg_orange;
-                case COMMERCE_SUNDAY:
-                    return R.layout.app_widget_bg_green;
-                default:
-                    return 0;
-            }
-        } else {
-            switch (getType()) {
-                case HOLIDAY:
-                    return R.layout.app_widget_color_red;
-                case NON_COMMERCE_DAY:
-                    return R.layout.app_widget_color_pink;
-                case COMMERCE_SUNDAY:
-                    return R.layout.app_widget_color_green;
-                default:
-                    return 0;
-            }
+        switch (getType()) {
+            case HOLIDAY:
+            case NON_COMMERCE_DAY:
+                return R.layout.app_widget_no_shopping;
+            case COMMERCE_SUNDAY:
+                return R.layout.app_widget_shopping;
+            default:
+                return 0;
         }
     }
 }
