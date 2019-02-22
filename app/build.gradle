@@ -10,7 +10,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 44
-        versionName "1.99.2"
+        versionName "1.99.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk"//, "lt"
         //vectorDrawables.useSupportLibrary = true
@@ -24,7 +24,7 @@ android {
         }
         debug {
             // Disable fabric build ID generation for debug builds
-            ext.enableCrashlytics = true
+            ext.enableCrashlytics = false
         }
     }
 }
