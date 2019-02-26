@@ -70,5 +70,7 @@
     <string name="summary_delete_events">Removes all events added by this app from chosen calendars</string>
     <string name="key_delete_events" translatable="false">delete_events</string>
 
+    <string name="key_app_widget_info_displayed" translatable="false">app_widget_info_displayed</string>
+
     <string name="info_deleted">Deleted</string>
 </resources>

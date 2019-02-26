@@ -41,4 +41,14 @@ class AppPreferences extends MyAppPreferences {
                 showHolidays(context),
                 showCommerceSundays(context));
     }
+
+    boolean wasAppWidgetInfoDisplayed(Context context) {
+        String key = context.getString(R.string.key_app_widget_info_displayed);
+        return getBoolean(key, false);
+    }
+
+    void setAppWidgetInfoDisplayed(Context context) {
+        String key = context.getString(R.string.key_app_widget_info_displayed);
+        putBoolean(key, true);
+    }
 }

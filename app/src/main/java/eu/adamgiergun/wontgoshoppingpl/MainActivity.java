@@ -74,6 +74,9 @@ public class MainActivity
             addFragment(new AskForLook());
         } else {
             addFragment(new DayFragment());
+            if (!appPreferences.wasAppWidgetInfoDisplayed(this)) {
+                (new WidgetInfoDialog()).show(getSupportFragmentManager(),"");
+            }
             if (appPreferences.isLookRich(this)) {
                 logFirebaseEvent(this, "look_rich");
             } else {
@@ -815,6 +818,33 @@ public class MainActivity
 
         private void setDate(Calendar date) {
             TillDateDialog.date = date;
+        }
+    }
+
+    public static class WidgetInfoDialog extends ThisAppDialogFragment {
+        private AppCompatDialog dialog;
+
+        @NonNull
+        @Override
+        public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = getStyledBuilder();
+            builder.setView(getDialogView());
+            dialog = builder.create();
+            return dialog;
+        }
+
+        private View getDialogView() {
+            View view = getActivity().getLayoutInflater().inflate(R.layout.app_widget_info, null);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    AppPreferences appPreferences = new AppPreferences(context);
+                    appPreferences.setAppWidgetInfoDisplayed(context);
+                    dialog.dismiss();
+                }
+            });
+            return view;
         }
     }
 }
