@@ -30,7 +30,7 @@
             android:adjustViewBounds="true"
             android:onClick="onButtonMiniClick"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/mini_small" />
+            app:srcCompat="@drawable/look_mini" />
 
         <ImageButton
             android:id="@+id/imageButtonRich"
@@ -40,6 +40,6 @@
             android:adjustViewBounds="true"
             android:onClick="onButtonRichClick"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/rich_small" />
+            app:srcCompat="@drawable/look_rich" />
     </LinearLayout>
 </LinearLayout>

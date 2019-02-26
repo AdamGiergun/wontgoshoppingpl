@@ -5,9 +5,12 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
-public class AppWidget extends AppWidgetProvider {
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+public class AppWidget extends AppWidgetProvider implements LogFirebaseEvent {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -15,6 +18,7 @@ public class AppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+        logFirebaseEvent(context, "app widgets updated");
     }
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
@@ -31,16 +35,22 @@ public class AppWidget extends AppWidgetProvider {
         views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
     }
 
-/*
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        logFirebaseEvent(context, "first app widget added to home screen");
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+        logFirebaseEvent(context, "last app widget removed from home screen");
     }
-    */
+
+    @Override
+    public void logFirebaseEvent(Context context, String full_text) {
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        Bundle params = new Bundle();
+        params.putString("full_text", full_text);
+        mFirebaseAnalytics.logEvent("app_widget", params);
+    }
 }
 
