@@ -834,7 +834,7 @@ public class MainActivity
         }
 
         private View getDialogView() {
-            View view = getActivity().getLayoutInflater().inflate(R.layout.app_widget_info, null);
+            View view = getActivity().getLayoutInflater().inflate(R.layout.info_about_app_widget, null);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
