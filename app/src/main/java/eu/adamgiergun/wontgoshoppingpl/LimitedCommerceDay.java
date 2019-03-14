@@ -330,7 +330,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         */
     }
 
-    int getWidgetLayout(Context context) {
+    int getWidgetLayout() {
         switch (getType()) {
             case HOLIDAY:
             case NON_COMMERCE_DAY:

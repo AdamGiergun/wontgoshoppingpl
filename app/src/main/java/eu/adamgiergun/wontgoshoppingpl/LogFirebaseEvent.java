@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
 
+//used only for some internal tests
 interface LogFirebaseEvent {
 
     void logFirebaseEvent(Context context, String full_text);

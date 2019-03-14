@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.appcompat.app.AlertDialog;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 
-public class ThisAppDialogFragment extends NoticeDialogFragment {
+abstract class ThisAppDialogFragment extends NoticeDialogFragment {
 
     AlertDialog.Builder getStyledBuilder() {
         Context context = getContext();

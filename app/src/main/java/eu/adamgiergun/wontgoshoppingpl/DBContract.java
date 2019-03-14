@@ -28,6 +28,7 @@ class DBContract {
                     Events.COLUMN_NAME_CALENDAR_ID + " TEXT, " +
                     Events.COLUMN_NAME_CALENDAR_EVENT_ID + " INTEGER UNIQUE);";
 
+    @SuppressWarnings("unused")
     static final String SQL_DELETE_EVENTS =
             "DROP TABLE IF EXISTS " + Events.TABLE_NAME + ";";
 
@@ -41,6 +42,7 @@ class DBContract {
                     " FOREIGN KEY (" + Reminders.COLUMN_NAME_EVENT_ID +
                     ") REFERENCES " + Events.TABLE_NAME + "(" + Events._ID + "));";
 
+    @SuppressWarnings("unused")
     static final String SQL_DELETE_REMINDERS =
             "DROP TABLE IF EXISTS " + Events.TABLE_NAME + ";";
 }

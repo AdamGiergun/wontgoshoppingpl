@@ -1,8 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -10,7 +7,9 @@ import android.os.Build;
 
 import java.util.Locale;
 
-abstract class AppCompatActivityWithTheme extends AppCompatActivity {
+import eu.adamgiergun.mylibrary.AppCompatActivityWithHomeInBar;
+
+abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHomeInBar {
 
     @Override
     public Resources.Theme getTheme() {
@@ -22,14 +21,6 @@ abstract class AppCompatActivityWithTheme extends AppCompatActivity {
             theme.applyStyle(R.style.AppThemeCustomizationsMini, true);
         }
         return theme;
-    }
-
-    void setupHomeInBar() {
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
     }
 
     @Override
@@ -61,16 +52,13 @@ abstract class AppCompatActivityWithTheme extends AppCompatActivity {
         }
     }
 
-    @SuppressWarnings("deprecation")
     void setLocale(Configuration config) {
         config.locale = LocalizedConst.getLocale();
     }
 
-    @SuppressWarnings("deprecation")
     void update(Configuration config) {
         getResources().updateConfiguration(
                 config,
                 getResources().getDisplayMetrics());
     }
-
 }
