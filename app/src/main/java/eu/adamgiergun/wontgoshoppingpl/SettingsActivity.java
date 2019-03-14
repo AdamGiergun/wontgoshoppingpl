@@ -377,7 +377,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
-    public static class LookPreferenceFragment extends BasePreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public static class LookPreferenceFragment extends BasePreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
