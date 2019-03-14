@@ -36,14 +36,14 @@
     <string name="go_shopping_earlier">früher einkaufen gehen!</string>
     <string name="go_shopping">einkaufen gehen!</string>
 
-    <string name="title_app_look">Das Aussehen der Anwendung</string>
+    <string name="title_app_look">Aussehen</string>
     <string name="summary_app_look_mini">Mini</string>
     <string name="summary_app_look_rich">Reich</string>
 
     <string name="ask_for_look">\nWählen Sie Ihren bevorzugten Aussehen aus.\nSie können ihn später in den Einstellungen ändern.\n</string>
 
-    <string name="pref_header_look">Das Aussehen</string>
-    <string name="pref_header_notifications">Die Benachrichtigungen</string>
+    <string name="pref_header_look">Aussehen</string>
+    <string name="pref_header_notifications">Benachrichtigungen</string>
     <string name="commerce_sundays">Handelssonntage</string>
 
     <string name="help_text_1">Seit 2018 wird das Gesetz zur Einführung von Handelsbeschränkungen an den meisten

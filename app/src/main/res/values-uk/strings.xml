@@ -36,13 +36,13 @@
     <string name="go_shopping_earlier">йти по магазинам раніше!</string>
     <string name="go_shopping">йти по магазинах!</string>
 
-    <string name="title_app_look">Зовнішній вигляд програми</string>
+    <string name="title_app_look">Вигляд</string>
     <string name="summary_app_look_mini">Міні</string>
     <string name="summary_app_look_rich">Багатий</string>
 
     <string name="ask_for_look">\nВиберіте кращий вигляд.\nВи можете змінити його пізніше в налаштуваннях.\n</string>
 
-    <string name="pref_header_look">Зовнішній вигляд</string>
+    <string name="pref_header_look">Вигляд</string>
     <string name="pref_header_notifications">Повідомлення</string>
     <string name="commerce_sundays">Торгівельні неділі</string>
 

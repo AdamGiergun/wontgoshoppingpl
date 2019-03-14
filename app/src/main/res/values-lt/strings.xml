@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nėra pirkinių PL</string>
+    <string name="day_of_limited_commerce">Prekybos apribojimų diena</string>
+    <string name="days_of_limited_commerce">Prekybos apribojimų dienos</string>
+    <string name="holidays">Šventės</string>
+    <string name="whole_day">Visa\ndiena</string>
+    <string name="since">Nuo\n</string>
+    <string name="title_choose_events">Renginiai, kurie bus įtraukti į kalendorių</string>
+    <string name="info_added_to_calendar">Įtraukta į kalendorių</string>
+    <string name="error_adding_to_calendar_failed">Klaida\nNepridėta prie kalendoriaus</string>
+    <string name="error_sth_went_wrong">Klaida\nĮvyko negerai</string>
+    <string name="title_add_to_calendar">Pridėti į kalendorių</string>
+    <string name="title_activity_settings">Nustatymai</string>
+    <string name="title_activity_help">Pagalba</string>
+
+    <string name="title_show_holidays">Rodyti atostogas</string>
+    <string name="summary_show_holidays_on">Rodyti atostogas sąraše</string>
+    <string name="summary_show_holidays_off">Nerodyti atostogų sąraše</string>
+
+    <string name="title_show_non_commerce_days">Rodyti ne prekybos dienas</string>
+    <string name="summary_show_non_commerce_days_on">Rodyti neregistruotas dienas sąraše</string>
+    <string name="summary_show_non_commerce_days_off">Nerodyti nekomercinių dienų sąraše</string>
+
+    <string name="title_show_commerce_sundays">Rodyti prekybą sekmadieniais</string>
+    <string name="summary_show_commerce_sundays_on">Rodyti prekybą sekmadieniais sąraše</string>
+    <string name="summary_show_commerce_sundays_off">Nerodyti prekybos sekmadieniais sąraše</string>
+
+    <string name="remind_me">Priminti man</string>
+    <string name="days_before">diena (-os) prieš</string>
+    <string name="days">diena(-os)</string>
+    <string name="before_comma_at">anksčiau,</string>
+    <string name="till">dienų iki</string>
+    <string name="title_reminder">Priminimas</string>
+    <string name="title_reminder_of">Priminimas apie:</string>
+    <string name="go_shopping_earlier">eiti apsipirkti anksčiau!</string>
+    <string name="go_shopping">eiti apsipirkti!</string>
+
+    <string name="title_app_look">Programos išvaizda</string>
+    <string name="summary_app_look_mini">Mini</string>
+    <string name="summary_app_look_rich">Turtingas</string>
+
+    <string name="ask_for_look">\nPasirinkite norimą išvaizdą.\nVėliau galite jį pakeisti nustatymuose.\n</string>
+
+    <string name="pref_header_look">Išvaizda</string>
+    <string name="pref_header_notifications">Pranešimai</string>
+    <string name="commerce_sundays">Prekybos sekmadieniai</string>
+
+    <string name="help_text_1">Nuo 2018 m. įstatymas, nustatantis prekybos apribojimus daugelyje sekmadienių ir pasirinktas
+    Lenkijoje. Tik parduotuvės geležinkelio, autobusų ir degalinėse, o kai kurios - mažos parduotuvės gali būti atviros tuo metu.</string>
+    <string name="help_text_2">Naudodami šią programą galite peržiūrėti tokių dienų, švenčių ir komercinių sąrašą
+    Sekmadieniais. Kokie šių elementų tipai bus rodomi sąraše gali būti pakeisti „Settings“ (įrankio piktograma) viršutinėje juostoje).</string>
+    <string name="help_text_3">Taip pat galima pridėti šiuos įvykius kartu su priminimais apie juos kalendoriuje, pasirinktuose „Settings“
+    (naujesnėse „Android“ versijose, reikia suteikti prieigą prie programos „Kalendorius“). Tokius kalendorius galite pridėti
+    adresu <a href="https://calendar.google.com/calendar/r">calendar.google.com/calendar/r </a>(+ dešinėje, jei norite pridėti
+    draugų kalendorių, darbalaukio svetainę, o ne mobilųjį!). Pasirinktus įvykių tipus galite pridėti iki tam tikros datos (kalendoriaus
+    piktograma viršutinėje juostoje) arba atskirus įvykius (paliesdami bet kurį sąrašo elementą).</string>
+    <string name="help_text_4">Pridėjus įvykių, galite laikinai pakeisti priminimų nustatymus.
+    Numatytosios priminimų reikšmės gali būti pakeistos nustatymuose.</string>
+    <string name="help_text_5">Prie kalendoriaus pridėta diena gali būti ištrinta išbraukiant tam tikrą sąrašo elementą į šoną.</string>
+
+    <string name="title_delete_events">Ištrinti priminimus</string>
+    <string name="summary_delete_events">Pašalina visus įvykius, kuriuos pridėjo ši programa, iš pasirinktų kalendorių</string>
+
+    <string name="info_deleted">Ištrinta</string>
+    <string name="info_about_app_widget">Į pagrindinį ekraną galite pridėti programos valdiklį.\n\n(Palieskite, jei norite paslėpti šią informaciją)</string>
+</resources>

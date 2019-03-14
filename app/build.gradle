@@ -9,10 +9,10 @@ android {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 46
-        versionName "1.99.6.2"
+        versionCode 47
+        versionName "1.99.6.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk"//, "lt"
+        resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt"
         //vectorDrawables.useSupportLibrary = true
     }
 
@@ -31,7 +31,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'eu.adamgiergun:mylibrary:0.99.84.2@aar'
+    implementation 'eu.adamgiergun:mylibrary:0.99.84.3@aar'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
