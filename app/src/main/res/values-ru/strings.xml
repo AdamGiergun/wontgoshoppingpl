@@ -61,4 +61,5 @@
     <string name="summary_delete_events">Удаляет все события, добавленные этим приложением, из выбранных календарей</string>
 
     <string name="info_deleted">Удалено</string>
+    <string name="info_about_app_widget">Вы можете добавить виджет приложения на домашний экран.\n\n(Нажмите, чтобы скрыть эту информацию).</string>
 </resources>

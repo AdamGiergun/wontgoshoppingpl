@@ -46,4 +46,5 @@
     <string name="title_delete_events">Odstrániť pripomienky</string>
     <string name="summary_delete_events">Odstráni všetky udalosti pridané touto aplikáciou z vybratých kalendárov</string>
     <string name="info_deleted">Vymazaný</string>
+    <string name="info_about_app_widget">Miniaplikáciu aplikácií môžete pridať na domovskú obrazovku.\n\n(Dotknite sa pre skrytie tejto informácie).</string>
 </resources>

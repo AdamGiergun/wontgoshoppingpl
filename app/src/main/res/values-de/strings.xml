@@ -62,4 +62,5 @@
     <string name="summary_delete_events">Entfernt alle von dieser App hinzugefügten Ereignisse aus ausgewählten Kalendern</string>
 
     <string name="info_deleted">Gelöscht</string>
+    <string name="info_about_app_widget">Sie können dem Startbildschirm ein App-Widget hinzufügen.\n\n(Berühren Sie, um diese Informationen auszublenden).</string>
 </resources>

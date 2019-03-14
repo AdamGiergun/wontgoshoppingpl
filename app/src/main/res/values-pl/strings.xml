@@ -61,4 +61,5 @@
     <string name="summary_delete_events">Usuwa wszystkie zdarzenia dodane przez tą aplikację z wybranych kalendarzy</string>
 
     <string name="info_deleted">Usunięto</string>
+    <string name="info_about_app_widget">Możesz dodać widżet aplikacji do ekranu głównego.\n\n(Dotknij, aby ukryć tę informację).</string>
 </resources>

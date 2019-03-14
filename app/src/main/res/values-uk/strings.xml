@@ -61,5 +61,6 @@
     <string name="summary_delete_events">Видаляє всі події, додані цим додатком, з обраних календарів</string>
 
     <string name="info_deleted">Вилучено</string>
+    <string name="info_about_app_widget">Ви можете додати віджет програми на головний екран.\n\n(Натисніть, щоб приховати цю інформацію).</string>
 
 </resources>

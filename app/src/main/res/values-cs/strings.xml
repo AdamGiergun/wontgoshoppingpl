@@ -46,4 +46,5 @@
     <string name="title_delete_events">Smazat připomenutí</string>
     <string name="summary_delete_events">Odstraní všechny události přidané touto aplikací z vybraných kalendářů</string>
     <string name="info_deleted">Vymazána</string>
+    <string name="info_about_app_widget">Widget aplikace můžete přidat na domovskou obrazovku.\n\n(Dotykem skryjete tyto informace).</string>
 </resources>

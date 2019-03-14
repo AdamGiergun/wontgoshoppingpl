@@ -73,4 +73,5 @@
     <string name="key_app_widget_info_displayed" translatable="false">app_widget_info_displayed</string>
 
     <string name="info_deleted">Deleted</string>
+    <string name="info_about_app_widget">You can add app widget to your home screen.\n\n(Touch to hide this info).</string>
 </resources>
