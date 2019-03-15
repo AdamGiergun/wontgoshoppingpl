@@ -9,8 +9,8 @@ android {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 53
-        versionName "1.99.7.1"
+        versionCode 54
+        versionName "1.99.7.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt"
         //vectorDrawables.useSupportLibrary = true

@@ -66,4 +66,5 @@
     
 <string name="info_deleted">Выдалена</string>
 <string name="info_about_app_widget">Вы можаце дадаць віджэт прыкладання на хатні экран.\n\n(Націсніце, каб схаваць гэтую інфармацыю).</string>
+    <string name="privacy_policy_link">"<a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Палітыка прыватнасці</a> "</string>
 </resources>

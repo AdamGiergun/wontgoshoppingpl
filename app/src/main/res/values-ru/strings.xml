@@ -62,4 +62,5 @@
 
     <string name="info_deleted">Удалено</string>
     <string name="info_about_app_widget">Вы можете добавить виджет приложения на домашний экран.\n\n(Нажмите, чтобы скрыть эту информацию).</string>
+    <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">политика конфиденциальности</a></string>
 </resources>

@@ -62,5 +62,6 @@
 
     <string name="info_deleted">Вилучено</string>
     <string name="info_about_app_widget">Ви можете додати віджет програми на головний екран.\n\n(Натисніть, щоб приховати цю інформацію).</string>
+    <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Політика конфіденційності</a></string>
 
 </resources>

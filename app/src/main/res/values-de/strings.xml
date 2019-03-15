@@ -63,4 +63,5 @@
 
     <string name="info_deleted">Gelöscht</string>
     <string name="info_about_app_widget">Sie können dem Startbildschirm ein App-Widget hinzufügen.\n\n(Berühren Sie, um diese Informationen auszublenden).</string>
+    <string name="privacy_policy_link">"<a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Datenschutz-Bestimmungen</a> "</string>
 </resources>

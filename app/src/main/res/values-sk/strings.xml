@@ -47,4 +47,5 @@
     <string name="summary_delete_events">Odstráni všetky udalosti pridané touto aplikáciou z vybratých kalendárov</string>
     <string name="info_deleted">Vymazaný</string>
     <string name="info_about_app_widget">Miniaplikáciu aplikácií môžete pridať na domovskú obrazovku.\n\n(Dotknite sa pre skrytie tejto informácie).</string>
+    <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Zásady ochrany osobných údajov</a></string>
 </resources>

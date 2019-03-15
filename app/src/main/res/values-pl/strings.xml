@@ -62,4 +62,5 @@
 
     <string name="info_deleted">Usunięto</string>
     <string name="info_about_app_widget">Możesz dodać widżet aplikacji do ekranu głównego.\n\n(Dotknij, aby ukryć tę informację).</string>
+    <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Polityka prywatności</a></string>
 </resources>

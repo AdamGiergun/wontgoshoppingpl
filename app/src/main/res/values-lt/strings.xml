@@ -64,4 +64,5 @@
 
     <string name="info_deleted">Ištrinta</string>
     <string name="info_about_app_widget">Į pagrindinį ekraną galite pridėti programos valdiklį.\n\n(Palieskite, jei norite paslėpti šią informaciją)</string>
+    <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Privatumo politika</a></string>
 </resources>

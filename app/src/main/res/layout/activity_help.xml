@@ -15,6 +15,25 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/privacyPolicyLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:text="@string/privacy_policy_link"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/spacer0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/spacer0"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/reminder_dialog_spacing"
+            app:layout_constraintBottom_toTopOf="@+id/helpTextView1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/privacyPolicyLink" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/helpTextView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +42,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/spacer1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/spacer0" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/spacer1"

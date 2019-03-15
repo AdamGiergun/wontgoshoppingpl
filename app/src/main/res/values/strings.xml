@@ -74,4 +74,5 @@
 
     <string name="info_deleted">Deleted</string>
     <string name="info_about_app_widget">You can add app widget to your home screen.\n\n(Touch to hide this info).</string>
+    <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Privacy Policy</a></string>
 </resources>
