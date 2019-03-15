@@ -18,7 +18,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-//import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -40,7 +40,7 @@ public class MainActivity
         extends AppCompatActivityWithTheme
         implements NoticeDialogFragment.NoticeDialogListener,
                     DayFragment.OnListFragmentInteractionListener,
-                    NoticeDialogFragment.NoticeDialogViewListener/*,LogFirebaseEvent*/ {
+                    NoticeDialogFragment.NoticeDialogViewListener,LogFirebaseEvent {
 
     private LimitedCommerceDay lastTouchedDay;
     private LimitedCommerceDayType.TypesList typesAddedToCalendar;
@@ -75,14 +75,14 @@ public class MainActivity
             if (!appPreferences.wasAppWidgetInfoDisplayed(this)) {
                 (new WidgetInfoDialog()).show(getSupportFragmentManager(),"");
             }
-/*            if (appPreferences.isLookRich(this)) {
+            if (appPreferences.isLookRich(this)) {
                 logFirebaseEvent(this, "look_rich");
             } else {
                 logFirebaseEvent(this, "look_mini");
-            }*/
+            }
         }
     }
-/*
+
     @Override
     public void logFirebaseEvent(Context context, String full_text) {
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
@@ -90,7 +90,7 @@ public class MainActivity
         params.putString("full_text", full_text);
         mFirebaseAnalytics.logEvent("app_theme", params);
     }
-*/
+
     private void setLocalizedConst() {
         if (!LocalizedConst.isSet()) {
             LocalizedConst.setWholeDay(getString(R.string.whole_day));
