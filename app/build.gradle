@@ -10,7 +10,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 51
-        versionName "1.99.6.7"
+        versionName "1.99.6.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt"
         //vectorDrawables.useSupportLibrary = true

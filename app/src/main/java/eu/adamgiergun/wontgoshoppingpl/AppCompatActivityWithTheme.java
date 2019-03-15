@@ -42,7 +42,8 @@ abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHomeInBar
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
             setLocale(config);
         } else {
-            config.setLocale(LocalizedConst.getLocale());
+            if (LocalizedConst.getLocale() != null)
+                config.setLocale(LocalizedConst.getLocale());
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
             update(config);
@@ -53,7 +54,8 @@ abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHomeInBar
     }
 
     void setLocale(Configuration config) {
-        config.locale = LocalizedConst.getLocale();
+        if (LocalizedConst.getLocale() != null)
+            config.locale = LocalizedConst.getLocale();
     }
 
     void update(Configuration config) {

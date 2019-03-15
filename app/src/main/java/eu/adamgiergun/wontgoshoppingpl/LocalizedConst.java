@@ -9,8 +9,15 @@ class LocalizedConst {
     private static boolean set;
     private static Locale locale;
 
+    LocalizedConst(){
+        set = false;
+    }
+
     static String getWholeDay() {
-        return wholeDay;
+        if (wholeDay == null)
+            return "";
+        else
+            return wholeDay;
     }
 
     static void setWholeDay(String wholeDay) {
@@ -18,7 +25,10 @@ class LocalizedConst {
     }
 
     static String getSince() {
-        return since;
+        if (wholeDay == null)
+            return "";
+        else
+            return since;
     }
 
     static void setSince(String since) {
@@ -42,7 +52,10 @@ class LocalizedConst {
     }
 
     static String getAskForLook() {
-        return askForLook;
+        if (wholeDay == null)
+            return "";
+        else
+            return askForLook;
     }
 
     static void setAskForLook(String askForLook) {
