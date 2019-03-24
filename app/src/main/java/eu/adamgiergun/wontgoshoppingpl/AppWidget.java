@@ -18,7 +18,7 @@ public class AppWidget extends AppWidgetProvider implements LogFirebaseEvent {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
-        logFirebaseEvent(context, "app widgets updated");
+        logFirebaseEvent(context, APP_WIDGET, UPDATED);
     }
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
@@ -37,16 +37,16 @@ public class AppWidget extends AppWidgetProvider implements LogFirebaseEvent {
 
     @Override
     public void onEnabled(Context context) {
-        logFirebaseEvent(context, "first app widget added to home screen");
+        logFirebaseEvent(context, APP_WIDGET, FIRST_ADDED_TO_HOME_SCREEN);
     }
 
     @Override
     public void onDisabled(Context context) {
-        logFirebaseEvent(context, "last app widget removed from home screen");
+        logFirebaseEvent(context, APP_WIDGET, LAST_REMOVED_FROM_HOME_SCREEN);
     }
 
     @Override
-    public void logFirebaseEvent(Context context, String full_text) {
+    public void logFirebaseEvent(Context context, String event, String full_text) {
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         Bundle params = new Bundle();
         params.putString("full_text", full_text);

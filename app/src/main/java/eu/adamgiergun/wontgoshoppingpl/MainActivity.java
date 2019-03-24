@@ -40,7 +40,7 @@ public class MainActivity
         extends AppCompatActivityWithTheme
         implements NoticeDialogFragment.NoticeDialogListener,
                     DayFragment.OnListFragmentInteractionListener,
-                    NoticeDialogFragment.NoticeDialogViewListener,LogFirebaseEvent {
+                    NoticeDialogFragment.NoticeDialogViewListener, LogFirebaseEvent {
 
     private LimitedCommerceDay lastTouchedDay;
     private LimitedCommerceDayType.TypesList typesAddedToCalendar;
@@ -76,19 +76,19 @@ public class MainActivity
                 (new WidgetInfoDialog()).show(getSupportFragmentManager(),"");
             }
             if (appPreferences.isLookRich(this)) {
-                logFirebaseEvent(this, "look_rich");
+                logFirebaseEvent(this, APP_THEME, LOOK_RICH);
             } else {
-                logFirebaseEvent(this, "look_mini");
+                logFirebaseEvent(this, APP_THEME, LOOK_MINI);
             }
         }
     }
 
     @Override
-    public void logFirebaseEvent(Context context, String full_text) {
+    public void logFirebaseEvent(Context context, String event, String full_text) {
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         Bundle params = new Bundle();
         params.putString("full_text", full_text);
-        mFirebaseAnalytics.logEvent("app_theme", params);
+        mFirebaseAnalytics.logEvent(event, params);
     }
 
     private void setLocalizedConst() {
@@ -358,6 +358,7 @@ public class MainActivity
                 day.addToGoogleCalendar(this),
                 R.string.info_added_to_calendar,
                 R.string.error_adding_to_calendar_failed);
+        logFirebaseEvent(this, CALENDAR_EVENT, SINGLE);
     }
 
     @Override
@@ -401,6 +402,8 @@ public class MainActivity
         Calendar tillDate = ReminderSettingsDialog.getTill();
         SimpleReminder reminder = ReminderSettingsDialog.getReminder();
         boolean resultIsPositive = list.addToCalendar(this, reminder, tillDate);
+
+        logFirebaseEvent(this, CALENDAR_EVENT, LIST);
         displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
     }
 
