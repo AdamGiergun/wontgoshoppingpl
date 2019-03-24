@@ -2,7 +2,6 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
 
-//used only for some internal tests
 interface LogFirebaseEvent {
 
     String APP_THEME = "app_theme";

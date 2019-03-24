@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">No hacer compras en PL</string>
+    <string name="ask_for_look">Elige tu look preferido. Puede cambiarlo más tarde en Configuración.</string>
+    <string name="before_comma_at">antes, en</string>
+    <string name="commerce_sundays">Domingos de comercio</string>
+    <string name="day_of_limited_commerce">Día de restricciones comerciales</string>
+    <string name="days">día(s)</string>
+    <string name="days_before">día(s) antes</string>
+    <string name="days_of_limited_commerce">Días de restricciones comerciales</string>
+    <string name="error_adding_to_calendar_failed">Error\nNo agregado al calendario</string>
+    <string name="error_sth_went_wrong">Error\nAlgo salió mal</string>
+    <string name="go_shopping">¡ir de compras!</string>
+    <string name="go_shopping_earlier">ir de compras antes!</string>
+    <string name="help_text_1">Desde 2018, la ley que introduce restricciones comerciales en la mayoría de los domingos y días seleccionados entró en vigencia en Polonia. Solo las tiendas en las estaciones de tren, autobuses y gasolineras, y algunas tiendas pequeñas pueden estar abiertas en ese momento.</string>
+    <string name="help_text_2">Con esta aplicación puede ver una lista de dichos días, días festivos y domingos comerciales. Los tipos de estos elementos que se mostrarán en la lista se pueden cambiar en Configuración (el icono de la herramienta en la barra superior).</string>
+    <string name="help_text_3">También es posible agregar estos eventos, junto con recordatorios sobre ellos, al calendario seleccionado en la Configuración (en las versiones más recientes de Android, esto requiere que la aplicación acceda al Calendario). Dichos calendarios se pueden agregar en <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> (+ derecho a Agregar un calendario de amigos, en la sitio de escritorio, no móvil!). Puede agregar tipos de eventos seleccionados hasta una fecha específica (el icono de calendario en la barra superior) o eventos individuales (tocando cualquier elemento de la lista).</string>
+    <string name="help_text_4">Al agregar eventos, puede cambiar temporalmente la configuración de los recordatorios para ellos. Los valores predeterminados para los recordatorios se pueden cambiar en la Configuración.</string>
+    <string name="help_text_5">Un día agregado al calendario se puede eliminar de él al deslizar un elemento de lista dado al lado.</string>
+    <string name="holidays">"La fiesta legal "</string>
+    <string name="info_about_app_widget">Puedes agregar un widget de aplicación a tu pantalla de inicio. \n\n(Toca para ocultar esta información).</string>
+    <string name="info_added_to_calendar">Añadido al calendario</string>
+    <string name="info_deleted">Eliminado</string>
+    <string name="pref_header_look">Vista</string>
+    <string name="pref_header_notifications">Notificaciones</string>
+    <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl"> Política de privacidad </a></string>
+    <string name="remind_me">Recuerdame</string>
+    <string name="since">Desde\n</string>
+    <string name="summary_app_look_mini">Mini</string>
+    <string name="summary_app_look_rich">Rico</string>
+    <string name="summary_delete_events">Elimina todos los eventos agregados por esta aplicación de los calendarios elegidos</string>
+    <string name="summary_show_commerce_sundays_off">No mostrar comercio los domingos en la lista</string>
+    <string name="summary_show_commerce_sundays_on">Mostrar comercio los domingos en la lista.</string>
+    <string name="summary_show_holidays_off">No mostrar vacaciones en la lista</string>
+    <string name="summary_show_holidays_on">Mostrar vacaciones en la lista</string>
+    <string name="summary_show_non_commerce_days_off">No mostrar días de no comercio en la lista</string>
+    <string name="summary_show_non_commerce_days_on">Mostrar días de no comercio en la lista</string>
+    <string name="till">de días hasta</string>
+    <string name="title_activity_help">Ayuda</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="title_add_to_calendar">Añadir al calendario</string>
+    <string name="title_app_look">Vista de la aplicación</string>
+    <string name="title_choose_events">Eventos que se añadirán al calendario</string>
+    <string name="title_delete_events">Eliminar recordatorios</string>
+    <string name="title_reminder">Recordatorio</string>
+    <string name="title_reminder_of">Recordatorio de:</string>
+    <string name="title_show_commerce_sundays">Show de comercio los domingos</string>
+    <string name="title_show_holidays">Mostrar vacaciones</string>
+    <string name="title_show_non_commerce_days">Mostrar días de no comercio</string>
+    <string name="whole_day">Todo\nel día</string>
+</resources>

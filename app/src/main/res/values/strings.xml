@@ -6,9 +6,9 @@
     <string name="app_name">No Shopping in PL</string>
     <string name="day_of_limited_commerce">Day of trade restrictions</string>
     <string name="days_of_limited_commerce">Days of trade restrictions</string>
-    <string name="holidays">Holidays</string>
+    <string name="holidays">Public holidays</string>
     <string name="whole_day">Whole\nday</string>
-    <string name="since">Since\n</string>
+    <string name="since">"Since\n"</string>
     <string name="title_choose_events">Events to be added to calendar</string>
     <string name="info_added_to_calendar">Added to calendar</string>
     <string name="error_adding_to_calendar_failed">Error\nNot added to calendar</string>
@@ -49,7 +49,7 @@
     <string name="summary_app_look_mini">Mini</string>
     <string name="summary_app_look_rich">Rich</string>
 
-    <string name="ask_for_look">\nChoose your preferred look.\nYou may change it later in Settings.\n</string>
+    <string name="ask_for_look">" Choose your preferred look. You may change it later in Settings. "</string>
 
     <string name="pref_header_look">Look</string>
     <string name="pref_header_notifications">Notifications</string>
@@ -73,6 +73,6 @@
     <string name="key_app_widget_info_displayed" translatable="false">app_widget_info_displayed</string>
 
     <string name="info_deleted">Deleted</string>
-    <string name="info_about_app_widget">You can add app widget to your home screen.\n\n(Touch to hide this info).</string>
+    <string name="info_about_app_widget">You can add app widget to your home screen.  \n\n(Touch to hide this info).</string>
     <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Privacy Policy</a></string>
 </resources>
