@@ -16,16 +16,16 @@
 
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
-            android:value="true" />
+            android:value="@bool/GOOGLE_ANALYTICS_ADID_ENABLED" />
         <meta-data
             android:name="firebase_analytics_collection_deactivated"
-            android:value="false" />
+            android:value="@bool/FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED" />
         <meta-data
             android:name="firebase_analytics_collection_enabled"
-            android:value="true" />
+            android:value="@bool/FIREBASE_ANALYTICS_COLLECTION_ENABLED" />
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="true" />
+            android:value="@bool/FIREBASE_CRASHLYTICS_COLLECTION_ENABLED" />
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

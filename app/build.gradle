@@ -10,7 +10,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 56
-        versionName "2.0.1"
+        versionName "2.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
         //vectorDrawables.useSupportLibrary = true
@@ -21,10 +21,18 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "bool", "GOOGLE_ANALYTICS_ADID_ENABLED", "true"
+            resValue "bool", "FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED", "false"
+            resValue "bool", "FIREBASE_ANALYTICS_COLLECTION_ENABLED", "true"
+            resValue "bool", "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED", "true"
         }
         debug {
             // Disable fabric build ID generation for debug builds
             ext.enableCrashlytics = false
+            resValue "bool", "GOOGLE_ANALYTICS_ADID_ENABLED", "false"
+            resValue "bool", "FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED", "true"
+            resValue "bool", "FIREBASE_ANALYTICS_COLLECTION_ENABLED", "false"
+            resValue "bool", "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED", "false"
         }
     }
 }
