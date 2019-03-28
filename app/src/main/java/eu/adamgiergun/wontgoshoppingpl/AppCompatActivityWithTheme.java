@@ -33,7 +33,7 @@ abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHomeInBar
         }
     }
 
-    Context setDefaultLocale(Context context) {
+    private Context setDefaultLocale(Context context) {
         if (this instanceof MainActivity) {
             LocalizedConst.setLocale(Locale.getDefault());
         }
@@ -53,12 +53,12 @@ abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHomeInBar
         }
     }
 
-    void setLocale(Configuration config) {
+    private void setLocale(Configuration config) {
         if (LocalizedConst.getLocale() != null)
             config.locale = LocalizedConst.getLocale();
     }
 
-    void update(Configuration config) {
+    private void update(Configuration config) {
         getResources().updateConfiguration(
                 config,
                 getResources().getDisplayMetrics());
