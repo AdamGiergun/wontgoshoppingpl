@@ -25,7 +25,7 @@ import androidx.appcompat.app.*;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.*;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.*;
 
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
@@ -46,7 +46,7 @@ public class MainActivity
     private SQLiteDatabase database;
     private MainViewModel mViewModel;
 
-    private enum Action {
+    enum Action {
         ADD_LIST,
         ADD_DAY
     }
@@ -249,14 +249,12 @@ public class MainActivity
     }
 
     private void askForReminderSettings(Action action) {
-        ReminderSettingsDialog reminderSettingsDialog = new ReminderSettingsDialog();
-        ReminderSettingsDialog.setReminder(appPreferences.getReminder(this, SimpleReminder.METHOD_ALERT));
-        ReminderSettingsDialog.setAction(action);
+        ReminderSettingsDialog reminderSettingsDialog = ReminderSettingsDialog.newInstance();
+        SimpleReminder reminder = appPreferences.getReminder(this, SimpleReminder.METHOD_ALERT);
         if (action == Action.ADD_DAY) {
-            ReminderSettingsDialog.setDayDescription(
-                    lastTouchedDay.getDescriptionForDialog());
+            mViewModel.putReminderDialogArgs(action, reminder, lastTouchedDay.getDescriptionForDialog());
         } else {
-            ReminderSettingsDialog.setTill(getLastDayOfNextMonth());
+            mViewModel.putReminderDialogArgs(action, reminder, getLastDayOfNextMonth());
         }
         reminderSettingsDialog.show(getSupportFragmentManager());
     }
@@ -353,7 +351,7 @@ public class MainActivity
 
     private void addDayToCalendar(LimitedCommerceDay day) {
         showBigAd();
-        day.setReminder(ReminderSettingsDialog.getReminder());
+        day.setReminder(mViewModel.getReminder().getValue());
         displayInfo(
                 day.addToGoogleCalendar(this),
                 R.string.info_added_to_calendar,
@@ -370,28 +368,11 @@ public class MainActivity
         }
 
         if (dialog instanceof ReminderSettingsDialog) {
-            if (ReminderSettingsDialog.getAction() == Action.ADD_LIST) {
+            if (mViewModel.getAction() == Action.ADD_LIST) {
                 addListToCalendar();
             } else {
                 addDayToCalendar(lastTouchedDay);
             }
-        }
-
-        if (dialog instanceof ReminderDaysBeforeDialog) {
-            ReminderDaysBeforeDialog reminderDaysBeforeDialog = (ReminderDaysBeforeDialog) dialog;
-            ReminderSettingsDialog reminderSettingsDialog = ReminderSettingsDialog.getActiveInstance(getSupportFragmentManager());
-            reminderSettingsDialog.setDaysBefore(reminderDaysBeforeDialog.getDaysBefore());
-        }
-
-        if (dialog instanceof ReminderTimeDialog) {
-            ReminderSettingsDialog reminderSettingsDialog = ReminderSettingsDialog.getActiveInstance(getSupportFragmentManager());
-            reminderSettingsDialog.setTime(ReminderTimeDialog.getTime());
-        }
-
-        if (dialog instanceof TillDateDialog) {
-            ReminderSettingsDialog reminderSettingsDialog = ReminderSettingsDialog.getActiveInstance(getSupportFragmentManager());
-            TillDateDialog tillDateDialog = (TillDateDialog) dialog;
-            reminderSettingsDialog.setTillAndView(tillDateDialog.getDate());
         }
     }
 
@@ -399,9 +380,7 @@ public class MainActivity
         showBigAd();
         ListOfLimitedCommerceDays list =
                 ListOfLimitedCommerceDays.getList(this, typesAddedToCalendar);
-        Calendar tillDate = ReminderSettingsDialog.getTill();
-        SimpleReminder reminder = ReminderSettingsDialog.getReminder();
-        boolean resultIsPositive = list.addToCalendar(this, reminder, tillDate);
+        boolean resultIsPositive = list.addToCalendar(this, mViewModel.getReminder().getValue(), mViewModel.getTill().getValue());
 
         logFirebaseEvent(this, CALENDAR_EVENT, LIST);
         displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
@@ -433,19 +412,16 @@ public class MainActivity
 
     private void onReminderDaysBeforeClick(String tag) {
         ReminderDaysBeforeDialog reminderDaysBeforeDialog = new ReminderDaysBeforeDialog();
-        reminderDaysBeforeDialog.setDaysBefore(ReminderSettingsDialog.getReminder().getDaysBefore());
         reminderDaysBeforeDialog.show(getSupportFragmentManager(), tag);
     }
 
     private void onReminderTimeClick(String tag) {
         ReminderTimeDialog reminderTimeDialog = new ReminderTimeDialog();
-        ReminderTimeDialog.setTime(ReminderSettingsDialog.getReminder().getTime());
         reminderTimeDialog.show(getSupportFragmentManager(), tag);
     }
 
     private void onTillDateClick(String tag) {
         TillDateDialog tillDateDialog = new TillDateDialog();
-        tillDateDialog.setDate(ReminderSettingsDialog.getTill());
         tillDateDialog.show(getSupportFragmentManager(), tag);
     }
 
@@ -522,23 +498,22 @@ public class MainActivity
 
     public static class ReminderSettingsDialog extends ThisAppDialogFragment {
         private static final String TAG = "reminder_dialog";
-        private static SimpleReminder reminder;
-        private static Action action;
-        private static String dayDescription;
-        private static Calendar till;
-        private AppCompatTextView daysView;
-        private AppCompatTextView timeView;
-        private AppCompatTextView tillView;
+
+        static ReminderSettingsDialog newInstance() {
+            return new ReminderSettingsDialog();
+        }
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
             String title;
-            if (action == Action.ADD_LIST) {
+            MainViewModel viewModel = getViewModel();
+
+            if ( viewModel.getAction() == Action.ADD_LIST) {
                 title = getString(R.string.title_reminder);
             } else {
-                title = getString(R.string.title_reminder_of) + " " + dayDescription ;
+                title = getString(R.string.title_reminder_of) + " " + viewModel.getDayDescription() ;
             }
             builder
                     .setTitle(title)
@@ -552,86 +527,87 @@ public class MainActivity
         private View getDialogView() {
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View view;
-            if (action == Action.ADD_LIST) {
+            MainViewModel viewModel = getViewModel();
+
+            if (viewModel.getAction() == Action.ADD_LIST) {
                 view = inflater.inflate(R.layout.reminder_and_date_settings_dialog_view, null);
-                initializeTillView(view);
+                initializeTillView(view, viewModel);
             } else {
                 view = inflater.inflate(R.layout.reminder_settings_dialog_view, null);
             }
-            initializeReminderViews(view);
+            initializeReminderViews(view, viewModel);
+
             return view;
         }
 
-        private void initializeTillView(View view) {
-            tillView = view.findViewById(R.id.tillDateView);
-            tillView.setText(getTillAsString());
+        private void initializeTillView(View view, MainViewModel viewModel) {
+            AppCompatTextView tillView = getTillView(view);
+            tillView.setText(getTillAsString(viewModel.getTill().getValue()));
             tillView.setOnClickListener(getViewListener(TillDateDialog.TAG));
         }
 
-        private static String getTillAsString() {
+        private AppCompatTextView getTillView(View view) {
+            return view.findViewById(R.id.tillDateView);
+        }
+
+        private static String getTillAsString(Calendar till) {
             DateFormat dateFormat = DateFormat.getDateInstance();
             return dateFormat.format(till.getTime());
         }
 
-        private void initializeReminderViews(View view) {
-            daysView = view.findViewById(R.id.numberOfDaysBeforeView);
-            daysView.setText(String.valueOf(reminder.getDaysBefore()));
+        private void initializeReminderViews(final View view, final MainViewModel viewModel) {
+            final AppCompatTextView daysView = getDaysView(view);
+            daysView.setText(String.valueOf(viewModel.getReminder().getValue().getDaysBefore()));
             daysView.setOnClickListener(getViewListener(ReminderDaysBeforeDialog.TAG));
 
-            timeView = view.findViewById(R.id.timeView);
-            timeView.setText(reminder.getTime().toString());
+            final AppCompatTextView timeView = getTimeView(view);
+            timeView.setText(viewModel.getReminder().getValue().getTime().toString());
             timeView.setOnClickListener(getViewListener(ReminderTimeDialog.TAG));
+
+            Observer<SimpleReminder> reminderObserver = new Observer<SimpleReminder>() {
+                @Override
+                public void onChanged(SimpleReminder simpleReminder) {
+                    daysView.setText(
+                                    String.valueOf(viewModel.getReminder().getValue().getDaysBefore()
+                                    ));
+                    timeView.setText(
+                                    viewModel.getReminder().getValue().getTime().toString());
+                }
+            };
+
+            viewModel.getReminder().observe(this, reminderObserver);
+
+            if (viewModel.getAction() == Action.ADD_LIST) {
+                Observer<Calendar> tillObserver = new Observer<Calendar>() {
+                    @Override
+                    public void onChanged(Calendar till) {
+                        getTillView(view).setText(
+                                getTillAsString(viewModel.getTill().getValue()));
+                    }
+                };
+
+                viewModel.getTill().observe(this, tillObserver);
+            }
+        }
+
+        private AppCompatTextView getTimeView(View view) {
+            return view.findViewById(R.id.timeView);
+        }
+
+        private AppCompatTextView getDaysView(View view) {
+            return view.findViewById(R.id.numberOfDaysBeforeView);
         }
 
         private void show(FragmentManager fragmentManager) {
             show(fragmentManager, TAG);
         }
 
-        private static SimpleReminder getReminder() {
-            return reminder;
-        }
-
-        private static void setReminder(SimpleReminder simpleReminder) {
-            reminder = simpleReminder;
-        }
-
-        private static Action getAction() {
-            return action;
-        }
-
-        private static void setAction(Action action) {
-            ReminderSettingsDialog.action = action;
-        }
-
-        private static void setDayDescription(String description) {
-            dayDescription = description;
-        }
-
-        private void setDaysBefore(int number) {
-            reminder.setDaysBefore(number);
-            daysView.setText(String.valueOf(number));
-        }
-
-        private void setTime(SimpleTime time) {
-            reminder.setTime(time);
-            timeView.setText(time.toString());
-        }
-
-        private static Calendar getTill() {
-            return till;
-        }
-
-        private static void setTill(Calendar calendar) {
-            till = calendar;
-        }
-
-        private void setTillAndView(Calendar calendar) {
-            setTill(calendar);
-            tillView.setText(getTillAsString());
-        }
-
         private static ReminderSettingsDialog getActiveInstance(FragmentManager fragmentManager) {
             return (ReminderSettingsDialog) fragmentManager.findFragmentByTag(TAG);
+        }
+
+        private MainViewModel getViewModel() {
+            return ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         }
     }
 
@@ -663,20 +639,22 @@ public class MainActivity
 
     public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
         private static final String TAG = "ReminderDaysBeforeDialog";
-        private static int daysBefore;
         private NumberPicker picker;
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
-            initializePicker();
+            final MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+            initializePicker(viewModel.getReminder().getValue().getDaysBefore());
             builder
                     .setTitle(R.string.days_before)
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            daysBefore = picker.getValue();
+                            SimpleReminder reminder = viewModel.getReminder().getValue();
+                            reminder.setDaysBefore(picker.getValue());
+                            viewModel.setReminder(reminder);
                             noticeDialogListener.onDialogPositiveClick(ReminderDaysBeforeDialog.this);
                         }
                     })
@@ -684,38 +662,32 @@ public class MainActivity
             return builder.create();
         }
 
-        private void initializePicker() {
+        private void initializePicker(int daysBefore) {
             picker = new NumberPicker(getContext());
             picker.setMinValue(1);
             picker.setMaxValue(9);
             picker.setValue(daysBefore);
-        }
-
-        private int getDaysBefore() {
-            return daysBefore;
-        }
-
-        private void setDaysBefore(int daysBefore) {
-            ReminderDaysBeforeDialog.daysBefore = daysBefore;
         }
     }
 
     public static class ReminderTimeDialog extends ThisAppDialogFragment {
         private static final String TAG = "ReminderTimeDialog";
         private TimePicker picker;
-        private static SimpleTime time;
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             this.setRetainInstance(true);
             AlertDialog.Builder builder = getStyledBuilder();
-            initializePicker();
+            final MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+            initializePicker(viewModel.getReminder().getValue().getTime());
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            time = getTimeFromPicker();
+                            SimpleReminder reminder = viewModel.getReminder().getValue();
+                            reminder.setTime(getTimeFromPicker());
+                            viewModel.setReminder(reminder);
                             noticeDialogListener.onDialogPositiveClick(ReminderTimeDialog.this);
                         }
                     })
@@ -727,7 +699,7 @@ public class MainActivity
             return builder.create();
         }
 
-        private void initializePicker() {
+        private void initializePicker(SimpleTime time) {
             picker = new TimePicker(getContext());
             picker.setIs24HourView(true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -753,31 +725,23 @@ public class MainActivity
         public void onSaveInstanceState(@NonNull Bundle outState) {
             super.onSaveInstanceState(outState);
         }
-
-        private static SimpleTime getTime() {
-            return time;
-        }
-
-        private static void setTime(SimpleTime time) {
-            ReminderTimeDialog.time = time;
-        }
     }
 
     public static class TillDateDialog extends ThisAppDialogFragment {
         private static final String TAG = "TillDateDialog";
         private DatePicker picker;
-        private static Calendar date;
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
-            initializePicker();
+            final MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+            initializePicker(viewModel.getTill().getValue());
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            date = getDateFromPicker();
+                            viewModel.setTill(getDateFromPicker());
                             noticeDialogListener.onDialogPositiveClick(TillDateDialog.this);
                         }
                     })
@@ -789,7 +753,7 @@ public class MainActivity
             return builder.create();
         }
 
-        private void initializePicker() {
+        private void initializePicker(Calendar date) {
             picker = new DatePicker(getContext());
             picker.updateDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
             picker.setMaxDate(getMaxDate());
@@ -809,14 +773,6 @@ public class MainActivity
             cal.set(Calendar.MONTH, picker.getMonth());
             cal.set(Calendar.DAY_OF_MONTH, picker.getDayOfMonth());
             return cal;
-        }
-
-        private Calendar getDate() {
-            return date;
-        }
-
-        private void setDate(Calendar date) {
-            TillDateDialog.date = date;
         }
     }
 
