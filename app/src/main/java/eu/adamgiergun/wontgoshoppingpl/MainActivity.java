@@ -51,6 +51,7 @@ public class MainActivity
         ADD_DAY
     }
 
+    //region ActivityLifeCycleRegion
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,23 +81,6 @@ public class MainActivity
             } else {
                 logFirebaseEvent(this, APP_THEME, LOOK_MINI);
             }
-        }
-    }
-
-    @Override
-    public void logFirebaseEvent(Context context, String event, String full_text) {
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        Bundle params = new Bundle();
-        params.putString("full_text", full_text);
-        mFirebaseAnalytics.logEvent(event, params);
-    }
-
-    private void setLocalizedConst() {
-        if (!LocalizedConst.isSet()) {
-            LocalizedConst.setWholeDay(getString(R.string.whole_day));
-            LocalizedConst.setSince(getString(R.string.since));
-            LocalizedConst.setAskForLook(getString(R.string.ask_for_look));
-            LocalizedConst.setSet();
         }
     }
 
@@ -137,7 +121,26 @@ public class MainActivity
         ft.commit();
         getSupportFragmentManager().executePendingTransactions();
     }
+    //endregion
 
+    @Override
+    public void logFirebaseEvent(Context context, String event, String full_text) {
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        Bundle params = new Bundle();
+        params.putString("full_text", full_text);
+        mFirebaseAnalytics.logEvent(event, params);
+    }
+
+    private void setLocalizedConst() {
+        if (!LocalizedConst.isSet()) {
+            LocalizedConst.setWholeDay(getString(R.string.whole_day));
+            LocalizedConst.setSince(getString(R.string.since));
+            LocalizedConst.setAskForLook(getString(R.string.ask_for_look));
+            LocalizedConst.setSet();
+        }
+    }
+
+    //region AddsHandlingRegion
     private void setupBannerAds() {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
@@ -173,7 +176,9 @@ public class MainActivity
         AdRequest adRequest = new AdRequest.Builder().build();
         mInterstitialAd.loadAd(adRequest);
     }
+    //endregion
 
+    //region AppMenuHandlingRegion
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (appPreferences.isFirstRun(this)) {
@@ -280,6 +285,7 @@ public class MainActivity
         Intent intent = new Intent(this, HelpActivity.class);
         startActivity(intent);
     }
+    //endregion
 
     @Override
     public void onListFragmentInteraction(LimitedCommerceDay day) {
@@ -287,15 +293,7 @@ public class MainActivity
         checkCalendarPermissions(Action.ADD_DAY);
     }
 
-    private void showBigAd() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-        if (!mInterstitialAd.isLoading()) {
-            loadInterstitialAd();
-        }
-    }
-
+    //region ShowingInfoRegion
     private void displayInfo(boolean resultIsPositive, int positiveInfo, int negativeInfo) {
         if (resultIsPositive)
             showInfo(positiveInfo, false);
@@ -313,7 +311,9 @@ public class MainActivity
         Toast.makeText(this, info, length)
                 .show();
     }
+    //endregion
 
+    //region PermissionsRegion
     private boolean isPermissionGranted(String permission) {
         int permissionState = ContextCompat.checkSelfPermission(this, permission);
         return permissionState == PackageManager.PERMISSION_GRANTED;
@@ -348,17 +348,9 @@ public class MainActivity
         }
         return result;
     }
+    //endregion
 
-    private void addDayToCalendar(LimitedCommerceDay day) {
-        showBigAd();
-        day.setReminder(mViewModel.getReminder().getValue());
-        displayInfo(
-                day.addToGoogleCalendar(this),
-                R.string.info_added_to_calendar,
-                R.string.error_adding_to_calendar_failed);
-        logFirebaseEvent(this, CALENDAR_EVENT, SINGLE);
-    }
-
+    //region onDialog...Click
     @Override
     public void onDialogPositiveClick(NoticeDialogFragment dialog) {
         if (dialog instanceof TypesAddedToCalendarDialog) {
@@ -386,13 +378,34 @@ public class MainActivity
         displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
     }
 
+    private void addDayToCalendar(LimitedCommerceDay day) {
+        showBigAd();
+        day.setReminder(mViewModel.getReminder().getValue());
+        displayInfo(
+                day.addToGoogleCalendar(this),
+                R.string.info_added_to_calendar,
+                R.string.error_adding_to_calendar_failed);
+        logFirebaseEvent(this, CALENDAR_EVENT, SINGLE);
+    }
+
+    private void showBigAd() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+        if (!mInterstitialAd.isLoading()) {
+            loadInterstitialAd();
+        }
+    }
+
     @Override
     public void onDialogNegativeClick(NoticeDialogFragment dialog) {
         if (dialog instanceof TypesAddedToCalendarDialog || dialog instanceof ReminderSettingsDialog) {
             showInfo(R.string.info_cancelled, false);
         }
     }
+    //endregion
 
+    //region onViewClickRegion
     @Override
     public void onViewClick(String tag) {
         switch (tag) {
@@ -424,6 +437,7 @@ public class MainActivity
         TillDateDialog tillDateDialog = new TillDateDialog();
         tillDateDialog.show(getSupportFragmentManager(), tag);
     }
+    //endregion
 
     public static class TypesAddedToCalendarDialog extends ThisAppDialogFragment {
         private Button dialogButtonPositive;
@@ -729,19 +743,19 @@ public class MainActivity
 
     public static class TillDateDialog extends ThisAppDialogFragment {
         private static final String TAG = "TillDateDialog";
-        private DatePicker picker;
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
             final MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
-            initializePicker(viewModel.getTill().getValue());
+            final DatePicker picker = getPicker(viewModel.getTill().getValue());
+
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            viewModel.setTill(getDateFromPicker());
+                            viewModel.setTill(getDateFromPicker(picker));
                             noticeDialogListener.onDialogPositiveClick(TillDateDialog.this);
                         }
                     })
@@ -750,13 +764,15 @@ public class MainActivity
                             noticeDialogListener.onDialogNegativeClick(TillDateDialog.this);
                         }
                     });
+
             return builder.create();
         }
 
-        private void initializePicker(Calendar date) {
-            picker = new DatePicker(getContext());
+        private DatePicker getPicker(Calendar date) {
+            DatePicker picker = new DatePicker(getContext());
             picker.updateDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
             picker.setMaxDate(getMaxDate());
+            return picker;
         }
 
         private long getMaxDate() {
@@ -767,7 +783,7 @@ public class MainActivity
             return maxDate.getTimeInMillis();
         }
 
-        private Calendar getDateFromPicker() {
+        private Calendar getDateFromPicker(DatePicker picker) {
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.YEAR, picker.getYear());
             cal.set(Calendar.MONTH, picker.getMonth());
@@ -777,15 +793,13 @@ public class MainActivity
     }
 
     public static class WidgetInfoDialog extends ThisAppDialogFragment {
-        private AppCompatDialog dialog;
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
             builder.setView(getDialogView());
-            dialog = builder.create();
-            return dialog;
+            return builder.create();
         }
 
         private View getDialogView() {
@@ -796,7 +810,7 @@ public class MainActivity
                     Context context = v.getContext();
                     AppPreferences appPreferences = new AppPreferences(context);
                     appPreferences.setAppWidgetInfoDisplayed(context);
-                    dialog.dismiss();
+                    getDialog().dismiss();
                 }
             });
             return view;
