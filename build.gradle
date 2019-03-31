@@ -25,41 +25,6 @@ allprojects {
         maven {
             url 'https://maven.google.com/'
         }
-//        maven {
-//            url "https://bitbucket.org/adam_giergun/mylibrary_aar/raw/releases/"
-//            credentials {
-//                username BB_USERNAME
-//                password BB_PASSWORD
-//            }
-//            authentication{
-//                basic(BasicAuthentication)
-//            }
-//        }
-//        maven {
-//            url "https://bitbucket.org/adam_giergun/my_resources_aar/raw/releases"
-//            credentials {
-//                username BB_USERNAME
-//                password BB_PASSWORD
-//            }
-//            authentication{
-//                basic(BasicAuthentication)
-//
-//            }
-//        }
-//        maven {
-//            credentials {
-//                username BB_USERNAME
-//                password BB_PASSWORD
-//            }
-//            url "https://api.bitbucket.org/1.0/repositories/adam_giergun/mylibrary_aar/raw/releases/"
-//        }
-//        maven {
-//            credentials {
-//                username BB_USERNAME
-//                password BB_PASSWORD
-//            }
-//            url "https://api.bitbucket.org/1.0/repositories/adam_giergun/my_resources_aar/raw/releases/"
-//        }
         maven {
             credentials {
                 username GC_USER

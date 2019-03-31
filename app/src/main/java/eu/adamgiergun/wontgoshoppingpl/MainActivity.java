@@ -84,6 +84,15 @@ public class MainActivity
         }
     }
 
+    private void setLocalizedConst() {
+        if (!LocalizedConst.isSet()) {
+            LocalizedConst.setWholeDay(getString(R.string.whole_day));
+            LocalizedConst.setSince(getString(R.string.since));
+            LocalizedConst.setAskForLook(getString(R.string.ask_for_look));
+            LocalizedConst.setSet();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -129,15 +138,6 @@ public class MainActivity
         Bundle params = new Bundle();
         params.putString("full_text", full_text);
         mFirebaseAnalytics.logEvent(event, params);
-    }
-
-    private void setLocalizedConst() {
-        if (!LocalizedConst.isSet()) {
-            LocalizedConst.setWholeDay(getString(R.string.whole_day));
-            LocalizedConst.setSince(getString(R.string.since));
-            LocalizedConst.setAskForLook(getString(R.string.ask_for_look));
-            LocalizedConst.setSet();
-        }
     }
 
     //region AddsHandlingRegion
@@ -350,7 +350,7 @@ public class MainActivity
     }
     //endregion
 
-    //region onDialog...Click
+    //region onDialog...ClickRegion
     @Override
     public void onDialogPositiveClick(NoticeDialogFragment dialog) {
         if (dialog instanceof TypesAddedToCalendarDialog) {
@@ -619,12 +619,9 @@ public class MainActivity
         private static ReminderSettingsDialog getActiveInstance(FragmentManager fragmentManager) {
             return (ReminderSettingsDialog) fragmentManager.findFragmentByTag(TAG);
         }
-
-        private MainViewModel getViewModel() {
-            return ViewModelProviders.of(getActivity()).get(MainViewModel.class);
-        }
     }
 
+    //region LookChoiceRegion
     public static class AskForLook extends Fragment {
         @Nullable
         @Override
@@ -643,6 +640,7 @@ public class MainActivity
     public void onButtonRichClick(View view){
         setPreferencesValues(true);
     }
+    //endregion
 
     private void setPreferencesValues(boolean isLookRich) {
         AppPreferences appPreferences = new AppPreferences(this);
@@ -659,7 +657,7 @@ public class MainActivity
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
-            final MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+            final MainViewModel viewModel = getViewModel();
             initializePicker(viewModel.getReminder().getValue().getDaysBefore());
             builder
                     .setTitle(R.string.days_before)
@@ -686,21 +684,21 @@ public class MainActivity
 
     public static class ReminderTimeDialog extends ThisAppDialogFragment {
         private static final String TAG = "ReminderTimeDialog";
-        private TimePicker picker;
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             this.setRetainInstance(true);
             AlertDialog.Builder builder = getStyledBuilder();
-            final MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
-            initializePicker(viewModel.getReminder().getValue().getTime());
+            final MainViewModel viewModel = getViewModel();
+            final MyTimePicker picker = getPicker(viewModel);
+
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             SimpleReminder reminder = viewModel.getReminder().getValue();
-                            reminder.setTime(getTimeFromPicker());
+                            reminder.setTime(picker.getTime());
                             viewModel.setReminder(reminder);
                             noticeDialogListener.onDialogPositiveClick(ReminderTimeDialog.this);
                         }
@@ -710,34 +708,14 @@ public class MainActivity
                             noticeDialogListener.onDialogNegativeClick(ReminderTimeDialog.this);
                         }
                     });
+
             return builder.create();
         }
 
-        private void initializePicker(SimpleTime time) {
-            picker = new TimePicker(getContext());
-            picker.setIs24HourView(true);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                picker.setHour(time.getHour());
-                picker.setMinute(time.getMinute());
-            } else {
-                picker.setCurrentHour(time.getHour());
-                picker.setCurrentMinute(time.getMinute());
-            }
-        }
-
-        private SimpleTime getTimeFromPicker() {
-            SimpleTime time;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                time = new SimpleTime(picker.getHour(), picker.getMinute());
-            } else {
-                time = new SimpleTime(picker.getCurrentHour(), picker.getCurrentMinute());
-            }
-            return time;
-        }
-
-        @Override
-        public void onSaveInstanceState(@NonNull Bundle outState) {
-            super.onSaveInstanceState(outState);
+        private MyTimePicker getPicker(MainViewModel viewModel) {
+            MyTimePicker picker = new MyTimePicker(getContext());
+            picker.initialize(viewModel.getReminder().getValue().getTime());
+            return picker;
         }
     }
 
@@ -748,14 +726,14 @@ public class MainActivity
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
-            final MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
-            final DatePicker picker = getPicker(viewModel.getTill().getValue());
+            final MainViewModel viewModel = getViewModel();
+            final MyDatePicker picker = getPicker(viewModel);
 
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            viewModel.setTill(getDateFromPicker(picker));
+                            viewModel.setTill(picker.getDate());
                             noticeDialogListener.onDialogPositiveClick(TillDateDialog.this);
                         }
                     })
@@ -768,32 +746,15 @@ public class MainActivity
             return builder.create();
         }
 
-        private DatePicker getPicker(Calendar date) {
-            DatePicker picker = new DatePicker(getContext());
+        private MyDatePicker getPicker(MainViewModel viewModel) {
+            MyDatePicker picker = new MyDatePicker(getContext());
+            Calendar date = viewModel.getTill().getValue();
             picker.updateDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
-            picker.setMaxDate(getMaxDate());
             return picker;
-        }
-
-        private long getMaxDate() {
-            Calendar maxDate = Calendar.getInstance();
-            maxDate.set(Calendar.YEAR, 2019);
-            maxDate.set(Calendar.MONTH, 11);
-            maxDate.set(Calendar.DAY_OF_MONTH, 31);
-            return maxDate.getTimeInMillis();
-        }
-
-        private Calendar getDateFromPicker(DatePicker picker) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, picker.getYear());
-            cal.set(Calendar.MONTH, picker.getMonth());
-            cal.set(Calendar.DAY_OF_MONTH, picker.getDayOfMonth());
-            return cal;
         }
     }
 
     public static class WidgetInfoDialog extends ThisAppDialogFragment {
-
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
@@ -807,9 +768,7 @@ public class MainActivity
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Context context = v.getContext();
-                    AppPreferences appPreferences = new AppPreferences(context);
-                    appPreferences.setAppWidgetInfoDisplayed(context);
+                    getViewModel().setAppWidgetInfoDisplayed(getContext());
                     getDialog().dismiss();
                 }
             });

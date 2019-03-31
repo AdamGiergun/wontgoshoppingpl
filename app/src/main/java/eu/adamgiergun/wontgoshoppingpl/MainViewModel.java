@@ -1,5 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -40,19 +42,20 @@ public class MainViewModel extends ViewModel {
         return action;
     }
 
-//    public SimpleReminder getReminder() {
-//        return reminder;
-//    }
-
     String getDayDescription() {
         return dayDescription;
     }
 
-    public MutableLiveData<Calendar> getTill() {
+    MutableLiveData<Calendar> getTill() {
         return till;
     }
 
-    public void setTill(Calendar till) {
+    void setTill(Calendar till) {
         this.till.setValue(till);
+    }
+
+    void setAppWidgetInfoDisplayed(Context context) {
+        AppPreferences appPreferences = new AppPreferences(context);
+        appPreferences.setAppWidgetInfoDisplayed(context);
     }
 }
