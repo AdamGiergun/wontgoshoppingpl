@@ -651,34 +651,39 @@ public class MainActivity
 
     public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
         private static final String TAG = "ReminderDaysBeforeDialog";
-        private NumberPicker picker;
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
-            final MainViewModel viewModel = getViewModel();
-            initializePicker(viewModel.getReminder().getValue().getDaysBefore());
+            final NumberPicker picker = getPicker();
+
             builder
                     .setTitle(R.string.days_before)
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SimpleReminder reminder = viewModel.getReminder().getValue();
-                            reminder.setDaysBefore(picker.getValue());
-                            viewModel.setReminder(reminder);
-                            noticeDialogListener.onDialogPositiveClick(ReminderDaysBeforeDialog.this);
+                            updateReminder(picker);
                         }
                     })
-                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(ReminderDaysBeforeDialog.this));
+                    .setNegativeButton(android.R.string.cancel, null );
+
             return builder.create();
         }
 
-        private void initializePicker(int daysBefore) {
-            picker = new NumberPicker(getContext());
+        private NumberPicker getPicker() {
+            NumberPicker picker = new NumberPicker(getContext());
             picker.setMinValue(1);
             picker.setMaxValue(9);
-            picker.setValue(daysBefore);
+            picker.setValue(getViewModel().getReminder().getValue().getDaysBefore());
+            return picker;
+        }
+
+        private void updateReminder(NumberPicker picker) {
+            MainViewModel viewModel = getViewModel();
+            SimpleReminder reminder = viewModel.getReminder().getValue();
+            reminder.setDaysBefore(picker.getValue());
+            viewModel.setReminder(reminder);
         }
     }
 
@@ -690,32 +695,31 @@ public class MainActivity
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             this.setRetainInstance(true);
             AlertDialog.Builder builder = getStyledBuilder();
-            final MainViewModel viewModel = getViewModel();
-            final MyTimePicker picker = getPicker(viewModel);
+            final MyTimePicker picker = getPicker();
 
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SimpleReminder reminder = viewModel.getReminder().getValue();
-                            reminder.setTime(picker.getTime());
-                            viewModel.setReminder(reminder);
-                            noticeDialogListener.onDialogPositiveClick(ReminderTimeDialog.this);
+                            updateReminder(picker);
                         }
                     })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            noticeDialogListener.onDialogNegativeClick(ReminderTimeDialog.this);
-                        }
-                    });
+                    .setNegativeButton(android.R.string.cancel, null );
 
             return builder.create();
         }
 
-        private MyTimePicker getPicker(MainViewModel viewModel) {
+        private MyTimePicker getPicker() {
             MyTimePicker picker = new MyTimePicker(getContext());
-            picker.initialize(viewModel.getReminder().getValue().getTime());
+            picker.initialize(getViewModel().getReminder().getValue().getTime());
             return picker;
+        }
+
+        private void updateReminder(MyTimePicker picker) {
+            MainViewModel viewModel = getViewModel();
+            SimpleReminder reminder = viewModel.getReminder().getValue();
+            reminder.setTime(picker.getTime());
+            viewModel.setReminder(reminder);
         }
     }
 
@@ -726,29 +730,23 @@ public class MainActivity
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
-            final MainViewModel viewModel = getViewModel();
-            final MyDatePicker picker = getPicker(viewModel);
+            final MyDatePicker picker = getPicker();
 
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            viewModel.setTill(picker.getDate());
-                            noticeDialogListener.onDialogPositiveClick(TillDateDialog.this);
+                            getViewModel().setTill(picker.getDate());
                         }
                     })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            noticeDialogListener.onDialogNegativeClick(TillDateDialog.this);
-                        }
-                    });
+                    .setNegativeButton(android.R.string.cancel, null );
 
             return builder.create();
         }
 
-        private MyDatePicker getPicker(MainViewModel viewModel) {
+        private MyDatePicker getPicker() {
             MyDatePicker picker = new MyDatePicker(getContext());
-            Calendar date = viewModel.getTill().getValue();
+            Calendar date = getViewModel().getTill().getValue();
             picker.updateDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
             return picker;
         }
