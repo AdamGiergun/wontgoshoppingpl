@@ -621,7 +621,7 @@ public class MainActivity
         }
     }
 
-    //region LookChoiceRegion
+    //region InitialLookChoiceRegion
     public static class AskForLook extends Fragment {
         @Nullable
         @Override
@@ -644,7 +644,7 @@ public class MainActivity
     public void onButtonRichClick(View view){
         setPreferencesValues(true);
     }
-    //endregion
+
 
     private void setPreferencesValues(boolean isLookRich) {
         AppPreferences appPreferences = new AppPreferences(this);
@@ -652,6 +652,7 @@ public class MainActivity
         appPreferences.setFirstRun(this, false);
         recreate();
     }
+    //endregion
 
     public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
         private static final String TAG = "ReminderDaysBeforeDialog";
