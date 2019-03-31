@@ -627,9 +627,13 @@ public class MainActivity
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.ask_for_look_fragment, container, false);
-            TextView textView = view.findViewById(R.id.textView);
-            textView.setText(LocalizedConst.getAskForLook());
+            setText(view);
             return view;
+        }
+
+        void setText(View parentView) {
+            TextView textView = parentView.findViewById(R.id.textView);
+            textView.setText(LocalizedConst.getAskForLook());
         }
     }
 
