@@ -9,16 +9,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.*;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
-
-import com.google.android.gms.ads.*;
-import com.google.firebase.analytics.FirebaseAnalytics;
-
-import java.text.DateFormat;
-import java.util.Calendar;
 
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
@@ -27,6 +20,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.*;
 import androidx.lifecycle.*;
 
+import com.google.android.gms.ads.*;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.text.DateFormat;
+import java.util.Calendar;
+
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
@@ -34,16 +33,9 @@ import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 public class MainActivity
         extends AppCompatActivityWithTheme
         implements NoticeDialogFragment.NoticeDialogListener,
-                    DayFragment.OnListFragmentInteractionListener,
-                    NoticeDialogFragment.NoticeDialogViewListener, LogFirebaseEvent {
+        DayFragment.OnListFragmentInteractionListener,
+        NoticeDialogFragment.NoticeDialogViewListener, LogFirebaseEvent {
 
-    private LimitedCommerceDay lastTouchedDay;
-    private LimitedCommerceDayType.TypesList typesAddedToCalendar;
-    private LimitedCommerceDayType.TypesList lastTypesToBeDisplayed;
-    private AppPreferences appPreferences;
-    private InterstitialAd mInterstitialAd;
-    private Action actionRequestingPermissions;
-    private SQLiteDatabase database;
     private MainViewModel mViewModel;
 
     enum Action {
@@ -56,32 +48,48 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setupBannerAds();
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
-        setLocalizedConst();
-        database = new DatabaseHandler(this).getWritableDatabase();
-        appPreferences = new AppPreferences(this);
+        if (savedInstanceState == null) {
+            setLocalizedConst();
+            mViewModel.initialize(this);
 
-        setupBannerAds();
-        lastTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(this);
 //        Calendar calEnd = Calendar.getInstance();
 //        String timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
 //        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
 
-        if (appPreferences.isFirstRun(this)) {
-            addFragment(new AskForLook());
-        } else {
-            addFragment(new DayFragment());
-            if (!appPreferences.wasAppWidgetInfoDisplayed(this)) {
-                (new WidgetInfoDialog()).show(getSupportFragmentManager(),"");
-            }
-            if (appPreferences.isLookRich(this)) {
-                logFirebaseEvent(this, APP_THEME, LOOK_RICH);
+            if (mViewModel.getAppPreferences().isFirstRun(this)) {
+                addFragment(new AskForLook());
             } else {
-                logFirebaseEvent(this, APP_THEME, LOOK_MINI);
+                setDayFragment();
+            }
+        } else {
+            if (mViewModel.isRecreatedOnDemand()) {
+                mViewModel.setRecreatedOnDemand(false);
+                setDayFragment();
             }
         }
+    }
+
+    private void setDayFragment() {
+        addFragment(new DayFragment());
+        if (!mViewModel.getAppPreferences().wasAppWidgetInfoDisplayed(this)) {
+            WidgetInfoDialog.newInstance().show(getSupportFragmentManager(), "");
+        }
+        if (mViewModel.getAppPreferences().isLookRich(this)) {
+            logFirebaseEvent(this, APP_THEME, LOOK_RICH);
+        } else {
+            logFirebaseEvent(this, APP_THEME, LOOK_MINI);
+        }
+    }
+
+    private void setupBannerAds() {
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void setLocalizedConst() {
@@ -96,24 +104,22 @@ public class MainActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (database != null)
-            database.close();
+        mViewModel.closeDatabase();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setupInterstitialAds();
-        LimitedCommerceDayType.TypesList newTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(this);
-        if (!appPreferences.isFirstRun(this) && !lastTypesToBeDisplayed.equals(newTypesToBeDisplayed)) {
+        LimitedCommerceDayType.TypesList newTypesToBeDisplayed = mViewModel.getAppPreferences().getLimitedCommerceDayTypes(this);
+        if (!mViewModel.getAppPreferences().isFirstRun(this) && !mViewModel.getLastTypesToBeDisplayed().equals(newTypesToBeDisplayed)) {
             addFragment(new DayFragment());
         }
-        lastTypesToBeDisplayed = newTypesToBeDisplayed;
+        mViewModel.setLastTypesToBeDisplayed(newTypesToBeDisplayed);
         setLook();
     }
 
     private void setLook() {
-        if (appPreferences.isLookRich(this)) {
+        if (mViewModel.getAppPreferences().isLookRich(this)) {
             View recyclerViewContainer = findViewById(R.id.main_view);
             recyclerViewContainer.setBackgroundResource(R.drawable.bg_red);
             View adViewLayout = findViewById(R.id.adViewLayout);
@@ -140,48 +146,10 @@ public class MainActivity
         mFirebaseAnalytics.logEvent(event, params);
     }
 
-    //region AddsHandlingRegion
-    private void setupBannerAds() {
-        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
-        AdView mAdView = findViewById(R.id.adView);
-        //setAdListener(mAdView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-    }
-/*
-    private void setAdListener(AdView adView) {
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                System.out.println("onAdLoaded() CALLBACK");
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                super.onAdFailedToLoad(errorCode);
-                System.out.println("onAdFailedToLoad() CALLBACK code: " + errorCode);
-            }
-        });
-    }
-*/
-    private void setupInterstitialAds() {
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.wgs_interstitial_ad_id));
-        loadInterstitialAd();
-    }
-
-    private void loadInterstitialAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mInterstitialAd.loadAd(adRequest);
-    }
-    //endregion
-
     //region AppMenuHandlingRegion
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (appPreferences.isFirstRun(this)) {
+        if (mViewModel.getAppPreferences().isFirstRun(this)) {
             getMenuInflater()
                     .inflate(R.menu.main_activity_actions_first_run, menu);
         } else {
@@ -227,7 +195,7 @@ public class MainActivity
     }
 
     private boolean areCalendarPermissionsGranted() {
-        return isPermissionGranted(Manifest.permission.READ_CALENDAR) && isPermissionGranted(Manifest.permission.WRITE_CALENDAR) ;
+        return isPermissionGranted(Manifest.permission.READ_CALENDAR) && isPermissionGranted(Manifest.permission.WRITE_CALENDAR);
     }
 
     private void checkCalendarSettings(Action action) {
@@ -243,21 +211,21 @@ public class MainActivity
                     break;
             }
         } else {
-        startSettingsActivity(true);
+            startSettingsActivity(true);
         }
     }
 
     private boolean isCalendarEnabledAndChosen() {
-        boolean useGoogleCalendar = appPreferences.isUseGoogleCalendarSet(this);
-        boolean isCalendarSet = appPreferences.isCalendarSet(this);
+        boolean useGoogleCalendar = mViewModel.getAppPreferences().isUseGoogleCalendarSet(this);
+        boolean isCalendarSet = mViewModel.getAppPreferences().isCalendarSet(this);
         return useGoogleCalendar && isCalendarSet;
     }
 
     private void askForReminderSettings(Action action) {
         ReminderSettingsDialog reminderSettingsDialog = ReminderSettingsDialog.newInstance();
-        SimpleReminder reminder = appPreferences.getReminder(this, SimpleReminder.METHOD_ALERT);
+        SimpleReminder reminder = mViewModel.getAppPreferences().getReminder(this, SimpleReminder.METHOD_ALERT);
         if (action == Action.ADD_DAY) {
-            mViewModel.putReminderDialogArgs(action, reminder, lastTouchedDay.getDescriptionForDialog());
+            mViewModel.putReminderDialogArgs(action, reminder, mViewModel.getLastTouchedDay().getDescriptionForDialog());
         } else {
             mViewModel.putReminderDialogArgs(action, reminder, getLastDayOfNextMonth());
         }
@@ -275,9 +243,9 @@ public class MainActivity
     private void askForTypesAddedToCalendar() {
         TypesAddedToCalendarDialog typesAddedToCalendarDialog = new TypesAddedToCalendarDialog();
         typesAddedToCalendarDialog.setChecks(
-                appPreferences.showNonCommerceDays(this),
-                appPreferences.showHolidays(this),
-                appPreferences.showCommerceSundays(this));
+                mViewModel.getAppPreferences().showNonCommerceDays(this),
+                mViewModel.getAppPreferences().showHolidays(this),
+                mViewModel.getAppPreferences().showCommerceSundays(this));
         typesAddedToCalendarDialog.show(getSupportFragmentManager(), "dialog");
     }
 
@@ -289,7 +257,7 @@ public class MainActivity
 
     @Override
     public void onListFragmentInteraction(LimitedCommerceDay day) {
-        lastTouchedDay = day;
+        mViewModel.setLastTouchedDay(day);
         checkCalendarPermissions(Action.ADD_DAY);
     }
 
@@ -321,7 +289,7 @@ public class MainActivity
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestCalendarPermissions(Action action) {
-        actionRequestingPermissions = action;
+        mViewModel.setActionRequestingPermissions(action);
         String[] listOfRequestedPermissions = new String[]{Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR};
         int permissionTypeCode = PermissionType.CALENDAR.getCode();
         requestPermissions(listOfRequestedPermissions, permissionTypeCode);
@@ -332,7 +300,7 @@ public class MainActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
-                checkCalendarSettings(actionRequestingPermissions);
+                checkCalendarSettings(mViewModel.getActionRequestingPermissions());
             } else {
                 showInfo(eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, true);
             }
@@ -355,7 +323,7 @@ public class MainActivity
     public void onDialogPositiveClick(NoticeDialogFragment dialog) {
         if (dialog instanceof TypesAddedToCalendarDialog) {
             TypesAddedToCalendarDialog typesAddedToCalendarDialog = (TypesAddedToCalendarDialog) dialog;
-            typesAddedToCalendar = typesAddedToCalendarDialog.getTypes();
+            mViewModel.setTypesAddedToCalendar(typesAddedToCalendarDialog.getTypes());
             askForReminderSettings(Action.ADD_LIST);
         }
 
@@ -363,7 +331,7 @@ public class MainActivity
             if (mViewModel.getAction() == Action.ADD_LIST) {
                 addListToCalendar();
             } else {
-                addDayToCalendar(lastTouchedDay);
+                addDayToCalendar(mViewModel.getLastTouchedDay());
             }
         }
     }
@@ -371,7 +339,7 @@ public class MainActivity
     private void addListToCalendar() {
         showBigAd();
         ListOfLimitedCommerceDays list =
-                ListOfLimitedCommerceDays.getList(this, typesAddedToCalendar);
+                ListOfLimitedCommerceDays.getList(this, mViewModel.getTypesAddedToCalendar());
         boolean resultIsPositive = list.addToCalendar(this, mViewModel.getReminder().getValue(), mViewModel.getTill().getValue());
 
         logFirebaseEvent(this, CALENDAR_EVENT, LIST);
@@ -389,11 +357,13 @@ public class MainActivity
     }
 
     private void showBigAd() {
+        InterstitialAd mInterstitialAd = mViewModel.getInterstitialAd();
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
-        }
-        if (!mInterstitialAd.isLoading()) {
-            loadInterstitialAd();
+        } else {
+            if (!mInterstitialAd.isLoading()) {
+                mViewModel.loadInterstitialAd();
+            }
         }
     }
 
@@ -450,8 +420,8 @@ public class MainActivity
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             CharSequence[] items = new CharSequence[]
                     {getString(R.string.days_of_limited_commerce),
-                    getString(R.string.holidays),
-                    getString(R.string.commerce_sundays)};
+                            getString(R.string.holidays),
+                            getString(R.string.commerce_sundays)};
             final boolean[] checkedItems = new boolean[3];
             checkedItems[0] = addNonCommerceDays;
             checkedItems[1] = addHolidays;
@@ -524,10 +494,10 @@ public class MainActivity
             String title;
             MainViewModel viewModel = getViewModel();
 
-            if ( viewModel.getAction() == Action.ADD_LIST) {
+            if (viewModel.getAction() == Action.ADD_LIST) {
                 title = getString(R.string.title_reminder);
             } else {
-                title = getString(R.string.title_reminder_of) + " " + viewModel.getDayDescription() ;
+                title = getString(R.string.title_reminder_of) + " " + viewModel.getDayDescription();
             }
             builder
                     .setTitle(title)
@@ -582,10 +552,10 @@ public class MainActivity
                 @Override
                 public void onChanged(SimpleReminder simpleReminder) {
                     daysView.setText(
-                                    String.valueOf(viewModel.getReminder().getValue().getDaysBefore()
-                                    ));
+                            String.valueOf(viewModel.getReminder().getValue().getDaysBefore()
+                            ));
                     timeView.setText(
-                                    viewModel.getReminder().getValue().getTime().toString());
+                            viewModel.getReminder().getValue().getTime().toString());
                 }
             };
 
@@ -637,11 +607,11 @@ public class MainActivity
         }
     }
 
-    public void onButtonMiniClick(View view){
+    public void onButtonMiniClick(View view) {
         setPreferencesValues(false);
     }
 
-    public void onButtonRichClick(View view){
+    public void onButtonRichClick(View view) {
         setPreferencesValues(true);
     }
 
@@ -650,6 +620,7 @@ public class MainActivity
         AppPreferences appPreferences = new AppPreferences(this);
         appPreferences.setLookRich(this, isLookRich);
         appPreferences.setFirstRun(this, false);
+        mViewModel.setRecreatedOnDemand(true);
         recreate();
     }
     //endregion
@@ -671,7 +642,7 @@ public class MainActivity
                             updateReminder(picker);
                         }
                     })
-                    .setNegativeButton(android.R.string.cancel, null );
+                    .setNegativeButton(android.R.string.cancel, null);
 
             return builder.create();
         }
@@ -709,7 +680,7 @@ public class MainActivity
                             updateReminder(picker);
                         }
                     })
-                    .setNegativeButton(android.R.string.cancel, null );
+                    .setNegativeButton(android.R.string.cancel, null);
 
             return builder.create();
         }
@@ -744,7 +715,7 @@ public class MainActivity
                             getViewModel().setTill(picker.getDate());
                         }
                     })
-                    .setNegativeButton(android.R.string.cancel, null );
+                    .setNegativeButton(android.R.string.cancel, null);
 
             return builder.create();
         }
@@ -764,6 +735,10 @@ public class MainActivity
             AlertDialog.Builder builder = getStyledBuilder();
             builder.setView(getDialogView());
             return builder.create();
+        }
+
+        static WidgetInfoDialog newInstance() {
+            return new WidgetInfoDialog();
         }
 
         private View getDialogView() {
