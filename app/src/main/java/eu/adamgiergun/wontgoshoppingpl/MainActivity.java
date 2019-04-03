@@ -331,7 +331,7 @@ public class MainActivity
         showBigAd();
         ListOfLimitedCommerceDays list =
                 ListOfLimitedCommerceDays.getList(this, mViewModel.getTypesAddedToCalendar());
-        boolean resultIsPositive = list.addToCalendar(this, mViewModel.getReminder().getValue(), mViewModel.getTill().getValue());
+        boolean resultIsPositive = list.addToCalendar(this, mViewModel.getReminder(), mViewModel.getTillObservable().getValue());
 
         logFirebaseEvent(this, CALENDAR_EVENT, LIST);
         displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
@@ -339,7 +339,7 @@ public class MainActivity
 
     private void addDayToCalendar(LimitedCommerceDay day) {
         showBigAd();
-        day.setReminder(mViewModel.getReminder().getValue());
+        day.setReminder(mViewModel.getReminder());
         displayInfo(
                 day.addToGoogleCalendar(this),
                 R.string.info_added_to_calendar,
@@ -517,7 +517,7 @@ public class MainActivity
 
         private void initializeTillView(View view, MainViewModel viewModel) {
             AppCompatTextView tillView = getTillView(view);
-            tillView.setText(getTillAsString(viewModel.getTill().getValue()));
+            tillView.setText(getTillAsString(viewModel.getTill()));
             tillView.setOnClickListener(getViewListener(TillDateDialog.TAG));
         }
 
@@ -532,36 +532,36 @@ public class MainActivity
 
         private void initializeReminderViews(final View view, final MainViewModel viewModel) {
             final AppCompatTextView daysView = getDaysView(view);
-            daysView.setText(String.valueOf(viewModel.getReminder().getValue().getDaysBefore()));
+            daysView.setText(String.valueOf(viewModel.getReminder().getDaysBefore()));
             daysView.setOnClickListener(getViewListener(ReminderDaysBeforeDialog.TAG));
 
             final AppCompatTextView timeView = getTimeView(view);
-            timeView.setText(viewModel.getReminder().getValue().getTime().toString());
+            timeView.setText(viewModel.getReminder().getTime().toString());
             timeView.setOnClickListener(getViewListener(ReminderTimeDialog.TAG));
 
             Observer<SimpleReminder> reminderObserver = new Observer<SimpleReminder>() {
                 @Override
                 public void onChanged(SimpleReminder simpleReminder) {
                     daysView.setText(
-                            String.valueOf(viewModel.getReminder().getValue().getDaysBefore()
+                            String.valueOf(viewModel.getReminder().getDaysBefore()
                             ));
                     timeView.setText(
-                            viewModel.getReminder().getValue().getTime().toString());
+                            viewModel.getReminder().getTime().toString());
                 }
             };
 
-            viewModel.getReminder().observe(this, reminderObserver);
+            viewModel.getReminderObservable().observe(this, reminderObserver);
 
             if (viewModel.isActionAddList()) {
                 Observer<Calendar> tillObserver = new Observer<Calendar>() {
                     @Override
                     public void onChanged(Calendar till) {
                         getTillView(view).setText(
-                                getTillAsString(viewModel.getTill().getValue()));
+                                getTillAsString(viewModel.getTill()));
                     }
                 };
 
-                viewModel.getTill().observe(this, tillObserver);
+                viewModel.getTillObservable().observe(this, tillObserver);
             }
         }
 
@@ -642,13 +642,13 @@ public class MainActivity
             NumberPicker picker = new NumberPicker(getContext());
             picker.setMinValue(1);
             picker.setMaxValue(9);
-            picker.setValue(getViewModel().getReminder().getValue().getDaysBefore());
+            picker.setValue(getViewModel().getReminder().getDaysBefore());
             return picker;
         }
 
         private void updateReminder(NumberPicker picker) {
             MainViewModel viewModel = getViewModel();
-            SimpleReminder reminder = viewModel.getReminder().getValue();
+            SimpleReminder reminder = viewModel.getReminder();
             reminder.setDaysBefore(picker.getValue());
             viewModel.setReminder(reminder);
         }
@@ -678,13 +678,13 @@ public class MainActivity
 
         private MyTimePicker getPicker() {
             MyTimePicker picker = new MyTimePicker(getContext());
-            picker.initialize(getViewModel().getReminder().getValue().getTime());
+            picker.initialize(getViewModel().getReminder().getTime());
             return picker;
         }
 
         private void updateReminder(MyTimePicker picker) {
             MainViewModel viewModel = getViewModel();
-            SimpleReminder reminder = viewModel.getReminder().getValue();
+            SimpleReminder reminder = viewModel.getReminder();
             reminder.setTime(picker.getTime());
             viewModel.setReminder(reminder);
         }
@@ -713,7 +713,7 @@ public class MainActivity
 
         private MyDatePicker getPicker() {
             MyDatePicker picker = new MyDatePicker(getContext());
-            Calendar date = getViewModel().getTill().getValue();
+            Calendar date = getViewModel().getTill();
             picker.updateDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
             return picker;
         }

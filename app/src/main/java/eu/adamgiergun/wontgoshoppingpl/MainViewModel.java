@@ -56,7 +56,11 @@ public class MainViewModel extends ViewModel {
         this.till.setValue(till);
     }
 
-    MutableLiveData<SimpleReminder> getReminder() {
+    SimpleReminder getReminder() {
+        return reminder.getValue();
+    }
+
+    MutableLiveData<SimpleReminder> getReminderObservable() {
         return reminder;
     }
 
@@ -68,8 +72,12 @@ public class MainViewModel extends ViewModel {
         return dayDescription;
     }
 
-    MutableLiveData<Calendar> getTill() {
+    MutableLiveData<Calendar> getTillObservable() {
         return till;
+    }
+
+    Calendar getTill() {
+        return till.getValue();
     }
 
     void setTill(Calendar till) {
