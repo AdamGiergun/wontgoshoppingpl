@@ -38,11 +38,6 @@ public class MainActivity
 
     private MainViewModel mViewModel;
 
-    enum Action {
-        ADD_LIST,
-        ADD_DAY
-    }
-
     //region ActivityLifeCycleRegion
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +161,8 @@ public class MainActivity
                 startSettingsActivity(false);
                 return true;
             case R.id.calendar:
-                checkCalendarPermissions(Action.ADD_LIST);
+                mViewModel.setActionAddList(true);
+                checkCalendarPermissions();
                 return true;
             case R.id.help:
                 startHelpActivity();
@@ -182,11 +178,11 @@ public class MainActivity
         startActivity(intent);
     }
 
-    private void checkCalendarPermissions(Action action) {
+    private void checkCalendarPermissions() {
         if (isSystemLessThanMarshmallow() || areCalendarPermissionsGranted()) {
-            checkCalendarSettings(action);
+            checkCalendarSettings();
         } else {
-            requestCalendarPermissions(action);
+            requestCalendarPermissions();
         }
     }
 
@@ -198,17 +194,12 @@ public class MainActivity
         return isPermissionGranted(Manifest.permission.READ_CALENDAR) && isPermissionGranted(Manifest.permission.WRITE_CALENDAR);
     }
 
-    private void checkCalendarSettings(Action action) {
+    private void checkCalendarSettings() {
         if (isCalendarEnabledAndChosen()) {
-            switch (action) {
-                case ADD_DAY:
-                    askForReminderSettings(action);
-                    break;
-                case ADD_LIST:
-                    askForTypesAddedToCalendar();
-                    break;
-                default:
-                    break;
+            if (mViewModel.isActionAddList()) {
+                askForTypesAddedToCalendar();
+            } else {
+                askForReminderSettings();
             }
         } else {
             startSettingsActivity(true);
@@ -221,13 +212,13 @@ public class MainActivity
         return useGoogleCalendar && isCalendarSet;
     }
 
-    private void askForReminderSettings(Action action) {
+    private void askForReminderSettings() {
         ReminderSettingsDialog reminderSettingsDialog = ReminderSettingsDialog.newInstance();
         SimpleReminder reminder = mViewModel.getAppPreferences().getReminder(this, SimpleReminder.METHOD_ALERT);
-        if (action == Action.ADD_DAY) {
-            mViewModel.putReminderDialogArgs(action, reminder, mViewModel.getLastTouchedDay().getDescriptionForDialog());
+        if (mViewModel.isActionAddList()) {
+            mViewModel.putReminderDialogArgs(reminder, getLastDayOfNextMonth());
         } else {
-            mViewModel.putReminderDialogArgs(action, reminder, getLastDayOfNextMonth());
+            mViewModel.putReminderDialogArgs(reminder, mViewModel.getLastTouchedDay().getDescriptionForDialog());
         }
         reminderSettingsDialog.show(getSupportFragmentManager());
     }
@@ -258,7 +249,8 @@ public class MainActivity
     @Override
     public void onListFragmentInteraction(LimitedCommerceDay day) {
         mViewModel.setLastTouchedDay(day);
-        checkCalendarPermissions(Action.ADD_DAY);
+        mViewModel.setActionAddList(false);
+        checkCalendarPermissions();
     }
 
     //region ShowingInfoRegion
@@ -288,8 +280,7 @@ public class MainActivity
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestCalendarPermissions(Action action) {
-        mViewModel.setActionRequestingPermissions(action);
+    private void requestCalendarPermissions() {
         String[] listOfRequestedPermissions = new String[]{Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR};
         int permissionTypeCode = PermissionType.CALENDAR.getCode();
         requestPermissions(listOfRequestedPermissions, permissionTypeCode);
@@ -300,7 +291,7 @@ public class MainActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
-                checkCalendarSettings(mViewModel.getActionRequestingPermissions());
+                checkCalendarSettings();
             } else {
                 showInfo(eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, true);
             }
@@ -324,11 +315,11 @@ public class MainActivity
         if (dialog instanceof TypesAddedToCalendarDialog) {
             TypesAddedToCalendarDialog typesAddedToCalendarDialog = (TypesAddedToCalendarDialog) dialog;
             mViewModel.setTypesAddedToCalendar(typesAddedToCalendarDialog.getTypes());
-            askForReminderSettings(Action.ADD_LIST);
+            askForReminderSettings();
         }
 
         if (dialog instanceof ReminderSettingsDialog) {
-            if (mViewModel.getAction() == Action.ADD_LIST) {
+            if (mViewModel.isActionAddList()) {
                 addListToCalendar();
             } else {
                 addDayToCalendar(mViewModel.getLastTouchedDay());
@@ -494,7 +485,7 @@ public class MainActivity
             String title;
             MainViewModel viewModel = getViewModel();
 
-            if (viewModel.getAction() == Action.ADD_LIST) {
+            if (viewModel.isActionAddList()) {
                 title = getString(R.string.title_reminder);
             } else {
                 title = getString(R.string.title_reminder_of) + " " + viewModel.getDayDescription();
@@ -513,7 +504,7 @@ public class MainActivity
             View view;
             MainViewModel viewModel = getViewModel();
 
-            if (viewModel.getAction() == Action.ADD_LIST) {
+            if (viewModel.isActionAddList()) {
                 view = inflater.inflate(R.layout.reminder_and_date_settings_dialog_view, null);
                 initializeTillView(view, viewModel);
             } else {
@@ -561,7 +552,7 @@ public class MainActivity
 
             viewModel.getReminder().observe(this, reminderObserver);
 
-            if (viewModel.getAction() == Action.ADD_LIST) {
+            if (viewModel.isActionAddList()) {
                 Observer<Calendar> tillObserver = new Observer<Calendar>() {
                     @Override
                     public void onChanged(Calendar till) {

@@ -14,7 +14,7 @@ import java.util.Calendar;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 
 public class MainViewModel extends ViewModel {
-    private MainActivity.Action action;
+    private boolean actionAddList;
     private String dayDescription;
     private MutableLiveData<Calendar> till;
     private MutableLiveData<SimpleReminder> reminder;
@@ -24,10 +24,10 @@ public class MainViewModel extends ViewModel {
     private LimitedCommerceDayType.TypesList lastTypesToBeDisplayed;
     private AppPreferences appPreferences;
     private InterstitialAd interstitialAd;
-    private MainActivity.Action actionRequestingPermissions;
     private boolean recreatedOnDemand;
 
     void initialize(Context context) {
+        actionAddList = false;
         database = new DatabaseHandler(context).getWritableDatabase();
         recreatedOnDemand = false;
         appPreferences = new AppPreferences(context);
@@ -42,15 +42,14 @@ public class MainViewModel extends ViewModel {
         interstitialAd.loadAd(adRequest);
     }
 
-    void putReminderDialogArgs(MainActivity.Action action, SimpleReminder reminder, String dayDescription) {
-        this.action = action;
+    //TODO rethink parameters
+    void putReminderDialogArgs(SimpleReminder reminder, String dayDescription) {
         this.reminder = new MutableLiveData<>();
         this.reminder.setValue(reminder);
         this.dayDescription = dayDescription;
     }
 
-    void putReminderDialogArgs(MainActivity.Action action, SimpleReminder reminder, Calendar till) {
-        this.action = action;
+    void putReminderDialogArgs(SimpleReminder reminder, Calendar till) {
         this.reminder = new MutableLiveData<>();
         this.reminder.setValue(reminder);
         this.till = new MutableLiveData<>();
@@ -63,10 +62,6 @@ public class MainViewModel extends ViewModel {
 
     void setReminder(SimpleReminder reminder) {
         this.reminder.setValue(reminder);
-    }
-
-    MainActivity.Action getAction() {
-        return action;
     }
 
     String getDayDescription() {
@@ -115,12 +110,12 @@ public class MainViewModel extends ViewModel {
         this.lastTouchedDay = lastTouchedDay;
     }
 
-    void setActionRequestingPermissions(MainActivity.Action actionRequestingPermissions) {
-        this.actionRequestingPermissions = actionRequestingPermissions;
+    void setActionAddList(boolean actionAddList) {
+        this.actionAddList = actionAddList;
     }
 
-    MainActivity.Action getActionRequestingPermissions() {
-        return actionRequestingPermissions;
+    boolean isActionAddList() {
+        return actionAddList;
     }
 
     LimitedCommerceDayType.TypesList getTypesAddedToCalendar() {
