@@ -55,7 +55,7 @@ public class MainActivity
 //        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
 
             if (mViewModel.getAppPreferences().isFirstRun(this)) {
-                addFragment(new AskForLook());
+                addFragment(AskForLook.newInstance());
             } else {
                 setDayFragment();
             }
@@ -213,14 +213,13 @@ public class MainActivity
     }
 
     private void askForReminderSettings() {
-        ReminderSettingsDialog reminderSettingsDialog = ReminderSettingsDialog.newInstance();
         SimpleReminder reminder = mViewModel.getAppPreferences().getReminder(this, SimpleReminder.METHOD_ALERT);
         if (mViewModel.isActionAddList()) {
             mViewModel.putReminderDialogArgs(reminder, getLastDayOfNextMonth());
         } else {
             mViewModel.putReminderDialogArgs(reminder, mViewModel.getLastTouchedDay().getDescriptionForDialog());
         }
-        reminderSettingsDialog.show(getSupportFragmentManager());
+        ReminderSettingsDialog.newInstance().show(getSupportFragmentManager());
     }
 
     private Calendar getLastDayOfNextMonth() {
@@ -385,18 +384,15 @@ public class MainActivity
     }
 
     private void onReminderDaysBeforeClick(String tag) {
-        ReminderDaysBeforeDialog reminderDaysBeforeDialog = new ReminderDaysBeforeDialog();
-        reminderDaysBeforeDialog.show(getSupportFragmentManager(), tag);
+        ReminderDaysBeforeDialog.newInstance().show(getSupportFragmentManager(), tag);
     }
 
     private void onReminderTimeClick(String tag) {
-        ReminderTimeDialog reminderTimeDialog = new ReminderTimeDialog();
-        reminderTimeDialog.show(getSupportFragmentManager(), tag);
+        ReminderTimeDialog.newInstance().show(getSupportFragmentManager(), tag);
     }
 
     private void onTillDateClick(String tag) {
-        TillDateDialog tillDateDialog = new TillDateDialog();
-        tillDateDialog.show(getSupportFragmentManager(), tag);
+        TillDateDialog.newInstance().show(getSupportFragmentManager(), tag);
     }
     //endregion
 
@@ -576,14 +572,15 @@ public class MainActivity
         private void show(FragmentManager fragmentManager) {
             show(fragmentManager, TAG);
         }
-
-        private static ReminderSettingsDialog getActiveInstance(FragmentManager fragmentManager) {
-            return (ReminderSettingsDialog) fragmentManager.findFragmentByTag(TAG);
-        }
     }
 
     //region InitialLookChoiceRegion
     public static class AskForLook extends Fragment {
+
+        static AskForLook newInstance() {
+            return new AskForLook();
+        }
+
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -608,9 +605,8 @@ public class MainActivity
 
 
     private void setPreferencesValues(boolean isLookRich) {
-        AppPreferences appPreferences = new AppPreferences(this);
-        appPreferences.setLookRich(this, isLookRich);
-        appPreferences.setFirstRun(this, false);
+        mViewModel.getAppPreferences().setLookRich(this, isLookRich);
+        mViewModel.getAppPreferences().setFirstRun(this, false);
         mViewModel.setRecreatedOnDemand(true);
         recreate();
     }
@@ -618,6 +614,10 @@ public class MainActivity
 
     public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
         private static final String TAG = "ReminderDaysBeforeDialog";
+
+        static ReminderDaysBeforeDialog newInstance() {
+            return new ReminderDaysBeforeDialog();
+        }
 
         @NonNull
         @Override
@@ -646,6 +646,7 @@ public class MainActivity
             return picker;
         }
 
+        //TODO move reminder updating to MainViewModel
         private void updateReminder(NumberPicker picker) {
             MainViewModel viewModel = getViewModel();
             SimpleReminder reminder = viewModel.getReminder();
@@ -656,6 +657,10 @@ public class MainActivity
 
     public static class ReminderTimeDialog extends ThisAppDialogFragment {
         private static final String TAG = "ReminderTimeDialog";
+
+        static ReminderTimeDialog newInstance() {
+            return new ReminderTimeDialog();
+        }
 
         @NonNull
         @Override
@@ -682,6 +687,7 @@ public class MainActivity
             return picker;
         }
 
+        //TODO move reminder updating to MainViewModel
         private void updateReminder(MyTimePicker picker) {
             MainViewModel viewModel = getViewModel();
             SimpleReminder reminder = viewModel.getReminder();
@@ -692,6 +698,10 @@ public class MainActivity
 
     public static class TillDateDialog extends ThisAppDialogFragment {
         private static final String TAG = "TillDateDialog";
+
+        static TillDateDialog newInstance() {
+            return new TillDateDialog();
+        }
 
         @NonNull
         @Override
@@ -711,6 +721,7 @@ public class MainActivity
             return builder.create();
         }
 
+        //TODO change the way picker gets info from ViewModel
         private MyDatePicker getPicker() {
             MyDatePicker picker = new MyDatePicker(getContext());
             Calendar date = getViewModel().getTill();
@@ -720,16 +731,17 @@ public class MainActivity
     }
 
     public static class WidgetInfoDialog extends ThisAppDialogFragment {
+
+        static WidgetInfoDialog newInstance() {
+            return new WidgetInfoDialog();
+        }
+
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
             builder.setView(getDialogView());
             return builder.create();
-        }
-
-        static WidgetInfoDialog newInstance() {
-            return new WidgetInfoDialog();
         }
 
         private View getDialogView() {
