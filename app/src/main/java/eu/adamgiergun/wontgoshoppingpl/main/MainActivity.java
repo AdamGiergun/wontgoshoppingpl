@@ -57,14 +57,13 @@ public class MainActivity
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         if (savedInstanceState == null) {
-            setLocalizedConst();
             mViewModel.initialize(this);
 
 //        Calendar calEnd = Calendar.getInstance();
 //        String timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
 //        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
 
-            if (mViewModel.getAppPreferences().isFirstRun(this)) {
+            if (mViewModel.isFirstRun(this)) {
                 addFragment(AskForLook.newInstance());
             } else {
                 setDayFragment();
@@ -79,10 +78,10 @@ public class MainActivity
 
     private void setDayFragment() {
         addFragment(new DayFragment());
-        if (!mViewModel.getAppPreferences().wasAppWidgetInfoDisplayed(this)) {
+        if (!mViewModel.wasAppWidgetInfoDisplayed(this)) {
             WidgetInfoDialog.newInstance().show(getSupportFragmentManager(), "");
         }
-        if (mViewModel.getAppPreferences().isLookRich(this)) {
+        if (mViewModel.isLookRich(this)) {
             logFirebaseEvent(this, APP_THEME, LOOK_RICH);
         } else {
             logFirebaseEvent(this, APP_THEME, LOOK_MINI);
@@ -97,15 +96,6 @@ public class MainActivity
         mAdView.loadAd(adRequest);
     }
 
-    private void setLocalizedConst() {
-        if (!LocalizedConst.isSet()) {
-            LocalizedConst.setWholeDay(getString(R.string.whole_day));
-            LocalizedConst.setSince(getString(R.string.since));
-            LocalizedConst.setAskForLook(getString(R.string.ask_for_look));
-            LocalizedConst.setSet();
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -115,21 +105,20 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        LimitedCommerceDayType.TypesList newTypesToBeDisplayed = mViewModel.getAppPreferences().getLimitedCommerceDayTypes(this);
-        if (!mViewModel.getAppPreferences().isFirstRun(this) && !mViewModel.getLastTypesToBeDisplayed().equals(newTypesToBeDisplayed)) {
+        if (mViewModel.addDayFragment(this)) {
             addFragment(new DayFragment());
         }
-        mViewModel.setLastTypesToBeDisplayed(newTypesToBeDisplayed);
-        setLook();
+        if (mViewModel.isLookRich(this)) {
+            setLookRich();
+        }
     }
 
-    private void setLook() {
-        if (mViewModel.getAppPreferences().isLookRich(this)) {
-            View recyclerViewContainer = findViewById(R.id.main_view);
-            recyclerViewContainer.setBackgroundResource(R.drawable.bg_red);
-            View adViewLayout = findViewById(R.id.adViewLayout);
-            adViewLayout.setBackgroundResource(R.drawable.bg_red);
-        }
+    private void setLookRich() {
+        View recyclerViewContainer = findViewById(R.id.main_view);
+        recyclerViewContainer.setBackgroundResource(R.drawable.bg_red);
+
+        View adViewLayout = findViewById(R.id.adViewLayout);
+        adViewLayout.setBackgroundResource(R.drawable.bg_red);
     }
 
     private void addFragment(Fragment fragment) {
@@ -154,7 +143,7 @@ public class MainActivity
     //region AppMenuHandlingRegion
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mViewModel.getAppPreferences().isFirstRun(this)) {
+        if (mViewModel.isFirstRun(this)) {
             getMenuInflater()
                     .inflate(R.menu.main_activity_actions_first_run, menu);
         } else {
@@ -205,7 +194,7 @@ public class MainActivity
     }
 
     private void checkCalendarSettings() {
-        if (isCalendarEnabledAndChosen()) {
+        if (mViewModel.isCalendarEnabledAndChosen(this)) {
             if (mViewModel.isActionAddList()) {
                 askForTypesAddedToCalendar();
             } else {
@@ -216,28 +205,9 @@ public class MainActivity
         }
     }
 
-    private boolean isCalendarEnabledAndChosen() {
-        boolean useGoogleCalendar = mViewModel.getAppPreferences().isUseGoogleCalendarSet(this);
-        boolean isCalendarSet = mViewModel.getAppPreferences().isCalendarSet(this);
-        return useGoogleCalendar && isCalendarSet;
-    }
-
     private void askForReminderSettings() {
-        SimpleReminder reminder = mViewModel.getAppPreferences().getReminder(this, SimpleReminder.METHOD_ALERT);
-        if (mViewModel.isActionAddList()) {
-            mViewModel.putReminderDialogArgs(reminder, getLastDayOfNextMonth());
-        } else {
-            mViewModel.putReminderDialogArgs(reminder, mViewModel.getLastTouchedDay().getDescriptionForDialog());
-        }
+        mViewModel.setReminderDialogArgs(this);
         ReminderSettingsDialog.newInstance().show(getSupportFragmentManager());
-    }
-
-    private Calendar getLastDayOfNextMonth() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, 1);
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return calendar;
-
     }
 
     private void askForTypesAddedToCalendar() {

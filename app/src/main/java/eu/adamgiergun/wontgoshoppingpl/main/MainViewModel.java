@@ -14,6 +14,7 @@ import java.util.Calendar;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
+import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
@@ -21,23 +22,36 @@ import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class MainViewModel extends ViewModel {
     private boolean actionAddList;
-    private String dayDescription;
     private MutableLiveData<Calendar> till;
     private MutableLiveData<SimpleReminder> reminder;
     private SQLiteDatabase database;
     private LimitedCommerceDay lastTouchedDay;
     private LimitedCommerceDayType.TypesList typesAddedToCalendar;
-    private LimitedCommerceDayType.TypesList lastTypesToBeDisplayed;
+    private LimitedCommerceDayType.TypesList typesToBeDisplayed;
     private AppPreferences appPreferences;
     private InterstitialAd interstitialAd;
     private boolean recreatedOnDemand;
 
     void initialize(Context context) {
+        setLocalizedConst(context);
         actionAddList = false;
         database = new DatabaseHandler(context).getWritableDatabase();
         recreatedOnDemand = false;
         appPreferences = new AppPreferences(context);
-        lastTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(context);
+        typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(context);
+        initializeInterstitialAd(context);
+    }
+
+    private void setLocalizedConst(Context context) {
+        if (!LocalizedConst.isSet()) {
+            LocalizedConst.setWholeDay(context.getString(R.string.whole_day));
+            LocalizedConst.setSince(context.getString(R.string.since));
+            LocalizedConst.setAskForLook(context.getString(R.string.ask_for_look));
+            LocalizedConst.setSet();
+        }
+    }
+    
+    private void initializeInterstitialAd(Context context) {
         interstitialAd = new InterstitialAd(context);
         interstitialAd.setAdUnitId(context.getString(R.string.interstitial_ad_id));
         loadInterstitialAd();
@@ -48,18 +62,20 @@ public class MainViewModel extends ViewModel {
         interstitialAd.loadAd(adRequest);
     }
 
-    //TODO rethink parameters
-    void putReminderDialogArgs(SimpleReminder reminder, String dayDescription) {
-        this.reminder = new MutableLiveData<>();
-        this.reminder.setValue(reminder);
-        this.dayDescription = dayDescription;
+    void setReminderDialogArgs(Context context) {
+        reminder = new MutableLiveData<>();
+        reminder.setValue(getReminderPreference(context));
+        if (isActionAddList()) {
+            till = new MutableLiveData<>();
+            till.setValue(getLastDayOfNextMonth());
+        }
     }
 
-    void putReminderDialogArgs(SimpleReminder reminder, Calendar till) {
-        this.reminder = new MutableLiveData<>();
-        this.reminder.setValue(reminder);
-        this.till = new MutableLiveData<>();
-        this.till.setValue(till);
+    private Calendar getLastDayOfNextMonth() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return calendar;
     }
 
     SimpleReminder getReminder() {
@@ -96,7 +112,7 @@ public class MainViewModel extends ViewModel {
     }
 
     String getDayDescription() {
-        return dayDescription;
+        return lastTouchedDay.getDescriptionForDialog();
     }
 
     MutableLiveData<Calendar> getTillObservable() {
@@ -123,14 +139,6 @@ public class MainViewModel extends ViewModel {
     void closeDatabase() {
         if (database != null)
             database.close();
-    }
-
-    LimitedCommerceDayType.TypesList getLastTypesToBeDisplayed() {
-        return lastTypesToBeDisplayed;
-    }
-
-    void setLastTypesToBeDisplayed(LimitedCommerceDayType.TypesList typesList) {
-        lastTypesToBeDisplayed = typesList;
     }
 
     InterstitialAd getInterstitialAd() {
@@ -168,4 +176,33 @@ public class MainViewModel extends ViewModel {
     boolean isRecreatedOnDemand() {
         return recreatedOnDemand;
     }
+
+    //region AppPreferences proxy region
+    private SimpleReminder getReminderPreference(Context context) {
+        return appPreferences.getReminder(context, SimpleReminder.METHOD_ALERT);
+    }
+
+    boolean isFirstRun(Context context) {
+        return appPreferences.isFirstRun(context);
+    }
+
+    boolean wasAppWidgetInfoDisplayed(Context context) {
+        return appPreferences.wasAppWidgetInfoDisplayed(context);
+    }
+
+    boolean isLookRich(Context context) {
+        return appPreferences.isLookRich(context);
+    }
+
+    boolean isCalendarEnabledAndChosen(Context context) {
+        return  appPreferences.isUseGoogleCalendarSet(context) && appPreferences.isCalendarSet(context);
+    }
+
+    boolean addDayFragment(Context context) {
+        LimitedCommerceDayType.TypesList oldTypesToBeDisplayed = typesToBeDisplayed;
+        typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(context);
+        return !(isFirstRun(context) ||
+                typesToBeDisplayed.equals(oldTypesToBeDisplayed));
+    }
+    //endregion
 }
