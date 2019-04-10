@@ -10,6 +10,7 @@ import android.widget.RemoteViews;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 
 public class AppWidget extends AppWidgetProvider implements LogFirebaseEvent {
@@ -25,10 +26,22 @@ public class AppWidget extends AppWidgetProvider implements LogFirebaseEvent {
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         LimitedCommerceDay nextDay = LimitedCommerceDay.getNextDay(context);
-        RemoteViews views = new RemoteViews(context.getPackageName(), nextDay.getWidgetLayout());
+        RemoteViews views = new RemoteViews(context.getPackageName(), getWidgetLayout(nextDay));
         views.setTextViewText(R.id.appwidget_text, nextDay.getWidgetText());
         setListener(context, views);
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    private static int getWidgetLayout(LimitedCommerceDay day) {
+        switch (day.getType()) {
+            case HOLIDAY:
+            case NON_COMMERCE_DAY:
+                return R.layout.app_widget_no_shopping;
+            case COMMERCE_SUNDAY:
+                return R.layout.app_widget_shopping;
+            default:
+                return 0;
+        }
     }
 
     private static void setListener(Context context, RemoteViews views) {

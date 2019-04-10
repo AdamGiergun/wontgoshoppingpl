@@ -9,8 +9,8 @@ import java.util.Iterator;
 
 import androidx.annotation.Nullable;
 
-import eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay;
-import eu.adamgiergun.wontgoshoppingpl.ListOfLimitedCommerceDays;
+import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
+import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 

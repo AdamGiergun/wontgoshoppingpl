@@ -3,6 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 import android.content.Context;
 
 import eu.adamgiergun.mylibrary.MyAppPreferences;
+import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
 
 public class AppPreferences extends MyAppPreferences {
 

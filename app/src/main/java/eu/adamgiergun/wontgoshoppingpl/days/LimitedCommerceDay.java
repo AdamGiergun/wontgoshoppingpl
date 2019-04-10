@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.days;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
+import eu.adamgiergun.wontgoshoppingpl.AppPreferences;
+import eu.adamgiergun.wontgoshoppingpl.LocalizedConst;
+import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.db.DBContract;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
 
@@ -98,7 +101,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         }
     }
 
-    String getDateAndWeekdayString() {
+    public String getDateAndWeekdayString() {
         String nameOfWeekday = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
         return getDateString() + "\n" + nameOfWeekday;
     }
@@ -107,14 +110,14 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return DateFormat.getDateInstance().format(calendar.getTime());
     }
 
-    String getTimeString() {
+    public String getTimeString() {
         if (time.getHour() == 0 && time.getMinute() == 0)
             return LocalizedConst.getWholeDay();
         else
             return LocalizedConst.getSince() + time.toString();
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
@@ -172,7 +175,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
     }
 
-    void deleteFromGoogleCalendar(Context context) {
+    public void deleteFromGoogleCalendar(Context context) {
         if (calendarEventId != SimpleCalendarEvent.NON_EXISTING) {
             int count = SimpleCalendarEvent.delete(calendarEventId, context, calendarId);
             calendarEventId = SimpleCalendarEvent.NON_EXISTING;
@@ -220,7 +223,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         this.reminderNeeded = false;
     }
 
-    LimitedCommerceDayType getType() {
+    public LimitedCommerceDayType getType() {
         return type;
     }
 
@@ -252,7 +255,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return item;
     }
 
-    int getBackgroundResource() {
+    public int getBackgroundResource() {
         int backgroundResource;
         switch (getType()) {
             case HOLIDAY:
@@ -271,7 +274,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return backgroundResource;
     }
 
-    int getBackgroundColor(Context context) {
+    public int getBackgroundColor(Context context) {
         int color;
         Resources resources = context.getResources();
         switch (getType()) {
@@ -300,7 +303,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         }
     }
 
-    static LimitedCommerceDay getNextDay(Context context) {
+    public static LimitedCommerceDay getNextDay(Context context) {
         ListOfLimitedCommerceDays days =
                 ListOfLimitedCommerceDays.getList(
                         context,
@@ -308,39 +311,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return days.get(0);
     }
 
-    CharSequence getWidgetText() {
+    public CharSequence getWidgetText() {
         return getDateString() + "\nPL: " + description;
-
-        /*String string = getDateString() + "\nPL: ";
-        switch (getType()) {
-            case HOLIDAY:
-                string += calendar.get(Calendar.DAY_OF_WEEK) + " " + description;
-                break;
-            case NON_COMMERCE_DAY:
-                if (calendar.get(Calendar.DAY_OF_WEEK) == 1)
-                    string += description;
-                else
-                    string += calendar.get(Calendar.DAY_OF_WEEK) + " " + description;
-                break;
-            case COMMERCE_SUNDAY:
-                string += description;
-                break;
-            default:
-                break;
-        }
-        return string;
-        */
-    }
-
-    int getWidgetLayout() {
-        switch (getType()) {
-            case HOLIDAY:
-            case NON_COMMERCE_DAY:
-                return R.layout.app_widget_no_shopping;
-            case COMMERCE_SUNDAY:
-                return R.layout.app_widget_shopping;
-            default:
-                return 0;
-        }
     }
 }

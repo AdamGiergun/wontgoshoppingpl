@@ -13,7 +13,7 @@ public class LocalizedConst {
         set = false;
     }
 
-    static String getWholeDay() {
+    public static String getWholeDay() {
         if (wholeDay == null)
             return "";
         else
@@ -24,7 +24,7 @@ public class LocalizedConst {
         LocalizedConst.wholeDay = wholeDay;
     }
 
-    static String getSince() {
+    public static String getSince() {
         if (wholeDay == null)
             return "";
         else

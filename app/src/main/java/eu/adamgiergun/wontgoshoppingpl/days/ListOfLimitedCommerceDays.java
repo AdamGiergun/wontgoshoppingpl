@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.days;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,10 +13,12 @@ import java.util.ListIterator;
 
 import androidx.annotation.NonNull;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
+import eu.adamgiergun.wontgoshoppingpl.AppPreferences;
+import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.db.DBContract;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
 
-import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDayType.*;
+import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.*;
 
 public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
@@ -66,7 +68,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return yesterday;
     }
 
-    static ListOfLimitedCommerceDays getList(Context context) {
+    public static ListOfLimitedCommerceDays getList(Context context) {
         AppPreferences appPreferences = new AppPreferences(context);
         LimitedCommerceDayType.TypesList types = appPreferences.getLimitedCommerceDayTypes(context);
         return ListOfLimitedCommerceDays.getList(context, types);

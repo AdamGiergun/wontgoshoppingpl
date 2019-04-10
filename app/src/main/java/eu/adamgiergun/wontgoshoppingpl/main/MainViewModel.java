@@ -15,8 +15,8 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.wontgoshoppingpl.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
-import eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay;
-import eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDayType;
+import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
+import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class MainViewModel extends ViewModel {

@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.days;
 
 import java.util.ArrayList;
 import java.util.Iterator;

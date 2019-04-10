@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.main;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.view.*;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.*;
+
+import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
+import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class DayFragment extends Fragment {
 

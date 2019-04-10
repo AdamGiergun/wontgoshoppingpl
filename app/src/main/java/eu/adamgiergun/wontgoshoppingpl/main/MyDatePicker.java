@@ -5,7 +5,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
-import eu.adamgiergun.wontgoshoppingpl.ListOfLimitedCommerceDays;
+import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
 
 class MyDatePicker extends DatePicker {
 

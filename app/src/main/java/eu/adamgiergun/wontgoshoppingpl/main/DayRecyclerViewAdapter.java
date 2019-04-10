@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.main;
 
 import android.content.Context;
 import android.view.*;
@@ -8,7 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import eu.adamgiergun.wontgoshoppingpl.DayFragment.OnListFragmentInteractionListener;
+import eu.adamgiergun.wontgoshoppingpl.AppPreferences;
+import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
+import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
+import eu.adamgiergun.wontgoshoppingpl.R;
+import eu.adamgiergun.wontgoshoppingpl.main.DayFragment.OnListFragmentInteractionListener;
 
 public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerViewAdapter.ViewHolder> {
 
