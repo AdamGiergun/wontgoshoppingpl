@@ -594,6 +594,9 @@ public class MainActivity
 
     public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
         private static final String TAG = "ReminderDaysBeforeDialog";
+        private static final String VALUE = "value";
+
+        private NumberPicker picker;
 
         static ReminderDaysBeforeDialog newInstance() {
             return new ReminderDaysBeforeDialog();
@@ -602,7 +605,7 @@ public class MainActivity
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            final NumberPicker picker = getPicker();
+            picker = getPicker(savedInstanceState);
             AlertDialog.Builder builder = getStyledBuilder();
             builder
                     .setTitle(R.string.days_before)
@@ -616,17 +619,31 @@ public class MainActivity
             return builder.create();
         }
 
-        private NumberPicker getPicker() {
-            return MyNumberPicker.newInstance(getContext(), getMainViewModel().getReminderDaysBefore());
+        private NumberPicker getPicker(Bundle savedInstanceState) {
+            if (savedInstanceState == null) {
+                return MyNumberPicker.newInstance(getContext(), getMainViewModel().getReminderDaysBefore());
+            } else {
+                return MyNumberPicker.newInstance(getContext(), savedInstanceState.getInt(VALUE));
+            }
         }
 
         private void updateReminder(int daysBefore) {
             getMainViewModel().setReminderDaysBefore(daysBefore);
         }
+
+        @Override
+        public void onSaveInstanceState(@NonNull Bundle outState) {
+            super.onSaveInstanceState(outState);
+            outState.putInt(VALUE, picker.getValue());
+        }
     }
 
     public static class ReminderTimeDialog extends ThisAppDialogFragment {
         private static final String TAG = "ReminderTimeDialog";
+        private static final String HOUR = "hour";
+        private static final String MINUTE = "minute";
+
+        private MyTimePicker picker;
 
         static ReminderTimeDialog newInstance() {
             return new ReminderTimeDialog();
@@ -635,7 +652,7 @@ public class MainActivity
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            final MyTimePicker picker = getPicker();
+            picker = getPicker(savedInstanceState);
             AlertDialog.Builder builder = getStyledBuilder();
             builder
                     .setView(picker)
@@ -648,8 +665,15 @@ public class MainActivity
             return builder.create();
         }
 
-        private MyTimePicker getPicker() {
-            return MyTimePicker.newInstance(getContext(), getReminderTime());
+        private MyTimePicker getPicker(Bundle savedInstanceState) {
+            if (savedInstanceState == null) {
+                return MyTimePicker.newInstance(getContext(), getReminderTime());
+            } else {
+                int hour = savedInstanceState.getInt(HOUR);
+                int minute = savedInstanceState.getInt(MINUTE);
+                SimpleTime time = new SimpleTime(hour, minute);
+                return MyTimePicker.newInstance(getContext(), time);
+            }
         }
 
         private SimpleTime getReminderTime() {
@@ -659,10 +683,22 @@ public class MainActivity
         private void updateReminder(SimpleTime time) {
             getMainViewModel().setReminderTime(time);
         }
+
+        @Override
+        public void onSaveInstanceState(@NonNull Bundle outState) {
+            super.onSaveInstanceState(outState);
+            outState.putInt(HOUR, picker.getTime().getHour());
+            outState.putInt(MINUTE, picker.getTime().getMinute());
+        }
     }
 
     public static class TillDateDialog extends ThisAppDialogFragment {
         private static final String TAG = "TillDateDialog";
+        private static final String YEAR = "year";
+        private static final String MONTH = "month";
+        private static final String DAY = "day";
+
+        private MyDatePicker picker;
 
         static TillDateDialog newInstance() {
             return new TillDateDialog();
@@ -671,7 +707,7 @@ public class MainActivity
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            final MyDatePicker picker = getPicker();
+            picker = getPicker(savedInstanceState);
             AlertDialog.Builder builder = getStyledBuilder();
             builder
                     .setView(picker)
@@ -684,12 +720,27 @@ public class MainActivity
             return builder.create();
         }
 
-        private MyDatePicker getPicker() {
-            return MyDatePicker.newInstance(getContext(), getMainViewModel().getTill());
+        private MyDatePicker getPicker(Bundle savedInstanceState) {
+            MyDatePicker myDatePicker = MyDatePicker.newInstance(getContext(), getMainViewModel().getTill());
+            if (savedInstanceState != null) {
+                int year = savedInstanceState.getInt(YEAR);
+                int month = savedInstanceState.getInt(MONTH);
+                int day = savedInstanceState.getInt(DAY);
+                myDatePicker.updateDate(year, month, day);
+            }
+            return myDatePicker;
         }
 
         private void updateTill(Calendar date) {
             getMainViewModel().setTill(date);
+        }
+
+        @Override
+        public void onSaveInstanceState(@NonNull Bundle outState) {
+            super.onSaveInstanceState(outState);
+            outState.putInt(YEAR, picker.getYear());
+            outState.putInt(MONTH, picker.getMonth());
+            outState.putInt(DAY, picker.getDayOfMonth());
         }
     }
 
