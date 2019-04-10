@@ -622,36 +622,26 @@ public class MainActivity
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = getStyledBuilder();
             final NumberPicker picker = getPicker();
-
+            AlertDialog.Builder builder = getStyledBuilder();
             builder
                     .setTitle(R.string.days_before)
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            updateReminder(picker);
+                            updateReminder(picker.getValue());
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, null);
-
             return builder.create();
         }
 
         private NumberPicker getPicker() {
-            NumberPicker picker = new NumberPicker(getContext());
-            picker.setMinValue(1);
-            picker.setMaxValue(9);
-            picker.setValue(getViewModel().getReminder().getDaysBefore());
-            return picker;
+            return MyNumberPicker.newInstance(getContext(), getViewModel().getReminderDaysBefore());
         }
 
-        //TODO move reminder updating to MainViewModel
-        private void updateReminder(NumberPicker picker) {
-            MainViewModel viewModel = getViewModel();
-            SimpleReminder reminder = viewModel.getReminder();
-            reminder.setDaysBefore(picker.getValue());
-            viewModel.setReminder(reminder);
+        private void updateReminder(int daysBefore) {
+            getViewModel().setReminderDaysBefore(daysBefore);
         }
     }
 
@@ -665,34 +655,29 @@ public class MainActivity
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            this.setRetainInstance(true);
-            AlertDialog.Builder builder = getStyledBuilder();
             final MyTimePicker picker = getPicker();
-
+            AlertDialog.Builder builder = getStyledBuilder();
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            updateReminder(picker);
+                            updateReminder(picker.getTime());
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, null);
-
             return builder.create();
         }
 
         private MyTimePicker getPicker() {
-            MyTimePicker picker = new MyTimePicker(getContext());
-            picker.initialize(getViewModel().getReminder().getTime());
-            return picker;
+            return MyTimePicker.newInstance(getContext(), getReminderTime());
         }
 
-        //TODO move reminder updating to MainViewModel
-        private void updateReminder(MyTimePicker picker) {
-            MainViewModel viewModel = getViewModel();
-            SimpleReminder reminder = viewModel.getReminder();
-            reminder.setTime(picker.getTime());
-            viewModel.setReminder(reminder);
+        private SimpleTime getReminderTime() {
+            return getViewModel().getReminder().getTime();
+        }
+
+        private void updateReminder(SimpleTime time) {
+            getViewModel().setReminderTime(time);
         }
     }
 
@@ -706,27 +691,25 @@ public class MainActivity
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = getStyledBuilder();
             final MyDatePicker picker = getPicker();
-
+            AlertDialog.Builder builder = getStyledBuilder();
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            getViewModel().setTill(picker.getDate());
+                            updateTill(picker.getDate());
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, null);
-
             return builder.create();
         }
 
-        //TODO change the way picker gets info from ViewModel
         private MyDatePicker getPicker() {
-            MyDatePicker picker = new MyDatePicker(getContext());
-            Calendar date = getViewModel().getTill();
-            picker.updateDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
-            return picker;
+            return MyDatePicker.newInstance(getContext(), getViewModel().getTill());
+        }
+
+        private void updateTill(Calendar date) {
+            getViewModel().setTill(date);
         }
     }
 

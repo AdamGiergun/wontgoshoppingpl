@@ -12,6 +12,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import java.util.Calendar;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 
 public class MainViewModel extends ViewModel {
     private boolean actionAddList;
@@ -64,8 +65,29 @@ public class MainViewModel extends ViewModel {
         return reminder;
     }
 
-    void setReminder(SimpleReminder reminder) {
-        this.reminder.setValue(reminder);
+    int getReminderDaysBefore() {
+        SimpleReminder simpleReminder = reminder.getValue();
+        if (simpleReminder == null) {
+            return 1;
+        } else {
+            return reminder.getValue().getDaysBefore();
+        }
+    }
+
+    void setReminderDaysBefore(int daysBefore) {
+        SimpleReminder simpleReminder = reminder.getValue();
+        if (simpleReminder != null) {
+            simpleReminder.setDaysBefore(daysBefore);
+            reminder.setValue(simpleReminder);
+        }
+    }
+
+    void setReminderTime(SimpleTime time) {
+        SimpleReminder simpleReminder = reminder.getValue();
+        if (simpleReminder != null) {
+            simpleReminder.setTime(time);
+            reminder.setValue(simpleReminder);
+        }
     }
 
     String getDayDescription() {

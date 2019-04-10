@@ -8,11 +8,17 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 
 class MyTimePicker extends TimePicker {
 
-    public MyTimePicker(Context context) {
+    private MyTimePicker(Context context) {
         super(context);
     }
 
-    void initialize(SimpleTime time) {
+    static MyTimePicker newInstance(Context context, SimpleTime time) {
+        MyTimePicker picker = new MyTimePicker(context);
+        picker.initialize(time);
+        return picker;
+    }
+
+    private void initialize(SimpleTime time) {
         setIs24HourView(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setHour(time.getHour());

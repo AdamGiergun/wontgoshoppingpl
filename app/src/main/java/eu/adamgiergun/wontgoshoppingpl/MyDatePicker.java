@@ -1,27 +1,24 @@
 package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
-import android.os.Build;
-import android.util.AttributeSet;
 import android.widget.DatePicker;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.Calendar;
 
 class MyDatePicker extends DatePicker {
 
-    public MyDatePicker(Context context) {
+    private MyDatePicker(Context context) {
         super(context);
-        setMaxDate(getMyMaxDate());
     }
 
-    private long getMyMaxDate() {
-        Calendar maxDate = Calendar.getInstance();
-        maxDate.set(Calendar.YEAR, 2019);
-        maxDate.set(Calendar.MONTH, 11);
-        maxDate.set(Calendar.DAY_OF_MONTH, 31);
-        return maxDate.getTimeInMillis();
+    static MyDatePicker newInstance(Context context, Calendar date) {
+        MyDatePicker picker = new MyDatePicker(context);
+        picker.setMaxDate(ListOfLimitedCommerceDays.getLastDate(context).getTimeInMillis());
+        picker.updateDate(
+                date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),
+                date.get(Calendar.DAY_OF_MONTH));
+        return picker;
     }
 
     Calendar getDate() {

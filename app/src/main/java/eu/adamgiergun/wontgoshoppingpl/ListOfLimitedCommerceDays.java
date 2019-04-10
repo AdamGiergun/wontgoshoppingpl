@@ -43,6 +43,21 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return days.iterator();
     }
 
+    static Calendar getLastDate(Context context) {
+        Iterator<LimitedCommerceDay> iterator = getList(context).iterator();
+        LimitedCommerceDay lastDay = null;
+
+        while (iterator.hasNext()) {
+            lastDay = iterator.next();
+        }
+
+        if (lastDay == null) {
+            return Calendar.getInstance();
+        } else {
+            return lastDay.getCalendar();
+        }
+    }
+
     private static Calendar getYesterday() {
         Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DAY_OF_MONTH, -1);
