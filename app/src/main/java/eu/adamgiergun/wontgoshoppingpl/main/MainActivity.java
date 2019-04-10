@@ -493,7 +493,7 @@ public class MainActivity
 
         private void initializeTillView(View view, MainViewModel viewModel) {
             AppCompatTextView tillView = getTillView(view);
-            tillView.setText(getTillAsString(viewModel.getTill()));
+            tillView.setText(getDateAsString(viewModel.getTill()));
             tillView.setOnClickListener(getViewListener(TillDateDialog.TAG));
         }
 
@@ -501,9 +501,9 @@ public class MainActivity
             return view.findViewById(R.id.tillDateView);
         }
 
-        private static String getTillAsString(Calendar till) {
+        private static String getDateAsString(Calendar calendar) {
             DateFormat dateFormat = DateFormat.getDateInstance();
-            return dateFormat.format(till.getTime());
+            return dateFormat.format(calendar.getTime());
         }
 
         private void initializeReminderViews(final View view, final MainViewModel viewModel) {
@@ -517,12 +517,12 @@ public class MainActivity
 
             Observer<SimpleReminder> reminderObserver = new Observer<SimpleReminder>() {
                 @Override
-                public void onChanged(SimpleReminder simpleReminder) {
+                public void onChanged(SimpleReminder reminder) {
                     daysView.setText(
-                            String.valueOf(viewModel.getReminder().getDaysBefore()
+                            String.valueOf(reminder.getDaysBefore()
                             ));
                     timeView.setText(
-                            viewModel.getReminder().getTime().toString());
+                            reminder.getTime().toString());
                 }
             };
 
@@ -533,7 +533,7 @@ public class MainActivity
                     @Override
                     public void onChanged(Calendar till) {
                         getTillView(view).setText(
-                                getTillAsString(viewModel.getTill()));
+                                getDateAsString(till));
                     }
                 };
 
