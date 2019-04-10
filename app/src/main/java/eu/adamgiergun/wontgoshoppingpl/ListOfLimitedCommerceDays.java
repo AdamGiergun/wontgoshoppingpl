@@ -16,7 +16,7 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 
 import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDayType.*;
 
-class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
+public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
     private ListOfLimitedCommerceDays() {
         super();
@@ -43,7 +43,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return days.iterator();
     }
 
-    static Calendar getLastDate(Context context) {
+    public static Calendar getLastDate(Context context) {
         Iterator<LimitedCommerceDay> iterator = getList(context).iterator();
         LimitedCommerceDay lastDay = null;
 
@@ -70,7 +70,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return ListOfLimitedCommerceDays.getList(context, types);
     }
 
-    static ListOfLimitedCommerceDays getList(Context context, @NonNull TypesList includedDaysTypes) {
+    public static ListOfLimitedCommerceDays getList(Context context, @NonNull TypesList includedDaysTypes) {
         DatabaseHandler databaseHandler = new DatabaseHandler(context);
         SQLiteDatabase db = databaseHandler.getReadableDatabase();
         String[] selectionArgs = new String[includedDaysTypes.size()];
@@ -131,7 +131,7 @@ class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         }
     }
 
-    boolean addToCalendar(Context context, SimpleReminder reminder, Calendar till) {
+    public boolean addToCalendar(Context context, SimpleReminder reminder, Calendar till) {
         skipReminderForConsecutiveDays();
         boolean result = true;
         for (LimitedCommerceDay day : this) {

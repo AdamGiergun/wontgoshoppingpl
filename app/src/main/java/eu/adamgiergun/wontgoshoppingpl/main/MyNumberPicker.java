@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.main;
 
 import android.content.Context;
 import android.widget.NumberPicker;

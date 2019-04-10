@@ -28,6 +28,7 @@ import androidx.preference.*;
 import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
+import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 
 public class SettingsActivity extends AppCompatActivityWithTheme
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,

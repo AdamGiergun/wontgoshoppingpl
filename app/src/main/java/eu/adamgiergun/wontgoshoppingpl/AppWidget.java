@@ -10,6 +10,8 @@ import android.widget.RemoteViews;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
+
 public class AppWidget extends AppWidgetProvider implements LogFirebaseEvent {
 
     @Override

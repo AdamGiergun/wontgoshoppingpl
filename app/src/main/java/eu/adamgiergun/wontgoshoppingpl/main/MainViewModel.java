@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.main;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +13,11 @@ import java.util.Calendar;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
+import eu.adamgiergun.wontgoshoppingpl.AppPreferences;
+import eu.adamgiergun.wontgoshoppingpl.DatabaseHandler;
+import eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay;
+import eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDayType;
+import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class MainViewModel extends ViewModel {
     private boolean actionAddList;

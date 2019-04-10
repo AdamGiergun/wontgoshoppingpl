@@ -17,7 +17,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
+public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
 
     private int dbId;
     private String item;
@@ -88,7 +88,7 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return description;
     }
 
-    String getDescriptionForDialog() {
+    public String getDescriptionForDialog() {
         if (type == LimitedCommerceDayType.HOLIDAY) {
             return description;
         } else {
@@ -130,11 +130,11 @@ class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return day.compareTo(this.calendar) == 0;
     }
 
-    void setReminder(SimpleReminder reminder) {
+    public void setReminder(SimpleReminder reminder) {
         this.reminder = reminder;
     }
 
-    boolean addToGoogleCalendar(Context context) {
+    public boolean addToGoogleCalendar(Context context) {
         String defaultCalendarId = getDefaultCalendarIdFromPreferences(context);
         if (calendarId != null) {
             if (!defaultCalendarId.equals(calendarId)) {

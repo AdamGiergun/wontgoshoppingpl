@@ -3,7 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-enum LimitedCommerceDayType {
+public enum LimitedCommerceDayType {
     NON_COMMERCE_DAY(0),
     HOLIDAY(1),
     COMMERCE_SUNDAY(2);
@@ -31,12 +31,12 @@ enum LimitedCommerceDayType {
         return String.valueOf(code);
     }
 
-    static class TypesList extends ArrayList<LimitedCommerceDayType> {
+    public static class TypesList extends ArrayList<LimitedCommerceDayType> {
         TypesList() {
             super();
         }
 
-        boolean equals(TypesList anotherList) {
+        public boolean equals(TypesList anotherList) {
             if (this.size() != anotherList.size()) {
                 return false;
             } else {
@@ -61,7 +61,7 @@ enum LimitedCommerceDayType {
         }
     }
 
-    static TypesList getTypes(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
+    public static TypesList getTypes(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
         TypesList types = new TypesList();
         if (addNonCommerceDays)
             types.add(NON_COMMERCE_DAY);

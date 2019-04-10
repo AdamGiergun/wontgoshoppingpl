@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.main;
 
 /*
     TODO "usuń wszystko z Kalendarza" w ustawieniach
@@ -29,6 +29,17 @@ import java.util.Calendar;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
+import eu.adamgiergun.wontgoshoppingpl.AppCompatActivityWithTheme;
+import eu.adamgiergun.wontgoshoppingpl.DayFragment;
+import eu.adamgiergun.wontgoshoppingpl.HelpActivity;
+import eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay;
+import eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDayType;
+import eu.adamgiergun.wontgoshoppingpl.ListOfLimitedCommerceDays;
+import eu.adamgiergun.wontgoshoppingpl.LocalizedConst;
+import eu.adamgiergun.wontgoshoppingpl.LogFirebaseEvent;
+import eu.adamgiergun.wontgoshoppingpl.R;
+import eu.adamgiergun.wontgoshoppingpl.SettingsActivity;
+import eu.adamgiergun.wontgoshoppingpl.ThisAppDialogFragment;
 
 public class MainActivity
         extends AppCompatActivityWithTheme
@@ -479,7 +490,7 @@ public class MainActivity
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
             String title;
-            MainViewModel viewModel = getViewModel();
+            MainViewModel viewModel = getMainViewModel();
 
             if (viewModel.isActionAddList()) {
                 title = getString(R.string.title_reminder);
@@ -498,7 +509,7 @@ public class MainActivity
         private View getDialogView() {
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View view;
-            MainViewModel viewModel = getViewModel();
+            MainViewModel viewModel = getMainViewModel();
 
             if (viewModel.isActionAddList()) {
                 view = inflater.inflate(R.layout.reminder_and_date_settings_dialog_view, null);
@@ -637,11 +648,11 @@ public class MainActivity
         }
 
         private NumberPicker getPicker() {
-            return MyNumberPicker.newInstance(getContext(), getViewModel().getReminderDaysBefore());
+            return MyNumberPicker.newInstance(getContext(), getMainViewModel().getReminderDaysBefore());
         }
 
         private void updateReminder(int daysBefore) {
-            getViewModel().setReminderDaysBefore(daysBefore);
+            getMainViewModel().setReminderDaysBefore(daysBefore);
         }
     }
 
@@ -673,11 +684,11 @@ public class MainActivity
         }
 
         private SimpleTime getReminderTime() {
-            return getViewModel().getReminder().getTime();
+            return getMainViewModel().getReminder().getTime();
         }
 
         private void updateReminder(SimpleTime time) {
-            getViewModel().setReminderTime(time);
+            getMainViewModel().setReminderTime(time);
         }
     }
 
@@ -705,11 +716,11 @@ public class MainActivity
         }
 
         private MyDatePicker getPicker() {
-            return MyDatePicker.newInstance(getContext(), getViewModel().getTill());
+            return MyDatePicker.newInstance(getContext(), getMainViewModel().getTill());
         }
 
         private void updateTill(Calendar date) {
-            getViewModel().setTill(date);
+            getMainViewModel().setTill(date);
         }
     }
 
@@ -732,7 +743,7 @@ public class MainActivity
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getViewModel().setAppWidgetInfoDisplayed(getContext());
+                    getMainViewModel().setAppWidgetInfoDisplayed(getContext());
                     getDialog().dismiss();
                 }
             });

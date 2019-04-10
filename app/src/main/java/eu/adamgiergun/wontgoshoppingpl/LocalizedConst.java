@@ -2,7 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import java.util.Locale;
 
-class LocalizedConst {
+public class LocalizedConst {
     private static String wholeDay;
     private static String since;
     private static String askForLook;
@@ -20,7 +20,7 @@ class LocalizedConst {
             return wholeDay;
     }
 
-    static void setWholeDay(String wholeDay) {
+    public static void setWholeDay(String wholeDay) {
         LocalizedConst.wholeDay = wholeDay;
     }
 
@@ -31,15 +31,15 @@ class LocalizedConst {
             return since;
     }
 
-    static void setSince(String since) {
+    public static void setSince(String since) {
         LocalizedConst.since = since;
     }
 
-    static boolean isSet() {
+    public static boolean isSet() {
         return set;
     }
 
-    static void setSet() {
+    public static void setSet() {
         LocalizedConst.set = true;
     }
 
@@ -51,14 +51,14 @@ class LocalizedConst {
         LocalizedConst.locale = locale;
     }
 
-    static String getAskForLook() {
+    public static String getAskForLook() {
         if (wholeDay == null)
             return "";
         else
             return askForLook;
     }
 
-    static void setAskForLook(String askForLook) {
+    public static void setAskForLook(String askForLook) {
         LocalizedConst.askForLook = askForLook;
     }
 }

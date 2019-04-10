@@ -8,8 +8,9 @@ import android.os.Build;
 import java.util.Locale;
 
 import eu.adamgiergun.mylibrary.AppCompatActivityWithHomeInBar;
+import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 
-abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHomeInBar {
+public abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHomeInBar {
 
     @Override
     public Resources.Theme getTheme() {

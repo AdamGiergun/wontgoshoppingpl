@@ -6,10 +6,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
+import eu.adamgiergun.wontgoshoppingpl.main.MainViewModel;
 
-abstract class ThisAppDialogFragment extends NoticeDialogFragment {
+public abstract class ThisAppDialogFragment extends NoticeDialogFragment {
 
-    AlertDialog.Builder getStyledBuilder() {
+    protected AlertDialog.Builder getStyledBuilder() {
         Context context = getContext();
         AppPreferences appPreferences = new AppPreferences(context);
         AlertDialog.Builder builder;
@@ -21,7 +22,7 @@ abstract class ThisAppDialogFragment extends NoticeDialogFragment {
         return builder;
     }
 
-    MainViewModel getViewModel() {
+    public MainViewModel getMainViewModel() {
         return ViewModelProviders.of(getActivity()).get(MainViewModel.class);
     }
 }

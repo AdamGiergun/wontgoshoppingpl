@@ -2,7 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl;
 
 import android.content.Context;
 
-interface LogFirebaseEvent {
+public interface LogFirebaseEvent {
 
     String APP_THEME = "app_theme";
     String LOOK_RICH = "look_rich";
