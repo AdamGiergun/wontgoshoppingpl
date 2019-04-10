@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
+import eu.adamgiergun.wontgoshoppingpl.db.DBContract;
+import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -222,7 +224,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return type;
     }
 
-    String getTypeCode() {
+    public String getTypeCode() {
         return type.getCodeAsString();
     }
 

@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.Iterator;
 
 import androidx.annotation.Nullable;
+
+import eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDay;
+import eu.adamgiergun.wontgoshoppingpl.ListOfLimitedCommerceDays;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 

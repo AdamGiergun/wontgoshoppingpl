@@ -13,6 +13,8 @@ import java.util.ListIterator;
 
 import androidx.annotation.NonNull;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
+import eu.adamgiergun.wontgoshoppingpl.db.DBContract;
+import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
 
 import static eu.adamgiergun.wontgoshoppingpl.LimitedCommerceDayType.*;
 
@@ -22,7 +24,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         super();
     }
 
-    static Iterator<LimitedCommerceDay> getIteratorFromResources(Context context) {
+    public static Iterator<LimitedCommerceDay> getIteratorFromResources(Context context) {
         Resources resources = context.getResources();
         ListOfLimitedCommerceDays days = new ListOfLimitedCommerceDays();
         days.addArray(resources, R.array.non_commerce_days);
