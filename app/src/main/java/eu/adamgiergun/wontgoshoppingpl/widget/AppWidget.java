@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -10,6 +10,8 @@ import android.widget.RemoteViews;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import eu.adamgiergun.wontgoshoppingpl.common.LogFirebaseEvent;
+import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 

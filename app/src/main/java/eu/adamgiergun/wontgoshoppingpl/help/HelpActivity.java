@@ -1,9 +1,12 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.help;
 
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
+import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class HelpActivity extends AppCompatActivityWithTheme {
 

@@ -13,7 +13,7 @@ import java.util.ListIterator;
 
 import androidx.annotation.NonNull;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
-import eu.adamgiergun.wontgoshoppingpl.AppPreferences;
+import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.db.DBContract;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;

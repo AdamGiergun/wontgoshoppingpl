@@ -8,7 +8,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginRight="5dp"
     android:layout_marginBottom="8dp"
-    tools:context=".HelpActivity">
+    tools:context=".help.HelpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

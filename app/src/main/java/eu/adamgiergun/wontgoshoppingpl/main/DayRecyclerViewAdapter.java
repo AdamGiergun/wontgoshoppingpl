@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import eu.adamgiergun.wontgoshoppingpl.AppPreferences;
+import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
 import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
 import eu.adamgiergun.wontgoshoppingpl.R;

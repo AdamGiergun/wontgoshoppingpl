@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.settings;
 
 import android.Manifest;
 import android.content.*;
@@ -28,6 +28,9 @@ import androidx.preference.*;
 import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
+import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
+import eu.adamgiergun.wontgoshoppingpl.R;
+import eu.adamgiergun.wontgoshoppingpl.common.ThisAppDialogFragment;
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 
 public class SettingsActivity extends AppCompatActivityWithTheme

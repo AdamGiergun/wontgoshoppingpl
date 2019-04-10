@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.common;
 
 import android.content.Context;
 
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
+import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.main.MainViewModel;
 
 public abstract class ThisAppDialogFragment extends NoticeDialogFragment {

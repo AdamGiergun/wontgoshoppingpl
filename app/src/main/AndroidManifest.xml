@@ -34,7 +34,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/ad_mob_app_id" />
 
-        <receiver android:name=".AppWidget">
+        <receiver android:name=".widget.AppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -62,7 +62,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".main.MainActivity"
@@ -73,7 +73,7 @@
                 android:value="eu.adamgiergun.wontgoshoppingpl.main.MainActivity" />
         </activity>
         <activity
-            android:name=".HelpActivity"
+            android:name=".help.HelpActivity"
             android:label="@string/title_activity_help" />
         <!--                     <activity android:name="com.google.android.gms.ads.AdActivity" /> -->
         <activity

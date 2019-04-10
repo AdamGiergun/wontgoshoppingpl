@@ -29,16 +29,16 @@ import java.util.Calendar;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
-import eu.adamgiergun.wontgoshoppingpl.AppCompatActivityWithTheme;
-import eu.adamgiergun.wontgoshoppingpl.HelpActivity;
+import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
+import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
 import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
-import eu.adamgiergun.wontgoshoppingpl.LocalizedConst;
-import eu.adamgiergun.wontgoshoppingpl.LogFirebaseEvent;
+import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
+import eu.adamgiergun.wontgoshoppingpl.common.LogFirebaseEvent;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.SettingsActivity;
-import eu.adamgiergun.wontgoshoppingpl.ThisAppDialogFragment;
+import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity;
+import eu.adamgiergun.wontgoshoppingpl.common.ThisAppDialogFragment;
 
 public class MainActivity
         extends AppCompatActivityWithTheme

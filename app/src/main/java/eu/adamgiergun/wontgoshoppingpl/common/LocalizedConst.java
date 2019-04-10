@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl;
+package eu.adamgiergun.wontgoshoppingpl.common;
 
 import java.util.Locale;
 
