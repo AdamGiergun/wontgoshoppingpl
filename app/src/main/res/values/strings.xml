@@ -1,8 +1,4 @@
 <resources>
-    <string name="ad_mob_app_id" translatable="false">ca-app-pub-2906240608882466~9631718997</string>
-    <string name="wgs_main_banner_ad_id" translatable="false">ca-app-pub-2906240608882466/3453323451</string>
-    <string name="wgs_interstitial_ad_id" translatable="false">ca-app-pub-2906240608882466/1013070368</string>
-
     <string name="app_name">No Shopping in PL</string>
     <string name="day_of_limited_commerce">Day of trade restrictions</string>
     <string name="days_of_limited_commerce">Days of trade restrictions</string>

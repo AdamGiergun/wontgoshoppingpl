@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "567777493634-egeu9njtjhlb3g075v013fpb6e8tkkjb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eu.adamgiergun.wontgoshoppingpl",
+            "certificate_hash": "62fe99de1fb230a716c5315ba2ecc7db2e177b5d"
+          }
+        },
+        {
           "client_id": "567777493634-3u5sb1b2siprc5hddhdnoqqvd0o001h4.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -33,20 +41,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "567777493634-3u5sb1b2siprc5hddhdnoqqvd0o001h4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       },
       "admob_app_id": "ca-app-pub-2906240608882466~9631718997"

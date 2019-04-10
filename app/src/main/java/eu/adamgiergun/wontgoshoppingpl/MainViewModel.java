@@ -33,7 +33,7 @@ public class MainViewModel extends ViewModel {
         appPreferences = new AppPreferences(context);
         lastTypesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(context);
         interstitialAd = new InterstitialAd(context);
-        interstitialAd.setAdUnitId(context.getString(R.string.wgs_interstitial_ad_id));
+        interstitialAd.setAdUnitId(context.getString(R.string.interstitial_ad_id));
         loadInterstitialAd();
     }
 

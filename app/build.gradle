@@ -10,10 +10,14 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 57
-        versionName "2.0.99.12"
+        versionName "2.0.99.13"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
         //vectorDrawables.useSupportLibrary = true
+
+        resValue "string", "ad_mob_app_id", WGS_AD_MOB_APP_ID
+        resValue "string", "main_banner_ad_id", WGS_MAIN_BANNER_AD_ID
+        resValue "string", "interstitial_ad_id", WGS_INTERSTITIAL_AD_ID
     }
 
     buildTypes {
@@ -34,6 +38,7 @@ android {
             resValue "bool", "FIREBASE_ANALYTICS_COLLECTION_ENABLED", "false"
             resValue "bool", "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED", "false"
         }
+
     }
 }
 
@@ -46,7 +51,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-ads:17.2.0'
     releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
