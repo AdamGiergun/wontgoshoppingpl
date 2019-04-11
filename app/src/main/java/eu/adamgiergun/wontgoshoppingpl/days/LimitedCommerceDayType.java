@@ -14,7 +14,11 @@ public enum LimitedCommerceDayType {
         this.code = code;
     }
 
-    static LimitedCommerceDayType getType(int code) {
+    public int getCode() {
+        return code;
+    }
+
+    public static LimitedCommerceDayType getType(int code) {
         switch (code) {
             case 0:
                 return NON_COMMERCE_DAY;

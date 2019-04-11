@@ -26,7 +26,7 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<SimpleReminder> reminder;
     private SQLiteDatabase database;
     private LimitedCommerceDay lastTouchedDay;
-    private LimitedCommerceDayType.TypesList typesAddedToCalendar;
+    private LimitedCommerceDayType.TypesList typesToBeAddedToCalendar;
     private LimitedCommerceDayType.TypesList typesToBeDisplayed;
     private AppPreferences appPreferences;
     private InterstitialAd interstitialAd;
@@ -39,6 +39,7 @@ public class MainViewModel extends ViewModel {
         recreatedOnDemand = false;
         appPreferences = new AppPreferences(context);
         typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(context);
+        typesToBeAddedToCalendar = typesToBeDisplayed;
         initializeInterstitialAd(context);
     }
 
@@ -161,12 +162,12 @@ public class MainViewModel extends ViewModel {
         return actionAddList;
     }
 
-    LimitedCommerceDayType.TypesList getTypesAddedToCalendar() {
-        return typesAddedToCalendar;
+    LimitedCommerceDayType.TypesList getTypesToBeAddedToCalendar() {
+        return typesToBeAddedToCalendar;
     }
 
-    void setTypesAddedToCalendar(LimitedCommerceDayType.TypesList typesAddedToCalendar) {
-        this.typesAddedToCalendar = typesAddedToCalendar;
+    void setTypesToBeAddedToCalendar(LimitedCommerceDayType.TypesList typesToBeAddedToCalendar) {
+        this.typesToBeAddedToCalendar = typesToBeAddedToCalendar;
     }
 
     void setRecreatedOnDemand(boolean recreatedOnDemand) {
@@ -198,7 +199,7 @@ public class MainViewModel extends ViewModel {
         return  appPreferences.isUseGoogleCalendarSet(context) && appPreferences.isCalendarSet(context);
     }
 
-    boolean addDayFragment(Context context) {
+    boolean checkIfAddDayFragmentAndTypes(Context context) {
         LimitedCommerceDayType.TypesList oldTypesToBeDisplayed = typesToBeDisplayed;
         typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(context);
         return !(isFirstRun(context) ||

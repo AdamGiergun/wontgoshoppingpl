@@ -40,6 +40,10 @@ import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity;
 import eu.adamgiergun.wontgoshoppingpl.common.ThisAppDialogFragment;
 
+import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.COMMERCE_SUNDAY;
+import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.HOLIDAY;
+import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.NON_COMMERCE_DAY;
+
 public class MainActivity
         extends AppCompatActivityWithTheme
         implements NoticeDialogFragment.NoticeDialogListener,
@@ -105,7 +109,7 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (mViewModel.addDayFragment(this)) {
+        if (mViewModel.checkIfAddDayFragmentAndTypes(this)) {
             addFragment(new DayFragment());
         }
         if (mViewModel.isLookRich(this)) {
@@ -207,16 +211,15 @@ public class MainActivity
 
     private void askForReminderSettings() {
         mViewModel.setReminderDialogArgs(this);
-        ReminderSettingsDialog.newInstance().show(getSupportFragmentManager());
+        ReminderSettingsDialog
+                .newInstance()
+                .show(getSupportFragmentManager());
     }
 
     private void askForTypesAddedToCalendar() {
-        TypesAddedToCalendarDialog typesAddedToCalendarDialog = new TypesAddedToCalendarDialog();
-        typesAddedToCalendarDialog.setChecks(
-                mViewModel.getAppPreferences().showNonCommerceDays(this),
-                mViewModel.getAppPreferences().showHolidays(this),
-                mViewModel.getAppPreferences().showCommerceSundays(this));
-        typesAddedToCalendarDialog.show(getSupportFragmentManager(), "dialog");
+        TypesAddedToCalendarDialog
+                .newInstance()
+                .show(getSupportFragmentManager(), "dialog");
     }
 
     private void startHelpActivity() {
@@ -292,8 +295,6 @@ public class MainActivity
     @Override
     public void onDialogPositiveClick(NoticeDialogFragment dialog) {
         if (dialog instanceof TypesAddedToCalendarDialog) {
-            TypesAddedToCalendarDialog typesAddedToCalendarDialog = (TypesAddedToCalendarDialog) dialog;
-            mViewModel.setTypesAddedToCalendar(typesAddedToCalendarDialog.getTypes());
             askForReminderSettings();
         }
 
@@ -309,7 +310,7 @@ public class MainActivity
     private void addListToCalendar() {
         showBigAd();
         ListOfLimitedCommerceDays list =
-                ListOfLimitedCommerceDays.getList(this, mViewModel.getTypesAddedToCalendar());
+                ListOfLimitedCommerceDays.getList(this, mViewModel.getTypesToBeAddedToCalendar());
         boolean resultIsPositive = list.addToCalendar(this, mViewModel.getReminder(), mViewModel.getTillObservable().getValue());
 
         logFirebaseEvent(this, CALENDAR_EVENT, LIST);
@@ -378,59 +379,73 @@ public class MainActivity
 
     public static class TypesAddedToCalendarDialog extends ThisAppDialogFragment {
         private Button dialogButtonPositive;
-        private static boolean addNonCommerceDays;
-        private static boolean addHolidays;
-        private static boolean addCommerceSundays;
+
+        private static TypesAddedToCalendarDialog newInstance() {
+            return new TypesAddedToCalendarDialog();
+        }
 
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            CharSequence[] items = new CharSequence[]
-                    {getString(R.string.days_of_limited_commerce),
-                            getString(R.string.holidays),
-                            getString(R.string.commerce_sundays)};
-            final boolean[] checkedItems = new boolean[3];
-            checkedItems[0] = addNonCommerceDays;
-            checkedItems[1] = addHolidays;
-            checkedItems[2] = addCommerceSundays;
-
-            DialogInterface.OnMultiChoiceClickListener listener = new DialogInterface.OnMultiChoiceClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    checkedItems[which] = isChecked;
-                    switch (which) {
-                        case 0:
-                            addNonCommerceDays = isChecked;
-                            break;
-                        case 1:
-                            addHolidays = isChecked;
-                            break;
-                        case 2:
-                            addCommerceSundays = isChecked;
-                            break;
-                        default:
-                            break;
-                    }
-                    dialogButtonPositive.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
-                }
-            };
-
-            AlertDialog.Builder builder = getStyledBuilder();
-            builder.setTitle(R.string.title_choose_events)
-                    .setMultiChoiceItems(items, checkedItems, listener)
-                    .setPositiveButton(android.R.string.ok, getPositiveButtonListener(this))
-                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(this));
-            AlertDialog dialog = builder.create();
+            final boolean[] checkedItems = getCheckedItems();
+            AlertDialog dialog = getAlertDialog(checkedItems);
             dialog.show();
-            dialogButtonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            dialogButtonPositive.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
+            dialogButtonPositive = getDialogButtonPositive(dialog, checkedItems);
             return dialog;
         }
 
-        private void setChecks(boolean checkNonCommerceDays, boolean checkHolidays, boolean checkCommerceSundays) {
-            addNonCommerceDays = checkNonCommerceDays;
-            addHolidays = checkHolidays;
-            addCommerceSundays = checkCommerceSundays;
+        private boolean[] getCheckedItems() {
+            boolean[] checkedItems = new boolean[3];
+            LimitedCommerceDayType.TypesList typesToBeAddedToCalendar = getMainViewModel().getTypesToBeAddedToCalendar();
+
+            checkedItems[NON_COMMERCE_DAY.getCode()] = typesToBeAddedToCalendar.contains(NON_COMMERCE_DAY);
+            checkedItems[HOLIDAY.getCode()] = typesToBeAddedToCalendar.contains(HOLIDAY);
+            checkedItems[COMMERCE_SUNDAY.getCode()] = typesToBeAddedToCalendar.contains(COMMERCE_SUNDAY);
+            return checkedItems;
+        }
+
+        private AlertDialog getAlertDialog(final boolean[] checkedItems) {
+            CharSequence[] items = getItems();
+            DialogInterface.OnMultiChoiceClickListener listener = getOnMultiChoiceClickListener(checkedItems);
+
+            AlertDialog.Builder builder = getStyledBuilder();
+            builder
+                    .setTitle(R.string.title_choose_events)
+                    .setMultiChoiceItems(items, checkedItems, listener)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            getMainViewModel().setTypesToBeAddedToCalendar(getTypes(checkedItems));
+                            TypesAddedToCalendarDialog.this.noticeDialogListener.onDialogPositiveClick(TypesAddedToCalendarDialog.this);
+                        }
+                    })
+                    .setPositiveButton(android.R.string.ok, getPositiveButtonListener(this))
+
+                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(this));
+            return builder.create();
+        }
+
+        private CharSequence[] getItems() {
+            return new CharSequence[] {
+                    getString(R.string.days_of_limited_commerce),
+                    getString(R.string.holidays),
+                    getString(R.string.commerce_sundays)
+            };
+        }
+
+        private DialogInterface.OnMultiChoiceClickListener getOnMultiChoiceClickListener(final boolean[] checkedItems) {
+            return new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    getMainViewModel().setTypesToBeAddedToCalendar(getTypes(checkedItems));
+                    dialogButtonPositive.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
+                }
+            };
+        }
+
+        private Button getDialogButtonPositive(AlertDialog dialog, boolean[] checkedItems) {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
+            return button;
         }
 
         private boolean isAnyValueInBooleanArrayTrue(boolean[] array) {
@@ -439,11 +454,11 @@ public class MainActivity
             return false;
         }
 
-        private LimitedCommerceDayType.TypesList getTypes() {
+        private LimitedCommerceDayType.TypesList getTypes(boolean[] checkedItems) {
             return LimitedCommerceDayType.getTypes(
-                    addNonCommerceDays,
-                    addHolidays,
-                    addCommerceSundays);
+                    checkedItems[NON_COMMERCE_DAY.getCode()],
+                    checkedItems[HOLIDAY.getCode()],
+                    checkedItems[COMMERCE_SUNDAY.getCode()]);
         }
     }
 
