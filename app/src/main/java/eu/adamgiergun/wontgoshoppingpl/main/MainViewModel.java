@@ -205,5 +205,13 @@ public class MainViewModel extends ViewModel {
         return !(isFirstRun(context) ||
                 typesToBeDisplayed.equals(oldTypesToBeDisplayed));
     }
+
+    void setLookRich(Context context, boolean isLookRich) {
+        appPreferences.setLookRich(context, isLookRich);
+    }
+
+    void setNotFirstRun(Context context) {
+        appPreferences.setFirstRun(context, false);
+    }
     //endregion
 }

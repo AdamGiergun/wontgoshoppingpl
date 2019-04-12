@@ -609,18 +609,10 @@ public class MainActivity
         }
     }
 
-    public void onButtonMiniClick(View view) {
-        setPreferencesValues(false);
-    }
-
-    public void onButtonRichClick(View view) {
-        setPreferencesValues(true);
-    }
-
-
-    private void setPreferencesValues(boolean isLookRich) {
-        mViewModel.getAppPreferences().setLookRich(this, isLookRich);
-        mViewModel.getAppPreferences().setFirstRun(this, false);
+    public void onLookButtonClick(View view) {
+        boolean isLookRich = (view.getId() == R.id.imageButtonRich);
+        mViewModel.setLookRich(this, isLookRich);
+        mViewModel.setNotFirstRun(this);
         mViewModel.setRecreatedOnDemand(true);
         recreate();
     }
