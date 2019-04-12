@@ -311,38 +311,39 @@ public class MainActivity
     public void onDialogPositiveClick(NoticeDialogFragment dialog) {
         if (dialog instanceof TypesAddedToCalendarDialog) {
             askForReminderSettings();
-        }
-
-        if (dialog instanceof ReminderSettingsDialog) {
-            if (mViewModel.isActionAddList()) {
-                addListToCalendar();
-            } else {
-                addDayToCalendar(mViewModel.getLastTouchedDay());
-            }
+        } else if (dialog instanceof ReminderSettingsDialog) {
+            addToCalendar();
         }
     }
 
-    private void addListToCalendar() {
+    private void addToCalendar() {
         showBigAd();
-        boolean resultIsPositive = ListOfLimitedCommerceDays.addToCalendar(
-                this,
-                mViewModel.getTypesToBeAddedToCalendar(),
-                mViewModel.getReminder(),
-                mViewModel.getTillObservable().getValue());
 
-        refreshList();
-        logFirebaseEvent(this, CALENDAR_EVENT, LIST);
-        displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
-    }
+        boolean isResultPositive;
+        String tag;
+        int error;
 
-    private void addDayToCalendar(LimitedCommerceDay day) {
-        showBigAd();
-        day.setReminder(mViewModel.getReminder());
-        displayInfo(
-                day.addToGoogleCalendar(this),
-                R.string.info_added_to_calendar,
-                R.string.error_adding_to_calendar_failed);
-        logFirebaseEvent(this, CALENDAR_EVENT, SINGLE);
+        if (mViewModel.isActionAddList()) {
+            isResultPositive = ListOfLimitedCommerceDays.addToCalendar(
+                    this,
+                    mViewModel.getTypesToBeAddedToCalendar(),
+                    mViewModel.getReminder(),
+                    mViewModel.getTill());
+            tag = LIST;
+            error = R.string.error_sth_went_wrong;
+        } else {
+            LimitedCommerceDay day = mViewModel.getLastTouchedDay();
+            day.setReminder(mViewModel.getReminder());
+            isResultPositive = day.addToGoogleCalendar(this);
+            tag = SINGLE;
+            error = R.string.error_adding_to_calendar_failed;
+        }
+
+        if (isResultPositive) {
+            logFirebaseEvent(this, CALENDAR_EVENT, tag);
+            refreshList();
+        }
+        displayInfo(isResultPositive, R.string.info_added_to_calendar, error);
     }
 
     private void showBigAd() {
