@@ -87,16 +87,15 @@ public class MainActivity
 
     private void showWidgetInfoIfNeeded() {
         if (!mViewModel.wasAppWidgetInfoDisplayed(this)) {
-            WidgetInfoDialog.newInstance().show(getSupportFragmentManager(), "");
+            WidgetInfoDialog
+                    .newInstance()
+                    .show(getSupportFragmentManager(), "");
         }
     }
 
     private void logLookInFirebase() {
-        if (mViewModel.isLookRich(this)) {
-            logFirebaseEvent(this, APP_THEME, LOOK_RICH);
-        } else {
-            logFirebaseEvent(this, APP_THEME, LOOK_MINI);
-        }
+        String tag = mViewModel.isLookRich(this) ? LOOK_RICH : LOOK_MINI;
+        logFirebaseEvent(this, APP_THEME, tag);
     }
 
     private void setupBannerAds() {
@@ -169,13 +168,8 @@ public class MainActivity
     //region AppMenuHandlingRegion
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mViewModel.isFirstRun(this)) {
-            getMenuInflater()
-                    .inflate(R.menu.main_activity_actions_first_run, menu);
-        } else {
-            getMenuInflater()
-                    .inflate(R.menu.main_activity_actions, menu);
-        }
+        int menuLayoutId = mViewModel.isFirstRun(this) ? R.menu.main_activity_actions_first_run : R.menu.main_activity_actions;
+        getMenuInflater().inflate(menuLayoutId, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -258,15 +252,14 @@ public class MainActivity
 
     //region ShowingInfoRegion
     private void showInfo(boolean resultIsPositive, int positiveInfo, int negativeInfo) {
-        if (resultIsPositive)
-            showInfo(positiveInfo, false);
-        else
-            showInfo(negativeInfo, false);
+        int info = resultIsPositive ? positiveInfo : negativeInfo;
+        showInfo(info, false);
     }
 
     private void showInfo(int info, boolean isLengthLong) {
         int length = isLengthLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT;
-        Toast.makeText(this, info, length)
+        Toast
+                .makeText(this, info, length)
                 .show();
     }
     //endregion
@@ -446,14 +439,8 @@ public class MainActivity
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder();
-            String title;
             MainViewModel viewModel = getMainViewModel();
-
-            if (viewModel.isActionAddList()) {
-                title = getString(R.string.title_reminder);
-            } else {
-                title = getString(R.string.title_reminder_of) + " " + viewModel.getDayDescription();
-            }
+            String title = viewModel.isActionAddList() ? getString(R.string.title_reminder) : getString(R.string.title_reminder_of) + " " + viewModel.getDayDescription();
             builder
                     .setTitle(title)
                     .setView(getDialogView())
@@ -465,16 +452,14 @@ public class MainActivity
         @SuppressLint("InflateParams")
         private View getDialogView() {
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            View view;
             MainViewModel viewModel = getMainViewModel();
+            int viewLayoutId = viewModel.isActionAddList() ? R.layout.reminder_and_date_settings_dialog_view : R.layout.reminder_settings_dialog_view;
+            View view = inflater.inflate(viewLayoutId, null);
 
-            if (viewModel.isActionAddList()) {
-                view = inflater.inflate(R.layout.reminder_and_date_settings_dialog_view, null);
-                initializeTillView(view, viewModel);
-            } else {
-                view = inflater.inflate(R.layout.reminder_settings_dialog_view, null);
-            }
             initializeReminderViews(view, viewModel);
+            if (viewModel.isActionAddList()) {
+                initializeTillView(view, viewModel);
+            }
 
             return view;
         }
@@ -595,11 +580,9 @@ public class MainActivity
         }
 
         private NumberPicker getPicker(Bundle savedInstanceState) {
-            if (savedInstanceState == null) {
-                return MyNumberPicker.newInstance(getContext(), getMainViewModel().getReminderDaysBefore());
-            } else {
-                return MyNumberPicker.newInstance(getContext(), savedInstanceState.getInt(VALUE));
-            }
+            return savedInstanceState == null ?
+                    MyNumberPicker.newInstance(getContext(), getMainViewModel().getReminderDaysBefore()) :
+                    MyNumberPicker.newInstance(getContext(), savedInstanceState.getInt(VALUE));
         }
 
         private void updateReminder(int daysBefore) {
