@@ -35,7 +35,6 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
-import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
 import eu.adamgiergun.wontgoshoppingpl.common.LogFirebaseEvent;
 import eu.adamgiergun.wontgoshoppingpl.R;
@@ -75,7 +74,6 @@ public class MainActivity
             }
         } else {
             if (mViewModel.isRecreatedOnDemand()) {
-                mViewModel.setRecreatedOnDemand(false);
                 setDayFragment();
             }
         }
@@ -255,12 +253,11 @@ public class MainActivity
     @Override
     public void onListFragmentInteraction(LimitedCommerceDay day) {
         mViewModel.setLastTouchedDay(day);
-        mViewModel.setActionAddList(false);
         checkCalendarPermissions();
     }
 
     //region ShowingInfoRegion
-    private void displayInfo(boolean resultIsPositive, int positiveInfo, int negativeInfo) {
+    private void showInfo(boolean resultIsPositive, int positiveInfo, int negativeInfo) {
         if (resultIsPositive)
             showInfo(positiveInfo, false);
         else
@@ -268,12 +265,7 @@ public class MainActivity
     }
 
     private void showInfo(int info, boolean isLengthLong) {
-        int length;
-        if (isLengthLong) {
-            length = Toast.LENGTH_LONG;
-        } else {
-            length = Toast.LENGTH_SHORT;
-        }
+        int length = isLengthLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT;
         Toast.makeText(this, info, length)
                 .show();
     }
@@ -328,31 +320,15 @@ public class MainActivity
     private void addToCalendar() {
         showBigAd();
 
-        boolean isResultPositive;
-        String tag;
-        int error;
+        String tag = mViewModel.isActionAddList() ? LIST : SINGLE;
+        int error = mViewModel.isActionAddList() ? R.string.error_sth_went_wrong : R.string.error_adding_to_calendar_failed;
 
-        if (mViewModel.isActionAddList()) {
-            isResultPositive = ListOfLimitedCommerceDays.addToCalendar(
-                    this,
-                    mViewModel.getTypesToBeAddedToCalendar(),
-                    mViewModel.getReminder(),
-                    mViewModel.getTill());
-            tag = LIST;
-            error = R.string.error_sth_went_wrong;
-        } else {
-            LimitedCommerceDay day = mViewModel.getLastTouchedDay();
-            day.setReminder(mViewModel.getReminder());
-            isResultPositive = day.addToGoogleCalendar(this);
-            tag = SINGLE;
-            error = R.string.error_adding_to_calendar_failed;
-        }
-
+        boolean isResultPositive = mViewModel.addToCalendar(this);
         if (isResultPositive) {
             logFirebaseEvent(this, CALENDAR_EVENT, tag);
             refreshList();
         }
-        displayInfo(isResultPositive, R.string.info_added_to_calendar, error);
+        showInfo(isResultPositive, R.string.info_added_to_calendar, error);
     }
 
     private void showBigAd() {
@@ -622,7 +598,7 @@ public class MainActivity
         boolean isLookRich = (view.getId() == R.id.imageButtonRich);
         mViewModel.setLookRich(this, isLookRich);
         mViewModel.setNotFirstRun(this);
-        mViewModel.setRecreatedOnDemand(true);
+        mViewModel.setRecreatedOnDemand();
         recreate();
     }
     //endregion

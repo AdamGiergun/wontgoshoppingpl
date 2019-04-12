@@ -15,6 +15,7 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
+import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
@@ -133,10 +134,6 @@ public class MainViewModel extends ViewModel {
         appPreferences.setAppWidgetInfoDisplayed(context);
     }
 
-    AppPreferences getAppPreferences() {
-        return appPreferences;
-    }
-
     void closeDatabase() {
         if (database != null)
             database.close();
@@ -146,12 +143,9 @@ public class MainViewModel extends ViewModel {
         return interstitialAd;
     }
 
-    LimitedCommerceDay getLastTouchedDay() {
-        return lastTouchedDay;
-    }
-
-    void setLastTouchedDay(LimitedCommerceDay lastTouchedDay) {
-        this.lastTouchedDay = lastTouchedDay;
+    void setLastTouchedDay(LimitedCommerceDay day) {
+        lastTouchedDay = day;
+        setActionAddList(false);
     }
 
     void setActionAddList(boolean actionAddList) {
@@ -162,6 +156,19 @@ public class MainViewModel extends ViewModel {
         return actionAddList;
     }
 
+    boolean addToCalendar(Context context) {
+        if (actionAddList) {
+            return ListOfLimitedCommerceDays.addToCalendar(
+                    context,
+                    typesToBeAddedToCalendar,
+                    reminder.getValue(),
+                    till.getValue());
+        } else {
+            lastTouchedDay.setReminder(reminder.getValue());
+            return lastTouchedDay.addToGoogleCalendar(context);
+        }
+    }
+
     LimitedCommerceDayType.TypesList getTypesToBeAddedToCalendar() {
         return typesToBeAddedToCalendar;
     }
@@ -170,12 +177,17 @@ public class MainViewModel extends ViewModel {
         this.typesToBeAddedToCalendar = typesToBeAddedToCalendar;
     }
 
-    void setRecreatedOnDemand(boolean recreatedOnDemand) {
-        this.recreatedOnDemand = recreatedOnDemand;
+    void setRecreatedOnDemand() {
+        this.recreatedOnDemand = true;
     }
 
     boolean isRecreatedOnDemand() {
-        return recreatedOnDemand;
+        if (recreatedOnDemand) {
+            recreatedOnDemand = false;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //region AppPreferences proxy region
