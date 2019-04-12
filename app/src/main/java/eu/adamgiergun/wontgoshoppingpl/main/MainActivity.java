@@ -53,6 +53,7 @@ public class MainActivity
         NoticeDialogFragment.NoticeDialogViewListener, LogFirebaseEvent {
 
     private static final String MAIN_FRAGMENT_TAG = "main_fragment";
+
     private MainViewModel mViewModel;
 //    private Calendar calStart;
 
@@ -82,9 +83,17 @@ public class MainActivity
 
     private void setDayFragment() {
         addFragment(new DaysFragment());
+        showWidgetInfoIfNeeded();
+        logLookInFirebase();
+    }
+
+    private void showWidgetInfoIfNeeded() {
         if (!mViewModel.wasAppWidgetInfoDisplayed(this)) {
             WidgetInfoDialog.newInstance().show(getSupportFragmentManager(), "");
         }
+    }
+
+    private void logLookInFirebase() {
         if (mViewModel.isLookRich(this)) {
             logFirebaseEvent(this, APP_THEME, LOOK_RICH);
         } else {
