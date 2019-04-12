@@ -52,14 +52,14 @@ public class MainViewModel extends ViewModel {
             LocalizedConst.setSet();
         }
     }
-    
+
     private void initializeInterstitialAd(Context context) {
         interstitialAd = new InterstitialAd(context);
         interstitialAd.setAdUnitId(context.getString(R.string.interstitial_ad_id));
         loadInterstitialAd();
     }
 
-    void loadInterstitialAd() {
+    private void loadInterstitialAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
         interstitialAd.loadAd(adRequest);
     }
@@ -140,7 +140,14 @@ public class MainViewModel extends ViewModel {
     }
 
     InterstitialAd getInterstitialAd() {
-        return interstitialAd;
+        if (interstitialAd.isLoaded()) {
+            return interstitialAd;
+        } else {
+            if (!interstitialAd.isLoading()) {
+                loadInterstitialAd();
+            }
+            return null;
+        }
     }
 
     void setLastTouchedDay(LimitedCommerceDay day) {

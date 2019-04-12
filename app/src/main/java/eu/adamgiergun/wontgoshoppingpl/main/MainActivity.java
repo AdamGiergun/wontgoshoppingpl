@@ -332,13 +332,9 @@ public class MainActivity
     }
 
     private void showBigAd() {
-        InterstitialAd mInterstitialAd = mViewModel.getInterstitialAd();
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        } else {
-            if (!mInterstitialAd.isLoading()) {
-                mViewModel.loadInterstitialAd();
-            }
+        InterstitialAd interstitialAd = mViewModel.getInterstitialAd();
+        if (interstitialAd != null) {
+            interstitialAd.show();
         }
     }
 
