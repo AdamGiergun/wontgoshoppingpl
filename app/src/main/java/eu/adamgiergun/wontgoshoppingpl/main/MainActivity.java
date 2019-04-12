@@ -235,7 +235,7 @@ public class MainActivity
         mViewModel.setReminderDialogArgs(this);
         ReminderSettingsDialog
                 .newInstance()
-                .show(getSupportFragmentManager());
+                .show(getSupportFragmentManager(), "");
     }
 
     private void askForTypesAddedToCalendar() {
@@ -346,41 +346,15 @@ public class MainActivity
     }
     //endregion
 
-    //region onViewClickRegion
     @Override
-    public void onViewClick(String tag) {
-        switch (tag) {
-            case ReminderDaysBeforeDialog.TAG:
-                onReminderDaysBeforeClick(tag);
-                break;
-            case ReminderTimeDialog.TAG:
-                onReminderTimeClick(tag);
-                break;
-            case TillDateDialog.TAG:
-                onTillDateClick(tag);
-                break;
-            default:
-                break;
-        }
+    public void onViewClick(NoticeDialogFragment noticeDialogFragment) {
+        noticeDialogFragment.show(getSupportFragmentManager(), "");
     }
-
-    private void onReminderDaysBeforeClick(String tag) {
-        ReminderDaysBeforeDialog.newInstance().show(getSupportFragmentManager(), tag);
-    }
-
-    private void onReminderTimeClick(String tag) {
-        ReminderTimeDialog.newInstance().show(getSupportFragmentManager(), tag);
-    }
-
-    private void onTillDateClick(String tag) {
-        TillDateDialog.newInstance().show(getSupportFragmentManager(), tag);
-    }
-    //endregion
 
     public static class TypesAddedToCalendarDialog extends ThisAppDialogFragment {
         private Button dialogButtonPositive;
 
-        private static TypesAddedToCalendarDialog newInstance() {
+        public static NoticeDialogFragment newInstance() {
             return new TypesAddedToCalendarDialog();
         }
 
@@ -463,9 +437,8 @@ public class MainActivity
     }
 
     public static class ReminderSettingsDialog extends ThisAppDialogFragment {
-        private static final String TAG = "reminder_dialog";
 
-        static ReminderSettingsDialog newInstance() {
+        public static NoticeDialogFragment newInstance() {
             return new ReminderSettingsDialog();
         }
 
@@ -509,7 +482,7 @@ public class MainActivity
         private void initializeTillView(View view, MainViewModel viewModel) {
             AppCompatTextView tillView = getTillView(view);
             tillView.setText(getDateAsString(viewModel.getTill()));
-            tillView.setOnClickListener(getViewListener(TillDateDialog.TAG));
+            tillView.setOnClickListener(getViewListener(TillDateDialog.newInstance()));
         }
 
         private AppCompatTextView getTillView(View view) {
@@ -524,11 +497,11 @@ public class MainActivity
         private void initializeReminderViews(final View view, final MainViewModel viewModel) {
             final AppCompatTextView daysView = getDaysView(view);
             daysView.setText(String.valueOf(viewModel.getReminder().getDaysBefore()));
-            daysView.setOnClickListener(getViewListener(ReminderDaysBeforeDialog.TAG));
+            daysView.setOnClickListener(getViewListener(ReminderDaysBeforeDialog.newInstance()));
 
             final AppCompatTextView timeView = getTimeView(view);
             timeView.setText(viewModel.getReminder().getTime().toString());
-            timeView.setOnClickListener(getViewListener(ReminderTimeDialog.TAG));
+            timeView.setOnClickListener(getViewListener(ReminderTimeDialog.newInstance()));
 
             Observer<SimpleReminder> reminderObserver = new Observer<SimpleReminder>() {
                 @Override
@@ -563,10 +536,6 @@ public class MainActivity
         private AppCompatTextView getDaysView(View view) {
             return view.findViewById(R.id.numberOfDaysBeforeView);
         }
-
-        private void show(FragmentManager fragmentManager) {
-            show(fragmentManager, TAG);
-        }
     }
 
     //region InitialLookChoiceRegion
@@ -600,12 +569,11 @@ public class MainActivity
     //endregion
 
     public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
-        private static final String TAG = "ReminderDaysBeforeDialog";
         private static final String VALUE = "value";
 
         private NumberPicker picker;
 
-        static ReminderDaysBeforeDialog newInstance() {
+        public static NoticeDialogFragment newInstance() {
             return new ReminderDaysBeforeDialog();
         }
 
@@ -646,13 +614,12 @@ public class MainActivity
     }
 
     public static class ReminderTimeDialog extends ThisAppDialogFragment {
-        private static final String TAG = "ReminderTimeDialog";
         private static final String HOUR = "hour";
         private static final String MINUTE = "minute";
 
         private MyTimePicker picker;
 
-        static ReminderTimeDialog newInstance() {
+        public static NoticeDialogFragment newInstance() {
             return new ReminderTimeDialog();
         }
 
@@ -700,14 +667,13 @@ public class MainActivity
     }
 
     public static class TillDateDialog extends ThisAppDialogFragment {
-        private static final String TAG = "TillDateDialog";
         private static final String YEAR = "year";
         private static final String MONTH = "month";
         private static final String DAY = "day";
 
         private MyDatePicker picker;
 
-        static TillDateDialog newInstance() {
+        public static NoticeDialogFragment newInstance() {
             return new TillDateDialog();
         }
 
@@ -753,7 +719,7 @@ public class MainActivity
 
     public static class WidgetInfoDialog extends ThisAppDialogFragment {
 
-        static WidgetInfoDialog newInstance() {
+        public static NoticeDialogFragment newInstance() {
             return new WidgetInfoDialog();
         }
 

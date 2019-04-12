@@ -353,7 +353,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     }
 
     @Override
-    public void onViewClick(String s) {
+    public void onViewClick(NoticeDialogFragment stub) {
         //stub
     }
 
