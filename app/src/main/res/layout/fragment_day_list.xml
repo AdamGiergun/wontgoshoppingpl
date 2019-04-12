@@ -8,5 +8,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context="eu.adamgiergun.wontgoshoppingpl.main.DayFragment"
+    tools:context="eu.adamgiergun.wontgoshoppingpl.main.DaysFragment"
     tools:listitem="@layout/fragment_day"/>

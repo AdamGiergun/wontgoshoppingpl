@@ -199,7 +199,7 @@ public class MainViewModel extends ViewModel {
         return  appPreferences.isUseGoogleCalendarSet(context) && appPreferences.isCalendarSet(context);
     }
 
-    boolean checkIfAddDayFragmentAndTypes(Context context) {
+    boolean checkIfTypesChanged(Context context) {
         LimitedCommerceDayType.TypesList oldTypesToBeDisplayed = typesToBeDisplayed;
         typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(context);
         return !(isFirstRun(context) ||

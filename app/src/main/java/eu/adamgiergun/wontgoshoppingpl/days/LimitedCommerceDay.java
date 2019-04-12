@@ -303,14 +303,6 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         }
     }
 
-    public static LimitedCommerceDay getNextDay(Context context) {
-        ListOfLimitedCommerceDays days =
-                ListOfLimitedCommerceDays.getList(
-                        context,
-                        LimitedCommerceDayType.getTypes(true, true, true));
-        return days.get(0);
-    }
-
     public CharSequence getWidgetText() {
         return getDateString() + "\nPL: " + description;
     }

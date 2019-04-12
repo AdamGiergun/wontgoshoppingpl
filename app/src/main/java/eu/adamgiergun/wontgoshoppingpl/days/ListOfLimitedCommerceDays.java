@@ -74,7 +74,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return ListOfLimitedCommerceDays.getList(context, types);
     }
 
-    public static ListOfLimitedCommerceDays getList(Context context, @NonNull TypesList includedDaysTypes) {
+    static ListOfLimitedCommerceDays getList(Context context, @NonNull TypesList includedDaysTypes) {
         DatabaseHandler databaseHandler = new DatabaseHandler(context);
         SQLiteDatabase db = databaseHandler.getReadableDatabase();
         String[] selectionArgs = new String[includedDaysTypes.size()];
@@ -112,6 +112,14 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return list;
     }
 
+    public static LimitedCommerceDay getFirst(Context context) {
+        ListOfLimitedCommerceDays days =
+                getList(
+                        context,
+                        getTypes(true, true, true));
+        return days.get(0);
+    }
+
     private void addArray(Resources resources, int idOfArray) {
         String[] array = resources.getStringArray(idOfArray);
         Calendar yesterday = getYesterday();
@@ -135,10 +143,17 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         }
     }
 
-    public boolean addToCalendar(Context context, SimpleReminder reminder, Calendar till) {
-        skipReminderForConsecutiveDays();
+    public static boolean addToCalendar(
+            Context context,
+            LimitedCommerceDayType.TypesList typesList,
+            SimpleReminder reminder,
+            Calendar till) {
+
+        ListOfLimitedCommerceDays list =
+                ListOfLimitedCommerceDays.getList(context, typesList);
+        list.skipReminderForConsecutiveDays();
         boolean result = true;
-        for (LimitedCommerceDay day : this) {
+        for (LimitedCommerceDay day : list) {
             if (day.compareTo(till) <= 0) {
                 if (day.isReminderNeeded()) {
                     day.setReminder(reminder);

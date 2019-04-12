@@ -1,6 +1,8 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
 /*
+    TODO check Types chooser behaviour
+
     TODO "usuń wszystko z Kalendarza" w ustawieniach
     TODO grupa info w ustawieniach
  */
@@ -47,26 +49,24 @@ import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.NON_CO
 public class MainActivity
         extends AppCompatActivityWithTheme
         implements NoticeDialogFragment.NoticeDialogListener,
-        DayFragment.OnListFragmentInteractionListener,
+        DaysFragment.OnListFragmentInteractionListener,
         NoticeDialogFragment.NoticeDialogViewListener, LogFirebaseEvent {
 
+    private static final String MAIN_FRAGMENT_TAG = "main_fragment";
     private MainViewModel mViewModel;
+//    private Calendar calStart;
 
     //region ActivityLifeCycleRegion
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        calStart = Calendar.getInstance();
         setContentView(R.layout.activity_main);
         setupBannerAds();
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         if (savedInstanceState == null) {
             mViewModel.initialize(this);
-
-//        Calendar calEnd = Calendar.getInstance();
-//        String timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
-//        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
-
             if (mViewModel.isFirstRun(this)) {
                 addFragment(AskForLook.newInstance());
             } else {
@@ -81,7 +81,7 @@ public class MainActivity
     }
 
     private void setDayFragment() {
-        addFragment(new DayFragment());
+        addFragment(new DaysFragment());
         if (!mViewModel.wasAppWidgetInfoDisplayed(this)) {
             WidgetInfoDialog.newInstance().show(getSupportFragmentManager(), "");
         }
@@ -109,11 +109,20 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (mViewModel.checkIfAddDayFragmentAndTypes(this)) {
-            addFragment(new DayFragment());
+        if (mViewModel.checkIfTypesChanged(this)) {
+            refreshList();
         }
         if (mViewModel.isLookRich(this)) {
             setLookRich();
+        }
+//        showStartTime();
+    }
+
+    private void refreshList() {
+        //addFragment(new DaysFragment());
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG);
+        if (fragment instanceof DaysFragment) {
+            ((DaysFragment) fragment).refreshRecyclerView();
         }
     }
 
@@ -127,13 +136,19 @@ public class MainActivity
 
     private void addFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment oldFragment = getSupportFragmentManager().findFragmentByTag("list");
+        Fragment oldFragment = getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG);
         if (oldFragment != null)
             ft.detach(oldFragment);
-        ft.add(R.id.main_fragment, fragment, "list");
+        ft.add(R.id.main_fragment, fragment, MAIN_FRAGMENT_TAG);
         ft.commit();
         getSupportFragmentManager().executePendingTransactions();
     }
+
+//    private void showStartTime() {
+//        Calendar calEnd = Calendar.getInstance();
+//        String timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
+//        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
+//    }
     //endregion
 
     @Override
@@ -309,10 +324,13 @@ public class MainActivity
 
     private void addListToCalendar() {
         showBigAd();
-        ListOfLimitedCommerceDays list =
-                ListOfLimitedCommerceDays.getList(this, mViewModel.getTypesToBeAddedToCalendar());
-        boolean resultIsPositive = list.addToCalendar(this, mViewModel.getReminder(), mViewModel.getTillObservable().getValue());
+        boolean resultIsPositive = ListOfLimitedCommerceDays.addToCalendar(
+                this,
+                mViewModel.getTypesToBeAddedToCalendar(),
+                mViewModel.getReminder(),
+                mViewModel.getTillObservable().getValue());
 
+        refreshList();
         logFirebaseEvent(this, CALENDAR_EVENT, LIST);
         displayInfo(resultIsPositive, R.string.info_added_to_calendar, R.string.error_sth_went_wrong);
     }

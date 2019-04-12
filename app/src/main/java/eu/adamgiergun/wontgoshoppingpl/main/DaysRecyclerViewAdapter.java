@@ -12,28 +12,28 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
 import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.main.DayFragment.OnListFragmentInteractionListener;
+import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnListFragmentInteractionListener;
 
-public class DayRecyclerViewAdapter extends RecyclerView.Adapter<DayRecyclerViewAdapter.ViewHolder> {
+public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerViewAdapter.ViewHolder> {
 
     private final ListOfLimitedCommerceDays days;
     private final OnListFragmentInteractionListener listener;
     private boolean isLookRich;
     private static float density;
 
-    private DayRecyclerViewAdapter(ListOfLimitedCommerceDays days, OnListFragmentInteractionListener listener) {
+    private DaysRecyclerViewAdapter(ListOfLimitedCommerceDays days, OnListFragmentInteractionListener listener) {
         this.days = days;
         this.listener = listener;
     }
 
-    static DayRecyclerViewAdapter getInstance(Context context, OnListFragmentInteractionListener listener) {
-        DayRecyclerViewAdapter dayRecyclerViewAdapter =
-                new DayRecyclerViewAdapter(
+    static DaysRecyclerViewAdapter getInstance(Context context, OnListFragmentInteractionListener listener) {
+        DaysRecyclerViewAdapter daysRecyclerViewAdapter =
+                new DaysRecyclerViewAdapter(
                         ListOfLimitedCommerceDays.getList(context),
                         listener);
-        dayRecyclerViewAdapter.setLook(context);
+        daysRecyclerViewAdapter.setLook(context);
         density = context.getResources().getDisplayMetrics().density;
-        return dayRecyclerViewAdapter;
+        return daysRecyclerViewAdapter;
     }
 
     private void setLook(Context context) {
