@@ -300,7 +300,7 @@ public class MainActivity
     }
     //endregion
 
-    //region onDialog...ClickRegion
+    //region on...ClickRegion
     @Override
     public void onDialogPositiveClick(NoticeDialogFragment dialog) {
         if (dialog instanceof TypesAddedToCalendarDialog) {
@@ -337,12 +337,18 @@ public class MainActivity
             showInfo(R.string.info_cancelled, false);
         }
     }
-    //endregion
+
+    public void onLookButtonClick(View view) {
+        boolean isLookRich = (view.getId() == R.id.imageButtonRich);
+        mViewModel.onInitialLookChoice(this, isLookRich);
+        recreate();
+    }
 
     @Override
     public void onViewClick(NoticeDialogFragment noticeDialogFragment) {
         noticeDialogFragment.show(getSupportFragmentManager(), "");
     }
+    //endregion
 
     public static class TypesAddedToCalendarDialog extends ThisAppDialogFragment {
         private Button dialogButtonPositive;
@@ -523,7 +529,6 @@ public class MainActivity
         }
     }
 
-    //region InitialLookChoiceRegion
     public static class AskForLook extends Fragment {
 
         static AskForLook newInstance() {
@@ -543,15 +548,6 @@ public class MainActivity
             textView.setText(LocalizedConst.getAskForLook());
         }
     }
-
-    public void onLookButtonClick(View view) {
-        boolean isLookRich = (view.getId() == R.id.imageButtonRich);
-        mViewModel.setLookRich(this, isLookRich);
-        mViewModel.setNotFirstRun(this);
-        mViewModel.setRecreatedOnDemand();
-        recreate();
-    }
-    //endregion
 
     public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
         private static final String VALUE = "value";

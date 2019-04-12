@@ -184,10 +184,6 @@ public class MainViewModel extends ViewModel {
         this.typesToBeAddedToCalendar = typesToBeAddedToCalendar;
     }
 
-    void setRecreatedOnDemand() {
-        this.recreatedOnDemand = true;
-    }
-
     boolean isRecreatedOnDemand() {
         if (recreatedOnDemand) {
             recreatedOnDemand = false;
@@ -195,6 +191,12 @@ public class MainViewModel extends ViewModel {
         } else {
             return false;
         }
+    }
+
+    void onInitialLookChoice(Context context, boolean isLookRich) {
+        setLookRich(context, isLookRich);
+        setNotFirstRun(context);
+        recreatedOnDemand = true;
     }
 
     //region AppPreferences proxy region
@@ -225,11 +227,11 @@ public class MainViewModel extends ViewModel {
                 typesToBeDisplayed.equals(oldTypesToBeDisplayed));
     }
 
-    void setLookRich(Context context, boolean isLookRich) {
+    private void setLookRich(Context context, boolean isLookRich) {
         appPreferences.setLookRich(context, isLookRich);
     }
 
-    void setNotFirstRun(Context context) {
+    private void setNotFirstRun(Context context) {
         appPreferences.setFirstRun(context, false);
     }
     //endregion
