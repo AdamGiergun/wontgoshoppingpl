@@ -9,14 +9,26 @@ class SettingsViewModel extends ViewModel {
     private static final String NOTIFICATIONS = "notifications";
     private static final String LOOK_LAND = "lookWide";
     private static final String NOTIFICATIONS_LAND = "notificationsWide";
-    static String headers;
-    static String look;
-    static String notifications;
+    private String headersTag;
+    private String lookTag;
+    private String notificationsTag;
 
     private String lastFragment = HEADERS;
 
     String getLastFragment() {
         return lastFragment;
+    }
+
+    String getHeadersTag() {
+        return headersTag;
+    }
+
+    String getLookTag() {
+        return lookTag;
+    }
+
+    String getNotificationsTag() {
+        return notificationsTag;
     }
 
     void setLastFragment(String tag) {
@@ -25,9 +37,9 @@ class SettingsViewModel extends ViewModel {
 
     void setOrientationLandscape(boolean isOrientationLandscape) {
         if (isOrientationLandscape) {
-            SettingsViewModel.headers = SettingsViewModel.HEADERS_LAND;
-            SettingsViewModel.look = SettingsViewModel.LOOK_LAND;
-            SettingsViewModel.notifications = SettingsViewModel.NOTIFICATIONS_LAND;
+            headersTag = SettingsViewModel.HEADERS_LAND;
+            lookTag = SettingsViewModel.LOOK_LAND;
+            notificationsTag = SettingsViewModel.NOTIFICATIONS_LAND;
             switch (lastFragment) {
                 case SettingsViewModel.HEADERS:
                     lastFragment = SettingsViewModel.HEADERS_LAND;
@@ -42,9 +54,9 @@ class SettingsViewModel extends ViewModel {
                     break;
             }
         } else {
-            SettingsViewModel.headers = SettingsViewModel.HEADERS;
-            SettingsViewModel.look = SettingsViewModel.LOOK;
-            SettingsViewModel.notifications = SettingsViewModel.NOTIFICATIONS;
+            headersTag = SettingsViewModel.HEADERS;
+            lookTag = SettingsViewModel.LOOK;
+            notificationsTag = SettingsViewModel.NOTIFICATIONS;
             switch (lastFragment) {
                 case SettingsViewModel.HEADERS_LAND:
                     lastFragment = SettingsViewModel.HEADERS;

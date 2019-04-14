@@ -66,18 +66,18 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
         ArrayList<FragmentWithTag> settingsFragments = new ArrayList<>();
         if (isScreenNotWideEnough()) {
-            settingsFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), SettingsViewModel.headers, shouldBeDetached(SettingsViewModel.headers)));
-            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), SettingsViewModel.look, shouldBeDetached(SettingsViewModel.look)));
+            settingsFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), mViewModel.getHeadersTag(), shouldBeDetached(mViewModel.getHeadersTag())));
+            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), mViewModel.getLookTag(), shouldBeDetached(mViewModel.getLookTag())));
             if (areCalendarPermissionsGranted()) {
-                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), SettingsViewModel.notifications, shouldBeDetached(SettingsViewModel.notifications)));
+                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), shouldBeDetached(mViewModel.getNotificationsTag())));
             }
         } else {
             ArrayList<FragmentWithTag> headersFragments = new ArrayList<>();
-            headersFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), SettingsViewModel.headers, shouldBeDetached(SettingsViewModel.headers)));
+            headersFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), mViewModel.getHeadersTag(), shouldBeDetached(mViewModel.getHeadersTag())));
             addFragments(R.id.headersFragment, headersFragments);
-            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), SettingsViewModel.look, shouldBeDetached(SettingsViewModel.look)));
+            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), mViewModel.getLookTag(), shouldBeDetached(mViewModel.getLookTag())));
             if (areCalendarPermissionsGranted()) {
-                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), SettingsViewModel.notifications, shouldBeDetached(SettingsViewModel.notifications)));
+                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), shouldBeDetached(mViewModel.getNotificationsTag())));
             }
         }
         settingsFragmentId = getSettingsFragmentId();
@@ -105,10 +105,10 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         if (isScreenNotWideEnough()) {
             return !mViewModel.getLastFragment().equals(fragmentTag);
         } else {
-            if (fragmentTag.equals(SettingsViewModel.headers)) {
+            if (fragmentTag.equals(mViewModel.getHeadersTag())) {
                 return false;
             } else {
-                if (mViewModel.getLastFragment().equals(SettingsViewModel.headers) && fragmentTag.equals(SettingsViewModel.look)) {
+                if (mViewModel.getLastFragment().equals(mViewModel.getHeadersTag()) && fragmentTag.equals(mViewModel.getLookTag())) {
                     return false;
                 } else {
                     return !mViewModel.getLastFragment().equals(fragmentTag);
@@ -150,13 +150,13 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         if (startWithNotificationPreferenceFragment) {
             startWithNotificationPreferenceFragment = false;
             if (isScreenNotWideEnough()) {
-                mViewModel.setLastFragment(SettingsViewModel.notifications);
+                mViewModel.setLastFragment(mViewModel.getNotificationsTag());
             } else {
-                switchFragment(SettingsViewModel.look, SettingsViewModel.notifications);
+                switchFragment(mViewModel.getLookTag(), mViewModel.getNotificationsTag());
             }
         }
         if (isScreenNotWideEnough()) {
-            switchFragment(SettingsViewModel.headers, mViewModel.getLastFragment());
+            switchFragment(mViewModel.getHeadersTag(), mViewModel.getLastFragment());
         }
     }
 
@@ -204,16 +204,16 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         String headerTitle = pref.getTitle().toString();
         if (headerTitle.equals(getString(R.string.pref_header_look))) {
             if (isScreenNotWideEnough()) {
-                return switchFragment(SettingsViewModel.headers, SettingsViewModel.look);
+                return switchFragment(mViewModel.getHeadersTag(), mViewModel.getLookTag());
             } else {
-                return switchFragment(SettingsViewModel.notifications, SettingsViewModel.look);
+                return switchFragment(mViewModel.getNotificationsTag(), mViewModel.getLookTag());
             }
         } else if (headerTitle.equals(getString(R.string.pref_header_notifications))) {
             if (checkCalendarPermissions()) {
                 if (isScreenNotWideEnough()) {
-                    return switchFragment(SettingsViewModel.headers, SettingsViewModel.notifications);
+                    return switchFragment(mViewModel.getHeadersTag(), mViewModel.getNotificationsTag());
                 } else {
-                    return switchFragment(SettingsViewModel.look, SettingsViewModel.notifications);
+                    return switchFragment(mViewModel.getLookTag(), mViewModel.getNotificationsTag());
                 }
             } else {
                 return false;
@@ -277,13 +277,13 @@ public class SettingsActivity extends AppCompatActivityWithTheme
             if (areAllPermissionsGranted(grantResults)) {
                 ArrayList<FragmentWithTag> newFragments = new ArrayList<>();
                 if (isScreenNotWideEnough()) {
-                    newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), SettingsViewModel.notifications, true));
+                    newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), true));
                     addFragments(settingsFragmentId, newFragments);
-                    switchFragment(SettingsViewModel.headers, SettingsViewModel.notifications);
+                    switchFragment(mViewModel.getHeadersTag(), mViewModel.getNotificationsTag());
                 } else {
-                    newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), SettingsViewModel.notifications, true));
+                    newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), true));
                     addFragments(settingsFragmentId, newFragments);
-                    switchFragment(SettingsViewModel.look, SettingsViewModel.notifications);
+                    switchFragment(mViewModel.getLookTag(), mViewModel.getNotificationsTag());
                 }
             } else {
                 Toast.makeText(this, eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
