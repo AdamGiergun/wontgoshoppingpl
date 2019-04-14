@@ -11,6 +11,7 @@ import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.Calendar;
 
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
@@ -74,7 +75,7 @@ public class MainViewModel extends ViewModel {
     }
 
     private Calendar getLastDayOfNextMonth() {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = SimpleCalendarEvent.getClearedCalendarInstance();
         calendar.add(Calendar.MONTH, 1);
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         return calendar;

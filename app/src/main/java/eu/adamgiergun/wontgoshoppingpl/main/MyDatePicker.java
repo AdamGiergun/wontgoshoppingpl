@@ -5,6 +5,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
 import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
 
 class MyDatePicker extends DatePicker {
@@ -24,7 +25,7 @@ class MyDatePicker extends DatePicker {
     }
 
     Calendar getDate() {
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = SimpleCalendarEvent.getClearedCalendarInstance();
         cal.set(Calendar.YEAR, getYear());
         cal.set(Calendar.MONTH, getMonth());
         cal.set(Calendar.DAY_OF_MONTH, getDayOfMonth());

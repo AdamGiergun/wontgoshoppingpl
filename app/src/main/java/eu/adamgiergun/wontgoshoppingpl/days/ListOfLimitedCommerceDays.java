@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import androidx.annotation.NonNull;
+
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.R;
@@ -56,14 +58,14 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         }
 
         if (lastDay == null) {
-            return Calendar.getInstance();
+            return SimpleCalendarEvent.getClearedCalendarInstance();
         } else {
             return lastDay.getCalendar();
         }
     }
 
     private static Calendar getYesterday() {
-        Calendar yesterday = Calendar.getInstance();
+        Calendar yesterday = SimpleCalendarEvent.getClearedCalendarInstance();
         yesterday.add(Calendar.DAY_OF_MONTH, -1);
         return yesterday;
     }
@@ -74,7 +76,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return ListOfLimitedCommerceDays.getList(context, types);
     }
 
-    static ListOfLimitedCommerceDays getList(Context context, @NonNull TypesList includedDaysTypes) {
+    private static ListOfLimitedCommerceDays getList(Context context, @NonNull TypesList includedDaysTypes) {
         DatabaseHandler databaseHandler = new DatabaseHandler(context);
         SQLiteDatabase db = databaseHandler.getReadableDatabase();
         String[] selectionArgs = new String[includedDaysTypes.size()];

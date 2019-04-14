@@ -11,7 +11,7 @@ class MyNumberPicker extends NumberPicker {
 
     static MyNumberPicker newInstance(Context context, int value) {
         MyNumberPicker picker = new MyNumberPicker(context);
-        picker.setMinValue(1);
+        picker.setMinValue(0);
         picker.setMaxValue(9);
         picker.setValue(value);
         return picker;

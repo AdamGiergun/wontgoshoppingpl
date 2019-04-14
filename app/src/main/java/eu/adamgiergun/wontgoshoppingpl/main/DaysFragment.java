@@ -32,6 +32,7 @@ public class DaysFragment extends Fragment {
         private void deleteDayFromGoogleCalendar(DaysRecyclerViewAdapter.ViewHolder dayViewHolder) {
             LimitedCommerceDay day = dayViewHolder.getDay();
             day.deleteFromGoogleCalendar(getContext());
+            refreshRecyclerView();
         }
     };
 

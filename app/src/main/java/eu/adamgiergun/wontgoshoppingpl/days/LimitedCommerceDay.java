@@ -30,6 +30,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
     private Calendar calendar;
     private int noOfConsecutiveDays;
     private SimpleTime time;
+    private boolean allDay;
     private SimpleReminder reminder;
     private String description;
     private boolean reminderNeeded;
@@ -42,7 +43,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         this.item = item;
 
         String[] pieces = item.split(",");
-        time = new SimpleTime(pieces[1]);
+        setTime(pieces[1]);
         setDay(pieces[0]);
         name = pieces[2];
 
@@ -54,7 +55,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
     private void setDay(String date) {
         String[] subPieces = date.split("_");
 
-        calendar = Calendar.getInstance();
+        calendar = SimpleCalendarEvent.getClearedCalendarInstance();
 
         int year = Integer.valueOf(subPieces[0]);
         calendar.set(Calendar.YEAR, year);
@@ -64,11 +65,11 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
 
         int month = Integer.valueOf(subPieces[2]) - 1;
         calendar.set(Calendar.MONTH, month);
+    }
 
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+    private void setTime(String string) {
+        time = new SimpleTime(string);
+        allDay = string.equals("00:00");
     }
 
     @Override
@@ -160,7 +161,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
 
         calendarEvent.setStartCalendar(calendar, time);
 
-        setEndCalendar(calendarEvent);
+        setEndCalendarOrAllDay(calendarEvent);
 
         calendarEvent.addReminder(reminder);
 
@@ -186,11 +187,14 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         }
     }
 
-    private void setEndCalendar(SimpleCalendarEvent calendarEvent) {
+    private void setEndCalendarOrAllDay(SimpleCalendarEvent calendarEvent) {
         Calendar endCalendar = (Calendar) calendar.clone();
-        if (noOfConsecutiveDays > 0)
+        if (noOfConsecutiveDays > 0) {
             endCalendar.add(Calendar.DAY_OF_YEAR, noOfConsecutiveDays);
-        calendarEvent.setEndCalendar(endCalendar, new SimpleTime("24:00"));
+        } else {
+            calendarEvent.setAllDay(allDay);
+        }
+        calendarEvent.setEndCalendar(endCalendar, new SimpleTime("23:59"));
     }
 
     private String getDefaultCalendarIdFromPreferences(Context context) {
