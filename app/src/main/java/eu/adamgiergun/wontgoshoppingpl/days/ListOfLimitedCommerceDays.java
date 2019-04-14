@@ -58,14 +58,14 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         }
 
         if (lastDay == null) {
-            return SimpleCalendarEvent.getClearedCalendarInstance();
+            return Calendar.getInstance();
         } else {
             return lastDay.getCalendar();
         }
     }
 
     private static Calendar getYesterday() {
-        Calendar yesterday = SimpleCalendarEvent.getClearedCalendarInstance();
+        Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DAY_OF_MONTH, -1);
         return yesterday;
     }

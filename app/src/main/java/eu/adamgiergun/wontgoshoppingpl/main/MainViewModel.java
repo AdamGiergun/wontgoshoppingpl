@@ -75,7 +75,7 @@ public class MainViewModel extends ViewModel {
     }
 
     private Calendar getLastDayOfNextMonth() {
-        Calendar calendar = SimpleCalendarEvent.getClearedCalendarInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1);
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         return calendar;
