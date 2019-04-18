@@ -13,7 +13,6 @@ import java.util.ListIterator;
 
 import androidx.annotation.NonNull;
 
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.R;
@@ -24,11 +23,7 @@ import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.*;
 
 public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
-    private ListOfLimitedCommerceDays() {
-        super();
-    }
-
-    public static Iterator<LimitedCommerceDay> getIteratorFromResources(Context context) {
+    public static Iterator<LimitedCommerceDay> getIterator(Context context) {
         Resources resources = context.getResources();
         ListOfLimitedCommerceDays days = new ListOfLimitedCommerceDays();
         days.addArray(resources, R.array.non_commerce_days);
@@ -50,7 +45,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
     }
 
     public static Calendar getLastDate(Context context) {
-        Iterator<LimitedCommerceDay> iterator = getList(context).iterator();
+        Iterator<LimitedCommerceDay> iterator = newInstance(context).iterator();
         LimitedCommerceDay lastDay = null;
 
         while (iterator.hasNext()) {
@@ -70,13 +65,13 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         return yesterday;
     }
 
-    public static ListOfLimitedCommerceDays getList(Context context) {
-        AppPreferences appPreferences = new AppPreferences(context);
-        LimitedCommerceDayType.TypesList types = appPreferences.getLimitedCommerceDayTypes(context);
-        return ListOfLimitedCommerceDays.getList(context, types);
+    public static ListOfLimitedCommerceDays newInstance(Context context) {
+        AppPreferences appPreferences = AppPreferences.getInstance(context);
+        LimitedCommerceDayType.TypesList types = appPreferences.getLimitedCommerceDayTypesList(context);
+        return ListOfLimitedCommerceDays.newInstance(context, types);
     }
 
-    private static ListOfLimitedCommerceDays getList(Context context, @NonNull TypesList includedDaysTypes) {
+    private static ListOfLimitedCommerceDays newInstance(Context context, @NonNull TypesList includedDaysTypes) {
         DatabaseHandler databaseHandler = new DatabaseHandler(context);
         SQLiteDatabase db = databaseHandler.getReadableDatabase();
         String[] selectionArgs = new String[includedDaysTypes.size()];
@@ -116,9 +111,9 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
     public static LimitedCommerceDay getFirst(Context context) {
         ListOfLimitedCommerceDays days =
-                getList(
+                newInstance(
                         context,
-                        getTypes(true, true, true));
+                        LimitedCommerceDayType.getTypesList(true, true, true));
         return days.get(0);
     }
 
@@ -152,7 +147,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
             Calendar till) {
 
         ListOfLimitedCommerceDays list =
-                ListOfLimitedCommerceDays.getList(context, typesList);
+                ListOfLimitedCommerceDays.newInstance(context, typesList);
         list.skipReminderForConsecutiveDays();
         boolean result = true;
         for (LimitedCommerceDay day : list) {

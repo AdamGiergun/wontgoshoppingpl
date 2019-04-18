@@ -65,7 +65,7 @@ public enum LimitedCommerceDayType {
         }
     }
 
-    public static TypesList getTypes(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
+    public static TypesList getTypesList(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
         TypesList types = new TypesList();
         if (addNonCommerceDays)
             types.add(NON_COMMERCE_DAY);

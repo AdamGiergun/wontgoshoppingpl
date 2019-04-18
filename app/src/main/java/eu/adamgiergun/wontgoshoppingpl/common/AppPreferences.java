@@ -8,8 +8,17 @@ import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
 
 public class AppPreferences extends MyAppPreferences {
 
-    public AppPreferences(Context context) {
+    private static AppPreferences soleInstance;
+
+    private AppPreferences(Context context) {
         super(context);
+    }
+
+    public static AppPreferences getInstance(Context context) {
+        if (soleInstance == null) {
+            soleInstance = new AppPreferences(context);
+        }
+        return soleInstance;
     }
 
     public boolean isLookRich(Context context) {
@@ -17,13 +26,13 @@ public class AppPreferences extends MyAppPreferences {
         return getBoolean(key, false);
     }
 
-    public void setLookRich(Context context, boolean value) {
+    void setLookRich(Context context, boolean value) {
         String key = context.getString(R.string.app_look_preference_key);
         putBoolean(key, value);
     }
 
-    public LimitedCommerceDayType.TypesList getLimitedCommerceDayTypes(Context context) {
-        return LimitedCommerceDayType.getTypes(
+    public LimitedCommerceDayType.TypesList getLimitedCommerceDayTypesList(Context context) {
+        return LimitedCommerceDayType.getTypesList(
                 showNonCommerceDays(context),
                 showHolidays(context),
                 showCommerceSundays(context));

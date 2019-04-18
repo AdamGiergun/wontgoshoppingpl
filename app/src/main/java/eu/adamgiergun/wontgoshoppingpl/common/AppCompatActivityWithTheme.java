@@ -5,6 +5,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 
+import androidx.lifecycle.ViewModelProviders;
+
 import java.util.Locale;
 
 import eu.adamgiergun.mylibrary.AppCompatActivityWithHomeInBar;
@@ -12,15 +14,16 @@ import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 
 public abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHomeInBar {
+    private AppViewModel mViewModel;
 
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        AppPreferences appPreferences = new AppPreferences(this);
-        if (appPreferences.isLookRich(this)) {
-            theme.applyStyle(R.style.AppThemeCustomizationsRich, true);
-        } else {
-            theme.applyStyle(R.style.AppThemeCustomizationsMini, true);
+        if (mViewModel == null) {
+            mViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
+            mViewModel.initialize(this);
+            int style = mViewModel.isLookRich(this) ? R.style.AppThemeCustomizationsRich : R.style.AppThemeCustomizationsMini;
+            theme.applyStyle(style, true);
         }
         return theme;
     }

@@ -4,17 +4,16 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.Calendar;
 
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
+import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel;
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
 import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
@@ -22,7 +21,7 @@ import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
 import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class MainViewModel extends ViewModel {
+public class MainViewModel extends AppViewModel {
     private boolean actionAddList;
     private MutableLiveData<Calendar> till;
     private MutableLiveData<SimpleReminder> reminder;
@@ -30,17 +29,17 @@ public class MainViewModel extends ViewModel {
     private LimitedCommerceDay lastTouchedDay;
     private LimitedCommerceDayType.TypesList typesToBeAddedToCalendar;
     private LimitedCommerceDayType.TypesList typesToBeDisplayed;
-    private AppPreferences appPreferences;
     private InterstitialAd interstitialAd;
     private boolean recreatedOnDemand;
 
-    void initialize(Context context) {
+    @Override
+    public void initialize(Context context) {
+        super.initialize(context);
         setLocalizedConst(context);
         actionAddList = false;
         database = new DatabaseHandler(context).getWritableDatabase();
         recreatedOnDemand = false;
-        appPreferences = new AppPreferences(context);
-        typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(context);
+        typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypesList(context);
         typesToBeAddedToCalendar = typesToBeDisplayed;
         initializeInterstitialAd(context);
     }
@@ -131,7 +130,7 @@ public class MainViewModel extends ViewModel {
     }
 
     void setAppWidgetInfoDisplayed(Context context) {
-        AppPreferences appPreferences = new AppPreferences(context);
+        AppPreferences appPreferences = AppPreferences.getInstance(context);
         appPreferences.setAppWidgetInfoDisplayed(context);
     }
 
@@ -213,23 +212,15 @@ public class MainViewModel extends ViewModel {
         return appPreferences.wasAppWidgetInfoDisplayed(context);
     }
 
-    boolean isLookRich(Context context) {
-        return appPreferences.isLookRich(context);
-    }
-
     boolean isCalendarEnabledAndChosen(Context context) {
         return  appPreferences.isUseGoogleCalendarSet(context) && appPreferences.isCalendarSet(context);
     }
 
     boolean checkIfTypesChanged(Context context) {
         LimitedCommerceDayType.TypesList oldTypesToBeDisplayed = typesToBeDisplayed;
-        typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypes(context);
+        typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypesList(context);
         return !(isFirstRun(context) ||
                 typesToBeDisplayed.equals(oldTypesToBeDisplayed));
-    }
-
-    private void setLookRich(Context context, boolean isLookRich) {
-        appPreferences.setLookRich(context, isLookRich);
     }
 
     private void setNotFirstRun(Context context) {

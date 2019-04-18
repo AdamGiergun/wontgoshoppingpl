@@ -29,7 +29,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
     static DaysRecyclerViewAdapter getInstance(Context context, OnListFragmentInteractionListener listener) {
         DaysRecyclerViewAdapter daysRecyclerViewAdapter =
                 new DaysRecyclerViewAdapter(
-                        ListOfLimitedCommerceDays.getList(context),
+                        ListOfLimitedCommerceDays.newInstance(context),
                         listener);
         daysRecyclerViewAdapter.setLook(context);
         density = context.getResources().getDisplayMetrics().density;
@@ -37,7 +37,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
     }
 
     private void setLook(Context context) {
-        isLookRich = new AppPreferences(context).isLookRich(context);
+        isLookRich = AppPreferences.getInstance(context).isLookRich(context);
     }
 
     @NonNull

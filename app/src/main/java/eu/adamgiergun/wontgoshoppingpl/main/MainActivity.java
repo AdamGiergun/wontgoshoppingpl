@@ -387,7 +387,7 @@ public class MainActivity
                     .setMultiChoiceItems(items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            getMainViewModel().setTypesToBeAddedToCalendar(getTypes(checkedItems));
+                            getMainViewModel().setTypesToBeAddedToCalendar(getTypesList(checkedItems));
                             TypesAddedToCalendarDialog.this.noticeDialogListener.onDialogPositiveClick(TypesAddedToCalendarDialog.this);
                         }
                     })
@@ -409,7 +409,7 @@ public class MainActivity
             return new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    getMainViewModel().setTypesToBeAddedToCalendar(getTypes(checkedItems));
+                    getMainViewModel().setTypesToBeAddedToCalendar(getTypesList(checkedItems));
                     dialogButtonPositive.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
                 }
             };
@@ -427,8 +427,8 @@ public class MainActivity
             return false;
         }
 
-        private LimitedCommerceDayType.TypesList getTypes(boolean[] checkedItems) {
-            return LimitedCommerceDayType.getTypes(
+        private LimitedCommerceDayType.TypesList getTypesList(boolean[] checkedItems) {
+            return LimitedCommerceDayType.getTypesList(
                     checkedItems[NON_COMMERCE_DAY.getCode()],
                     checkedItems[HOLIDAY.getCode()],
                     checkedItems[COMMERCE_SUNDAY.getCode()]);

@@ -13,7 +13,7 @@ public abstract class ThisAppDialogFragment extends NoticeDialogFragment {
 
     protected AlertDialog.Builder getStyledBuilder() {
         Context context = getContext();
-        AppPreferences appPreferences = new AppPreferences(context);
+        AppPreferences appPreferences = AppPreferences.getInstance(context);
         AlertDialog.Builder builder;
         if (appPreferences.isLookRich(context)) {
             builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);

@@ -32,7 +32,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private void fillDbWithEvents(SQLiteDatabase db) {
         LimitedCommerceDay day;
-        Iterator<LimitedCommerceDay> iterator = ListOfLimitedCommerceDays.getIteratorFromResources(context);
+        Iterator<LimitedCommerceDay> iterator = ListOfLimitedCommerceDays.getIterator(context);
         while (iterator.hasNext()) {
             day = iterator.next();
             insertDayInDb(day, db);

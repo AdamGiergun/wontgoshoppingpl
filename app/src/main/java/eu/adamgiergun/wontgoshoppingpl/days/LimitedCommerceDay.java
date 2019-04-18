@@ -198,7 +198,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
     }
 
     private String getDefaultCalendarIdFromPreferences(Context context) {
-        AppPreferences appPreferences = new AppPreferences(context);
+        AppPreferences appPreferences = AppPreferences.getInstance(context);
         return appPreferences.getDefaultCalendarId(context);
     }
 

@@ -9,10 +9,6 @@ public class LocalizedConst {
     private static boolean set;
     private static Locale locale;
 
-    LocalizedConst(){
-        set = false;
-    }
-
     public static String getWholeDay() {
         if (wholeDay == null)
             return "";
