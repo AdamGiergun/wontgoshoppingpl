@@ -22,6 +22,7 @@ public abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHo
         if (mViewModel == null) {
             mViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
             mViewModel.initialize(this);
+
             int style = mViewModel.isLookRich(this) ? R.style.AppThemeCustomizationsRich : R.style.AppThemeCustomizationsMini;
             theme.applyStyle(style, true);
         }
@@ -42,30 +43,31 @@ public abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHo
         if (this instanceof MainActivity) {
             LocalizedConst.setLocale(Locale.getDefault());
         }
-        //Locale.setDefault(LocalizedConst.getLocale());
         Configuration config = new Configuration();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+
+        if (LocalizedConst.getLocale() != null)
             setLocale(config);
+
+        return updateConfiguration(context, config);
+    }
+
+    private void setLocale(Configuration config) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            config.locale = LocalizedConst.getLocale();
         } else {
-            if (LocalizedConst.getLocale() != null)
-                config.setLocale(LocalizedConst.getLocale());
+            config.setLocale(LocalizedConst.getLocale());
         }
+    }
+
+    private Context updateConfiguration(Context context, Configuration config) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
-            update(config);
+            //noinspection deprecation
+            getResources().updateConfiguration(
+                    config,
+                    getResources().getDisplayMetrics());
             return null;
         } else {
             return context.createConfigurationContext(config);
         }
-    }
-
-    private void setLocale(Configuration config) {
-        if (LocalizedConst.getLocale() != null)
-            config.locale = LocalizedConst.getLocale();
-    }
-
-    private void update(Configuration config) {
-        getResources().updateConfiguration(
-                config,
-                getResources().getDisplayMetrics());
     }
 }
