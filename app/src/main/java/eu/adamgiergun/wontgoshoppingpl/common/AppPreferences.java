@@ -31,8 +31,8 @@ public class AppPreferences extends MyAppPreferences {
         putBoolean(key, value);
     }
 
-    public LimitedCommerceDayType.TypesList getLimitedCommerceDayTypesList(Context context) {
-        return LimitedCommerceDayType.getTypesList(
+    public LimitedCommerceDayType.TypesList newLimitedCommerceDayTypesList(Context context) {
+        return LimitedCommerceDayType.newTypesList(
                 showNonCommerceDays(context),
                 showHolidays(context),
                 showCommerceSundays(context));

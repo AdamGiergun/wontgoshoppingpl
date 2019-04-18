@@ -39,7 +39,7 @@ public class MainViewModel extends AppViewModel {
         actionAddList = false;
         database = new DatabaseHandler(context).getWritableDatabase();
         recreatedOnDemand = false;
-        typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypesList(context);
+        typesToBeDisplayed = appPreferences.newLimitedCommerceDayTypesList(context);
         typesToBeAddedToCalendar = typesToBeDisplayed;
         initializeInterstitialAd(context);
     }
@@ -218,7 +218,7 @@ public class MainViewModel extends AppViewModel {
 
     boolean checkIfTypesChanged(Context context) {
         LimitedCommerceDayType.TypesList oldTypesToBeDisplayed = typesToBeDisplayed;
-        typesToBeDisplayed = appPreferences.getLimitedCommerceDayTypesList(context);
+        typesToBeDisplayed = appPreferences.newLimitedCommerceDayTypesList(context);
         return !(isFirstRun(context) ||
                 typesToBeDisplayed.equals(oldTypesToBeDisplayed));
     }

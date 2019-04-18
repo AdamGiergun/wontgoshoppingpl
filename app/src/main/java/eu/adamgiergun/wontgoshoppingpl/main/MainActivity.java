@@ -428,7 +428,7 @@ public class MainActivity
         }
 
         private LimitedCommerceDayType.TypesList getTypesList(boolean[] checkedItems) {
-            return LimitedCommerceDayType.getTypesList(
+            return LimitedCommerceDayType.newTypesList(
                     checkedItems[NON_COMMERCE_DAY.getCode()],
                     checkedItems[HOLIDAY.getCode()],
                     checkedItems[COMMERCE_SUNDAY.getCode()]);

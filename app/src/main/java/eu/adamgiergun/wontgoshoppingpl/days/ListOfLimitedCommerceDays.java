@@ -67,7 +67,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
     public static ListOfLimitedCommerceDays newInstance(Context context) {
         AppPreferences appPreferences = AppPreferences.getInstance(context);
-        LimitedCommerceDayType.TypesList types = appPreferences.getLimitedCommerceDayTypesList(context);
+        LimitedCommerceDayType.TypesList types = appPreferences.newLimitedCommerceDayTypesList(context);
         return ListOfLimitedCommerceDays.newInstance(context, types);
     }
 
@@ -113,7 +113,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         ListOfLimitedCommerceDays days =
                 newInstance(
                         context,
-                        LimitedCommerceDayType.getTypesList(true, true, true));
+                        LimitedCommerceDayType.newTypesList(true, true, true));
         return days.get(0);
     }
 
