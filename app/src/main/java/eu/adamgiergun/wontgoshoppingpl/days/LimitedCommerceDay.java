@@ -9,18 +9,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
-import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
-import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
+import eu.adamgiergun.mylibrary.calendarmanagement.*;
+import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.db.DBContract;
-import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
+import eu.adamgiergun.wontgoshoppingpl.db.*;
 
 import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.*;
 
 public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
 
@@ -38,21 +33,34 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
     private String calendarId;
     private long calendarEventId;
 
-    LimitedCommerceDay(int id, String item) {
-        this.dbId = id;
-        this.item = item;
+    private LimitedCommerceDay(){}
 
-        String[] pieces = item.split(",");
-        setTime(pieces[1]);
-        setDay(pieces[0]);
-        name = pieces[2];
-
-        description = name;
-        reminderNeeded = true;
-        noOfConsecutiveDays = 0;
+    static LimitedCommerceDay newInstance(EventsTableRow row) {
+        LimitedCommerceDay day = LimitedCommerceDay.newInstance(row.dbId, row.item);
+        day.setType(LimitedCommerceDayType.getType(row.typeId));
+        day.setCalendarId(row.calendarId);
+        day.setCalendarEventId(row.calendarEventId);
+        return day;
     }
 
-    private void setDay(String date) {
+    static LimitedCommerceDay newInstance(int id, String item) {
+        LimitedCommerceDay day = new LimitedCommerceDay();
+        day.dbId = id;
+        day.item = item;
+
+        String[] pieces = item.split(",");
+        day.setTime(pieces[1]);
+        day.setDate(pieces[0]);
+        day.name = pieces[2];
+
+        day.description = day.name;
+        day.reminderNeeded = true;
+        day.noOfConsecutiveDays = 0;
+
+        return day;
+    }
+
+    private void setDate(String date) {
         String[] subPieces = date.split("_");
 
         calendar = SimpleCalendarEvent.getClearedCalendarInstance();
@@ -77,7 +85,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return this.calendar.compareTo(another.calendar);
     }
 
-    int compareTo(Calendar calendar) {
+    int compareDateTo(Calendar calendar) {
         Calendar dayCalendar = getCalendar();
         return dayCalendar.compareTo(calendar);
     }
@@ -86,7 +94,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return calendar;
     }
 
-    void addToDescription(String string) {
+    void appendToDescription(String string) {
         description += ", " + string;
     }
 
@@ -132,8 +140,8 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         noOfConsecutiveDays++;
     }
 
-    boolean isDay(Calendar day) {
-        return day.compareTo(this.calendar) == 0;
+    boolean dateIs(Calendar calendar) {
+        return calendar.compareTo(this.calendar) == 0;
     }
 
     public void setReminder(SimpleReminder reminder) {
@@ -161,7 +169,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
 
         calendarEvent.setStartCalendar(calendar, time);
 
-        setEndCalendarOrAllDay(calendarEvent);
+        setEventEndCalendarOrAllDay(calendarEvent);
 
         calendarEvent.addReminder(reminder);
 
@@ -187,7 +195,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         }
     }
 
-    private void setEndCalendarOrAllDay(SimpleCalendarEvent calendarEvent) {
+    private void setEventEndCalendarOrAllDay(SimpleCalendarEvent calendarEvent) {
         Calendar endCalendar = (Calendar) calendar.clone();
         if (noOfConsecutiveDays > 0) {
             endCalendar.add(Calendar.DAY_OF_YEAR, noOfConsecutiveDays);
@@ -239,19 +247,11 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         this.type = type;
     }
 
-    String getCalendarId() {
-        return calendarId;
-    }
-
-    void setCalendarId(String calendarId) {
+    private void setCalendarId(String calendarId) {
         this.calendarId = calendarId;
     }
 
-    long getCalendarEventId() {
-        return calendarEventId;
-    }
-
-    void setCalendarEventId(long calendarEventId) {
+    private void setCalendarEventId(long calendarEventId) {
         this.calendarEventId = calendarEventId;
     }
 
@@ -261,7 +261,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
 
     public int getBackgroundResource() {
         int backgroundResource;
-        switch (getType()) {
+        switch (type) {
             case HOLIDAY:
                 backgroundResource = R.drawable.card_bg_red;
                 break;
@@ -281,7 +281,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
     public int getBackgroundColor(Context context) {
         int color;
         Resources resources = context.getResources();
-        switch (getType()) {
+        switch (type) {
             case HOLIDAY:
                 color = getColor(resources, R.color.colorHoliday);
                 break;
@@ -298,11 +298,11 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return color;
     }
 
-    @SuppressWarnings("deprecation")
     private int getColor(Resources resources, int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return resources.getColor(id, null);
         } else {
+            //noinspection deprecation
             return resources.getColor(id);
         }
     }

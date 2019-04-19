@@ -48,12 +48,12 @@ public class DaysFragment extends Fragment {
     private void initializeRecyclerView(View view) {
         daysRecyclerView = (RecyclerView) view;
         daysRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        setDaysRecyclerViewAdapter();
+        setAdapter();
         attachItemTouchHelper(daysRecyclerView);
     }
 
-    private void setDaysRecyclerViewAdapter() {
-        daysRecyclerViewAdapter = DaysRecyclerViewAdapter.getInstance(getContext(), listener);
+    private void setAdapter() {
+        daysRecyclerViewAdapter = DaysRecyclerViewAdapter.newInstance(getContext(), listener);
         daysRecyclerView.setAdapter(daysRecyclerViewAdapter);
     }
 
@@ -80,7 +80,7 @@ public class DaysFragment extends Fragment {
     }
 
     void refreshRecyclerView() {
-        setDaysRecyclerViewAdapter();
+        setAdapter();
     }
 
     public interface OnListFragmentInteractionListener {

@@ -33,17 +33,12 @@ import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity;
-import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
-import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
-import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
-import eu.adamgiergun.wontgoshoppingpl.common.LogFirebaseEvent;
+import eu.adamgiergun.wontgoshoppingpl.days.*;
+import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity;
-import eu.adamgiergun.wontgoshoppingpl.common.ThisAppDialogFragment;
 
-import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.COMMERCE_SUNDAY;
-import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.HOLIDAY;
-import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.NON_COMMERCE_DAY;
+import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.*;
 
 public class MainActivity
         extends AppCompatActivityWithTheme
@@ -350,7 +345,7 @@ public class MainActivity
     }
     //endregion
 
-    public static class TypesAddedToCalendarDialog extends ThisAppDialogFragment {
+    public static class TypesAddedToCalendarDialog extends MainDialogFragment {
         private Button dialogButtonPositive;
 
         public static NoticeDialogFragment newInstance() {
@@ -369,7 +364,7 @@ public class MainActivity
 
         private boolean[] getCheckedItems() {
             boolean[] checkedItems = new boolean[3];
-            LimitedCommerceDayType.TypesList typesToBeAddedToCalendar = getMainViewModel().getTypesToBeAddedToCalendar();
+            LimitedCommerceDayType.TypesList typesToBeAddedToCalendar = getViewModel().getTypesToBeAddedToCalendar();
 
             checkedItems[NON_COMMERCE_DAY.getCode()] = typesToBeAddedToCalendar.contains(NON_COMMERCE_DAY);
             checkedItems[HOLIDAY.getCode()] = typesToBeAddedToCalendar.contains(HOLIDAY);
@@ -381,13 +376,13 @@ public class MainActivity
             CharSequence[] items = getItems();
             DialogInterface.OnMultiChoiceClickListener listener = getOnMultiChoiceClickListener(checkedItems);
 
-            AlertDialog.Builder builder = getStyledBuilder();
+            AlertDialog.Builder builder = getStyledBuilder(getContext());
             builder
                     .setTitle(R.string.title_choose_events)
                     .setMultiChoiceItems(items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            getMainViewModel().setTypesToBeAddedToCalendar(getTypesList(checkedItems));
+                            getViewModel().setTypesToBeAddedToCalendar(getTypesList(checkedItems));
                             TypesAddedToCalendarDialog.this.noticeDialogListener.onDialogPositiveClick(TypesAddedToCalendarDialog.this);
                         }
                     })
@@ -409,7 +404,7 @@ public class MainActivity
             return new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    getMainViewModel().setTypesToBeAddedToCalendar(getTypesList(checkedItems));
+                    getViewModel().setTypesToBeAddedToCalendar(getTypesList(checkedItems));
                     dialogButtonPositive.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
                 }
             };
@@ -435,7 +430,7 @@ public class MainActivity
         }
     }
 
-    public static class ReminderSettingsDialog extends ThisAppDialogFragment {
+    public static class ReminderSettingsDialog extends MainDialogFragment {
 
         public static NoticeDialogFragment newInstance() {
             return new ReminderSettingsDialog();
@@ -444,8 +439,8 @@ public class MainActivity
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = getStyledBuilder();
-            MainViewModel viewModel = getMainViewModel();
+            AlertDialog.Builder builder = getStyledBuilder(getContext());
+            MainViewModel viewModel = getViewModel();
             String title = viewModel.isActionAddList() ? getString(R.string.title_reminder) : getString(R.string.title_reminder_of) + " " + viewModel.getDayDescription();
             builder
                     .setTitle(title)
@@ -458,7 +453,7 @@ public class MainActivity
         @SuppressLint("InflateParams")
         private View getDialogView() {
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            MainViewModel viewModel = getMainViewModel();
+            MainViewModel viewModel = getViewModel();
             int viewLayoutId = viewModel.isActionAddList() ? R.layout.reminder_and_date_settings_dialog_view : R.layout.reminder_settings_dialog_view;
             View view = inflater.inflate(viewLayoutId, null);
 
@@ -549,7 +544,7 @@ public class MainActivity
         }
     }
 
-    public static class ReminderDaysBeforeDialog extends ThisAppDialogFragment {
+    public static class ReminderDaysBeforeDialog extends MainDialogFragment {
         private static final String VALUE = "value";
 
         private NumberPicker picker;
@@ -562,7 +557,7 @@ public class MainActivity
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             picker = getPicker(savedInstanceState);
-            AlertDialog.Builder builder = getStyledBuilder();
+            AlertDialog.Builder builder = getStyledBuilder(getContext());
             builder
                     .setTitle(R.string.days_before)
                     .setView(picker)
@@ -577,12 +572,12 @@ public class MainActivity
 
         private NumberPicker getPicker(Bundle savedInstanceState) {
             return savedInstanceState == null ?
-                    MyNumberPicker.newInstance(getContext(), getMainViewModel().getReminderDaysBefore()) :
+                    MyNumberPicker.newInstance(getContext(), getViewModel().getReminderDaysBefore()) :
                     MyNumberPicker.newInstance(getContext(), savedInstanceState.getInt(VALUE));
         }
 
         private void updateReminder(int daysBefore) {
-            getMainViewModel().setReminderDaysBefore(daysBefore);
+            getViewModel().setReminderDaysBefore(daysBefore);
         }
 
         @Override
@@ -592,7 +587,7 @@ public class MainActivity
         }
     }
 
-    public static class ReminderTimeDialog extends ThisAppDialogFragment {
+    public static class ReminderTimeDialog extends MainDialogFragment {
         private static final String HOUR = "hour";
         private static final String MINUTE = "minute";
 
@@ -606,7 +601,7 @@ public class MainActivity
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             picker = getPicker(savedInstanceState);
-            AlertDialog.Builder builder = getStyledBuilder();
+            AlertDialog.Builder builder = getStyledBuilder(getContext());
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -630,11 +625,11 @@ public class MainActivity
         }
 
         private SimpleTime getReminderTime() {
-            return getMainViewModel().getReminder().getTime();
+            return getViewModel().getReminder().getTime();
         }
 
         private void updateReminder(SimpleTime time) {
-            getMainViewModel().setReminderTime(time);
+            getViewModel().setReminderTime(time);
         }
 
         @Override
@@ -645,7 +640,7 @@ public class MainActivity
         }
     }
 
-    public static class TillDateDialog extends ThisAppDialogFragment {
+    public static class TillDateDialog extends MainDialogFragment {
         private static final String YEAR = "year";
         private static final String MONTH = "month";
         private static final String DAY = "day";
@@ -660,7 +655,7 @@ public class MainActivity
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             picker = getPicker(savedInstanceState);
-            AlertDialog.Builder builder = getStyledBuilder();
+            AlertDialog.Builder builder = getStyledBuilder(getContext());
             builder
                     .setView(picker)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -673,7 +668,7 @@ public class MainActivity
         }
 
         private MyDatePicker getPicker(Bundle savedInstanceState) {
-            MyDatePicker myDatePicker = MyDatePicker.newInstance(getContext(), getMainViewModel().getTill());
+            MyDatePicker myDatePicker = MyDatePicker.newInstance(getContext(), getViewModel().getTill());
             if (savedInstanceState != null) {
                 int year = savedInstanceState.getInt(YEAR);
                 int month = savedInstanceState.getInt(MONTH);
@@ -684,7 +679,7 @@ public class MainActivity
         }
 
         private void updateTill(Calendar date) {
-            getMainViewModel().setTill(date);
+            getViewModel().setTill(date);
         }
 
         @Override
@@ -696,7 +691,7 @@ public class MainActivity
         }
     }
 
-    public static class WidgetInfoDialog extends ThisAppDialogFragment {
+    public static class WidgetInfoDialog extends MainDialogFragment {
 
         public static NoticeDialogFragment newInstance() {
             return new WidgetInfoDialog();
@@ -705,7 +700,7 @@ public class MainActivity
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = getStyledBuilder();
+            AlertDialog.Builder builder = getStyledBuilder(getContext());
             builder.setView(getDialogView());
             return builder.create();
         }
@@ -715,7 +710,7 @@ public class MainActivity
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getMainViewModel().setAppWidgetInfoDisplayed(getContext());
+                    getViewModel().setAppWidgetInfoDisplayed(getContext());
                     getDialog().dismiss();
                 }
             });

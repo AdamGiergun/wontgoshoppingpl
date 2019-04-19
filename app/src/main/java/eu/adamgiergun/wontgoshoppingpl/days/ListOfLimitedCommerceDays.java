@@ -2,8 +2,6 @@ package eu.adamgiergun.wontgoshoppingpl.days;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,20 +14,28 @@ import androidx.annotation.NonNull;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.db.DBContract;
-import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
+import eu.adamgiergun.wontgoshoppingpl.db.*;
 
 import static eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType.*;
 
 public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
 
-    public static Iterator<LimitedCommerceDay> getIterator(Context context) {
-        Resources resources = context.getResources();
+    public static Iterator<LimitedCommerceDay> getIteratorFromResources(Resources resources) {
+        ListOfLimitedCommerceDays days = getFromResources(resources);
+        removePastDays(days);
+        return days.iterator();
+    }
+
+    private static ListOfLimitedCommerceDays getFromResources(Resources resources) {
         ListOfLimitedCommerceDays days = new ListOfLimitedCommerceDays();
         days.addArray(resources, R.array.non_commerce_days);
         days.addArray(resources, R.array.commerce_sundays);
         days.addArray(resources, R.array.holidays);
         Collections.sort(days);
+        return days;
+    }
+
+    private static void removePastDays(ListOfLimitedCommerceDays days) {
         Iterator<LimitedCommerceDay> iterator = days.iterator();
         Calendar yesterday = getYesterday();
         LimitedCommerceDay day;
@@ -41,7 +47,6 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
                 break;
             }
         }
-        return days.iterator();
     }
 
     public static Calendar getLastDate(Context context) {
@@ -52,11 +57,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
             lastDay = iterator.next();
         }
 
-        if (lastDay == null) {
-            return Calendar.getInstance();
-        } else {
-            return lastDay.getCalendar();
-        }
+        return (lastDay == null) ? Calendar.getInstance() : lastDay.getCalendar();
     }
 
     private static Calendar getYesterday() {
@@ -72,41 +73,32 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
     }
 
     private static ListOfLimitedCommerceDays newInstance(Context context, @NonNull TypesList includedDaysTypes) {
-        DatabaseHandler databaseHandler = new DatabaseHandler(context);
-        SQLiteDatabase db = databaseHandler.getReadableDatabase();
+        ListOfLimitedCommerceDays list = new ListOfLimitedCommerceDays();
+
+        LimitedCommerceDay day;
+        Iterator<EventsTableRow> rowIterator =
+                EventsTableRow.newIterator(
+                        context,
+                        getSelectionArgs(includedDaysTypes));
+        Calendar yesterday = getYesterday();
+        while (rowIterator.hasNext()) {
+            day = LimitedCommerceDay.newInstance(rowIterator.next());
+            if (day.compareDateTo(yesterday) > 0) {
+                list.add(day);
+            }
+        }
+
+        return list;
+    }
+
+    private static String[] getSelectionArgs(@NonNull TypesList includedDaysTypes) {
         String[] selectionArgs = new String[includedDaysTypes.size()];
         Iterator<LimitedCommerceDayType> iterator = includedDaysTypes.iterator();
         int i = 0;
         while (iterator.hasNext()) {
             selectionArgs[i++] = iterator.next().getCodeAsString();
         }
-        ListOfLimitedCommerceDays list = new ListOfLimitedCommerceDays();
-        LimitedCommerceDay day;
-        Cursor cursor = db.query(DBContract.Events.TABLE_NAME, null, DBContract.Events.COLUMN_NAME_TYPE_ID + "  IN (?, ?, ?)", selectionArgs, null, null, null);
-        if (cursor!=null && cursor.getCount()>0) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                day = new LimitedCommerceDay(
-                        cursor.getInt(0),
-                        cursor.getString(1));
-                LimitedCommerceDayType type =
-                        LimitedCommerceDayType.getType(
-                                cursor.getInt(2));
-                day.setType(type);
-
-                String calendarId = cursor.getString(3);
-                day.setCalendarId(calendarId);
-
-                long eventId = cursor.getLong(4);
-                day.setCalendarEventId(eventId);
-                if (day.compareTo(getYesterday()) > 0)
-                    list.add(day);
-                cursor.moveToNext();
-            }
-            cursor.close();
-            db.close();
-        }
-        return list;
+        return selectionArgs;
     }
 
     public static LimitedCommerceDay getFirst(Context context) {
@@ -122,8 +114,8 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         Calendar yesterday = getYesterday();
         LimitedCommerceDay day;
         for (String item : array) {
-            day = new LimitedCommerceDay(0, item);
-            if (day.compareTo(yesterday) > 0) {
+            day = LimitedCommerceDay.newInstance(0, item);
+            if (day.compareDateTo(yesterday) > 0) {
                 switch (idOfArray) {
                     case R.array.holidays:
                         day.setType(HOLIDAY);
@@ -151,7 +143,7 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
         list.skipReminderForConsecutiveDays();
         boolean result = true;
         for (LimitedCommerceDay day : list) {
-            if (day.compareTo(till) <= 0) {
+            if (day.compareDateTo(till) <= 0) {
                 if (day.isReminderNeeded()) {
                     day.setReminder(reminder);
                     result = result && day.addToGoogleCalendar(context);
@@ -172,10 +164,10 @@ public class ListOfLimitedCommerceDays extends ArrayList<LimitedCommerceDay> {
                 previousDay = day;
                 nextDay = iterator.next();
                 while ((nextDay.getType() != COMMERCE_SUNDAY)
-                        && nextDay.isDay(previousDay.getTomorrow())) {
+                        && nextDay.dateIs(previousDay.getTomorrow())) {
                     nextDay.setReminderNotNeeded();
                     day.incrementNoOfConsecutiveDays();
-                    day.addToDescription(nextDay.getDescription());
+                    day.appendToDescription(nextDay.getDescription());
                     if (iterator.hasNext()) {
                         previousDay = nextDay;
                         nextDay = iterator.next();

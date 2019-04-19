@@ -26,7 +26,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
         this.listener = listener;
     }
 
-    static DaysRecyclerViewAdapter getInstance(Context context, OnListFragmentInteractionListener listener) {
+    static DaysRecyclerViewAdapter newInstance(Context context, OnListFragmentInteractionListener listener) {
         DaysRecyclerViewAdapter daysRecyclerViewAdapter =
                 new DaysRecyclerViewAdapter(
                         ListOfLimitedCommerceDays.newInstance(context),

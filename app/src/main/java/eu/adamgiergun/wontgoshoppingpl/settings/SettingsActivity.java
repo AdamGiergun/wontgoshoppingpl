@@ -5,34 +5,25 @@ import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
+import android.os.*;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.app.AppCompatDialog;
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.*;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.*;
 
 import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
-import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
-import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.common.ThisAppDialogFragment;
+import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
+import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class SettingsActivity extends AppCompatActivityWithTheme
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
@@ -437,11 +428,11 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
-    public static class ChooseCalendarsForCleaning extends ThisAppDialogFragment {
+    public static class ChooseCalendarsForCleaning extends AppDialogFragment {
         @NonNull
         @Override
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = getStyledBuilder();
+            AlertDialog.Builder builder = getStyledBuilder(getContext());
             builder
                     .setMultiChoiceItems(null, null, null)//items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, getPositiveButtonListener(ChooseCalendarsForCleaning.this))

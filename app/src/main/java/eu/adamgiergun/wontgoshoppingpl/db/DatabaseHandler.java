@@ -1,16 +1,17 @@
 package eu.adamgiergun.wontgoshoppingpl.db;
 
+// TODO do sth with fillDbWithEvents()
+
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-
-import java.util.Iterator;
+import android.database.Cursor;
+import android.database.sqlite.*;
 
 import androidx.annotation.Nullable;
 
-import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
-import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
+import java.util.Iterator;
+
+import eu.adamgiergun.wontgoshoppingpl.days.*;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -31,11 +32,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     private void fillDbWithEvents(SQLiteDatabase db) {
-        LimitedCommerceDay day;
-        Iterator<LimitedCommerceDay> iterator = ListOfLimitedCommerceDays.getIterator(context);
+        Iterator<LimitedCommerceDay> iterator = ListOfLimitedCommerceDays.getIteratorFromResources(context.getResources());
         while (iterator.hasNext()) {
-            day = iterator.next();
-            insertDayInDb(day, db);
+            insertDayInDb(iterator.next(), db);
         }
     }
 
@@ -60,4 +59,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //stub for possible future upgrades
     }
+
+    static Cursor newCursor(SQLiteDatabase db, String[] selectionArgs) {
+
+        return db.query(
+                DBContract.Events.TABLE_NAME,
+                null,
+                DBContract.Events.COLUMN_NAME_TYPE_ID + "  IN (?, ?, ?)",
+                selectionArgs,
+                null,
+                null,
+                null);
+    }
+
 }
