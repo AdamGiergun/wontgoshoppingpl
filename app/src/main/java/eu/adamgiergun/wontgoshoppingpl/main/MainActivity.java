@@ -30,6 +30,7 @@ import java.util.Calendar;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
+
 import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity;
 import eu.adamgiergun.wontgoshoppingpl.day.*;

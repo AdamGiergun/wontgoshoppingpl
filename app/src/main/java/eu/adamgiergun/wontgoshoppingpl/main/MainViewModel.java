@@ -2,26 +2,22 @@ package eu.adamgiergun.wontgoshoppingpl.main;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.android.gms.ads.*;
 import java.util.Calendar;
 
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
-import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
-import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel;
-import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
-import eu.adamgiergun.wontgoshoppingpl.day.ListOfDays;
+import eu.adamgiergun.mylibrary.calendarmanagement.*;
+import eu.adamgiergun.wontgoshoppingpl.common.*;
+import eu.adamgiergun.wontgoshoppingpl.day.*;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
-import eu.adamgiergun.wontgoshoppingpl.day.Day;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.*;
+import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.CalendarFullText.*;
+import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.LookFullText.*;
+import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.APP_THEME;
+import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.CALENDAR_EVENT;
 
 public class MainViewModel extends AppViewModel {
     private boolean actionAddList;
@@ -235,15 +231,8 @@ public class MainViewModel extends AppViewModel {
     }
     //endregion
 
-    private void logFirebaseEvent(Context context, String event, String full_text) {
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        Bundle params = new Bundle();
-        params.putString(FULL_TEXT, full_text);
-        mFirebaseAnalytics.logEvent(event, params);
-    }
-
     void logLook(Context context) {
-        String tag = isLookRich(context) ? LOOK_RICH : LOOK_MINI;
+        String tag = isLookRich(context) ? RICH : MINI;
         logFirebaseEvent(context, APP_THEME, tag);
     }
 
@@ -251,6 +240,10 @@ public class MainViewModel extends AppViewModel {
         String tag = actionAddList ? LIST : SINGLE;
         tag = result ? tag : tag + FAILED;
         logFirebaseEvent(context, CALENDAR_EVENT, tag);
+    }
+
+    private void logFirebaseEvent(Context context, String event, String fullText) {
+        FirebaseEvent.log(context, event, fullText);
     }
 
     int getError() {

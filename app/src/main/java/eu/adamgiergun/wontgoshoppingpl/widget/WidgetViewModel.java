@@ -3,17 +3,15 @@ package eu.adamgiergun.wontgoshoppingpl.widget;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.RemoteViews;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.day.Day;
-import eu.adamgiergun.wontgoshoppingpl.day.ListOfDays;
+import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent;
+import eu.adamgiergun.wontgoshoppingpl.day.*;
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 
-import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.*;
+import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.APP_WIDGET;
+import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.WidgetFullText.*;
 
 class WidgetViewModel {
 
@@ -30,11 +28,8 @@ class WidgetViewModel {
         logFirebaseEvent(context, LAST_REMOVED_FROM_HOME_SCREEN);
     }
 
-    private static void logFirebaseEvent(Context context, String full_text) {
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        Bundle params = new Bundle();
-        params.putString(FULL_TEXT, full_text);
-        mFirebaseAnalytics.logEvent(APP_WIDGET, params);
+    private static void logFirebaseEvent(Context context, String fullText) {
+        FirebaseEvent.log(context, APP_WIDGET, fullText);
     }
 
     static RemoteViews newRemoteViews(Context context) {
