@@ -12,8 +12,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import eu.adamgiergun.wontgoshoppingpl.common.LogFirebaseEvent;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
-import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
+import eu.adamgiergun.wontgoshoppingpl.day.*;
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 
 public class AppWidget extends AppWidgetProvider implements LogFirebaseEvent {
@@ -28,14 +27,14 @@ public class AppWidget extends AppWidgetProvider implements LogFirebaseEvent {
     }
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        LimitedCommerceDay nextDay = ListOfLimitedCommerceDays.getFirst(context);
+        Day nextDay = ListOfDays.getFirst(context);
         RemoteViews views = new RemoteViews(context.getPackageName(), getWidgetLayout(nextDay));
         views.setTextViewText(R.id.appwidget_text, nextDay.getWidgetText());
         setListener(context, views);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
-    private static int getWidgetLayout(LimitedCommerceDay day) {
+    private static int getWidgetLayout(Day day) {
         switch (day.getType()) {
             case HOLIDAY:
             case NON_COMMERCE_DAY:

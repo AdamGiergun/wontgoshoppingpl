@@ -4,7 +4,7 @@ import android.content.Context;
 
 import eu.adamgiergun.mylibrary.MyAppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
+import eu.adamgiergun.wontgoshoppingpl.day.Day;
 
 public class AppPreferences extends MyAppPreferences {
 
@@ -31,8 +31,8 @@ public class AppPreferences extends MyAppPreferences {
         putBoolean(key, value);
     }
 
-    public LimitedCommerceDayType.TypesList newLimitedCommerceDayTypesList(Context context) {
-        return LimitedCommerceDayType.newTypesList(
+    public Day.Type.List newDayTypesList(Context context) {
+        return Day.Type.newList(
                 showNonCommerceDays(context),
                 showHolidays(context),
                 showCommerceSundays(context));

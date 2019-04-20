@@ -6,7 +6,7 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
-import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
+import eu.adamgiergun.wontgoshoppingpl.day.ListOfDays;
 
 class MyDatePicker extends DatePicker {
 
@@ -16,7 +16,7 @@ class MyDatePicker extends DatePicker {
 
     static MyDatePicker newInstance(Context context, Calendar date) {
         MyDatePicker picker = new MyDatePicker(context);
-        picker.setMaxDate(ListOfLimitedCommerceDays.getLastDate(context).getTimeInMillis());
+        picker.setMaxDate(ListOfDays.getLastDate(context).getTimeInMillis());
         picker.updateDate(
                 date.get(Calendar.YEAR),
                 date.get(Calendar.MONTH),

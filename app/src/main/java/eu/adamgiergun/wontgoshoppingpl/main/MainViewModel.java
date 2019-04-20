@@ -15,10 +15,9 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel;
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
-import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
+import eu.adamgiergun.wontgoshoppingpl.day.ListOfDays;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
-import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
-import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDayType;
+import eu.adamgiergun.wontgoshoppingpl.day.Day;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class MainViewModel extends AppViewModel {
@@ -26,9 +25,9 @@ public class MainViewModel extends AppViewModel {
     private MutableLiveData<Calendar> till;
     private MutableLiveData<SimpleReminder> reminder;
     private SQLiteDatabase database;
-    private LimitedCommerceDay lastTouchedDay;
-    private LimitedCommerceDayType.TypesList typesToBeAddedToCalendar;
-    private LimitedCommerceDayType.TypesList typesToBeDisplayed;
+    private Day lastTouchedDay;
+    private Day.Type.List dayTypesToBeAddedToCalendar;
+    private Day.Type.List dayTypesToBeDisplayed;
     private InterstitialAd interstitialAd;
     private boolean recreatedOnDemand;
 
@@ -39,8 +38,8 @@ public class MainViewModel extends AppViewModel {
         actionAddList = false;
         database = new DatabaseHandler(context).getWritableDatabase();
         recreatedOnDemand = false;
-        typesToBeDisplayed = appPreferences.newLimitedCommerceDayTypesList(context);
-        typesToBeAddedToCalendar = typesToBeDisplayed;
+        dayTypesToBeDisplayed = appPreferences.newDayTypesList(context);
+        dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed;
         initializeInterstitialAd(context);
     }
 
@@ -150,7 +149,7 @@ public class MainViewModel extends AppViewModel {
         }
     }
 
-    void setLastTouchedDay(LimitedCommerceDay day) {
+    void setLastTouchedDay(Day day) {
         lastTouchedDay = day;
         setActionAddList(false);
     }
@@ -165,9 +164,9 @@ public class MainViewModel extends AppViewModel {
 
     boolean addToCalendar(Context context) {
         if (actionAddList) {
-            return ListOfLimitedCommerceDays.addToCalendar(
+            return ListOfDays.addToCalendar(
                     context,
-                    typesToBeAddedToCalendar,
+                    dayTypesToBeAddedToCalendar,
                     reminder.getValue(),
                     till.getValue());
         } else {
@@ -176,12 +175,12 @@ public class MainViewModel extends AppViewModel {
         }
     }
 
-    LimitedCommerceDayType.TypesList getTypesToBeAddedToCalendar() {
-        return typesToBeAddedToCalendar;
+    Day.Type.List getDayTypesToBeAddedToCalendar() {
+        return dayTypesToBeAddedToCalendar;
     }
 
-    void setTypesToBeAddedToCalendar(LimitedCommerceDayType.TypesList typesToBeAddedToCalendar) {
-        this.typesToBeAddedToCalendar = typesToBeAddedToCalendar;
+    void setDayTypesToBeAddedToCalendar(Day.Type.List dayTypes) {
+        dayTypesToBeAddedToCalendar = dayTypes;
     }
 
     boolean isRecreatedOnDemand() {
@@ -216,11 +215,11 @@ public class MainViewModel extends AppViewModel {
         return  appPreferences.isUseGoogleCalendarSet(context) && appPreferences.isCalendarSet(context);
     }
 
-    boolean checkIfTypesChanged(Context context) {
-        LimitedCommerceDayType.TypesList oldTypesToBeDisplayed = typesToBeDisplayed;
-        typesToBeDisplayed = appPreferences.newLimitedCommerceDayTypesList(context);
+    boolean checkIfDayTypesChanged(Context context) {
+        Day.Type.List oldDayTypesToBeDisplayed = dayTypesToBeDisplayed;
+        dayTypesToBeDisplayed = appPreferences.newDayTypesList(context);
         return !(isFirstRun(context) ||
-                typesToBeDisplayed.equals(oldTypesToBeDisplayed));
+                dayTypesToBeDisplayed.equals(oldDayTypesToBeDisplayed));
     }
 
     private void setNotFirstRun(Context context) {

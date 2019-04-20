@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 
 import java.util.Iterator;
 
-import eu.adamgiergun.wontgoshoppingpl.days.*;
+import eu.adamgiergun.wontgoshoppingpl.day.*;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -32,13 +32,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     private void fillDbWithEvents(SQLiteDatabase db) {
-        Iterator<LimitedCommerceDay> iterator = ListOfLimitedCommerceDays.getIteratorFromResources(context.getResources());
+        Iterator<Day> iterator = ListOfDays.getIteratorFromResources(context.getResources());
         while (iterator.hasNext()) {
             insertDayInDb(iterator.next(), db);
         }
     }
 
-    private void insertDayInDb(LimitedCommerceDay day, SQLiteDatabase db) {
+    private void insertDayInDb(Day day, SQLiteDatabase db) {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(

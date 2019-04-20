@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.*;
 
-import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
+import eu.adamgiergun.wontgoshoppingpl.day.Day;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class DaysFragment extends Fragment {
@@ -30,7 +30,7 @@ public class DaysFragment extends Fragment {
         }
 
         private void deleteDayFromGoogleCalendar(DaysRecyclerViewAdapter.ViewHolder dayViewHolder) {
-            LimitedCommerceDay day = dayViewHolder.getDay();
+            Day day = dayViewHolder.getDay();
             day.deleteFromGoogleCalendar(getContext());
             refreshRecyclerView();
         }
@@ -84,6 +84,6 @@ public class DaysFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(LimitedCommerceDay day);
+        void onListFragmentInteraction(Day day);
     }
 }

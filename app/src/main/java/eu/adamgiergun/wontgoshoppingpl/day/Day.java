@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl.days;
+package eu.adamgiergun.wontgoshoppingpl.day;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -17,7 +17,7 @@ import eu.adamgiergun.wontgoshoppingpl.db.*;
 import java.text.DateFormat;
 import java.util.*;
 
-public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
+public class Day implements Comparable<Day> {
 
     private int dbId;
     private String item;
@@ -29,22 +29,22 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
     private SimpleReminder reminder;
     private String description;
     private boolean reminderNeeded;
-    private LimitedCommerceDayType type;
+    private Type type;
     private String calendarId;
     private long calendarEventId;
 
-    private LimitedCommerceDay(){}
+    private Day(){}
 
-    static LimitedCommerceDay newInstance(EventsTableRow row) {
-        LimitedCommerceDay day = LimitedCommerceDay.newInstance(row.dbId, row.item);
-        day.setType(LimitedCommerceDayType.getType(row.typeId));
+    static Day newInstance(EventsTableRow row) {
+        Day day = Day.newInstance(row.dbId, row.item);
+        day.setType(Type.getType(row.typeId));
         day.setCalendarId(row.calendarId);
         day.setCalendarEventId(row.calendarEventId);
         return day;
     }
 
-    static LimitedCommerceDay newInstance(int id, String item) {
-        LimitedCommerceDay day = new LimitedCommerceDay();
+    static Day newInstance(int id, String item) {
+        Day day = new Day();
         day.dbId = id;
         day.item = item;
 
@@ -81,7 +81,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
     }
 
     @Override
-    public int compareTo(@NonNull LimitedCommerceDay another) {
+    public int compareTo(@NonNull Day another) {
         return this.calendar.compareTo(another.calendar);
     }
 
@@ -103,7 +103,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
     }
 
     public String getDescriptionForDialog() {
-        if (type == LimitedCommerceDayType.HOLIDAY) {
+        if (type == Type.HOLIDAY) {
             return description;
         } else {
             return getDateAndWeekdayString();
@@ -161,7 +161,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
 
         SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(calendarId);
 
-        if (type == LimitedCommerceDayType.COMMERCE_SUNDAY) {
+        if (type == Type.COMMERCE_SUNDAY) {
             calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping));
         } else {
             calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
@@ -235,7 +235,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         this.reminderNeeded = false;
     }
 
-    public LimitedCommerceDayType getType() {
+    public Type getType() {
         return type;
     }
 
@@ -243,7 +243,7 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
         return type.getCodeAsString();
     }
 
-    void setType(LimitedCommerceDayType type) {
+    void setType(Type type) {
         this.type = type;
     }
 
@@ -309,5 +309,76 @@ public class LimitedCommerceDay implements Comparable<LimitedCommerceDay> {
 
     public CharSequence getWidgetText() {
         return getDateString() + "\nPL: " + description;
+    }
+
+    public enum Type {
+        NON_COMMERCE_DAY(0),
+        HOLIDAY(1),
+        COMMERCE_SUNDAY(2);
+
+        private int code;
+
+        Type(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public static Type getType(int code) {
+            switch (code) {
+                case 0:
+                    return NON_COMMERCE_DAY;
+                case 1:
+                    return HOLIDAY;
+                case 2:
+                    return COMMERCE_SUNDAY;
+                default:
+                    return null;
+            }
+        }
+
+        String getCodeAsString() {
+            return String.valueOf(code);
+        }
+
+        public static class List extends ArrayList<Type> {
+
+            public boolean equals(List anotherList) {
+                if (this.size() != anotherList.size()) {
+                    return false;
+                } else {
+                    boolean[] thisArray = this.getArray();
+                    boolean[] anotherArray = anotherList.getArray();
+                    return (thisArray[0] == anotherArray[0]) &&
+                            (thisArray[1] == anotherArray[1]) &&
+                            (thisArray[2] == anotherArray[2]);
+                }
+            }
+
+            private boolean[] getArray() {
+                boolean[] array = new boolean[]{false, false, false};
+                Iterator<Type> iterator = this.iterator();
+                Type type;
+
+                while (iterator.hasNext()) {
+                    type = iterator.next();
+                    array[type.code] = true;
+                }
+                return array;
+            }
+        }
+
+        public static List newList(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
+            List types = new List();
+            if (addNonCommerceDays)
+                types.add(NON_COMMERCE_DAY);
+            if (addHolidays)
+                types.add(HOLIDAY);
+            if (addCommerceSundays)
+                types.add(COMMERCE_SUNDAY);
+            return types;
+        }
     }
 }

@@ -9,19 +9,19 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
-import eu.adamgiergun.wontgoshoppingpl.days.LimitedCommerceDay;
-import eu.adamgiergun.wontgoshoppingpl.days.ListOfLimitedCommerceDays;
+import eu.adamgiergun.wontgoshoppingpl.day.Day;
+import eu.adamgiergun.wontgoshoppingpl.day.ListOfDays;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnListFragmentInteractionListener;
 
 public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerViewAdapter.ViewHolder> {
 
-    private final ListOfLimitedCommerceDays days;
+    private final ListOfDays days;
     private final OnListFragmentInteractionListener listener;
     private boolean isLookRich;
     private static float density;
 
-    private DaysRecyclerViewAdapter(ListOfLimitedCommerceDays days, OnListFragmentInteractionListener listener) {
+    private DaysRecyclerViewAdapter(ListOfDays days, OnListFragmentInteractionListener listener) {
         this.days = days;
         this.listener = listener;
     }
@@ -29,7 +29,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
     static DaysRecyclerViewAdapter newInstance(Context context, OnListFragmentInteractionListener listener) {
         DaysRecyclerViewAdapter daysRecyclerViewAdapter =
                 new DaysRecyclerViewAdapter(
-                        ListOfLimitedCommerceDays.newInstance(context),
+                        ListOfDays.newInstance(context),
                         listener);
         daysRecyclerViewAdapter.setLook(context);
         density = context.getResources().getDisplayMetrics().density;
@@ -50,7 +50,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        LimitedCommerceDay day = days.get(position);
+        Day day = days.get(position);
         holder.setup(day);
     }
 
@@ -64,7 +64,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
         private final TextView dayView;
         private final TextView timeView;
         private final TextView nameView;
-        private LimitedCommerceDay day;
+        private Day day;
 
         private ViewHolder(CardView view) {
             super(view);
@@ -74,7 +74,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
             nameView = view.findViewById(R.id.name);
         }
 
-        private void setup(final LimitedCommerceDay day) {
+        private void setup(final Day day) {
             this.day = day;
             dayView.setText(day.getDateAndWeekdayString());
             timeView.setText(day.getTimeString());
@@ -103,7 +103,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
             }
         }
 
-        LimitedCommerceDay getDay() {
+        Day getDay() {
             return day;
         }
 
