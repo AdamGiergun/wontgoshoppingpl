@@ -23,7 +23,6 @@ import androidx.fragment.app.*;
 import androidx.lifecycle.*;
 
 import com.google.android.gms.ads.*;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -44,7 +43,7 @@ public class MainActivity
         extends AppCompatActivityWithTheme
         implements NoticeDialogFragment.NoticeDialogListener,
         DaysFragment.OnListFragmentInteractionListener,
-        NoticeDialogFragment.NoticeDialogViewListener, LogFirebaseEvent {
+        NoticeDialogFragment.NoticeDialogViewListener {
 
     private static final String MAIN_FRAGMENT_TAG = "main_fragment";
 
@@ -77,7 +76,7 @@ public class MainActivity
     private void setDayFragment() {
         addFragment(new DaysFragment());
         showWidgetInfoIfNeeded();
-        logLookInFirebase();
+        mViewModel.logLook(this);
     }
 
     private void showWidgetInfoIfNeeded() {
@@ -86,11 +85,6 @@ public class MainActivity
                     .newInstance()
                     .show(getSupportFragmentManager(), "");
         }
-    }
-
-    private void logLookInFirebase() {
-        String tag = mViewModel.isLookRich(this) ? LOOK_RICH : LOOK_MINI;
-        logFirebaseEvent(this, APP_THEME, tag);
     }
 
     private void setupBannerAds() {
@@ -151,14 +145,6 @@ public class MainActivity
 //        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
 //    }
     //endregion
-
-    @Override
-    public void logFirebaseEvent(Context context, String event, String full_text) {
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        Bundle params = new Bundle();
-        params.putString("full_text", full_text);
-        mFirebaseAnalytics.logEvent(event, params);
-    }
 
     //region AppMenuHandlingRegion
     @Override
@@ -308,15 +294,11 @@ public class MainActivity
     private void addToCalendar() {
         showBigAd();
 
-        String tag = mViewModel.isActionAddList() ? LIST : SINGLE;
-        int error = mViewModel.isActionAddList() ? R.string.error_sth_went_wrong : R.string.error_adding_to_calendar_failed;
-
         boolean isResultPositive = mViewModel.addToCalendar(this);
         if (isResultPositive) {
-            logFirebaseEvent(this, CALENDAR_EVENT, tag);
             refreshList();
         }
-        showInfo(isResultPositive, R.string.info_added_to_calendar, error);
+        showInfo(isResultPositive, R.string.info_added_to_calendar, mViewModel.getError());
     }
 
     private void showBigAd() {

@@ -2,12 +2,13 @@ package eu.adamgiergun.wontgoshoppingpl.main;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-
+import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Calendar;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
@@ -19,6 +20,8 @@ import eu.adamgiergun.wontgoshoppingpl.day.ListOfDays;
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
 import eu.adamgiergun.wontgoshoppingpl.day.Day;
 import eu.adamgiergun.wontgoshoppingpl.R;
+
+import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.*;
 
 public class MainViewModel extends AppViewModel {
     private boolean actionAddList;
@@ -163,16 +166,21 @@ public class MainViewModel extends AppViewModel {
     }
 
     boolean addToCalendar(Context context) {
+        boolean result;
         if (actionAddList) {
-            return ListOfDays.addToCalendar(
+            result = ListOfDays.addToCalendar(
                     context,
                     dayTypesToBeAddedToCalendar,
                     reminder.getValue(),
                     till.getValue());
         } else {
             lastTouchedDay.setReminder(reminder.getValue());
-            return lastTouchedDay.addToGoogleCalendar(context);
+            result = lastTouchedDay.addToGoogleCalendar(context);
         }
+
+        logCalendarEvent(context, result);
+
+        return result;
     }
 
     Day.Type.List getDayTypesToBeAddedToCalendar() {
@@ -226,4 +234,26 @@ public class MainViewModel extends AppViewModel {
         appPreferences.setFirstRun(context, false);
     }
     //endregion
+
+    private void logFirebaseEvent(Context context, String event, String full_text) {
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        Bundle params = new Bundle();
+        params.putString(FULL_TEXT, full_text);
+        mFirebaseAnalytics.logEvent(event, params);
+    }
+
+    void logLook(Context context) {
+        String tag = isLookRich(context) ? LOOK_RICH : LOOK_MINI;
+        logFirebaseEvent(context, APP_THEME, tag);
+    }
+
+    private void logCalendarEvent(Context context, boolean result) {
+        String tag = actionAddList ? LIST : SINGLE;
+        tag = result ? tag : tag + FAILED;
+        logFirebaseEvent(context, CALENDAR_EVENT, tag);
+    }
+
+    int getError() {
+        return actionAddList ? R.string.error_sth_went_wrong : R.string.error_adding_to_calendar_failed;
+    }
 }
