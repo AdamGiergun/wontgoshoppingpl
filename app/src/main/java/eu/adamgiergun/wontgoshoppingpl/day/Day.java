@@ -346,14 +346,18 @@ public class Day implements Comparable<Day> {
         public static class List extends ArrayList<Type> {
 
             public boolean equals(List anotherList) {
-                if (this.size() != anotherList.size()) {
+                if (anotherList == null) {
                     return false;
                 } else {
-                    boolean[] thisArray = this.getArray();
-                    boolean[] anotherArray = anotherList.getArray();
-                    return (thisArray[0] == anotherArray[0]) &&
-                            (thisArray[1] == anotherArray[1]) &&
-                            (thisArray[2] == anotherArray[2]);
+                    if (this.size() != anotherList.size()) {
+                        return false;
+                    } else {
+                        boolean[] thisArray = this.getArray();
+                        boolean[] anotherArray = anotherList.getArray();
+                        return (thisArray[0] == anotherArray[0]) &&
+                                (thisArray[1] == anotherArray[1]) &&
+                                (thisArray[2] == anotherArray[2]);
+                    }
                 }
             }
 

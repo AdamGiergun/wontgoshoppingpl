@@ -180,7 +180,9 @@ public class MainViewModel extends AppViewModel {
     }
 
     Day.Type.List getDayTypesToBeAddedToCalendar() {
-        return dayTypesToBeAddedToCalendar;
+        return dayTypesToBeAddedToCalendar==null ?
+                Day.Type.newList(true, true, true)
+                : dayTypesToBeAddedToCalendar;
     }
 
     void setDayTypesToBeAddedToCalendar(Day.Type.List dayTypes) {
