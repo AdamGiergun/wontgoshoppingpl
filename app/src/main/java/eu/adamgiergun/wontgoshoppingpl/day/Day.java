@@ -8,6 +8,7 @@ import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.wontgoshoppingpl.common.*;
@@ -345,7 +346,7 @@ public class Day implements Comparable<Day> {
 
         public static class List extends ArrayList<Type> {
 
-            public boolean equals(List anotherList) {
+            public boolean equals(@Nullable List anotherList) {
                 if (anotherList == null) {
                     return false;
                 } else {
