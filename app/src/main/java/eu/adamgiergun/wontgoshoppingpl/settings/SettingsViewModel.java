@@ -2,7 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.settings;
 
 import androidx.lifecycle.ViewModel;
 
-class SettingsViewModel extends ViewModel {
+public class SettingsViewModel extends ViewModel {
     static final String HEADERS = "headers";
     private static final String HEADERS_LAND = "headersWide";
     private static final String LOOK = "look";

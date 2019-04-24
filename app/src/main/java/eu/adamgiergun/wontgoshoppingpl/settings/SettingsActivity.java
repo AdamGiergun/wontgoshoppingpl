@@ -360,7 +360,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
 
         private void setSummaries() {
-            IntegerDialogPreferenceNew daysBefore = (IntegerDialogPreferenceNew) findPreference(getString(R.string.default_reminder_days_before_preference_key));
+            IntegerDialogPreference daysBefore = (IntegerDialogPreference) findPreference(getString(R.string.default_reminder_days_before_preference_key));
             daysBefore.setSummary(daysBefore.toString());
         }
 
@@ -379,9 +379,9 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         @Override
         public void onDisplayPreferenceDialog(Preference preference) {
             DialogFragment dialogFragment = null;
-            if (preference instanceof IntegerDialogPreferenceNew) {
+            if (preference instanceof IntegerDialogPreference) {
                 dialogFragment = new IntegerPreferenceDialogFragmentCompat();
-            } else if (preference instanceof TimePreferenceNew) {
+            } else if (preference instanceof TimePreference) {
                 dialogFragment = new TimePreferenceDialogFragmentCompat();
             }
 

@@ -60,12 +60,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!--
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".main.MainActivity"
             tools:targetApi="jelly_bean">
-<!--
+-->
         <activity
             android:name=".settings.SettingsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -73,7 +74,7 @@
             android:parentActivityName=".main.MainActivity"
             android:screenOrientation="sensorPortrait"
             tools:targetApi="jelly_bean">
--->
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.adamgiergun.wontgoshoppingpl.main.MainActivity" />

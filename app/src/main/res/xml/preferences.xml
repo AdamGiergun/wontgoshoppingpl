@@ -1,12 +1,12 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                                                xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
         android:key="@string/include_holidays_preference_key"
         android:summaryOff="@string/summary_show_holidays_off"
         android:summaryOn="@string/summary_show_holidays_on"
-        android:title="@string/title_show_holidays"/>
+        android:title="@string/title_show_holidays" />
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
@@ -27,7 +27,7 @@
         android:key="@string/app_look_preference_key"
         android:summaryOff="@string/summary_app_look_mini"
         android:summaryOn="@string/summary_app_look_rich"
-        android:title="@string/title_app_look"/>
+        android:title="@string/title_app_look" />
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
@@ -36,29 +36,27 @@
         android:key="@string/use_google_calendar_preference_key"
         android:summaryOff="@string/google_calendar_preference_summary_off"
         android:summaryOn="@string/google_calendar_preference_summary_on"
-        android:title="@string/google_calendar_preference_title"/>
+        android:title="@string/google_calendar_preference_title" />
 
-<!--
-    <eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreferenceNew
-        android:dependency="@string/use_google_calendar_preference_key"
-        android:key="@string/default_calendar_preference_key"
-        android:title="@string/default_calendar_preference_title"/>
--->
-    <eu.adamgiergun.mylibrary.IntegerDialogPreferenceNew
+    <!--
+        <eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreferenceNew
+            android:dependency="@string/use_google_calendar_preference_key"
+            android:key="@string/default_calendar_preference_key"
+            android:title="@string/default_calendar_preference_title"/>
+    -->
+    <eu.adamgiergun.mylibrary.IntegerDialogPreference
         android:defaultValue="@integer/reminder_days_before_default_value"
         android:dependency="@string/use_google_calendar_preference_key"
-        android:dialogLayout="@app:layout/integer_dialog_preference_layout"
         android:key="@string/default_reminder_days_before_preference_key"
         android:numeric="integer"
         android:title="@string/default_reminder_days_before_preference_title"
         app:defValue="@integer/reminder_days_before_default_value"
-        app:maxValue="364"
-        app:minValue="0"/>
+        app:maxValue="7"
+        app:minValue="0" />
 
-    <eu.adamgiergun.mylibrary.calendarmanagement.TimePreferenceNew
+    <eu.adamgiergun.mylibrary.calendarmanagement.TimePreference
         android:defaultValue="@string/default_reminder_time_preference_default_value"
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_reminder_time_preference_key"
-        android:title="@string/default_reminder_time_preference_title"/>
-
+        android:title="@string/default_reminder_time_preference_title" />
 </androidx.preference.PreferenceScreen>

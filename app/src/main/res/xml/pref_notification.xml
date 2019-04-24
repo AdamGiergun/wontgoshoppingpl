@@ -17,27 +17,27 @@
         android:key="@string/default_calendar_preference_key"
         android:title="@string/default_calendar_preference_title" />
 
-    <eu.adamgiergun.mylibrary.IntegerDialogPreferenceNew
+    <eu.adamgiergun.mylibrary.IntegerDialogPreference
         android:defaultValue="@integer/reminder_days_before_default_value"
         android:dependency="@string/use_google_calendar_preference_key"
-        android:dialogLayout="@app:layout/integer_dialog_preference_layout"
         android:key="@string/default_reminder_days_before_preference_key"
         android:numeric="integer"
         android:title="@string/default_reminder_days_before_preference_title"
         app:defValue="@integer/reminder_days_before_default_value"
-        app:maxValue="364"
+        app:maxValue="7"
         app:minValue="0" />
 
-    <eu.adamgiergun.mylibrary.calendarmanagement.TimePreferenceNew
+    <eu.adamgiergun.mylibrary.calendarmanagement.TimePreference
         android:defaultValue="@string/default_reminder_time_preference_default_value"
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_reminder_time_preference_key"
         android:title="@string/default_reminder_time_preference_title" />
-<!--
-    <androidx.preference.Preference
-        android:dependency="@string/use_google_calendar_preference_key"
-        android:key="@string/key_delete_events"
-        android:title="@string/title_delete_events"
-        android:summary="@string/summary_delete_events" />
--->
+
+    <!--
+        <androidx.preference.Preference
+            android:dependency="@string/use_google_calendar_preference_key"
+            android:key="@string/key_delete_events"
+            android:title="@string/title_delete_events"
+            android:summary="@string/summary_delete_events" />
+    -->
 </androidx.preference.PreferenceScreen>
