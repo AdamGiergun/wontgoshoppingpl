@@ -32,7 +32,7 @@ public class MainViewModel extends AppViewModel {
 
     @Override
     public void initialize(Context context) {
-        super.initialize(context);
+        appPreferences = AppPreferences.getInstance(context);
         setLocalizedConst(context);
         actionAddList = false;
         database = new DatabaseHandler(context).getWritableDatabase();
