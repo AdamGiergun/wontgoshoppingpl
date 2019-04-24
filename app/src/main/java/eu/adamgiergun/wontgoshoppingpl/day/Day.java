@@ -355,9 +355,12 @@ public class Day implements Comparable<Day> {
                     } else {
                         boolean[] thisArray = this.getArray();
                         boolean[] anotherArray = anotherList.getArray();
-                        return (thisArray[0] == anotherArray[0]) &&
-                                (thisArray[1] == anotherArray[1]) &&
-                                (thisArray[2] == anotherArray[2]);
+                        boolean result = true;
+                        for (int i = 0; i < this.size(); i++)
+                        {
+                            result = result && (thisArray[i] == anotherArray[i]);
+                        }
+                        return result;
                     }
                 }
             }
