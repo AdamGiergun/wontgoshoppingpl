@@ -1,17 +1,15 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.ads.*;
 import java.util.Calendar;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.day.*;
-import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
 import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.CalendarFullText.*;
@@ -23,48 +21,25 @@ public class MainViewModel extends AppViewModel {
     private boolean actionAddList;
     private MutableLiveData<Calendar> till;
     private MutableLiveData<SimpleReminder> reminder;
-    private SQLiteDatabase database;
     private Day lastTouchedDay;
     private Day.Type.List dayTypesToBeAddedToCalendar;
     private Day.Type.List dayTypesToBeDisplayed;
-    private InterstitialAd interstitialAd;
     private boolean recreatedOnDemand;
 
-    @Override
-    public void initialize(Context context) {
-        appPreferences = AppPreferences.getInstance(context);
-        setLocalizedConst(context);
+    public MainViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    void initialize() {
         actionAddList = false;
-        database = new DatabaseHandler(context).getWritableDatabase();
         recreatedOnDemand = false;
-        dayTypesToBeDisplayed = appPreferences.newDayTypesList(context);
+        dayTypesToBeDisplayed = getAppPreferences().newDayTypesList(getApplication());
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed;
-        initializeInterstitialAd(context);
     }
 
-    private void setLocalizedConst(Context context) {
-        if (!LocalizedConst.isSet()) {
-            LocalizedConst.setWholeDay(context.getString(R.string.whole_day));
-            LocalizedConst.setSince(context.getString(R.string.since));
-            LocalizedConst.setAskForLook(context.getString(R.string.ask_for_look));
-            LocalizedConst.setSet();
-        }
-    }
-
-    private void initializeInterstitialAd(Context context) {
-        interstitialAd = new InterstitialAd(context);
-        interstitialAd.setAdUnitId(context.getString(R.string.interstitial_ad_id));
-        loadInterstitialAd();
-    }
-
-    private void loadInterstitialAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        interstitialAd.loadAd(adRequest);
-    }
-
-    void setReminderDialogArgs(Context context) {
+    void setReminderDialogArgs() {
         reminder = new MutableLiveData<>();
-        reminder.setValue(getReminderPreference(context));
+        reminder.setValue(getReminderPreference());
         if (isActionAddList()) {
             till = new MutableLiveData<>();
             till.setValue(getLastDayOfNextMonth());
@@ -127,25 +102,9 @@ public class MainViewModel extends AppViewModel {
         this.till.setValue(till);
     }
 
-    void setAppWidgetInfoDisplayed(Context context) {
-        AppPreferences appPreferences = AppPreferences.getInstance(context);
-        appPreferences.setAppWidgetInfoDisplayed(context);
-    }
-
-    void closeDatabase() {
-        if (database != null)
-            database.close();
-    }
-
-    InterstitialAd getInterstitialAd() {
-        if (interstitialAd.isLoaded()) {
-            return interstitialAd;
-        } else {
-            if (!interstitialAd.isLoading()) {
-                loadInterstitialAd();
-            }
-            return null;
-        }
+    void setAppWidgetInfoDisplayed() {
+        AppPreferences appPreferences = AppPreferences.getInstance(getApplication());
+        appPreferences.setAppWidgetInfoDisplayed(getApplication());
     }
 
     void setLastTouchedDay(Day day) {
@@ -161,20 +120,20 @@ public class MainViewModel extends AppViewModel {
         return actionAddList;
     }
 
-    boolean addToCalendar(Context context) {
+    boolean addToCalendar() {
         boolean result;
         if (actionAddList) {
             result = ListOfDays.addToCalendar(
-                    context,
+                    getApplication(),
                     dayTypesToBeAddedToCalendar,
                     reminder.getValue(),
                     till.getValue());
         } else {
             lastTouchedDay.setReminder(reminder.getValue());
-            result = lastTouchedDay.addToGoogleCalendar(context);
+            result = lastTouchedDay.addToGoogleCalendar(getApplication());
         }
 
-        logCalendarEvent(context, result);
+        logCalendarEvent(result);
 
         return result;
     }
@@ -198,54 +157,54 @@ public class MainViewModel extends AppViewModel {
         }
     }
 
-    void onInitialLookChoice(Context context, boolean isLookRich) {
-        setLookRich(context, isLookRich);
-        setNotFirstRun(context);
+    void onInitialLookChoice(boolean isLookRich) {
+        setLookRich(isLookRich);
+        setNotFirstRun();
         recreatedOnDemand = true;
     }
 
     //region AppPreferences proxy region
-    private SimpleReminder getReminderPreference(Context context) {
-        return appPreferences.getReminder(context, SimpleReminder.METHOD_ALERT);
+    private SimpleReminder getReminderPreference() {
+        return getAppPreferences().getReminder(getApplication(), SimpleReminder.METHOD_ALERT);
     }
 
-    boolean isFirstRun(Context context) {
-        return appPreferences.isFirstRun(context);
+    boolean isFirstRun() {
+        return getAppPreferences().isFirstRun(getApplication());
     }
 
-    boolean wasAppWidgetInfoDisplayed(Context context) {
-        return appPreferences.wasAppWidgetInfoDisplayed(context);
+    boolean wasAppWidgetInfoDisplayed() {
+        return getAppPreferences().wasAppWidgetInfoDisplayed(getApplication());
     }
 
-    boolean isCalendarEnabledAndChosen(Context context) {
-        return  appPreferences.isUseGoogleCalendarSet(context) && appPreferences.isCalendarSet(context);
+    boolean isCalendarEnabledAndChosen() {
+        return  getAppPreferences().isUseGoogleCalendarSet(getApplication()) && getAppPreferences().isCalendarSet(getApplication());
     }
 
-    boolean checkIfDayTypesChanged(Context context) {
+    boolean checkIfDayTypesChanged() {
         Day.Type.List oldDayTypesToBeDisplayed = dayTypesToBeDisplayed;
-        dayTypesToBeDisplayed = appPreferences.newDayTypesList(context);
-        return !(isFirstRun(context) ||
+        dayTypesToBeDisplayed = getAppPreferences().newDayTypesList(getApplication());
+        return !(isFirstRun() ||
                 dayTypesToBeDisplayed.equals(oldDayTypesToBeDisplayed));
     }
 
-    private void setNotFirstRun(Context context) {
-        appPreferences.setFirstRun(context, false);
+    private void setNotFirstRun() {
+        getAppPreferences().setFirstRun(getApplication(), false);
     }
     //endregion
 
-    void logLook(Context context) {
-        String tag = isLookRich(context) ? RICH : MINI;
-        logFirebaseEvent(context, APP_THEME, tag);
+    void logLook() {
+        String tag = isLookRich() ? RICH : MINI;
+        logFirebaseEvent(APP_THEME, tag);
     }
 
-    private void logCalendarEvent(Context context, boolean result) {
+    private void logCalendarEvent(boolean result) {
         String tag = actionAddList ? LIST : SINGLE;
         tag = result ? tag : tag + FAILED;
-        logFirebaseEvent(context, CALENDAR_EVENT, tag);
+        logFirebaseEvent(CALENDAR_EVENT, tag);
     }
 
-    private void logFirebaseEvent(Context context, String event, String fullText) {
-        FirebaseEvent.log(context, event, fullText);
+    private void logFirebaseEvent(String event, String fullText) {
+        FirebaseEvent.log(getApplication(), event, fullText);
     }
 
     int getError() {

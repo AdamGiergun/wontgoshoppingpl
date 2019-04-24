@@ -1,22 +1,25 @@
 package eu.adamgiergun.wontgoshoppingpl.common;
 
-import android.content.Context;
+import android.app.Application;
 
-import androidx.lifecycle.ViewModel;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 
-public class AppViewModel extends ViewModel {
+public class AppViewModel extends AndroidViewModel {
 
-    protected AppPreferences appPreferences;
-
-    public void initialize(Context context) {
-        appPreferences = AppPreferences.getInstance(context);
+    public AppViewModel(@NonNull Application application) {
+        super(application);
     }
 
-    public boolean isLookRich(Context context) {
-        return appPreferences.isLookRich(context);
+    public boolean isLookRich() {
+        return getAppPreferences().isLookRich(getApplication());
     }
 
-    protected void setLookRich(Context context, boolean isLookRich) {
-        appPreferences.setLookRich(context, isLookRich);
+    protected void setLookRich(boolean isLookRich) {
+        getAppPreferences().setLookRich(getApplication(), isLookRich);
+    }
+
+    protected AppPreferences getAppPreferences() {
+        return AppPreferences.getInstance(getApplication());
     }
 }

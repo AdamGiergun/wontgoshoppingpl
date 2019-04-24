@@ -47,6 +47,7 @@ public class MainActivity
         NoticeDialogFragment.NoticeDialogViewListener {
 
     private static final String MAIN_FRAGMENT_TAG = "main_fragment";
+    private InterstitialAd interstitialAd;
 
     private MainViewModel mViewModel;
 //    private Calendar calStart;
@@ -61,8 +62,10 @@ public class MainActivity
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         if (savedInstanceState == null) {
-            mViewModel.initialize(this);
-            if (mViewModel.isFirstRun(this)) {
+            initializeInterstitialAd(this);
+            mViewModel.initialize();
+            setLocalizedConst();
+            if (mViewModel.isFirstRun()) {
                 addFragment(AskForLook.newInstance());
             } else {
                 setDayFragment();
@@ -74,20 +77,30 @@ public class MainActivity
         }
     }
 
+    private void setLocalizedConst() {
+        if (!LocalizedConst.isSet()) {
+            LocalizedConst.setWholeDay(getString(R.string.whole_day));
+            LocalizedConst.setSince(getString(R.string.since));
+            LocalizedConst.setAskForLook(getString(R.string.ask_for_look));
+            LocalizedConst.setSet();
+        }
+    }
+
     private void setDayFragment() {
         addFragment(new DaysFragment());
         showWidgetInfoIfNeeded();
-        mViewModel.logLook(this);
+        mViewModel.logLook();
     }
 
     private void showWidgetInfoIfNeeded() {
-        if (!mViewModel.wasAppWidgetInfoDisplayed(this)) {
+        if (!mViewModel.wasAppWidgetInfoDisplayed()) {
             WidgetInfoDialog
                     .newInstance()
                     .show(getSupportFragmentManager(), "");
         }
     }
 
+    //region Ads Handling region
     private void setupBannerAds() {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
@@ -96,19 +109,43 @@ public class MainActivity
         mAdView.loadAd(adRequest);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mViewModel.closeDatabase();
+    private void initializeInterstitialAd(Context context) {
+        interstitialAd = new InterstitialAd(context);
+        interstitialAd.setAdUnitId(context.getString(R.string.interstitial_ad_id));
+        loadInterstitialAd();
     }
+
+    private void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
+    }
+
+    private InterstitialAd getInterstitialAd() {
+        if (interstitialAd.isLoaded()) {
+            return interstitialAd;
+        } else {
+            if (!interstitialAd.isLoading()) {
+                loadInterstitialAd();
+            }
+            return null;
+        }
+    }
+
+    private void showBigAd() {
+        InterstitialAd interstitialAd = getInterstitialAd();
+        if (interstitialAd != null) {
+            interstitialAd.show();
+        }
+    }
+    //endregion
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mViewModel.checkIfDayTypesChanged(this)) {
+        if (mViewModel.checkIfDayTypesChanged()) {
             refreshList();
         }
-        if (mViewModel.isLookRich(this)) {
+        if (mViewModel.isLookRich()) {
             setLookRich();
         }
 //        showStartTime();
@@ -150,7 +187,7 @@ public class MainActivity
     //region AppMenuHandlingRegion
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        int menuLayoutId = mViewModel.isFirstRun(this) ? R.menu.main_activity_actions_first_run : R.menu.main_activity_actions;
+        int menuLayoutId = mViewModel.isFirstRun() ? R.menu.main_activity_actions_first_run : R.menu.main_activity_actions;
         getMenuInflater().inflate(menuLayoutId, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -196,7 +233,7 @@ public class MainActivity
     }
 
     private void checkCalendarSettings() {
-        if (mViewModel.isCalendarEnabledAndChosen(this)) {
+        if (mViewModel.isCalendarEnabledAndChosen()) {
             if (mViewModel.isActionAddList()) {
                 askForDayTypesAddedToCalendar();
             } else {
@@ -208,7 +245,7 @@ public class MainActivity
     }
 
     private void askForReminderSettings() {
-        mViewModel.setReminderDialogArgs(this);
+        mViewModel.setReminderDialogArgs();
         ReminderSettingsDialog
                 .newInstance()
                 .show(getSupportFragmentManager(), "");
@@ -295,18 +332,11 @@ public class MainActivity
     private void addToCalendar() {
         showBigAd();
 
-        boolean isResultPositive = mViewModel.addToCalendar(this);
+        boolean isResultPositive = mViewModel.addToCalendar();
         if (isResultPositive) {
             refreshList();
         }
         showInfo(isResultPositive, R.string.info_added_to_calendar, mViewModel.getError());
-    }
-
-    private void showBigAd() {
-        InterstitialAd interstitialAd = mViewModel.getInterstitialAd();
-        if (interstitialAd != null) {
-            interstitialAd.show();
-        }
     }
 
     @Override
@@ -318,7 +348,7 @@ public class MainActivity
 
     public void onLookButtonClick(View view) {
         boolean isLookRich = (view.getId() == R.id.imageButtonRich);
-        mViewModel.onInitialLookChoice(this, isLookRich);
+        mViewModel.onInitialLookChoice(isLookRich);
         recreate();
     }
 
@@ -693,7 +723,7 @@ public class MainActivity
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getViewModel().setAppWidgetInfoDisplayed(getContext());
+                    getViewModel().setAppWidgetInfoDisplayed();
                     getDialog().dismiss();
                 }
             });
