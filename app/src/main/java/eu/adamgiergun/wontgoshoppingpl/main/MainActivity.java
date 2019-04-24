@@ -59,10 +59,10 @@ public class MainActivity
 //        calStart = Calendar.getInstance();
         setContentView(R.layout.activity_main);
         setupBannerAds();
+        initializeOrLoadInterstitialAd(this);
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         if (savedInstanceState == null) {
-            initializeInterstitialAd(this);
             mViewModel.initialize();
             setLocalizedConst();
             if (mViewModel.isFirstRun()) {
@@ -109,9 +109,11 @@ public class MainActivity
         mAdView.loadAd(adRequest);
     }
 
-    private void initializeInterstitialAd(Context context) {
-        interstitialAd = new InterstitialAd(context);
-        interstitialAd.setAdUnitId(context.getString(R.string.interstitial_ad_id));
+    private void initializeOrLoadInterstitialAd(Context context) {
+        if (interstitialAd == null) {
+            interstitialAd = new InterstitialAd(context);
+            interstitialAd.setAdUnitId(context.getString(R.string.interstitial_ad_id));
+        }
         loadInterstitialAd();
     }
 
@@ -121,13 +123,18 @@ public class MainActivity
     }
 
     private InterstitialAd getInterstitialAd() {
-        if (interstitialAd.isLoaded()) {
-            return interstitialAd;
-        } else {
-            if (!interstitialAd.isLoading()) {
-                loadInterstitialAd();
-            }
+        if (interstitialAd == null) {
+            initializeOrLoadInterstitialAd(this);
             return null;
+        } else {
+            if (interstitialAd.isLoaded()) {
+                return interstitialAd;
+            } else {
+                if (!interstitialAd.isLoading()) {
+                    loadInterstitialAd();
+                }
+                return null;
+            }
         }
     }
 
