@@ -9,8 +9,10 @@ class MyNumberPicker extends NumberPicker {
         super(context);
     }
 
-    static MyNumberPicker newInstance(Context context, int value) {
-        MyNumberPicker picker = new MyNumberPicker(context);
+    static NumberPicker newInstance(Context context, int value) {
+        NumberPicker picker = new NumberPicker(context);
+        picker.setSaveFromParentEnabled(false);
+        picker.setSaveEnabled(false);
         picker.setMinValue(0);
         picker.setMaxValue(9);
         picker.setValue(value);
