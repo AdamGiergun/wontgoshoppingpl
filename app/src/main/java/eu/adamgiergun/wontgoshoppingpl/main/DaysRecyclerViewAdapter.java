@@ -38,8 +38,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
         return daysRecyclerViewAdapter;
     }
 
-    private void setLook(Context context) {
-        Context appContext = context.getApplicationContext();
+    private void setLook(Context appContext) {
         isLookRich = AppPreferences.getInstance(appContext).isLookRich(appContext);
     }
 

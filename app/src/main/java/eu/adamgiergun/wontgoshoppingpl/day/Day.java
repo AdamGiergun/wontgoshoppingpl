@@ -224,6 +224,9 @@ public class Day implements Comparable<Day> {
                 contentValues,
                 DBContract.Events._ID + "=?",
                 new String[]{String.valueOf(dbId)});
+
+        db.close();
+        databaseHandler.close();
     }
 
     boolean isReminderNeeded() {

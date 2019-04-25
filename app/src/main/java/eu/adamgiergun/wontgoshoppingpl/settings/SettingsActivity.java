@@ -47,7 +47,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         removeAllFragments();
         if (isScreenSizeLesserThanLarge())
             popBackStackCompletely();
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
         setContentView(R.layout.settings_activity);
 
         mViewModel.setOrientationLandscape(isOrientationLandscape());
@@ -250,7 +250,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     }
 
     private boolean isPermissionGranted(String permission) {
-        int permissionState = ContextCompat.checkSelfPermission(this, permission);
+        int permissionState = ContextCompat.checkSelfPermission(getApplicationContext(), permission);
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -277,7 +277,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
                     switchFragment(mViewModel.getLookTag(), mViewModel.getNotificationsTag());
                 }
             } else {
-                Toast.makeText(this, eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -300,7 +300,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     @Override
     public void onDialogNegativeClick(NoticeDialogFragment noticeDialogFragment) {
         Toast.
-                makeText(this, R.string.info_cancelled, Toast.LENGTH_SHORT)
+                makeText(getApplicationContext(), R.string.info_cancelled, Toast.LENGTH_SHORT)
                 .show();
     }
 

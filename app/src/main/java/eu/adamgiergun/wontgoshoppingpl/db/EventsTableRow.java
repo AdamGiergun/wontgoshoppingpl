@@ -21,8 +21,8 @@ public class EventsTableRow {
         this.calendarEventId = calendarEventId;
     }
 
-    public static Iterator<EventsTableRow> newIterator(Context context, String[] selectionArgs) {
-        DatabaseHandler databaseHandler = new DatabaseHandler(context);
+    public static Iterator<EventsTableRow> newIterator(Context appContext, String[] selectionArgs) {
+        DatabaseHandler databaseHandler = new DatabaseHandler(appContext);
         SQLiteDatabase db = databaseHandler.getReadableDatabase();
         Cursor cursor = DatabaseHandler.newCursor(db, selectionArgs);
         List<EventsTableRow> rows = new ArrayList<>();

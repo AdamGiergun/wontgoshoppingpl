@@ -4,10 +4,9 @@ package eu.adamgiergun.wontgoshoppingpl.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.*;
-
-import androidx.annotation.Nullable;
 
 import java.util.Iterator;
 
@@ -17,22 +16,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "events.db";
-    private Context context;
+    private Resources resources;
 
-    public DatabaseHandler(@Nullable Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
+    public DatabaseHandler(Context appContext) {
+        super(appContext, DATABASE_NAME, null, DATABASE_VERSION);
+        resources = appContext.getResources();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBContract.SQL_CREATE_EVENTS);
         db.execSQL(DBContract.SQL_CREATE_REMINDERS);
-        fillDbWithEvents(db);
+        fillDbWithEvents(db, resources);
     }
 
-    private void fillDbWithEvents(SQLiteDatabase db) {
-        Iterator<Day> iterator = ListOfDays.getIteratorFromResources(context.getResources());
+    private void fillDbWithEvents(SQLiteDatabase db, Resources resources) {
+        Iterator<Day> iterator = ListOfDays.getIteratorFromResources(resources);
         while (iterator.hasNext()) {
             insertDayInDb(iterator.next(), db);
         }

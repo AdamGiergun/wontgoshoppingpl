@@ -688,7 +688,7 @@ public class MainActivity
         }
 
         private MyDatePicker getPicker(Bundle savedInstanceState) {
-            MyDatePicker myDatePicker = MyDatePicker.newInstance(getContext().getApplicationContext(), getViewModel().getTill());
+            MyDatePicker myDatePicker = MyDatePicker.newInstance(getContext(), getViewModel().getTill());
             if (savedInstanceState != null) {
                 int year = savedInstanceState.getInt(YEAR);
                 int month = savedInstanceState.getInt(MONTH);
