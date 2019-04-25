@@ -2,9 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.day;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -149,11 +147,11 @@ public class Day implements Comparable<Day> {
         this.reminder = reminder;
     }
 
-    public boolean addToGoogleCalendar(Context context) {
-        String defaultCalendarId = getDefaultCalendarIdFromPreferences(context);
+    public boolean addToGoogleCalendar(Context appContext) {
+        String defaultCalendarId = getDefaultCalendarIdFromPreferences(appContext);
         if (calendarId != null) {
             if (!defaultCalendarId.equals(calendarId)) {
-                deleteFromGoogleCalendar(context);
+                deleteFromGoogleCalendar(appContext);
                 calendarId = defaultCalendarId;
             }
         } else {
@@ -163,9 +161,9 @@ public class Day implements Comparable<Day> {
         SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(calendarId);
 
         if (type == Type.COMMERCE_SUNDAY) {
-            calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping));
+            calendarEvent.setTitle(description + " - " + appContext.getString(R.string.go_shopping));
         } else {
-            calendarEvent.setTitle(description + " - " + context.getString(R.string.go_shopping_earlier));
+            calendarEvent.setTitle(description + " - " + appContext.getString(R.string.go_shopping_earlier));
         }
 
         calendarEvent.setStartCalendar(calendar, time);
@@ -174,24 +172,24 @@ public class Day implements Comparable<Day> {
 
         calendarEvent.addReminder(reminder);
 
-        if (SimpleCalendarEvent.doesExist(calendarEventId, context, calendarId)) {
+        if (SimpleCalendarEvent.doesExist(calendarEventId, appContext, calendarId)) {
             calendarEvent.setEventID(calendarEventId);
-            calendarEvent.writeReminders(context);
+            calendarEvent.writeReminders(appContext);
         } else {
-            calendarEventId = calendarEvent.write(context);
-            updateEventIdInDb(context);
+            calendarEventId = calendarEvent.write(appContext);
+            updateEventIdInDb(appContext);
         }
 
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
     }
 
-    public void deleteFromGoogleCalendar(Context context) {
+    public void deleteFromGoogleCalendar(Context appContext) {
         if (calendarEventId != SimpleCalendarEvent.NON_EXISTING) {
-            int count = SimpleCalendarEvent.delete(calendarEventId, context, calendarId);
+            int count = SimpleCalendarEvent.delete(calendarEventId, appContext, calendarId);
             calendarEventId = SimpleCalendarEvent.NON_EXISTING;
-            updateEventIdInDb(context);
+            updateEventIdInDb(appContext);
             if (count > 0) {
-                Toast.makeText(context, context.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
+                Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -206,13 +204,13 @@ public class Day implements Comparable<Day> {
         calendarEvent.setEndCalendar(endCalendar, new SimpleTime("23:59"));
     }
 
-    private String getDefaultCalendarIdFromPreferences(Context context) {
-        AppPreferences appPreferences = AppPreferences.getInstance(context);
-        return appPreferences.getDefaultCalendarId(context);
+    private String getDefaultCalendarIdFromPreferences(Context appContext) {
+        AppPreferences appPreferences = AppPreferences.getInstance(appContext);
+        return appPreferences.getDefaultCalendarId(appContext);
     }
 
-    private void updateEventIdInDb(Context context) {
-        DatabaseHandler databaseHandler = new DatabaseHandler(context);
+    private void updateEventIdInDb(Context appContext) {
+        DatabaseHandler databaseHandler = new DatabaseHandler(appContext);
         SQLiteDatabase db = databaseHandler.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_ID, calendarId);
@@ -279,34 +277,26 @@ public class Day implements Comparable<Day> {
         return backgroundResource;
     }
 
-    public int getBackgroundColor(Context context) {
-        int color;
-        Resources resources = context.getResources();
+    public int getBackgroundColorResource() {
+        int colorRes;
         switch (type) {
             case HOLIDAY:
-                color = getColor(resources, R.color.colorHoliday);
+                colorRes = R.color.colorHoliday;
                 break;
             case NON_COMMERCE_DAY:
-                color = getColor(resources, R.color.colorNonCommerceDay);
+                colorRes = R.color.colorNonCommerceDay;
                 break;
             case COMMERCE_SUNDAY:
-                color = getColor(resources, R.color.colorCommerceSunday);
+                colorRes = R.color.colorCommerceSunday;
                 break;
             default:
-                color = 0;
+                colorRes = 0;
                 break;
         }
-        return color;
+        return colorRes;
     }
 
-    private int getColor(Resources resources, int id) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return resources.getColor(id, null);
-        } else {
-            //noinspection deprecation
-            return resources.getColor(id);
-        }
-    }
+
 
     public CharSequence getWidgetText() {
         return getDateString() + "\nPL: " + description;

@@ -21,7 +21,6 @@ public abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHo
         Resources.Theme theme = super.getTheme();
         if (mViewModel == null) {
             mViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
-
             int style = mViewModel.isLookRich() ? R.style.AppThemeCustomizationsRich : R.style.AppThemeCustomizationsMini;
             theme.applyStyle(style, true);
         }

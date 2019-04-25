@@ -49,15 +49,15 @@ public class ListOfDays extends ArrayList<Day> {
         }
     }
 
-    public static Calendar getLastDate(Context context) {
-        Iterator<Day> iterator = newInstance(context).iterator();
+    public static Long getLastDateInMillis(Context appContext) {
+        Iterator<Day> iterator = newInstance(appContext).iterator();
         Day lastDay = null;
 
         while (iterator.hasNext()) {
             lastDay = iterator.next();
         }
 
-        return (lastDay == null) ? Calendar.getInstance() : lastDay.getCalendar();
+        return (lastDay == null) ? Calendar.getInstance().getTimeInMillis() : lastDay.getCalendar().getTimeInMillis();
     }
 
     private static Calendar getYesterday() {
@@ -66,19 +66,19 @@ public class ListOfDays extends ArrayList<Day> {
         return yesterday;
     }
 
-    public static ListOfDays newInstance(Context context) {
-        AppPreferences appPreferences = AppPreferences.getInstance(context);
-        List dayTypes = appPreferences.newDayTypesList(context);
-        return ListOfDays.newInstance(context, dayTypes);
+    public static ListOfDays newInstance(Context appContext) {
+        AppPreferences appPreferences = AppPreferences.getInstance(appContext);
+        List dayTypes = appPreferences.newDayTypesList(appContext);
+        return ListOfDays.newInstance(appContext, dayTypes);
     }
 
-    private static ListOfDays newInstance(Context context, @NonNull List includedDaysTypes) {
+    private static ListOfDays newInstance(Context appContext, @NonNull List includedDaysTypes) {
         ListOfDays list = new ListOfDays();
 
         Day day;
         Iterator<EventsTableRow> rowIterator =
                 EventsTableRow.newIterator(
-                        context,
+                        appContext,
                         getSelectionArgs(includedDaysTypes));
         Calendar yesterday = getYesterday();
         while (rowIterator.hasNext()) {
@@ -101,10 +101,10 @@ public class ListOfDays extends ArrayList<Day> {
         return selectionArgs;
     }
 
-    public static Day getFirst(Context context) {
+    public static Day getFirst(Context appContext) {
         ListOfDays days =
                 newInstance(
-                        context,
+                        appContext,
                         Day.Type.newList(true, true, true));
         return days.get(0);
     }
@@ -133,20 +133,20 @@ public class ListOfDays extends ArrayList<Day> {
     }
 
     public static boolean addToCalendar(
-            Context context,
+            Context appContext,
             List dayTypesList,
             SimpleReminder reminder,
             Calendar till) {
 
         ListOfDays list =
-                ListOfDays.newInstance(context, dayTypesList);
+                ListOfDays.newInstance(appContext, dayTypesList);
         list.skipReminderForConsecutiveDays();
         boolean result = true;
         for (Day day : list) {
             if (day.compareDateTo(till) <= 0) {
                 if (day.isReminderNeeded()) {
                     day.setReminder(reminder);
-                    result = result && day.addToGoogleCalendar(context);
+                    result = result && day.addToGoogleCalendar(appContext);
                 }
             }
         }

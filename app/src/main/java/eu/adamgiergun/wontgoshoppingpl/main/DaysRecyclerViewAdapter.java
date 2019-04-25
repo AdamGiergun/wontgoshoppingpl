@@ -1,6 +1,8 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.os.Build;
 import android.view.*;
 import android.widget.TextView;
 
@@ -26,18 +28,19 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
         this.listener = listener;
     }
 
-    static DaysRecyclerViewAdapter newInstance(Context context, OnListFragmentInteractionListener listener) {
+    static DaysRecyclerViewAdapter newInstance(Context appContext, OnListFragmentInteractionListener listener) {
         DaysRecyclerViewAdapter daysRecyclerViewAdapter =
                 new DaysRecyclerViewAdapter(
-                        ListOfDays.newInstance(context),
+                        ListOfDays.newInstance(appContext),
                         listener);
-        daysRecyclerViewAdapter.setLook(context);
-        density = context.getResources().getDisplayMetrics().density;
+        daysRecyclerViewAdapter.setLook(appContext);
+        density = appContext.getResources().getDisplayMetrics().density;
         return daysRecyclerViewAdapter;
     }
 
     private void setLook(Context context) {
-        isLookRich = AppPreferences.getInstance(context).isLookRich(context);
+        Context appContext = context.getApplicationContext();
+        isLookRich = AppPreferences.getInstance(appContext).isLookRich(appContext);
     }
 
     @NonNull
@@ -95,11 +98,20 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
             if (isLookRich) {
                 cardView.setBackgroundResource(day.getBackgroundResource());
             } else {
-                cardView.setCardBackgroundColor(
-                        day.getBackgroundColor(
-                                cardView.getContext()));
+                cardView.setCardBackgroundColor(getColor());
                 cardView.setRadius(8 * density);
                 cardView.setCardElevation(4 * density);
+            }
+        }
+
+        private int getColor() {
+            int colorRes = day.getBackgroundColorResource();
+            Resources resources = cardView.getContext().getResources();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return resources.getColor(colorRes, null);
+            } else {
+                //noinspection deprecation
+                return resources.getColor(colorRes);
             }
         }
 

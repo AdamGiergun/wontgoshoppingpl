@@ -59,7 +59,7 @@ public class MainActivity
 //        calStart = Calendar.getInstance();
         setContentView(R.layout.activity_main);
         setupBannerAds();
-        initializeOrLoadInterstitialAd(this);
+        initializeOrLoadInterstitialAd(getApplicationContext());
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         if (savedInstanceState == null) {
@@ -103,7 +103,7 @@ public class MainActivity
     //region Ads Handling region
     private void setupBannerAds() {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
+        MobileAds.initialize(getApplicationContext(), getString(R.string.ad_mob_app_id));
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -124,7 +124,7 @@ public class MainActivity
 
     private InterstitialAd getInterstitialAd() {
         if (interstitialAd == null) {
-            initializeOrLoadInterstitialAd(this);
+            initializeOrLoadInterstitialAd(getApplicationContext());
             return null;
         } else {
             if (interstitialAd.isLoaded()) {
@@ -218,7 +218,7 @@ public class MainActivity
     }
 
     private void startSettingsActivity(boolean startWithNotificationPreferenceFragment) {
-        Intent intent = new Intent(this, SettingsActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         intent.putExtra("startWithNotificationPreferenceFragment", startWithNotificationPreferenceFragment);
         startActivity(intent);
     }
@@ -265,7 +265,7 @@ public class MainActivity
     }
 
     private void startHelpActivity() {
-        Intent intent = new Intent(this, HelpActivity.class);
+        Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
         startActivity(intent);
     }
     //endregion
@@ -285,14 +285,14 @@ public class MainActivity
     private void showInfo(int info, boolean isLengthLong) {
         int length = isLengthLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT;
         Toast
-                .makeText(this, info, length)
+                .makeText(getApplicationContext(), info, length)
                 .show();
     }
     //endregion
 
     //region PermissionsRegion
     private boolean isPermissionGranted(String permission) {
-        int permissionState = ContextCompat.checkSelfPermission(this, permission);
+        int permissionState = ContextCompat.checkSelfPermission(getApplicationContext(), permission);
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -688,7 +688,7 @@ public class MainActivity
         }
 
         private MyDatePicker getPicker(Bundle savedInstanceState) {
-            MyDatePicker myDatePicker = MyDatePicker.newInstance(getContext(), getViewModel().getTill());
+            MyDatePicker myDatePicker = MyDatePicker.newInstance(getContext().getApplicationContext(), getViewModel().getTill());
             if (savedInstanceState != null) {
                 int year = savedInstanceState.getInt(YEAR);
                 int month = savedInstanceState.getInt(MONTH);

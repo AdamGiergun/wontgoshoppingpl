@@ -12,21 +12,21 @@ public class AppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
-        WidgetViewModel.logUpdated(context);
+        WidgetViewModel.logUpdated(context.getApplicationContext());
     }
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        appWidgetManager.updateAppWidget(appWidgetId, WidgetViewModel.newRemoteViews(context));
+        appWidgetManager.updateAppWidget(appWidgetId, WidgetViewModel.newRemoteViews(context.getApplicationContext()));
     }
 
     @Override
     public void onEnabled(Context context) {
-        WidgetViewModel.logFirstAdded(context);
+        WidgetViewModel.logFirstAdded(context.getApplicationContext());
     }
 
     @Override
     public void onDisabled(Context context) {
-        WidgetViewModel.logLastRemoved(context);
+        WidgetViewModel.logLastRemoved(context.getApplicationContext());
     }
 }
 

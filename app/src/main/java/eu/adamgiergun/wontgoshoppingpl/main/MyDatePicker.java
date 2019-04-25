@@ -14,9 +14,9 @@ class MyDatePicker extends DatePicker {
         super(context);
     }
 
-    static MyDatePicker newInstance(Context context, Calendar date) {
-        MyDatePicker picker = new MyDatePicker(context);
-        picker.setMaxDate(ListOfDays.getLastDate(context).getTimeInMillis());
+    static MyDatePicker newInstance(Context appContext, Calendar date) {
+        MyDatePicker picker = new MyDatePicker(appContext);
+        picker.setMaxDate(ListOfDays.getLastDateInMillis(appContext));
         picker.updateDate(
                 date.get(Calendar.YEAR),
                 date.get(Calendar.MONTH),

@@ -32,8 +32,8 @@ public class FirebaseEvent {
 
     private static final String FULL_TEXT = "full_text";
 
-    public static void log(Context context, String event, String fullText) {
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+    public static void log(Context appContext, String event, String fullText) {
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(appContext);
         mFirebaseAnalytics.logEvent(event, getFullTextParams(fullText));
     }
 

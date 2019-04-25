@@ -10,56 +10,56 @@ public class AppPreferences extends MyAppPreferences {
 
     private static AppPreferences soleInstance;
 
-    private AppPreferences(Context context) {
-        super(context);
+    private AppPreferences(Context appContext) {
+        super(appContext);
     }
 
-    public static AppPreferences getInstance(Context context) {
+    public static AppPreferences getInstance(Context appContext) {
         if (soleInstance == null) {
-            soleInstance = new AppPreferences(context);
+            soleInstance = new AppPreferences(appContext);
         }
         return soleInstance;
     }
 
-    public boolean isLookRich(Context context) {
-        String key = context.getString(R.string.app_look_preference_key);
+    public boolean isLookRich(Context appContext) {
+        String key = appContext.getString(R.string.app_look_preference_key);
         return getBoolean(key, false);
     }
 
-    void setLookRich(Context context, boolean value) {
-        String key = context.getString(R.string.app_look_preference_key);
+    void setLookRich(Context appContext, boolean value) {
+        String key = appContext.getString(R.string.app_look_preference_key);
         putBoolean(key, value);
     }
 
-    public Day.Type.List newDayTypesList(Context context) {
+    public Day.Type.List newDayTypesList(Context appContext) {
         return Day.Type.newList(
-                showNonCommerceDays(context),
-                showHolidays(context),
-                showCommerceSundays(context));
+                showNonCommerceDays(appContext),
+                showHolidays(appContext),
+                showCommerceSundays(appContext));
     }
 
-    private boolean showCommerceSundays(Context context) {
-        String key = context.getString(R.string.include_commerce_sundays_preference_key);
+    private boolean showCommerceSundays(Context appContext) {
+        String key = appContext.getString(R.string.include_commerce_sundays_preference_key);
         return getBoolean(key, true);
     }
 
-    private boolean showHolidays(Context context) {
-        String key = context.getString(R.string.include_holidays_preference_key);
+    private boolean showHolidays(Context appContext) {
+        String key = appContext.getString(R.string.include_holidays_preference_key);
         return getBoolean(key, true);
     }
 
-    private boolean showNonCommerceDays(Context context) {
-        String key = context.getString(R.string.include_non_commerce_days_preference_key);
+    private boolean showNonCommerceDays(Context appContext) {
+        String key = appContext.getString(R.string.include_non_commerce_days_preference_key);
         return getBoolean(key, true);
     }
 
-    public boolean wasAppWidgetInfoDisplayed(Context context) {
-        String key = context.getString(R.string.key_app_widget_info_displayed);
+    public boolean wasAppWidgetInfoDisplayed(Context appContext) {
+        String key = appContext.getString(R.string.key_app_widget_info_displayed);
         return getBoolean(key, false);
     }
 
-    public void setAppWidgetInfoDisplayed(Context context) {
-        String key = context.getString(R.string.key_app_widget_info_displayed);
+    public void setAppWidgetInfoDisplayed(Context appContext) {
+        String key = appContext.getString(R.string.key_app_widget_info_displayed);
         putBoolean(key, true);
     }
 }

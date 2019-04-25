@@ -31,7 +31,7 @@ public class DaysFragment extends Fragment {
 
         private void deleteDayFromGoogleCalendar(DaysRecyclerViewAdapter.ViewHolder dayViewHolder) {
             Day day = dayViewHolder.getDay();
-            day.deleteFromGoogleCalendar(getContext());
+            day.deleteFromGoogleCalendar(getContext().getApplicationContext());
             refreshRecyclerView();
         }
     };
@@ -47,13 +47,13 @@ public class DaysFragment extends Fragment {
 
     private void initializeRecyclerView(View view) {
         daysRecyclerView = (RecyclerView) view;
-        daysRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        daysRecyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
         setAdapter();
         attachItemTouchHelper(daysRecyclerView);
     }
 
     private void setAdapter() {
-        daysRecyclerViewAdapter = DaysRecyclerViewAdapter.newInstance(getContext(), listener);
+        daysRecyclerViewAdapter = DaysRecyclerViewAdapter.newInstance(getContext().getApplicationContext(), listener);
         daysRecyclerView.setAdapter(daysRecyclerViewAdapter);
     }
 
