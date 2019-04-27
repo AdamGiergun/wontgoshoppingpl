@@ -217,9 +217,9 @@ public class MainActivity
         }
     }
 
-    private void startSettingsActivity(boolean startWithNotificationPreferenceFragment) {
+    private void startSettingsActivity(boolean startFragmentNotification) {
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-        intent.putExtra("startWithNotificationPreferenceFragment", startWithNotificationPreferenceFragment);
+        intent.putExtra("startFragmentNotification", startFragmentNotification);
         startActivity(intent);
     }
 

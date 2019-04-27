@@ -17,21 +17,24 @@
         android:key="@string/default_calendar_preference_key"
         android:title="@string/default_calendar_preference_title" />
 
-    <eu.adamgiergun.mylibrary.IntegerDialogPreference
-        android:defaultValue="@integer/reminder_days_before_default_value"
-        android:dependency="@string/use_google_calendar_preference_key"
-        android:key="@string/default_reminder_days_before_preference_key"
-        android:numeric="integer"
-        android:title="@string/default_reminder_days_before_preference_title"
-        app:defValue="@integer/reminder_days_before_default_value"
-        app:maxValue="7"
-        app:minValue="0" />
+    <PreferenceCategory android:title="@string/default_reminder_settings_preference_category_title">
 
-    <eu.adamgiergun.mylibrary.calendarmanagement.TimePreference
-        android:defaultValue="@string/default_reminder_time_preference_default_value"
-        android:dependency="@string/use_google_calendar_preference_key"
-        android:key="@string/default_reminder_time_preference_key"
-        android:title="@string/default_reminder_time_preference_title" />
+        <eu.adamgiergun.mylibrary.IntegerDialogPreference
+            android:defaultValue="@integer/reminder_days_before_default_value"
+            android:dependency="@string/use_google_calendar_preference_key"
+            android:key="@string/default_reminder_days_before_preference_key"
+            android:numeric="integer"
+            android:title="@string/default_days_before_event_preference_title"
+            app:defValue="@integer/reminder_days_before_default_value"
+            app:maxValue="7"
+            app:minValue="0" />
+
+        <eu.adamgiergun.mylibrary.calendarmanagement.TimePreference
+            android:defaultValue="@string/default_reminder_time_preference_default_value"
+            android:dependency="@string/use_google_calendar_preference_key"
+            android:key="@string/default_reminder_time_preference_key"
+            android:title="@string/default_time_preference_title" />
+    </PreferenceCategory>
 
     <!--
         <androidx.preference.Preference

@@ -9,11 +9,13 @@ public class SettingsViewModel extends ViewModel {
     private static final String NOTIFICATIONS = "notifications";
     private static final String LOOK_LAND = "lookWide";
     private static final String NOTIFICATIONS_LAND = "notificationsWide";
+
     private String headersTag;
     private String lookTag;
     private String notificationsTag;
-
     private String lastFragment = HEADERS;
+    private boolean startFragmentNotification;
+    private int settingsFragmentId;
 
     String getLastFragment() {
         return lastFragment;
@@ -31,11 +33,27 @@ public class SettingsViewModel extends ViewModel {
         return notificationsTag;
     }
 
+    boolean isStartFragmentNotification() {
+        return startFragmentNotification;
+    }
+
+    void setStartFragmentNotification(boolean startFragmentNotification) {
+        this.startFragmentNotification = startFragmentNotification;
+    }
+
+    int getSettingsFragmentId() {
+        return settingsFragmentId;
+    }
+
+    void setSettingsFragmentId(int fragmentId) {
+        settingsFragmentId = fragmentId;
+    }
+
     void setLastFragment(String tag) {
         lastFragment = tag;
     }
 
-    void setOrientationLandscape(boolean isOrientationLandscape) {
+    void setTagsAndFragments(boolean isOrientationLandscape) {
         if (isOrientationLandscape) {
             headersTag = SettingsViewModel.HEADERS_LAND;
             lookTag = SettingsViewModel.LOOK_LAND;
@@ -69,6 +87,22 @@ public class SettingsViewModel extends ViewModel {
                     break;
                 default:
                     break;
+            }
+        }
+    }
+
+    boolean shouldBeDetached(boolean screenNotWideEnough, String fragmentTag) {
+        if (screenNotWideEnough) {
+            return !getLastFragment().equals(fragmentTag);
+        } else {
+            if (fragmentTag.equals(getHeadersTag())) {
+                return false;
+            } else {
+                if (getLastFragment().equals(getHeadersTag()) && fragmentTag.equals(getLookTag())) {
+                    return false;
+                } else {
+                    return !getLastFragment().equals(fragmentTag);
+                }
             }
         }
     }

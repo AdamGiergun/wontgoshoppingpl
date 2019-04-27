@@ -36,43 +36,17 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
     private SettingsViewModel mViewModel;
 
-    private boolean startWithNotificationPreferenceFragment;
-    private int settingsFragmentId;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
         setupHomeInBar();
         removeAllFragments();
         if (isScreenSizeLesserThanLarge())
             popBackStackCompletely();
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
         setContentView(R.layout.settings_activity);
-
-        mViewModel.setOrientationLandscape(isOrientationLandscape());
-
-        Intent intent = getIntent();
-        startWithNotificationPreferenceFragment = intent.getBooleanExtra("startWithNotificationPreferenceFragment", false);
-
-        ArrayList<FragmentWithTag> settingsFragments = new ArrayList<>();
-        if (isScreenNotWideEnough()) {
-            settingsFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), mViewModel.getHeadersTag(), shouldBeDetached(mViewModel.getHeadersTag())));
-            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), mViewModel.getLookTag(), shouldBeDetached(mViewModel.getLookTag())));
-            if (areCalendarPermissionsGranted()) {
-                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), shouldBeDetached(mViewModel.getNotificationsTag())));
-            }
-        } else {
-            ArrayList<FragmentWithTag> headersFragments = new ArrayList<>();
-            headersFragments.add(new FragmentWithTag(new SettingsHeadersFragment(), mViewModel.getHeadersTag(), shouldBeDetached(mViewModel.getHeadersTag())));
-            addFragments(R.id.headersFragment, headersFragments);
-            settingsFragments.add(new FragmentWithTag(new LookPreferenceFragment(), mViewModel.getLookTag(), shouldBeDetached(mViewModel.getLookTag())));
-            if (areCalendarPermissionsGranted()) {
-                settingsFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), shouldBeDetached(mViewModel.getNotificationsTag())));
-            }
-        }
-        settingsFragmentId = getSettingsFragmentId();
-        addFragments(settingsFragmentId, settingsFragments);
+        initializeViewModel();
+        addFragments(mViewModel.getSettingsFragmentId(), getSettingsFragments());
     }
 
     private void removeAllFragments() {
@@ -92,20 +66,34 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
-    private boolean shouldBeDetached(String fragmentTag) {
+    private void initializeViewModel() {
+        mViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
+        mViewModel.setTagsAndFragments(
+                isOrientationLandscape());
+        mViewModel.setStartFragmentNotification(
+                getIntent().getBooleanExtra("startFragmentNotification", false));
+        mViewModel.setSettingsFragmentId(getSettingsFragmentId());
+    }
+
+    private ArrayList<FragmentWithTag> getSettingsFragments() {
+        ArrayList<FragmentWithTag> settingsFragments = new ArrayList<>();
         if (isScreenNotWideEnough()) {
-            return !mViewModel.getLastFragment().equals(fragmentTag);
+            settingsFragments.add(
+                    FragmentWithTag.newInstance(new SettingsHeadersFragment(), mViewModel.getHeadersTag(), mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getHeadersTag())));
+
         } else {
-            if (fragmentTag.equals(mViewModel.getHeadersTag())) {
-                return false;
-            } else {
-                if (mViewModel.getLastFragment().equals(mViewModel.getHeadersTag()) && fragmentTag.equals(mViewModel.getLookTag())) {
-                    return false;
-                } else {
-                    return !mViewModel.getLastFragment().equals(fragmentTag);
-                }
-            }
+            ArrayList<FragmentWithTag> headersFragments = new ArrayList<>();
+            headersFragments.add(
+                    FragmentWithTag.newInstance(new SettingsHeadersFragment(), mViewModel.getHeadersTag(), mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getHeadersTag())));
+            addFragments(R.id.headersFragment, headersFragments);
         }
+        settingsFragments.add(
+                FragmentWithTag.newInstance(new LookPreferenceFragment(), mViewModel.getLookTag(), mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getLookTag())));
+        if (areCalendarPermissionsGranted()) {
+            settingsFragments.add(
+                    FragmentWithTag.newInstance(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getNotificationsTag())));
+        }
+        return settingsFragments;
     }
 
     private void addFragments(int container, ArrayList<FragmentWithTag> list) {
@@ -138,8 +126,8 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     @Override
     protected void onResume() {
         super.onResume();
-        if (startWithNotificationPreferenceFragment) {
-            startWithNotificationPreferenceFragment = false;
+        if (mViewModel.isStartFragmentNotification()) {
+            mViewModel.setStartFragmentNotification(false);
             if (isScreenNotWideEnough()) {
                 mViewModel.setLastFragment(mViewModel.getNotificationsTag());
             } else {
@@ -267,15 +255,11 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
                 ArrayList<FragmentWithTag> newFragments = new ArrayList<>();
-                if (isScreenNotWideEnough()) {
-                    newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), true));
-                    addFragments(settingsFragmentId, newFragments);
-                    switchFragment(mViewModel.getHeadersTag(), mViewModel.getNotificationsTag());
-                } else {
-                    newFragments.add(new FragmentWithTag(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), true));
-                    addFragments(settingsFragmentId, newFragments);
-                    switchFragment(mViewModel.getLookTag(), mViewModel.getNotificationsTag());
-                }
+                newFragments.add(
+                        FragmentWithTag.newInstance(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), true));
+                addFragments(mViewModel.getSettingsFragmentId(), newFragments);
+                String switchedFragmentTag = isScreenNotWideEnough() ? mViewModel.getHeadersTag() : mViewModel.getLookTag();
+                switchFragment(switchedFragmentTag, mViewModel.getNotificationsTag());
             } else {
                 Toast.makeText(getApplicationContext(), eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
             }
@@ -416,15 +400,17 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
-    private class FragmentWithTag {
-        PreferenceFragmentCompat fragment;
-        String tag;
-        boolean detach;
+    private static class FragmentWithTag {
+        private PreferenceFragmentCompat fragment;
+        private String tag;
+        private boolean detach;
 
-        FragmentWithTag(PreferenceFragmentCompat fragment, String tag, boolean detach) {
-            this.fragment = fragment;
-            this.tag = tag;
-            this.detach = detach;
+        static FragmentWithTag newInstance(PreferenceFragmentCompat fragment, String tag, boolean detach) {
+            FragmentWithTag fragmentWithTag = new FragmentWithTag();
+            fragmentWithTag.fragment = fragment;
+            fragmentWithTag.tag = tag;
+            fragmentWithTag.detach = detach;
+            return fragmentWithTag;
         }
     }
 

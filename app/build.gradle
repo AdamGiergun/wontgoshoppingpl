@@ -10,7 +10,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 70
-        versionName "2.0.99.55"
+        versionName "2.0.99.56"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
         //vectorDrawables.useSupportLibrary = true
@@ -45,7 +45,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'eu.adamgiergun:mylibrary:0.99.89.4@aar'
-    implementation 'eu.adamgiergun:myresources:1.0.3@aar'
+    implementation 'eu.adamgiergun:myresources:1.0.4@aar'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
