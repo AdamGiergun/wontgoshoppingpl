@@ -136,6 +136,7 @@ public class ListOfDays extends ArrayList<Day> {
             Context appContext,
             List dayTypesList,
             SimpleReminder reminder,
+            String timeZoneId,
             Calendar till) {
 
         ListOfDays list =
@@ -146,7 +147,7 @@ public class ListOfDays extends ArrayList<Day> {
             if (day.compareDateTo(till) <= 0) {
                 if (day.isReminderNeeded()) {
                     day.setReminder(reminder);
-                    result = result && day.addToGoogleCalendar(appContext);
+                    result = result && day.addToGoogleCalendar(appContext, timeZoneId);
                 }
             }
         }

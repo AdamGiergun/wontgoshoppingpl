@@ -59,4 +59,12 @@
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_reminder_time_preference_key"
         android:title="@string/default_reminder_time_preference_title" />
+
+    <androidx.preference.SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:dependency="@string/use_google_calendar_preference_key"
+        android:key="@string/key_use_pl_time_zone"
+        android:summaryOff="@string/summary_use_pl_time_zone_off"
+        android:summaryOn="@string/summary_use_pl_time_zone_on"
+        android:title="@string/title_time_zone" />
 </androidx.preference.PreferenceScreen>

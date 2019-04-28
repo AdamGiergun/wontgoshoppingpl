@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.wontgoshoppingpl.common.*;
@@ -127,15 +128,22 @@ public class MainViewModel extends AppViewModel {
                     getApplication(),
                     dayTypesToBeAddedToCalendar,
                     reminder.getValue(),
+                    getTimeZoneId(),
                     till.getValue());
         } else {
             lastTouchedDay.setReminder(reminder.getValue());
-            result = lastTouchedDay.addToGoogleCalendar(getApplication());
+            result = lastTouchedDay.addToGoogleCalendar(getApplication(), getTimeZoneId());
         }
 
         logCalendarEvent(result);
 
         return result;
+    }
+
+    private String getTimeZoneId() {
+        return getAppPreferences().getUsePolishTimeZone(getApplication()) ?
+                "Europe/Warsaw":
+                TimeZone.getDefault().getID();
     }
 
     Day.Type.List getDayTypesToBeAddedToCalendar() {

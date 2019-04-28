@@ -48,4 +48,7 @@
     <string name="info_deleted">Vymazána</string>
     <string name="info_about_app_widget">Widget aplikace můžete přidat na domovskou obrazovku.\n\n(Dotykem skryjete tyto informace).</string>
     <string name="privacy_policy_link">"<a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Zásady ochrany osobních údajů</a> "</string>
+    <string name="summary_use_pl_time_zone_off">Použít časové pásmo</string>
+    <string name="summary_use_pl_time_zone_on">Použijte polské časové pásmo</string>
+    <string name="title_time_zone">Časové pásmo</string>
 </resources>

@@ -68,6 +68,11 @@
 
     <string name="key_app_widget_info_displayed" translatable="false">app_widget_info_displayed</string>
 
+    <string name="key_use_pl_time_zone" translatable="false">use_pl_time_zone</string>
+    <string name="title_time_zone">Time zone</string>
+    <string name="summary_use_pl_time_zone_on">Use the Polish time zone</string>
+    <string name="summary_use_pl_time_zone_off">Use my time zone</string>
+
     <string name="info_deleted">Deleted</string>
     <string name="info_about_app_widget">You can add app widget to your home screen.\n\n(Touch to hide this info).</string>
     <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Privacy Policy</a></string>

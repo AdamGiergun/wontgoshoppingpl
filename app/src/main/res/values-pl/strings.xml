@@ -63,4 +63,7 @@
     <string name="info_deleted">Usunięto</string>
     <string name="info_about_app_widget">Możesz dodać widżet aplikacji do ekranu głównego.\n\n(Dotknij, aby ukryć tę informację).</string>
     <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Polityka prywatności</a></string>
+    <string name="summary_use_pl_time_zone_off">Użyj mojej strefy czasowej</string>
+    <string name="summary_use_pl_time_zone_on">Użyj polskiej strefy czasowej</string>
+    <string name="title_time_zone">Strefa czasowa</string>
 </resources>

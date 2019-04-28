@@ -48,4 +48,7 @@
     <string name="title_show_holidays">Mostra vacanze</string>
     <string name="title_show_non_commerce_days">Mostra giorni non commerciali</string>
     <string name="whole_day">Giorno\nintero</string>
+    <string name="summary_use_pl_time_zone_off">Usa il mio fuso orario</string>
+    <string name="summary_use_pl_time_zone_on">Usa il fuso orario polacco</string>
+    <string name="title_time_zone">Fuso orario</string>
 </resources>

@@ -63,4 +63,7 @@
     <string name="info_deleted">Удалено</string>
     <string name="info_about_app_widget">Вы можете добавить виджет приложения на домашний экран.\n\n(Нажмите, чтобы скрыть эту информацию).</string>
     <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">политика конфиденциальности</a></string>
+    <string name="summary_use_pl_time_zone_off">Используйте мой часовой пояс</string>
+    <string name="summary_use_pl_time_zone_on">Используйте польский часовой пояс</string>
+    <string name="title_time_zone">Часовой пояс</string>
 </resources>

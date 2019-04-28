@@ -147,7 +147,7 @@ public class Day implements Comparable<Day> {
         this.reminder = reminder;
     }
 
-    public boolean addToGoogleCalendar(Context appContext) {
+    public boolean addToGoogleCalendar(Context appContext, String timeZoneId) {
         String defaultCalendarId = getDefaultCalendarIdFromPreferences(appContext);
         if (calendarId != null) {
             if (!defaultCalendarId.equals(calendarId)) {
@@ -166,9 +166,10 @@ public class Day implements Comparable<Day> {
             calendarEvent.setTitle(description + " - " + appContext.getString(R.string.go_shopping_earlier));
         }
 
+        calendarEvent.setTimeZone(timeZoneId);
+        calendarEvent.setAllDay(allDay);
         calendarEvent.setStartCalendar(calendar, time);
-
-        setEventEndCalendarOrAllDay(calendarEvent);
+        setEventEndCalendar(calendarEvent);
 
         calendarEvent.addReminder(reminder);
 
@@ -194,12 +195,10 @@ public class Day implements Comparable<Day> {
         }
     }
 
-    private void setEventEndCalendarOrAllDay(SimpleCalendarEvent calendarEvent) {
+    private void setEventEndCalendar(SimpleCalendarEvent calendarEvent) {
         Calendar endCalendar = (Calendar) calendar.clone();
         if (noOfConsecutiveDays > 0) {
             endCalendar.add(Calendar.DAY_OF_YEAR, noOfConsecutiveDays);
-        } else {
-            calendarEvent.setAllDay(allDay);
         }
         calendarEvent.setEndCalendar(endCalendar, new SimpleTime("23:59"));
     }

@@ -62,4 +62,9 @@ public class AppPreferences extends MyAppPreferences {
         String key = appContext.getString(R.string.key_app_widget_info_displayed);
         putBoolean(key, true);
     }
+
+    public boolean getUsePolishTimeZone(Context appContext) {
+        String key = appContext.getString(R.string.key_use_pl_time_zone);
+        return getBoolean(key, true);
+    }
 }
