@@ -173,7 +173,7 @@ public class MainViewModel extends AppViewModel {
 
     //region AppPreferences proxy region
     private SimpleReminder getReminderPreference() {
-        return getAppPreferences().getReminder(getApplication(), SimpleReminder.METHOD_ALERT);
+        return getAppPreferences().getReminder(getApplication(), SimpleReminder.METHOD_ALERT, getTimeZoneId());
     }
 
     boolean isFirstRun() {

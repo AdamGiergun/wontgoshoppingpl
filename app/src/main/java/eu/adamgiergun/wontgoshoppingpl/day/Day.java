@@ -149,39 +149,49 @@ public class Day implements Comparable<Day> {
 
     public boolean addToGoogleCalendar(Context appContext, String timeZoneId) {
         String defaultCalendarId = getDefaultCalendarIdFromPreferences(appContext);
-        if (calendarId != null) {
-            if (!defaultCalendarId.equals(calendarId)) {
-                deleteFromGoogleCalendar(appContext);
-                calendarId = defaultCalendarId;
-            }
-        } else {
+        if (!defaultCalendarId.equals(calendarId)) {
             calendarId = defaultCalendarId;
         }
 
-        SimpleCalendarEvent calendarEvent = new SimpleCalendarEvent(calendarId);
-
-        if (type == Type.COMMERCE_SUNDAY) {
-            calendarEvent.setTitle(description + " - " + appContext.getString(R.string.go_shopping));
-        } else {
-            calendarEvent.setTitle(description + " - " + appContext.getString(R.string.go_shopping_earlier));
+        Calendar endCalendar = (Calendar) calendar.clone();
+        if (noOfConsecutiveDays > 0) {
+            endCalendar.add(Calendar.DAY_OF_YEAR, noOfConsecutiveDays);
         }
 
-        calendarEvent.setTimeZone(timeZoneId);
-        calendarEvent.setAllDay(allDay);
-        calendarEvent.setStartCalendar(calendar, time);
-        setEventEndCalendar(calendarEvent);
+        ArrayList<SimpleReminder> reminders = new ArrayList<>();
+        reminders.add(reminder);
 
-        calendarEvent.addReminder(reminder);
+        SimpleCalendarEvent calendarEvent =
+                new SimpleCalendarEvent.Builder(calendarId, calendar, time)
+                        .setCalendarEventId(calendarEventId)
+                        .setTimeZoneId(timeZoneId)
+                        .setEndCalendar(endCalendar, new SimpleTime("23:59"))
+                        .setAllDay(allDay).setReminders(reminders)
+                        .setTitle((type == Type.COMMERCE_SUNDAY)
+                                ? description + " - " + appContext.getString(R.string.go_shopping)
+                                : description + " - " + appContext.getString(R.string.go_shopping_earlier))
+                .build();
 
-        if (SimpleCalendarEvent.doesExist(calendarEventId, appContext, calendarId)) {
-            calendarEvent.setEventID(calendarEventId);
+
+        if (calendarEvent.exists(appContext, calendarId)) {
             calendarEvent.writeReminders(appContext);
         } else {
+            if (calendarEvent.exists(appContext)) {
+                deleteFromGoogleCalendar(calendarEvent, appContext);
+            }
             calendarEventId = calendarEvent.write(appContext);
             updateEventIdInDb(appContext);
         }
 
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
+    }
+
+    private void deleteFromGoogleCalendar(SimpleCalendarEvent calendarEvent, Context appContext) {
+        if (calendarEventId != SimpleCalendarEvent.NON_EXISTING && calendarEvent.delete(appContext)) {
+            calendarEventId = SimpleCalendarEvent.NON_EXISTING;
+            updateEventIdInDb(appContext);
+            Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void deleteFromGoogleCalendar(Context appContext) {
@@ -193,14 +203,6 @@ public class Day implements Comparable<Day> {
                 Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void setEventEndCalendar(SimpleCalendarEvent calendarEvent) {
-        Calendar endCalendar = (Calendar) calendar.clone();
-        if (noOfConsecutiveDays > 0) {
-            endCalendar.add(Calendar.DAY_OF_YEAR, noOfConsecutiveDays);
-        }
-        calendarEvent.setEndCalendar(endCalendar, new SimpleTime("23:59"));
     }
 
     private String getDefaultCalendarIdFromPreferences(Context appContext) {

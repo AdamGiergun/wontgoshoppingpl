@@ -756,9 +756,7 @@ public class MainActivity
 
         Calendar getDate() {
             Calendar cal = SimpleCalendarEvent.getClearedCalendarInstance();
-            cal.set(Calendar.YEAR, getYear());
-            cal.set(Calendar.MONTH, getMonth());
-            cal.set(Calendar.DAY_OF_MONTH, getDayOfMonth());
+            cal.set(getYear(), getMonth(), getDayOfMonth());
             return cal;
         }
     }
