@@ -63,12 +63,9 @@ public class MainViewModel extends AppViewModel {
     }
 
     int getReminderDaysBefore() {
-        SimpleReminder simpleReminder = reminder.getValue();
-        if (simpleReminder == null) {
-            return 1;
-        } else {
-            return reminder.getValue().getDaysBefore();
-        }
+        return (reminder.getValue() == null)
+                ? 1
+                : reminder.getValue().getDaysBefore();
     }
 
     void setReminderDaysBefore(int daysBefore) {

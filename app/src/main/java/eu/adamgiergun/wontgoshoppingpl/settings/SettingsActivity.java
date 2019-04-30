@@ -124,17 +124,13 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
     private int getSettingsFragmentId() {
         if (isScreenSizeLesserThanLarge()) {
-            if (isOrientationLandscape()) {
-                return R.id.settingsFragmentLand;
-            } else {
-                return R.id.settingsFragment;
-            }
+            return (isOrientationLandscape())
+                    ? R.id.settingsFragmentLand
+                    : R.id.settingsFragment;
         } else {
-            if (isOrientationLandscape()) {
-                return R.id.settingsFragmentLargeLand;
-            } else {
-                return R.id.settingsFragmentLarge;
-            }
+            return (isOrientationLandscape())
+                    ? R.id.settingsFragmentLargeLand
+                    : R.id.settingsFragmentLarge;
         }
     }
 
@@ -221,16 +217,12 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     }
 
     private boolean isScreenNotWideEnough() {
-        if (isOrientationLandscape()) {
-            return false;
-        } else {
-            return (isScreenSizeLesserThanLarge());
-        }
+        return (!isOrientationLandscape()) && isScreenSizeLesserThanLarge();
     }
 
     private boolean isOrientationLandscape() {
         int orientation = getResources().getConfiguration().orientation;
-        return orientation == Configuration.ORIENTATION_LANDSCAPE;
+        return (orientation == Configuration.ORIENTATION_LANDSCAPE);
     }
 
     private boolean isScreenSizeLesserThanLarge() {
