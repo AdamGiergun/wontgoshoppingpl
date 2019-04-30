@@ -95,14 +95,11 @@ public class SettingsViewModel extends ViewModel {
         if (screenNotWideEnough) {
             return !getLastFragment().equals(fragmentTag);
         } else {
-            if (fragmentTag.equals(getHeadersTag())) {
+            if (fragmentTag.equals(getHeadersTag()) ||
+                    (getLastFragment().equals(getHeadersTag()) && fragmentTag.equals(getLookTag()))) {
                 return false;
             } else {
-                if (getLastFragment().equals(getHeadersTag()) && fragmentTag.equals(getLookTag())) {
-                    return false;
-                } else {
-                    return !getLastFragment().equals(fragmentTag);
-                }
+                return !getLastFragment().equals(fragmentTag);
             }
         }
     }

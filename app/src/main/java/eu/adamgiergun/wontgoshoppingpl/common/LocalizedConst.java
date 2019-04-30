@@ -10,10 +10,7 @@ public class LocalizedConst {
     private static Locale locale;
 
     public static String getWholeDay() {
-        if (wholeDay == null)
-            return "";
-        else
-            return wholeDay;
+        return (wholeDay == null) ? "" : wholeDay;
     }
 
     public static void setWholeDay(String wholeDay) {
@@ -21,10 +18,7 @@ public class LocalizedConst {
     }
 
     public static String getSince() {
-        if (wholeDay == null)
-            return "";
-        else
-            return since;
+        return (since == null) ? "" : since;
     }
 
     public static void setSince(String since) {
@@ -48,10 +42,7 @@ public class LocalizedConst {
     }
 
     public static String getAskForLook() {
-        if (wholeDay == null)
-            return "";
-        else
-            return askForLook;
+        return (askForLook == null) ? "" : askForLook;
     }
 
     public static void setAskForLook(String askForLook) {

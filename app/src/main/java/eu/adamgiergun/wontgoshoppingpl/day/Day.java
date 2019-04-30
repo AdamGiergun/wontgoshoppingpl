@@ -61,17 +61,11 @@ public class Day implements Comparable<Day> {
 
     private void setDate(String date) {
         String[] subPieces = date.split("_");
-
         calendar = SimpleCalendarEvent.getClearedCalendarInstance();
-
         int year = Integer.valueOf(subPieces[0]);
-        calendar.set(Calendar.YEAR, year);
-
-        int day = Integer.valueOf(subPieces[1]);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-
         int month = Integer.valueOf(subPieces[2]) - 1;
-        calendar.set(Calendar.MONTH, month);
+        int day = Integer.valueOf(subPieces[1]);
+        calendar.set(year, month, day);
     }
 
     private void setTime(String string) {
@@ -84,9 +78,8 @@ public class Day implements Comparable<Day> {
         return this.calendar.compareTo(another.calendar);
     }
 
-    int compareDateTo(Calendar calendar) {
-        Calendar dayCalendar = getCalendar();
-        return dayCalendar.compareTo(calendar);
+    int compareDateTo(Calendar comparedCalendar) {
+        return this.calendar.compareTo(comparedCalendar);
     }
 
     Calendar getCalendar() {
@@ -102,11 +95,7 @@ public class Day implements Comparable<Day> {
     }
 
     public String getDescriptionForDialog() {
-        if (type == Type.HOLIDAY) {
-            return description;
-        } else {
-            return getDateAndWeekdayString();
-        }
+        return (type == Type.HOLIDAY) ? description : getDateAndWeekdayString();
     }
 
     public String getDateAndWeekdayString() {
@@ -119,10 +108,9 @@ public class Day implements Comparable<Day> {
     }
 
     public String getTimeString() {
-        if (time.getHour() == 0 && time.getMinute() == 0)
-            return LocalizedConst.getWholeDay();
-        else
-            return LocalizedConst.getSince() + time.toString();
+        return (time.getHour() == 0 && time.getMinute() == 0)
+                ? LocalizedConst.getWholeDay()
+                : LocalizedConst.getSince() + time.toString();
     }
 
     public String getName() {

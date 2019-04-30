@@ -40,13 +40,17 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupHomeInBar();
-        removeAllFragments();
-        if (isScreenSizeLesserThanLarge())
-            popBackStackCompletely();
+        clearActivity();
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
         setContentView(R.layout.settings_activity);
         initializeViewModel();
         addFragments(mViewModel.getSettingsFragmentId(), getSettingsFragments());
+    }
+
+    private void clearActivity() {
+        removeAllFragments();
+        if (isScreenSizeLesserThanLarge())
+            popBackStackCompletely();
     }
 
     private void removeAllFragments() {
@@ -79,19 +83,30 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         ArrayList<FragmentWithTag> settingsFragments = new ArrayList<>();
         if (isScreenNotWideEnough()) {
             settingsFragments.add(
-                    FragmentWithTag.newInstance(new SettingsHeadersFragment(), mViewModel.getHeadersTag(), mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getHeadersTag())));
-
+                    FragmentWithTag.newInstance(
+                            new SettingsHeadersFragment(),
+                            mViewModel.getHeadersTag(),
+                            mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getHeadersTag())));
         } else {
             ArrayList<FragmentWithTag> headersFragments = new ArrayList<>();
             headersFragments.add(
-                    FragmentWithTag.newInstance(new SettingsHeadersFragment(), mViewModel.getHeadersTag(), mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getHeadersTag())));
+                    FragmentWithTag.newInstance(
+                            new SettingsHeadersFragment(),
+                            mViewModel.getHeadersTag(),
+                            mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getHeadersTag())));
             addFragments(R.id.headersFragment, headersFragments);
         }
         settingsFragments.add(
-                FragmentWithTag.newInstance(new LookPreferenceFragment(), mViewModel.getLookTag(), mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getLookTag())));
+                FragmentWithTag.newInstance(
+                        new LookPreferenceFragment(),
+                        mViewModel.getLookTag(),
+                        mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getLookTag())));
         if (areCalendarPermissionsGranted()) {
             settingsFragments.add(
-                    FragmentWithTag.newInstance(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getNotificationsTag())));
+                    FragmentWithTag.newInstance(
+                            new NotificationPreferenceFragment(),
+                            mViewModel.getNotificationsTag(),
+                            mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getNotificationsTag())));
         }
         return settingsFragments;
     }
@@ -146,12 +161,15 @@ public class SettingsActivity extends AppCompatActivityWithTheme
             if (oldFragment != null)
                 fragmentTransaction.detach(oldFragment);
         }
+
         Fragment newFragment = getSupportFragmentManager().findFragmentByTag(toTag);
         if (newFragment != null)
             fragmentTransaction.attach(newFragment);
         mViewModel.setLastFragment(toTag);
+
         if (isScreenNotWideEnough() && fromTag!=null && !toTag.equals(SettingsViewModel.HEADERS))
             fragmentTransaction.addToBackStack(null);
+
         fragmentTransaction.commit();
         getSupportFragmentManager().executePendingTransactions();
         return true;

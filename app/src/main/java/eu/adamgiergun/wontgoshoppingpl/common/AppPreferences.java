@@ -15,10 +15,7 @@ public class AppPreferences extends MyAppPreferences {
     }
 
     public static AppPreferences getInstance(Context appContext) {
-        if (soleInstance == null) {
-            soleInstance = new AppPreferences(appContext);
-        }
-        return soleInstance;
+        return (soleInstance == null) ? (soleInstance = new AppPreferences(appContext)) : soleInstance;
     }
 
     public boolean isLookRich(Context appContext) {

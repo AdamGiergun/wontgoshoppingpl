@@ -9,6 +9,10 @@ import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.WidgetFullTex
 
 class WidgetViewModel {
 
+    private WidgetViewModel() {
+        throw new AssertionError();
+    }
+
     static void logUpdated(Context appContext) {
         logFirebaseEvent(appContext, UPDATED);
     }
