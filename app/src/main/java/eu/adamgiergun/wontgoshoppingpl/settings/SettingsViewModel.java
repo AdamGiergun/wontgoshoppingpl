@@ -55,35 +55,37 @@ public class SettingsViewModel extends ViewModel {
 
     void setTagsAndFragments(boolean isOrientationLandscape) {
         if (isOrientationLandscape) {
-            headersTag = SettingsViewModel.HEADERS_LAND;
-            lookTag = SettingsViewModel.LOOK_LAND;
-            notificationsTag = SettingsViewModel.NOTIFICATIONS_LAND;
+            headersTag = HEADERS_LAND;
+            lookTag = LOOK_LAND;
+            notificationsTag = NOTIFICATIONS_LAND;
+
             switch (lastFragment) {
-                case SettingsViewModel.HEADERS:
-                    lastFragment = SettingsViewModel.HEADERS_LAND;
+                case HEADERS:
+                    lastFragment = HEADERS_LAND;
                     break;
-                case SettingsViewModel.LOOK:
-                    lastFragment = SettingsViewModel.LOOK_LAND;
+                case LOOK:
+                    lastFragment = LOOK_LAND;
                     break;
-                case SettingsViewModel.NOTIFICATIONS:
-                    lastFragment = SettingsViewModel.NOTIFICATIONS_LAND;
+                case NOTIFICATIONS:
+                    lastFragment = NOTIFICATIONS_LAND;
                     break;
                 default:
                     break;
             }
         } else {
-            headersTag = SettingsViewModel.HEADERS;
-            lookTag = SettingsViewModel.LOOK;
-            notificationsTag = SettingsViewModel.NOTIFICATIONS;
+            headersTag = HEADERS;
+            lookTag = LOOK;
+            notificationsTag = NOTIFICATIONS;
+
             switch (lastFragment) {
-                case SettingsViewModel.HEADERS_LAND:
-                    lastFragment = SettingsViewModel.HEADERS;
+                case HEADERS_LAND:
+                    lastFragment = HEADERS;
                     break;
-                case SettingsViewModel.LOOK_LAND:
-                    lastFragment = SettingsViewModel.LOOK;
+                case LOOK_LAND:
+                    lastFragment = LOOK;
                     break;
-                case SettingsViewModel.NOTIFICATIONS_LAND:
-                    lastFragment = SettingsViewModel.NOTIFICATIONS;
+                case NOTIFICATIONS_LAND:
+                    lastFragment = NOTIFICATIONS;
                     break;
                 default:
                     break;
