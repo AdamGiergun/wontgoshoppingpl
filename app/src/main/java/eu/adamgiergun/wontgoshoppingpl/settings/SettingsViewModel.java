@@ -93,13 +93,13 @@ public class SettingsViewModel extends ViewModel {
 
     boolean shouldBeDetached(boolean screenNotWideEnough, String fragmentTag) {
         if (screenNotWideEnough) {
-            return !getLastFragment().equals(fragmentTag);
+            return !fragmentTag.equals(lastFragment);
         } else {
-            if (fragmentTag.equals(getHeadersTag()) ||
-                    (getLastFragment().equals(getHeadersTag()) && fragmentTag.equals(getLookTag()))) {
+            if (fragmentTag.equals(headersTag) ||
+                    (fragmentTag.equals(lookTag) && lastFragment.equals(headersTag))) {
                 return false;
             } else {
-                return !getLastFragment().equals(fragmentTag);
+                return !fragmentTag.equals(lastFragment);
             }
         }
     }

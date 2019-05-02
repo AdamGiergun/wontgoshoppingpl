@@ -25,6 +25,8 @@ import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
+import static eu.adamgiergun.wontgoshoppingpl.settings.SettingsViewModel.HEADERS;
+
 public class SettingsActivity extends AppCompatActivityWithTheme
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
         NoticeDialogFragment.NoticeDialogListener,
@@ -150,25 +152,23 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
-    private boolean switchFragment(String fromTag, String toTag) {
+    private void switchFragment(String fromTag, String toTag) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if (fromTag != null) {
-            Fragment oldFragment = getSupportFragmentManager().findFragmentByTag(fromTag);
-            if (oldFragment != null)
-                fragmentTransaction.detach(oldFragment);
-        }
+
+        Fragment oldFragment = (fromTag == null) ? null : getSupportFragmentManager().findFragmentByTag(fromTag);
+        if (oldFragment != null)
+            fragmentTransaction.detach(oldFragment);
 
         Fragment newFragment = getSupportFragmentManager().findFragmentByTag(toTag);
         if (newFragment != null)
             fragmentTransaction.attach(newFragment);
         mViewModel.setLastFragment(toTag);
 
-        if (isScreenNotWideEnough() && fromTag!=null && !toTag.equals(SettingsViewModel.HEADERS))
+        if (isScreenNotWideEnough() && fromTag!=null && !toTag.equals(HEADERS))
             fragmentTransaction.addToBackStack(null);
 
         fragmentTransaction.commit();
         getSupportFragmentManager().executePendingTransactions();
-        return true;
     }
 
     @Override
@@ -182,11 +182,11 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
     @Override
     public void onBackPressed() {
-        if (isScreenNotWideEnough() && !mViewModel.getLastFragment().equals(SettingsViewModel.HEADERS)) {
+        if (isScreenNotWideEnough() && !mViewModel.getLastFragment().equals(HEADERS)) {
             super.onBackPressed();
-            switchFragment(mViewModel.getLastFragment(), SettingsViewModel.HEADERS);
+            switchFragment(mViewModel.getLastFragment(), HEADERS);
         } else {
-            mViewModel.setLastFragment(SettingsViewModel.HEADERS);
+            mViewModel.setLastFragment(HEADERS);
             super.onBackPressed();
             super.onBackPressed();
         }
@@ -197,17 +197,19 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         String headerTitle = pref.getTitle().toString();
         if (headerTitle.equals(getString(R.string.pref_header_look))) {
             if (isScreenNotWideEnough()) {
-                return switchFragment(mViewModel.getHeadersTag(), mViewModel.getLookTag());
+                switchFragment(mViewModel.getHeadersTag(), mViewModel.getLookTag());
             } else {
-                return switchFragment(mViewModel.getNotificationsTag(), mViewModel.getLookTag());
+                switchFragment(mViewModel.getNotificationsTag(), mViewModel.getLookTag());
             }
+            return true;
         } else if (headerTitle.equals(getString(R.string.pref_header_notifications))) {
             if (checkCalendarPermissions()) {
                 if (isScreenNotWideEnough()) {
-                    return switchFragment(mViewModel.getHeadersTag(), mViewModel.getNotificationsTag());
+                    switchFragment(mViewModel.getHeadersTag(), mViewModel.getNotificationsTag());
                 } else {
-                    return switchFragment(mViewModel.getLookTag(), mViewModel.getNotificationsTag());
+                    switchFragment(mViewModel.getLookTag(), mViewModel.getNotificationsTag());
                 }
+                return true;
             } else {
                 return false;
             }
@@ -338,7 +340,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(getString(R.string.app_look_preference_key))) {
                 SettingsViewModel viewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
-                viewModel.setLastFragment(SettingsViewModel.HEADERS);
+                viewModel.setLastFragment(HEADERS);
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -361,11 +363,11 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(getString(R.string.default_calendar_preference_key))) {
-                Preference connectionPref = findPreference(key);
-                if (connectionPref instanceof CalendarsListPreferenceNew) {
+                Preference preference = findPreference(key);
+                if (preference instanceof CalendarsListPreferenceNew) {
                     CharSequence calendarId = sharedPreferences.getString(key, "0");
-                    CharSequence summary = ((CalendarsListPreferenceNew) connectionPref).getCalendarName(calendarId);
-                    connectionPref.setSummary(summary);
+                    CharSequence summary = ((CalendarsListPreferenceNew) preference).getCalendarName(calendarId);
+                    preference.setSummary(summary);
                 }
             }
         }
@@ -396,18 +398,19 @@ public class SettingsActivity extends AppCompatActivityWithTheme
             dialogFragment.setArguments(bundle);
         }
 
-        @Override
-        public boolean onPreferenceTreeClick(Preference preference) {
-            if (preference.getKey().equals(getString(R.string.key_delete_events))) {
-                DialogFragment dialogFragment = new ChooseCalendarsForCleaning();
-                if (this.getFragmentManager() != null) {
-                    dialogFragment.show(this.getFragmentManager(), "test");
-                }
-                return true;
-            } else {
-                return super.onPreferenceTreeClick(preference);
-            }
-        }
+        // TODO ChooseCalendarsForCleaning
+//        @Override
+//        public boolean onPreferenceTreeClick(Preference preference) {
+//            if (preference.getKey().equals(getString(R.string.key_delete_events))) {
+//                DialogFragment dialogFragment = new ChooseCalendarsForCleaning();
+//                if (this.getFragmentManager() != null) {
+//                    dialogFragment.show(this.getFragmentManager(), "test");
+//                }
+//                return true;
+//            } else {
+//                return super.onPreferenceTreeClick(preference);
+//            }
+//        }
     }
 
     private static class FragmentWithTag {
@@ -424,16 +427,17 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
-    public static class ChooseCalendarsForCleaning extends AppDialogFragment {
-        @NonNull
-        @Override
-        public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = getStyledBuilder(getContext());
-            builder
-                    .setMultiChoiceItems(null, null, null)//items, checkedItems, listener)
-                    .setPositiveButton(android.R.string.ok, getPositiveButtonListener(ChooseCalendarsForCleaning.this))
-                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(ChooseCalendarsForCleaning.this));
-            return builder.create();
-        }
-    }
+    // TODO ChooseCalendarsForCleaning
+//    public static class ChooseCalendarsForCleaning extends AppDialogFragment {
+//        @NonNull
+//        @Override
+//        public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
+//            AlertDialog.Builder builder = getStyledBuilder(getContext());
+//            builder
+//                    .setMultiChoiceItems(null, null, null)//items, checkedItems, listener)
+//                    .setPositiveButton(android.R.string.ok, getPositiveButtonListener(ChooseCalendarsForCleaning.this))
+//                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(ChooseCalendarsForCleaning.this));
+//            return builder.create();
+//        }
+//    }
 }
