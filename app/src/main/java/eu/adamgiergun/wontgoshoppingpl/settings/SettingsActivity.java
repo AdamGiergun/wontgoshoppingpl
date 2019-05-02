@@ -9,14 +9,14 @@ import android.os.*;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.*;
-
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.*;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.*;
+
+import java.util.List;
 
 import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
@@ -81,8 +81,8 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         mViewModel.setSettingsFragmentId(getSettingsFragmentId());
     }
 
-    private ArrayList<FragmentWithTag> getSettingsFragments() {
-        ArrayList<FragmentWithTag> settingsFragments = new ArrayList<>();
+    private FragmentWithTag.List getSettingsFragments() {
+        FragmentWithTag.List settingsFragments = new FragmentWithTag.List();
         if (isScreenNotWideEnough()) {
             settingsFragments.add(
                     FragmentWithTag.newInstance(
@@ -90,7 +90,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
                             mViewModel.getHeadersTag(),
                             mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getHeadersTag())));
         } else {
-            ArrayList<FragmentWithTag> headersFragments = new ArrayList<>();
+            FragmentWithTag.List headersFragments = new FragmentWithTag.List();
             headersFragments.add(
                     FragmentWithTag.newInstance(
                             new SettingsHeadersFragment(),
@@ -113,7 +113,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         return settingsFragments;
     }
 
-    private void addFragments(int container, ArrayList<FragmentWithTag> list) {
+    private void addFragments(int container, FragmentWithTag.List list) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         for (FragmentWithTag fragmentWithTag : list) {
             ft.add(container, fragmentWithTag.fragment, fragmentWithTag.tag);
@@ -266,7 +266,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionType.CALENDAR.getCode()) {
             if (areAllPermissionsGranted(grantResults)) {
-                ArrayList<FragmentWithTag> newFragments = new ArrayList<>();
+                FragmentWithTag.List newFragments = new FragmentWithTag.List();
                 newFragments.add(
                         FragmentWithTag.newInstance(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), true));
                 addFragments(mViewModel.getSettingsFragmentId(), newFragments);
@@ -411,20 +411,6 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 //                return super.onPreferenceTreeClick(preference);
 //            }
 //        }
-    }
-
-    private static class FragmentWithTag {
-        private PreferenceFragmentCompat fragment;
-        private String tag;
-        private boolean detach;
-
-        static FragmentWithTag newInstance(PreferenceFragmentCompat fragment, String tag, boolean detach) {
-            FragmentWithTag fragmentWithTag = new FragmentWithTag();
-            fragmentWithTag.fragment = fragment;
-            fragmentWithTag.tag = tag;
-            fragmentWithTag.detach = detach;
-            return fragmentWithTag;
-        }
     }
 
     // TODO ChooseCalendarsForCleaning
