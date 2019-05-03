@@ -78,7 +78,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
         private void setup(final Day day) {
             this.day = day;
             dayView.setText(day.getDateAndWeekdayString());
-            timeView.setText(day.getTimeString());
+            timeView.setText(day.getTimeDescription());
             nameView.setText(day.getName());
 
             setupCardView();

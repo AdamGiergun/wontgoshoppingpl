@@ -17,10 +17,6 @@ import eu.adamgiergun.wontgoshoppingpl.db.*;
 import java.text.DateFormat;
 import java.util.*;
 
-import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.COMMERCE_SUNDAY;
-import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.HOLIDAY;
-import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.NON_COMMERCE_DAY;
-
 public class Day implements Comparable<Day> {
 
     private int dbId;
@@ -28,7 +24,8 @@ public class Day implements Comparable<Day> {
     private String name;
     private Calendar calendar;
     private int noOfConsecutiveDays;
-    private SimpleTime time;
+    private String time;
+    private String timeDescription;
     private boolean allDay;
     private SimpleReminder reminder;
     private String description;
@@ -36,6 +33,9 @@ public class Day implements Comparable<Day> {
     private Type type;
     private String calendarId;
     private long calendarEventId;
+    private int backgroundColorResource;
+    private int backgroundResource;
+
 
     private Day(){}
 
@@ -59,7 +59,7 @@ public class Day implements Comparable<Day> {
         reminders.add(reminder);
 
         SimpleCalendarEvent calendarEvent =
-                new SimpleCalendarEvent.Builder(calendarId, calendar, time)
+                new SimpleCalendarEvent.Builder(calendarId, calendar, new SimpleTime(time))
                         .setCalendarEventId(calendarEventId)
                         .setTimeZoneId(timeZoneId)
                         .setEndCalendar(endCalendar, new SimpleTime("23:59"))
@@ -95,11 +95,14 @@ public class Day implements Comparable<Day> {
     }
 
     public boolean isCommerceSunday() {
-        return type == COMMERCE_SUNDAY;
+        return type == Type.COMMERCE_SUNDAY;
     }
 
     public int getBackgroundResource() {
-        int backgroundResource;
+        return backgroundResource;
+    }
+
+    private void setBackgroundResource() {
         switch (type) {
             case HOLIDAY:
                 backgroundResource = R.drawable.card_bg_red;
@@ -114,10 +117,13 @@ public class Day implements Comparable<Day> {
                 backgroundResource = 0;
                 break;
         }
-        return backgroundResource;
     }
 
     public int getBackgroundColorResource() {
+        return backgroundColorResource;
+    }
+
+    private void setBackgroundColorResource() {
         int colorRes;
         switch (type) {
             case HOLIDAY:
@@ -133,7 +139,7 @@ public class Day implements Comparable<Day> {
                 colorRes = 0;
                 break;
         }
-        return colorRes;
+        backgroundColorResource = colorRes;
     }
 
     public String getDateAndWeekdayString() {
@@ -149,10 +155,8 @@ public class Day implements Comparable<Day> {
         return item;
     }
 
-    public String getTimeString() {
-        return (time.getHour() == 0 && time.getMinute() == 0)
-                ? LocalizedConst.getWholeDay()
-                : LocalizedConst.getSince() + time.toString();
+    public String getTimeDescription() {
+        return timeDescription;
     }
 
     public String getName() {
@@ -172,14 +176,13 @@ public class Day implements Comparable<Day> {
     }
 
     private static Day newInstance(EventsTableRow row) {
-        Day day = Day.newInstance(row.dbId, row.item);
-        day.setType(Type.getType(row.typeId));
+        Day day = Day.newInstance(row.dbId, row.item, Type.getType(row.typeId));
         day.setCalendarId(row.calendarId);
         day.setCalendarEventId(row.calendarEventId);
         return day;
     }
 
-    private static Day newInstance(int id, String item) {
+    private static Day newInstance(int id, String item, Type type) {
         Day day = new Day();
         day.dbId = id;
         day.item = item;
@@ -192,7 +195,9 @@ public class Day implements Comparable<Day> {
         day.description = day.name;
         day.reminderNeeded = true;
         day.noOfConsecutiveDays = 0;
-
+        day.type = type;
+        day.setBackgroundResource();
+        day.setBackgroundColorResource();
         return day;
     }
 
@@ -206,8 +211,9 @@ public class Day implements Comparable<Day> {
     }
 
     private void setTime(String string) {
-        time = new SimpleTime(string);
+        time = string;
         allDay = string.equals("00:00");
+        timeDescription = allDay ? LocalizedConst.getWholeDay() : LocalizedConst.getSince() + time;
     }
 
     private int compareDateTo(Calendar comparedCalendar) {
@@ -283,10 +289,6 @@ public class Day implements Comparable<Day> {
 
     private void setReminderNotNeeded() {
         this.reminderNeeded = false;
-    }
-
-    private void setType(Type type) {
-        this.type = type;
     }
 
     private void setCalendarId(String calendarId) {
@@ -398,22 +400,25 @@ public class Day implements Comparable<Day> {
             String[] array = resources.getStringArray(idOfArray);
             Calendar yesterday = getYesterday();
             Day day;
+            Type type = getType(idOfArray);
             for (String item : array) {
-                day = Day.newInstance(0, item);
+                day = Day.newInstance(0, item, type);
                 if (day.compareDateTo(yesterday) > 0) {
-                    switch (idOfArray) {
-                        case R.array.holidays:
-                            day.setType(HOLIDAY);
-                            break;
-                        case R.array.non_commerce_days:
-                            day.setType(NON_COMMERCE_DAY);
-                            break;
-                        case R.array.commerce_sundays:
-                            day.setType(COMMERCE_SUNDAY);
-                            break;
-                    }
                     this.add(day);
                 }
+            }
+        }
+
+        private Type getType(int idOfArray) {
+            switch (idOfArray) {
+                case R.array.holidays:
+                    return Type.HOLIDAY;
+                case R.array.non_commerce_days:
+                    return Type.NON_COMMERCE_DAY;
+                case R.array.commerce_sundays:
+                    return Type.COMMERCE_SUNDAY;
+                default:
+                    return null;
             }
         }
 
