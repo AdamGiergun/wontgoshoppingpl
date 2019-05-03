@@ -35,6 +35,7 @@ public class Day implements Comparable<Day> {
     private long calendarEventId;
     private int backgroundColorResource;
     private int backgroundResource;
+    private String dateAndWeekdayString;
 
 
     private Day(){}
@@ -45,30 +46,8 @@ public class Day implements Comparable<Day> {
     }
 
     public boolean addToGoogleCalendar(Context appContext, String timeZoneId) {
-        String defaultCalendarId = getDefaultCalendarIdFromPreferences(appContext);
-        if (!defaultCalendarId.equals(calendarId)) {
-            calendarId = defaultCalendarId;
-        }
-
-        Calendar endCalendar = (Calendar) calendar.clone();
-        if (noOfConsecutiveDays > 0) {
-            endCalendar.add(Calendar.DAY_OF_YEAR, noOfConsecutiveDays);
-        }
-
-        ArrayList<SimpleReminder> reminders = new ArrayList<>();
-        reminders.add(reminder);
-
-        SimpleCalendarEvent calendarEvent =
-                new SimpleCalendarEvent.Builder(calendarId, calendar, new SimpleTime(time))
-                        .setCalendarEventId(calendarEventId)
-                        .setTimeZoneId(timeZoneId)
-                        .setEndCalendar(endCalendar, new SimpleTime("23:59"))
-                        .setAllDay(allDay).setReminders(reminders)
-                        .setTitle((type == Type.COMMERCE_SUNDAY)
-                                ? description + " - " + appContext.getString(R.string.go_shopping)
-                                : description + " - " + appContext.getString(R.string.go_shopping_earlier))
-                        .build();
-
+        calendarId = getDefaultCalendarIdFromPreferences(appContext);
+        SimpleCalendarEvent calendarEvent = newCalendarEventInstance(appContext, timeZoneId);
 
         if (calendarEvent.exists(appContext, calendarId)) {
             calendarEvent.writeReminders(appContext);
@@ -79,188 +58,50 @@ public class Day implements Comparable<Day> {
             calendarEventId = calendarEvent.write(appContext);
             updateEventIdInDb(appContext);
         }
-
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
-    }
-
-    public void deleteFromGoogleCalendar(Context appContext) {
-        if (calendarEventId != SimpleCalendarEvent.NON_EXISTING) {
-            int count = SimpleCalendarEvent.delete(calendarEventId, appContext, calendarId);
-            calendarEventId = SimpleCalendarEvent.NON_EXISTING;
-            updateEventIdInDb(appContext);
-            if (count > 0) {
-                Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    public boolean isCommerceSunday() {
-        return type == Type.COMMERCE_SUNDAY;
-    }
-
-    public int getBackgroundResource() {
-        return backgroundResource;
-    }
-
-    private void setBackgroundResource() {
-        switch (type) {
-            case HOLIDAY:
-                backgroundResource = R.drawable.card_bg_red;
-                break;
-            case NON_COMMERCE_DAY:
-                backgroundResource = R.drawable.card_bg_orange;
-                break;
-            case COMMERCE_SUNDAY:
-                backgroundResource = R.drawable.card_bg_green;
-                break;
-            default:
-                backgroundResource = 0;
-                break;
-        }
-    }
-
-    public int getBackgroundColorResource() {
-        return backgroundColorResource;
-    }
-
-    private void setBackgroundColorResource() {
-        int colorRes;
-        switch (type) {
-            case HOLIDAY:
-                colorRes = R.color.colorHoliday;
-                break;
-            case NON_COMMERCE_DAY:
-                colorRes = R.color.colorNonCommerceDay;
-                break;
-            case COMMERCE_SUNDAY:
-                colorRes = R.color.colorCommerceSunday;
-                break;
-            default:
-                colorRes = 0;
-                break;
-        }
-        backgroundColorResource = colorRes;
-    }
-
-    public String getDateAndWeekdayString() {
-        String nameOfWeekday = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-        return getDateString() + "\n" + nameOfWeekday;
-    }
-
-    public String getDescriptionForDialog() {
-        return (type == Type.HOLIDAY) ? description : getDateAndWeekdayString();
-    }
-
-    public String getItem() {
-        return item;
-    }
-
-    public String getTimeDescription() {
-        return timeDescription;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getTypeCode() {
-        return type.getCodeAsString();
-    }
-
-    public CharSequence getWidgetText() {
-        return getDateString() + "\nPL: " + description;
-    }
-
-    public void setReminder(SimpleReminder reminder) {
-        this.reminder = reminder;
-    }
-
-    private static Day newInstance(EventsTableRow row) {
-        Day day = Day.newInstance(row.dbId, row.item, Type.getType(row.typeId));
-        day.setCalendarId(row.calendarId);
-        day.setCalendarEventId(row.calendarEventId);
-        return day;
-    }
-
-    private static Day newInstance(int id, String item, Type type) {
-        Day day = new Day();
-        day.dbId = id;
-        day.item = item;
-
-        String[] pieces = item.split(",");
-        day.setTime(pieces[1]);
-        day.setDate(pieces[0]);
-        day.name = pieces[2];
-
-        day.description = day.name;
-        day.reminderNeeded = true;
-        day.noOfConsecutiveDays = 0;
-        day.type = type;
-        day.setBackgroundResource();
-        day.setBackgroundColorResource();
-        return day;
-    }
-
-    private void setDate(String date) {
-        String[] subPieces = date.split("_");
-        calendar = SimpleCalendarEvent.getClearedCalendarInstance();
-        int year = Integer.valueOf(subPieces[0]);
-        int month = Integer.valueOf(subPieces[2]) - 1;
-        int day = Integer.valueOf(subPieces[1]);
-        calendar.set(year, month, day);
-    }
-
-    private void setTime(String string) {
-        time = string;
-        allDay = string.equals("00:00");
-        timeDescription = allDay ? LocalizedConst.getWholeDay() : LocalizedConst.getSince() + time;
-    }
-
-    private int compareDateTo(Calendar comparedCalendar) {
-        return this.calendar.compareTo(comparedCalendar);
-    }
-
-    private Calendar getCalendar() {
-        return calendar;
-    }
-
-    private void appendToDescription(String string) {
-        description += ", " + string;
-    }
-
-    private String getDescription() {
-        return description;
-    }
-
-    private String getDateString() {
-        return DateFormat.getDateInstance().format(calendar.getTime());
-    }
-
-    private Calendar getTomorrow() {
-        Calendar tomorrow = (Calendar) this.calendar.clone();
-        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
-        return tomorrow;
-    }
-
-    private void incrementNoOfConsecutiveDays() {
-        noOfConsecutiveDays++;
-    }
-
-    private boolean dateIs(Calendar calendar) {
-        return calendar.compareTo(this.calendar) == 0;
-    }
-
-    private void deleteFromGoogleCalendar(SimpleCalendarEvent calendarEvent, Context appContext) {
-        if (calendarEventId != SimpleCalendarEvent.NON_EXISTING && calendarEvent.delete(appContext)) {
-            calendarEventId = SimpleCalendarEvent.NON_EXISTING;
-            updateEventIdInDb(appContext);
-            Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
-        }
     }
 
     private String getDefaultCalendarIdFromPreferences(Context appContext) {
         AppPreferences appPreferences = AppPreferences.getInstance(appContext);
         return appPreferences.getDefaultCalendarId(appContext);
+    }
+
+    private SimpleCalendarEvent newCalendarEventInstance(Context appContext, String timeZoneId) {
+        return new SimpleCalendarEvent.Builder(calendarId, calendar, new SimpleTime(time))
+                .setCalendarEventId(calendarEventId)
+                .setTimeZoneId(timeZoneId)
+                .setEndCalendar(getEndCalendar(), new SimpleTime("23:59"))
+                .setAllDay(allDay).setReminders(getReminders())
+                .setTitle((type == Type.COMMERCE_SUNDAY)
+                        ? description + " - " + appContext.getString(R.string.go_shopping)
+                        : description + " - " + appContext.getString(R.string.go_shopping_earlier))
+                .build();
+    }
+
+    private Calendar getEndCalendar() {
+        Calendar endCalendar = (Calendar) calendar.clone();
+        if (noOfConsecutiveDays > 0) {
+            endCalendar.add(Calendar.DAY_OF_YEAR, noOfConsecutiveDays);
+        }
+        return endCalendar;
+    }
+
+    private ArrayList<SimpleReminder> getReminders() {
+        ArrayList<SimpleReminder> reminders = new ArrayList<>();
+        reminders.add(reminder);
+        return reminders;
+    }
+
+    private void deleteFromGoogleCalendar(SimpleCalendarEvent calendarEvent, Context appContext) {
+        if (calendarEventId != SimpleCalendarEvent.NON_EXISTING && calendarEvent.delete(appContext)) {
+            finishDeleting(appContext);
+        }
+    }
+
+    private void finishDeleting(Context appContext) {
+        Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
+        calendarEventId = SimpleCalendarEvent.NON_EXISTING;
+        updateEventIdInDb(appContext);
     }
 
     private void updateEventIdInDb(Context appContext) {
@@ -283,20 +124,168 @@ public class Day implements Comparable<Day> {
         databaseHandler.close();
     }
 
+    public void deleteFromGoogleCalendar(Context appContext) {
+        if (calendarEventId != SimpleCalendarEvent.NON_EXISTING && SimpleCalendarEvent.delete(calendarEventId, appContext, calendarId)) {
+            finishDeleting(appContext);
+        }
+    }
+
+    public int getBackgroundResource() {
+        return backgroundResource;
+    }
+
+    public int getBackgroundColorResource() {
+        return backgroundColorResource;
+    }
+
+    public String getDateAndWeekdayString() {
+        return dateAndWeekdayString;
+    }
+
+    public String getDescriptionForDialog() {
+        return (type == Type.HOLIDAY) ? description : dateAndWeekdayString;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTypeCode() {
+        return type.getCodeAsString();
+    }
+
+    public String getTimeDescription() {
+        return timeDescription;
+    }
+
+    public CharSequence getWidgetText() {
+        return getDateString() + "\nPL: " + description;
+    }
+
+    public boolean isCommerceSunday() {
+        return type == Type.COMMERCE_SUNDAY;
+    }
+
+    public void setReminder(SimpleReminder reminder) {
+        this.reminder = reminder;
+    }
+
+    private static Day newInstance(EventsTableRow row) {
+        Day day = Day.newInstance(row.dbId, row.item, Type.getType(row.typeId));
+        day.calendarId = row.calendarId;
+        day.calendarEventId = row.calendarEventId;
+        return day;
+    }
+
+    private static Day newInstance(int id, String item, Type type) {
+        Day day = new Day();
+        day.dbId = id;
+        day.item = item;
+        day.type = type;
+        day.setBackgroundResource();
+        day.setBackgroundColorResource();
+
+        String[] pieces = item.split(",");
+        day.setDate(pieces[0]);
+        day.setTime(pieces[1]);
+        day.name = pieces[2];
+
+        day.setDateAndWeekdayString();
+        day.description = day.name;
+        day.reminderNeeded = true;
+        day.noOfConsecutiveDays = 0;
+        return day;
+    }
+
+    private void setBackgroundResource() {
+        switch (type) {
+            case HOLIDAY:
+                backgroundResource = R.drawable.card_bg_red;
+                break;
+            case NON_COMMERCE_DAY:
+                backgroundResource = R.drawable.card_bg_orange;
+                break;
+            case COMMERCE_SUNDAY:
+                backgroundResource = R.drawable.card_bg_green;
+                break;
+            default:
+                backgroundResource = 0;
+                break;
+        }
+    }
+
+    private void setBackgroundColorResource() {
+        int colorRes;
+        switch (type) {
+            case HOLIDAY:
+                colorRes = R.color.colorHoliday;
+                break;
+            case NON_COMMERCE_DAY:
+                colorRes = R.color.colorNonCommerceDay;
+                break;
+            case COMMERCE_SUNDAY:
+                colorRes = R.color.colorCommerceSunday;
+                break;
+            default:
+                colorRes = 0;
+                break;
+        }
+        backgroundColorResource = colorRes;
+    }
+
+    private void setDate(String date) {
+        String[] subPieces = date.split("_");
+        calendar = SimpleCalendarEvent.getClearedCalendarInstance();
+        int year = Integer.valueOf(subPieces[0]);
+        int month = Integer.valueOf(subPieces[2]) - 1;
+        int day = Integer.valueOf(subPieces[1]);
+        calendar.set(year, month, day);
+    }
+
+    private void setTime(String string) {
+        time = string;
+        allDay = string.equals("00:00");
+        timeDescription = allDay ? LocalizedConst.getWholeDay() : LocalizedConst.getSince() + time;
+    }
+
+    private void setDateAndWeekdayString() {
+        String nameOfWeekday = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        dateAndWeekdayString = getDateString() + "\n" + nameOfWeekday;
+    }
+
+    private String getDateString() {
+        return DateFormat.getDateInstance().format(calendar.getTime());
+    }
+
+    private void appendToDescription(String string) {
+        description += ", " + string;
+    }
+
+    private int compareDateTo(Calendar comparedCalendar) {
+        return calendar.compareTo(comparedCalendar);
+    }
+
+    private void incrementNoOfConsecutiveDays() {
+        noOfConsecutiveDays++;
+    }
+
+    private boolean isTomorrowOf(Day day) {
+        Calendar tomorrowOfDay = (Calendar) day.calendar.clone();
+        tomorrowOfDay.add(Calendar.DAY_OF_MONTH, 1);
+        tomorrowOfDay.getTime();
+        return compareDateTo(tomorrowOfDay) == 0;
+    }
+
     private boolean isReminderNeeded() {
         return reminderNeeded;
     }
 
     private void setReminderNotNeeded() {
         this.reminderNeeded = false;
-    }
-
-    private void setCalendarId(String calendarId) {
-        this.calendarId = calendarId;
-    }
-
-    private void setCalendarEventId(long calendarEventId) {
-        this.calendarEventId = calendarEventId;
     }
 
     public enum Type {
@@ -429,20 +418,6 @@ public class Day implements Comparable<Day> {
             }
             return yesterday;
         }
-//
-//        private void removePastDays() {
-//            Iterator<Day> iterator = this.iterator();
-//            Calendar yesterday = getYesterday();
-//            Day day;
-//            while (iterator.hasNext()) {
-//                day = iterator.next();
-//                if (yesterday.compareTo(day.getCalendar()) >= 0) {
-//                    this.remove(day);
-//                } else {
-//                    break;
-//                }
-//            }
-//        }
 
         public static List newInstance(Context appContext) {
             AppPreferences appPreferences = AppPreferences.getInstance(appContext);
@@ -491,7 +466,7 @@ public class Day implements Comparable<Day> {
             while (iterator.hasNext()) {
                 lastDay = iterator.next();
             }
-            return (lastDay == null) ? Calendar.getInstance().getTimeInMillis() : lastDay.getCalendar().getTimeInMillis();
+            return (lastDay == null) ? Calendar.getInstance().getTimeInMillis() : lastDay.calendar.getTimeInMillis();
         }
 
 
@@ -528,10 +503,10 @@ public class Day implements Comparable<Day> {
                     previousDay = day;
                     nextDay = iterator.next();
                     while (!(nextDay.isCommerceSunday())
-                            && nextDay.dateIs(previousDay.getTomorrow())) {
+                            && nextDay.isTomorrowOf(previousDay)) {
                         nextDay.setReminderNotNeeded();
                         day.incrementNoOfConsecutiveDays();
-                        day.appendToDescription(nextDay.getDescription());
+                        day.appendToDescription(nextDay.description);
                         if (iterator.hasNext()) {
                             previousDay = nextDay;
                             nextDay = iterator.next();
@@ -543,4 +518,18 @@ public class Day implements Comparable<Day> {
             }
         }
     }
+
+//        private void removePastDays() {
+//            Iterator<Day> iterator = this.iterator();
+//            Calendar yesterday = getYesterday();
+//            Day day;
+//            while (iterator.hasNext()) {
+//                day = iterator.next();
+//                if (yesterday.compareTo(day.getCalendar()) >= 0) {
+//                    this.remove(day);
+//                } else {
+//                    break;
+//                }
+//            }
+//        }
 }
