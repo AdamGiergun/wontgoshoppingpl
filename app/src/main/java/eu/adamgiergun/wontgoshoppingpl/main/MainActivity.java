@@ -87,8 +87,8 @@ public class MainActivity
     }
 
     private void setDayFragment() {
-        addFragment(new DaysFragment());
         showWidgetInfoIfNeeded();
+        addFragment(new DaysFragment());
         mViewModel.logLook();
     }
 

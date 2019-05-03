@@ -1,9 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.day;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,7 +54,7 @@ public class Day implements Comparable<Day> {
                 deleteFromGoogleCalendar(calendarEvent, appContext);
             }
             calendarEventId = calendarEvent.write(appContext);
-            updateEventIdInDb(appContext);
+            updateEventInDb(appContext);
         }
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
     }
@@ -101,26 +99,12 @@ public class Day implements Comparable<Day> {
     private void finishDeleting(Context appContext) {
         Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
         calendarEventId = SimpleCalendarEvent.NON_EXISTING;
-        updateEventIdInDb(appContext);
+        updateEventInDb(appContext);
     }
 
-    private void updateEventIdInDb(Context appContext) {
+    private void updateEventInDb(Context appContext) {
         DatabaseHandler databaseHandler = new DatabaseHandler(appContext);
-        SQLiteDatabase db = databaseHandler.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_ID, calendarId);
-        if (calendarEventId > SimpleCalendarEvent.NON_EXISTING) {
-            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, calendarEventId);
-        } else {
-            String nullValue = null;
-            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, nullValue);
-        }
-        db.update(DBContract.Events.TABLE_NAME,
-                contentValues,
-                DBContract.Events._ID + "=?",
-                new String[]{String.valueOf(dbId)});
-
-        db.close();
+        databaseHandler.updateEvent(dbId, calendarId, calendarEventId);
         databaseHandler.close();
     }
 
@@ -428,18 +412,25 @@ public class Day implements Comparable<Day> {
         private static List newInstance(Context appContext, @NonNull Type.List includedDaysTypes) {
             List list = new List();
             Day day;
-            Iterator<EventsTableRow> rowIterator =
-                    EventsTableRow.newIterator(
-                            appContext,
-                            getSelectionArgs(includedDaysTypes));
+            Iterator<EventsTableRow> eventsIterator = getEventsIterator(appContext, includedDaysTypes);
             Calendar yesterday = getYesterday();
-            while (rowIterator.hasNext()) {
-                day = Day.newInstance(rowIterator.next());
+
+            while (eventsIterator.hasNext()) {
+                day = Day.newInstance(eventsIterator.next());
                 if (day.compareDateTo(yesterday) > 0) {
                     list.add(day);
                 }
             }
             return list;
+        }
+
+        private static Iterator<EventsTableRow> getEventsIterator(Context appContext, @NonNull Type.List includedDaysTypes) {
+            DatabaseHandler databaseHandler = new DatabaseHandler(appContext);
+            Iterator<EventsTableRow> eventsIterator =
+                    databaseHandler.newEventsIterator(
+                            getSelectionArgs(includedDaysTypes));
+            databaseHandler.close();
+            return eventsIterator;
         }
 
         private static String[] getSelectionArgs(@NonNull Type.List includedDayTypes) {
@@ -482,11 +473,9 @@ public class Day implements Comparable<Day> {
             list.skipReminderForConsecutiveDays();
             boolean result = true;
             for (Day day : list) {
-                if (day.compareDateTo(till) <= 0) {
-                    if (day.isReminderNeeded()) {
-                        day.setReminder(reminder);
-                        result = result && day.addToGoogleCalendar(appContext, timeZoneId);
-                    }
+                if ((day.compareDateTo(till) <= 0) && day.isReminderNeeded()) {
+                    day.setReminder(reminder);
+                    result = result && day.addToGoogleCalendar(appContext, timeZoneId);
                 }
             }
             return result;

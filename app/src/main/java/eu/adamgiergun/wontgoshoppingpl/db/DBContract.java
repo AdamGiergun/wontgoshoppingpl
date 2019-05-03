@@ -2,14 +2,14 @@ package eu.adamgiergun.wontgoshoppingpl.db;
 
 import android.provider.BaseColumns;
 
-public class DBContract {
+class DBContract {
 
-    public static abstract class Events implements BaseColumns {
-        public static final String TABLE_NAME = "events";
-        public static final String COLUMN_NAME_TYPE_ID = "type_id";
+    static abstract class Events implements BaseColumns {
+        static final String TABLE_NAME = "events";
+        static final String COLUMN_NAME_TYPE_ID = "type_id";
         static final String COLUMN_NAME_ITEM = "item";
-        public static final String COLUMN_NAME_CALENDAR_ID = "calendar_id";
-        public static final String COLUMN_NAME_CALENDAR_EVENT_ID = "calendar_event_id";
+        static final String COLUMN_NAME_CALENDAR_ID = "calendar_id";
+        static final String COLUMN_NAME_CALENDAR_EVENT_ID = "calendar_event_id";
     }
 
     static abstract class Reminders implements BaseColumns {
