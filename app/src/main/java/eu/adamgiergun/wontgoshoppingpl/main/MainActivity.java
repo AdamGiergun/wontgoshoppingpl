@@ -385,7 +385,6 @@ public class MainActivity
         private boolean[] getCheckedItems() {
             boolean[] checkedItems = new boolean[3];
             List dayTypesToBeAddedToCalendar = getViewModel().getDayTypesToBeAddedToCalendar();
-
             checkedItems[NON_COMMERCE_DAY.getCode()] = dayTypesToBeAddedToCalendar.contains(NON_COMMERCE_DAY);
             checkedItems[HOLIDAY.getCode()] = dayTypesToBeAddedToCalendar.contains(HOLIDAY);
             checkedItems[COMMERCE_SUNDAY.getCode()] = dayTypesToBeAddedToCalendar.contains(COMMERCE_SUNDAY);
@@ -443,7 +442,7 @@ public class MainActivity
         }
 
         private List getDayTypesList(boolean[] checkedItems) {
-            return Day.Type.newList(
+            return getViewModel().newDayTypeList(
                     checkedItems[NON_COMMERCE_DAY.getCode()],
                     checkedItems[HOLIDAY.getCode()],
                     checkedItems[COMMERCE_SUNDAY.getCode()]);
@@ -461,7 +460,7 @@ public class MainActivity
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = getStyledBuilder(getContext());
             MainViewModel viewModel = getViewModel();
-            String title = viewModel.isActionAddList() ? getString(R.string.title_reminder) : getString(R.string.title_reminder_of) + " " + viewModel.getDayDescription();
+            String title = viewModel.isActionAddList() ? getString(R.string.title_reminder) : getString(R.string.title_reminder_of) + " " + viewModel.getDayDescriptionForDialog();
             builder
                     .setTitle(title)
                     .setView(getDialogView())
@@ -688,7 +687,11 @@ public class MainActivity
         }
 
         private MyDatePicker getPicker(Bundle savedInstanceState) {
-            MyDatePicker myDatePicker = MyDatePicker.newInstance(getContext(), getViewModel().getTill());
+            MyDatePicker myDatePicker =
+                    MyDatePicker.newInstance(
+                            getContext(),
+                            getViewModel().getTill(),
+                            getViewModel().getLastDateInMillis());
             if (savedInstanceState != null) {
                 int year = savedInstanceState.getInt(YEAR);
                 int month = savedInstanceState.getInt(MONTH);
@@ -744,9 +747,9 @@ public class MainActivity
             super(context);
         }
 
-        static MyDatePicker newInstance(Context context, Calendar date) {
+        static MyDatePicker newInstance(Context context, Calendar date, long maxDate) {
             MyDatePicker picker = new MyDatePicker(context);
-            picker.setMaxDate(ListOfDays.getLastDateInMillis(context));
+            picker.setMaxDate(maxDate);
             picker.updateDate(
                     date.get(Calendar.YEAR),
                     date.get(Calendar.MONTH),

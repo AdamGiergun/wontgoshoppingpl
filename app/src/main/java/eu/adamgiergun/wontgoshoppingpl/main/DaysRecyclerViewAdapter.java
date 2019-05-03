@@ -12,18 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.day.Day;
-import eu.adamgiergun.wontgoshoppingpl.day.ListOfDays;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnListFragmentInteractionListener;
 
 public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerViewAdapter.ViewHolder> {
 
-    private final ListOfDays days;
+    private final Day.List days;
     private final OnListFragmentInteractionListener listener;
     private boolean isLookRich;
     private static float density;
 
-    private DaysRecyclerViewAdapter(ListOfDays days, OnListFragmentInteractionListener listener) {
+    private DaysRecyclerViewAdapter(Day.List days, OnListFragmentInteractionListener listener) {
         this.days = days;
         this.listener = listener;
     }
@@ -31,7 +30,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
     static DaysRecyclerViewAdapter newInstance(Context appContext, OnListFragmentInteractionListener listener) {
         DaysRecyclerViewAdapter daysRecyclerViewAdapter =
                 new DaysRecyclerViewAdapter(
-                        ListOfDays.newInstance(appContext),
+                        Day.List.newInstance(appContext),
                         listener);
         daysRecyclerViewAdapter.setLook(appContext);
         density = appContext.getResources().getDisplayMetrics().density;

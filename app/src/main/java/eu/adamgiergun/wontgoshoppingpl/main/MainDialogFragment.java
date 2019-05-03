@@ -9,6 +9,6 @@ class MainDialogFragment extends AppDialogFragment {
 
     MainViewModel getViewModel() {
         FragmentActivity activity = getActivity();
-        return (activity==null) ? null : ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        return (activity==null) ? null : ViewModelProviders.of(activity).get(MainViewModel.class);
     }
 }

@@ -1,16 +1,41 @@
 package eu.adamgiergun.wontgoshoppingpl.widget;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
+import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent;
+import eu.adamgiergun.wontgoshoppingpl.day.Day;
+import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 
 import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.APP_WIDGET;
 import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.WidgetFullText.*;
 
 class WidgetViewModel {
+    private Day nearestDay;
+    private PendingIntent pendingIntent;
 
-    private WidgetViewModel() {
-        throw new AssertionError();
+    private WidgetViewModel() {}
+
+    static WidgetViewModel newInstance(Context appContext) {
+        WidgetViewModel viewModel = new WidgetViewModel();
+        viewModel.nearestDay = Day.List.getFirst(appContext);
+        Intent intent = new Intent(appContext, MainActivity.class);
+        viewModel.pendingIntent = PendingIntent.getActivity(appContext,0, intent,0);
+        return viewModel;
+    }
+
+    int getLayoutId() {
+        return nearestDay.isCommerceSunday() ? R.layout.app_widget_shopping : R.layout.app_widget_no_shopping;
+    }
+
+    CharSequence getText() {
+        return nearestDay.getWidgetText();
+    }
+
+    PendingIntent getPendingIntent() {
+        return pendingIntent;
     }
 
     static void logUpdated(Context appContext) {
@@ -28,5 +53,4 @@ class WidgetViewModel {
     private static void logFirebaseEvent(Context appContext, String fullText) {
         FirebaseEvent.log(appContext, APP_WIDGET, fullText);
     }
-
 }

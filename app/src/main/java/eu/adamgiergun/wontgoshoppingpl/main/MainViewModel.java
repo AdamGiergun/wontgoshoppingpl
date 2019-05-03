@@ -84,7 +84,7 @@ public class MainViewModel extends AppViewModel {
         }
     }
 
-    String getDayDescription() {
+    String getDayDescriptionForDialog() {
         return lastTouchedDay.getDescriptionForDialog();
     }
 
@@ -121,7 +121,7 @@ public class MainViewModel extends AppViewModel {
     boolean addToCalendar() {
         boolean result;
         if (actionAddList) {
-            result = ListOfDays.addToCalendar(
+            result = Day.List.addToCalendar(
                     getApplication(),
                     dayTypesToBeAddedToCalendar,
                     reminder.getValue(),
@@ -147,6 +147,14 @@ public class MainViewModel extends AppViewModel {
         return dayTypesToBeAddedToCalendar==null ?
                 Day.Type.newList(true, true, true)
                 : dayTypesToBeAddedToCalendar;
+    }
+
+    Day.Type.List newDayTypeList(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
+        return Day.Type.newList(addNonCommerceDays, addHolidays, addCommerceSundays);
+    }
+
+    long getLastDateInMillis() {
+        return Day.List.getLastDateInMillis(getApplication());
     }
 
     void setDayTypesToBeAddedToCalendar(Day.Type.List dayTypes) {
