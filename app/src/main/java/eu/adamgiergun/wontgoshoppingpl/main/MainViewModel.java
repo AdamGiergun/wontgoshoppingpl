@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.Calendar;
 import java.util.TimeZone;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
@@ -20,7 +19,7 @@ import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.CALENDAR
 
 public class MainViewModel extends AppViewModel {
     private boolean actionAddList;
-    private MutableLiveData<Calendar> till;
+    private MutableLiveData<SimpleDate> till;
     private MutableLiveData<SimpleReminder> reminder;
     private Day lastTouchedDay;
     private Day.Type.List dayTypesToBeAddedToCalendar;
@@ -43,15 +42,8 @@ public class MainViewModel extends AppViewModel {
         reminder.setValue(getReminderPreference());
         if (isActionAddList()) {
             till = new MutableLiveData<>();
-            till.setValue(getLastDayOfNextMonth());
+            till.setValue(SimpleDate.getLastDayOfNextMonth());
         }
-    }
-
-    private Calendar getLastDayOfNextMonth() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, 1);
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return calendar;
     }
 
     SimpleReminder getReminder() {
@@ -88,15 +80,15 @@ public class MainViewModel extends AppViewModel {
         return lastTouchedDay.getDescriptionForDialog();
     }
 
-    MutableLiveData<Calendar> getTillObservable() {
+    MutableLiveData<SimpleDate> getTillObservable() {
         return till;
     }
 
-    Calendar getTill() {
+    SimpleDate getTill() {
         return till.getValue();
     }
 
-    void setTill(Calendar till) {
+    void setTill(SimpleDate till) {
         this.till.setValue(till);
     }
 

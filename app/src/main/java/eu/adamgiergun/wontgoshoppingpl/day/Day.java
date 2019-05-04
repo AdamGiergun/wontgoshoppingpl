@@ -12,7 +12,6 @@ import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.db.*;
 
-import java.text.DateFormat;
 import java.util.*;
 
 public class Day implements Comparable<Day> {
@@ -20,7 +19,7 @@ public class Day implements Comparable<Day> {
     private int dbId;
     private String item;
     private String name;
-    private Calendar calendar;
+    private SimpleDate date;
     private int noOfConsecutiveDays;
     private String time;
     private String timeDescription;
@@ -33,14 +32,12 @@ public class Day implements Comparable<Day> {
     private long calendarEventId;
     private int backgroundColorResource;
     private int backgroundResource;
-    private String dateAndWeekdayString;
-
 
     private Day(){}
 
     @Override
     public int compareTo(@NonNull Day another) {
-        return this.calendar.compareTo(another.calendar);
+        return this.date.compareTo(another.date);
     }
 
     public boolean addToGoogleCalendar(Context appContext, String timeZoneId) {
@@ -65,10 +62,10 @@ public class Day implements Comparable<Day> {
     }
 
     private SimpleCalendarEvent newCalendarEventInstance(Context appContext, String timeZoneId) {
-        return new SimpleCalendarEvent.Builder(calendarId, calendar, new SimpleTime(time))
+        return new SimpleCalendarEvent.Builder(calendarId, date, new SimpleTime(time))
                 .setCalendarEventId(calendarEventId)
                 .setTimeZoneId(timeZoneId)
-                .setEndCalendar(getEndCalendar(), new SimpleTime("23:59"))
+                .setEndCalendar(getEndDate(), new SimpleTime("23:59"))
                 .setAllDay(allDay).setReminders(getReminders())
                 .setTitle((type == Type.COMMERCE_SUNDAY)
                         ? description + " - " + appContext.getString(R.string.go_shopping)
@@ -76,12 +73,12 @@ public class Day implements Comparable<Day> {
                 .build();
     }
 
-    private Calendar getEndCalendar() {
-        Calendar endCalendar = (Calendar) calendar.clone();
+    private SimpleDate getEndDate() {
+        SimpleDate endDate = (SimpleDate) date.clone();
         if (noOfConsecutiveDays > 0) {
-            endCalendar.add(Calendar.DAY_OF_YEAR, noOfConsecutiveDays);
+            endDate = endDate.addDays(noOfConsecutiveDays);
         }
-        return endCalendar;
+        return endDate;
     }
 
     private ArrayList<SimpleReminder> getReminders() {
@@ -123,11 +120,11 @@ public class Day implements Comparable<Day> {
     }
 
     public String getDateAndWeekdayString() {
-        return dateAndWeekdayString;
+        return date.toString() + "\n" + date.getWeekdayName();
     }
 
     public String getDescriptionForDialog() {
-        return (type == Type.HOLIDAY) ? description : dateAndWeekdayString;
+        return (type == Type.HOLIDAY) ? description : getDateAndWeekdayString();
     }
 
     public String getItem() {
@@ -147,7 +144,7 @@ public class Day implements Comparable<Day> {
     }
 
     public CharSequence getWidgetText() {
-        return getDateString() + "\nPL: " + description;
+        return date.toString() + "\nPL: " + description;
     }
 
     public boolean isCommerceSunday() {
@@ -178,7 +175,6 @@ public class Day implements Comparable<Day> {
         day.setTime(pieces[1]);
         day.name = pieces[2];
 
-        day.setDateAndWeekdayString();
         day.description = day.name;
         day.reminderNeeded = true;
         day.noOfConsecutiveDays = 0;
@@ -223,11 +219,10 @@ public class Day implements Comparable<Day> {
 
     private void setDate(String date) {
         String[] subPieces = date.split("_");
-        calendar = SimpleCalendarEvent.getClearedCalendarInstance();
         int year = Integer.valueOf(subPieces[0]);
-        int month = Integer.valueOf(subPieces[2]) - 1;
+        int month = Integer.valueOf(subPieces[2]);
         int day = Integer.valueOf(subPieces[1]);
-        calendar.set(year, month, day);
+        this.date = SimpleDate.newInstance(year, month, day);
     }
 
     private void setTime(String string) {
@@ -236,21 +231,12 @@ public class Day implements Comparable<Day> {
         timeDescription = allDay ? LocalizedConst.getWholeDay() : LocalizedConst.getSince() + time;
     }
 
-    private void setDateAndWeekdayString() {
-        String nameOfWeekday = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-        dateAndWeekdayString = getDateString() + "\n" + nameOfWeekday;
-    }
-
-    private String getDateString() {
-        return DateFormat.getDateInstance().format(calendar.getTime());
-    }
-
     private void appendToDescription(String string) {
         description += ", " + string;
     }
 
-    private int compareDateTo(Calendar comparedCalendar) {
-        return calendar.compareTo(comparedCalendar);
+    private int compareDateTo(SimpleDate comparedDate) {
+        return date.compareTo(comparedDate);
     }
 
     private void incrementNoOfConsecutiveDays() {
@@ -258,10 +244,7 @@ public class Day implements Comparable<Day> {
     }
 
     private boolean isTomorrowOf(Day day) {
-        Calendar tomorrowOfDay = (Calendar) day.calendar.clone();
-        tomorrowOfDay.add(Calendar.DAY_OF_MONTH, 1);
-        tomorrowOfDay.getTime();
-        return compareDateTo(tomorrowOfDay) == 0;
+        return date.compareTo(day.date.addDays(1)) == 0;
     }
 
     private boolean isReminderNeeded() {
@@ -352,8 +335,6 @@ public class Day implements Comparable<Day> {
 
     public static class List extends ArrayList<Day> {
 
-        private static Calendar yesterday;
-
         public static Iterator<Day> getIterator(Resources resources) {
             List days = newInstance(resources);
             //days.removePastDays();
@@ -371,7 +352,7 @@ public class Day implements Comparable<Day> {
 
         private void addArray(Resources resources, int idOfArray) {
             String[] array = resources.getStringArray(idOfArray);
-            Calendar yesterday = getYesterday();
+            SimpleDate yesterday = SimpleDate.getYesterday();
             Day day;
             Type type = getType(idOfArray);
             for (String item : array) {
@@ -395,14 +376,6 @@ public class Day implements Comparable<Day> {
             }
         }
 
-        private static Calendar getYesterday() {
-            if (yesterday == null) {
-                yesterday = Calendar.getInstance();
-                yesterday.add(Calendar.DAY_OF_MONTH, -1);
-            }
-            return yesterday;
-        }
-
         public static List newInstance(Context appContext) {
             AppPreferences appPreferences = AppPreferences.getInstance(appContext);
             Type.List dayTypes = appPreferences.newDayTypesList(appContext);
@@ -413,7 +386,7 @@ public class Day implements Comparable<Day> {
             List list = new List();
             Day day;
             Iterator<EventsTableRow> eventsIterator = getEventsIterator(appContext, includedDaysTypes);
-            Calendar yesterday = getYesterday();
+            SimpleDate yesterday = SimpleDate.getYesterday();
 
             while (eventsIterator.hasNext()) {
                 day = Day.newInstance(eventsIterator.next());
@@ -457,7 +430,7 @@ public class Day implements Comparable<Day> {
             while (iterator.hasNext()) {
                 lastDay = iterator.next();
             }
-            return (lastDay == null) ? Calendar.getInstance().getTimeInMillis() : lastDay.calendar.getTimeInMillis();
+            return (lastDay == null) ? Calendar.getInstance().getTimeInMillis() : lastDay.date.getTimeInMillis();
         }
 
 
@@ -466,7 +439,7 @@ public class Day implements Comparable<Day> {
                 Type.List dayTypesList,
                 SimpleReminder reminder,
                 String timeZoneId,
-                Calendar till) {
+                SimpleDate till) {
 
             List list =
                     List.newInstance(appContext, dayTypesList);

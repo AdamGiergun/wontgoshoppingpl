@@ -24,9 +24,6 @@ import androidx.lifecycle.*;
 
 import com.google.android.gms.ads.*;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
@@ -486,17 +483,12 @@ public class MainActivity
 
         private void initializeTillView(View view, MainViewModel viewModel) {
             AppCompatTextView tillView = getTillView(view);
-            tillView.setText(getDateAsString(viewModel.getTill()));
+            tillView.setText(viewModel.getTill().toString());
             tillView.setOnClickListener(getViewListener(TillDateDialog.newInstance()));
         }
 
         private AppCompatTextView getTillView(View view) {
             return view.findViewById(R.id.tillDateView);
-        }
-
-        private static String getDateAsString(Calendar calendar) {
-            DateFormat dateFormat = DateFormat.getDateInstance();
-            return dateFormat.format(calendar.getTime());
         }
 
         private void initializeReminderViews(final View view, final MainViewModel viewModel) {
@@ -522,11 +514,10 @@ public class MainActivity
             viewModel.getReminderObservable().observe(this, reminderObserver);
 
             if (viewModel.isActionAddList()) {
-                Observer<Calendar> tillObserver = new Observer<Calendar>() {
+                Observer<SimpleDate> tillObserver = new Observer<SimpleDate>() {
                     @Override
-                    public void onChanged(Calendar till) {
-                        getTillView(view).setText(
-                                getDateAsString(till));
+                    public void onChanged(SimpleDate till) {
+                        getTillView(view).setText(till.toString());
                     }
                 };
 
@@ -701,7 +692,7 @@ public class MainActivity
             return myDatePicker;
         }
 
-        private void updateTill(Calendar date) {
+        private void updateTill(SimpleDate date) {
             getViewModel().setTill(date);
         }
 
@@ -747,20 +738,15 @@ public class MainActivity
             super(context);
         }
 
-        static MyDatePicker newInstance(Context context, Calendar date, long maxDate) {
+        static MyDatePicker newInstance(Context context, SimpleDate date, long maxDate) {
             MyDatePicker picker = new MyDatePicker(context);
             picker.setMaxDate(maxDate);
-            picker.updateDate(
-                    date.get(Calendar.YEAR),
-                    date.get(Calendar.MONTH),
-                    date.get(Calendar.DAY_OF_MONTH));
+            picker.updateDate(date.getYear(), date.getMonth(), date.getDay());
             return picker;
         }
 
-        Calendar getDate() {
-            Calendar cal = SimpleCalendarEvent.getClearedCalendarInstance();
-            cal.set(getYear(), getMonth(), getDayOfMonth());
-            return cal;
+        SimpleDate getDate() {
+            return SimpleDate.newInstance(getYear(), getMonth(), getDayOfMonth());
         }
     }
 
