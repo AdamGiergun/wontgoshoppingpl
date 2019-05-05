@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.Calendar;
 import java.util.TimeZone;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
@@ -42,7 +43,8 @@ public class MainViewModel extends AppViewModel {
         reminder.setValue(getReminderPreference());
         if (isActionAddList()) {
             till = new MutableLiveData<>();
-            till.setValue(SimpleDate.getLastDayOfNextMonth());
+            Calendar today = Calendar.getInstance();
+            till.setValue(SimpleDate.getLastDayOfMonth(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 2));
         }
     }
 
