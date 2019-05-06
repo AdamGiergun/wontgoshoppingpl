@@ -34,7 +34,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     private void fillDbWithEvents(SQLiteDatabase db, Resources resources) {
-        Iterator<Day> iterator = Day.List.getIterator(resources);
+        Iterator<Day> iterator = Day.List.newIterator(resources);
         while (iterator.hasNext()) {
             insertDayInDb(iterator.next(), db);
         }

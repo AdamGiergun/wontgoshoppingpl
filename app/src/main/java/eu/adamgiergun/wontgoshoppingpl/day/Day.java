@@ -333,7 +333,7 @@ public class Day implements Comparable<Day> {
 
     public static class List extends ArrayList<Day> {
 
-        public static Iterator<Day> getIterator(Resources resources) {
+        public static Iterator<Day> newIterator(Resources resources) {
             List days = newInstance(resources);
             //days.removePastDays();
             return days.iterator();
