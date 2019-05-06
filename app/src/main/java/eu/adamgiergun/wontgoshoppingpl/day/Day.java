@@ -199,22 +199,20 @@ public class Day implements Comparable<Day> {
     }
 
     private void setBackgroundColorResource() {
-        int colorRes;
         switch (type) {
             case HOLIDAY:
-                colorRes = R.color.colorHoliday;
+                backgroundColorResource = R.color.colorHoliday;
                 break;
             case NON_COMMERCE_DAY:
-                colorRes = R.color.colorNonCommerceDay;
+                backgroundColorResource = R.color.colorNonCommerceDay;
                 break;
             case COMMERCE_SUNDAY:
-                colorRes = R.color.colorCommerceSunday;
+                backgroundColorResource = R.color.colorCommerceSunday;
                 break;
             default:
-                colorRes = 0;
+                backgroundColorResource = 0;
                 break;
         }
-        backgroundColorResource = colorRes;
     }
 
     private void setDate(String date) {
@@ -243,8 +241,8 @@ public class Day implements Comparable<Day> {
         noOfConsecutiveDays++;
     }
 
-    private boolean isTomorrowOf(Day day) {
-        return date.compareTo(day.date.addDays(1)) == 0;
+    private boolean isTomorrowOf(Day otherDay) {
+        return date.equals(otherDay.date.addDays(1));
     }
 
     private boolean isReminderNeeded() {
@@ -353,10 +351,9 @@ public class Day implements Comparable<Day> {
         private void addArray(Resources resources, int idOfArray) {
             String[] array = resources.getStringArray(idOfArray);
             SimpleDate yesterday = SimpleDate.getYesterday();
-            Day day;
             Type type = getType(idOfArray);
             for (String item : array) {
-                day = Day.newInstance(0, item, type);
+                Day day = Day.newInstance(0, item, type);
                 if (day.compareDateTo(yesterday) > 0) {
                     this.add(day);
                 }
@@ -384,12 +381,11 @@ public class Day implements Comparable<Day> {
 
         private static List newInstance(Context appContext, @NonNull Type.List includedDaysTypes) {
             List list = new List();
-            Day day;
             Iterator<EventsTableRow> eventsIterator = getEventsIterator(appContext, includedDaysTypes);
             SimpleDate yesterday = SimpleDate.getYesterday();
 
             while (eventsIterator.hasNext()) {
-                day = Day.newInstance(eventsIterator.next());
+                Day day = Day.newInstance(eventsIterator.next());
                 if (day.compareDateTo(yesterday) > 0) {
                     list.add(day);
                 }
