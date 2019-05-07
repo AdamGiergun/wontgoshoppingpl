@@ -35,7 +35,7 @@ public class MainViewModel extends AppViewModel {
         actionAddList = false;
         recreatedOnDemand = false;
         dayTypesToBeDisplayed = getAppPreferences().newDayTypesSet(getApplication());
-        //dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed;
+        dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed;
     }
 
     void setReminderDialogArgs() {
@@ -117,7 +117,7 @@ public class MainViewModel extends AppViewModel {
         if (actionAddList) {
             result = Day.List.addToCalendar(
                     getApplication(),
-                    dayTypesToBeAddedToCalendar,
+                    getDayTypesToBeAddedToCalendar(),
                     reminder.getValue(),
                     getTimeZoneId(),
                     till.getValue());

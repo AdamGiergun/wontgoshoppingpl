@@ -369,11 +369,11 @@ public class Day implements Comparable<Day> {
             return list;
         }
 
-        private static Iterator<EventsTableRow> getEventsIterator(Context appContext, @NonNull Type.Set includedDaysTypes) {
+        private static Iterator<EventsTableRow> getEventsIterator(Context appContext, @NonNull Type.Set includedDayTypes) {
             DatabaseHandler databaseHandler = new DatabaseHandler(appContext);
             Iterator<EventsTableRow> eventsIterator =
                     databaseHandler.newEventsIterator(
-                            getSelectionArgs(includedDaysTypes));
+                            getSelectionArgs(includedDayTypes));
             databaseHandler.close();
             return eventsIterator;
         }
