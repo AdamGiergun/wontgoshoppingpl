@@ -74,11 +74,7 @@ public class Day implements Comparable<Day> {
     }
 
     private SimpleDate getEndDate() {
-        SimpleDate endDate = (SimpleDate) date.clone();
-        if (noOfConsecutiveDays > 0) {
-            endDate = endDate.addDays(noOfConsecutiveDays);
-        }
-        return endDate;
+        return (noOfConsecutiveDays > 0) ? date.clone().addDays(noOfConsecutiveDays) : date.clone();
     }
 
     private ArrayList<SimpleReminder> getReminders() {
