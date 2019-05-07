@@ -10,7 +10,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 73
-        versionName "2.0.999.17"
+        versionName "2.0.999.19"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
         //vectorDrawables.useSupportLibrary = true

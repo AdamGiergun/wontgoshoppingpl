@@ -21,10 +21,6 @@
     ]>
 <resources>
     <string-array name="non_commerce_days">
-        <item>2018_12_11,00:00,&day_after_independence_day;</item>
-        <item>2018_18_11,00:00,&non_commerce_sunday;</item>
-        <item>2018_09_12,00:00,&non_commerce_sunday;</item>
-        <item>2018_24_12,13:00,&christmas_eve;</item>
         <item>2019_13_01,00:00,&non_commerce_sunday;</item>
         <item>2019_20_01,00:00,&non_commerce_sunday;</item>
         <item>2019_03_02,00:00,&non_commerce_sunday;</item>
@@ -64,10 +60,6 @@
     </string-array>
 
     <string-array name="holidays">
-        <item>2018_01_11,00:00,&all_saints;</item>
-        <item>2018_11_11,00:00,&independence_day;</item>
-        <item>2018_25_12,00:00,&christmas_day;</item>
-        <item>2018_26_12,00:00,&second_day_of_christmas;</item>
         <item>2019_01_01,00:00,&new_year;</item>
         <item>2019_06_01,00:00,&epiphany;</item>
         <item>2019_21_04,00:00,&easter_sunday;</item>
@@ -84,13 +76,6 @@
     </string-array>
 
     <string-array name="commerce_sundays">
-        <item>2018_28_10,00:00,&commerce_sunday;</item>
-        <item>2018_04_11,00:00,&commerce_sunday;</item>
-        <item>2018_25_11,00:00,&commerce_sunday;</item>
-        <item>2018_02_12,00:00,&commerce_sunday;</item>
-        <item>2018_16_12,00:00,&commerce_sunday;</item>
-        <item>2018_23_12,00:00,&commerce_sunday;</item>
-        <item>2018_30_12,00:00,&commerce_sunday;</item>
         <item>2019_27_01,00:00,&commerce_sunday;</item>
         <item>2019_24_02,00:00,&commerce_sunday;</item>
         <item>2019_31_03,00:00,&commerce_sunday;</item>
