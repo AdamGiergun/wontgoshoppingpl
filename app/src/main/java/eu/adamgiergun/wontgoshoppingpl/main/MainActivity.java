@@ -35,7 +35,9 @@ import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity;
 
-import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.*;
+import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.COMMERCE_SUNDAY;
+import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.HOLIDAY;
+import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.NON_COMMERCE_DAY;
 
 public class MainActivity
         extends AppCompatActivityWithTheme
@@ -381,7 +383,7 @@ public class MainActivity
 
         private boolean[] getCheckedItems() {
             boolean[] checkedItems = new boolean[3];
-            List dayTypesToBeAddedToCalendar = getViewModel().getDayTypesToBeAddedToCalendar();
+            Day.Type.Set dayTypesToBeAddedToCalendar = getViewModel().getDayTypesToBeAddedToCalendar();
             checkedItems[NON_COMMERCE_DAY.getCode()] = dayTypesToBeAddedToCalendar.contains(NON_COMMERCE_DAY);
             checkedItems[HOLIDAY.getCode()] = dayTypesToBeAddedToCalendar.contains(HOLIDAY);
             checkedItems[COMMERCE_SUNDAY.getCode()] = dayTypesToBeAddedToCalendar.contains(COMMERCE_SUNDAY);
@@ -398,7 +400,7 @@ public class MainActivity
                     .setMultiChoiceItems(items, checkedItems, listener)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            getViewModel().setDayTypesToBeAddedToCalendar(getDayTypesList(checkedItems));
+                            getViewModel().setDayTypesToBeAddedToCalendar(getDayTypesSet(checkedItems));
                             DayTypesAddedToCalendarDialog.this.noticeDialogListener.onDialogPositiveClick(DayTypesAddedToCalendarDialog.this);
                         }
                     })
@@ -420,7 +422,7 @@ public class MainActivity
             return new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    getViewModel().setDayTypesToBeAddedToCalendar(getDayTypesList(checkedItems));
+                    getViewModel().setDayTypesToBeAddedToCalendar(getDayTypesSet(checkedItems));
                     dialogButtonPositive.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
                 }
             };
@@ -438,8 +440,8 @@ public class MainActivity
             return false;
         }
 
-        private List getDayTypesList(boolean[] checkedItems) {
-            return getViewModel().newDayTypeList(
+        private Day.Type.Set getDayTypesSet(boolean[] checkedItems) {
+            return getViewModel().newDayTypesSet(
                     checkedItems[NON_COMMERCE_DAY.getCode()],
                     checkedItems[HOLIDAY.getCode()],
                     checkedItems[COMMERCE_SUNDAY.getCode()]);

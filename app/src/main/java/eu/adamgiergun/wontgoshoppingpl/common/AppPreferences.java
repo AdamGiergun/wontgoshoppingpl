@@ -28,8 +28,8 @@ public class AppPreferences extends MyAppPreferences {
         putBoolean(key, value);
     }
 
-    public Day.Type.List newDayTypesList(Context appContext) {
-        return Day.Type.newList(
+    public Day.Type.Set newDayTypesSet(Context appContext) {
+        return Day.Type.newSet(
                 showNonCommerceDays(appContext),
                 showHolidays(appContext),
                 showCommerceSundays(appContext));

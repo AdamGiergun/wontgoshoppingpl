@@ -23,8 +23,8 @@ public class MainViewModel extends AppViewModel {
     private MutableLiveData<SimpleDate> till;
     private MutableLiveData<SimpleReminder> reminder;
     private Day lastTouchedDay;
-    private Day.Type.List dayTypesToBeAddedToCalendar;
-    private Day.Type.List dayTypesToBeDisplayed;
+    private Day.Type.Set dayTypesToBeAddedToCalendar;
+    private Day.Type.Set dayTypesToBeDisplayed;
     private boolean recreatedOnDemand;
 
     public MainViewModel(@NonNull Application application) {
@@ -34,8 +34,8 @@ public class MainViewModel extends AppViewModel {
     void initialize() {
         actionAddList = false;
         recreatedOnDemand = false;
-        dayTypesToBeDisplayed = getAppPreferences().newDayTypesList(getApplication());
-        dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed;
+        dayTypesToBeDisplayed = getAppPreferences().newDayTypesSet(getApplication());
+        //dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed;
     }
 
     void setReminderDialogArgs() {
@@ -137,21 +137,21 @@ public class MainViewModel extends AppViewModel {
                 TimeZone.getDefault().getID();
     }
 
-    Day.Type.List getDayTypesToBeAddedToCalendar() {
+    Day.Type.Set getDayTypesToBeAddedToCalendar() {
         return dayTypesToBeAddedToCalendar==null ?
-                Day.Type.newList(true, true, true)
+                getAppPreferences().newDayTypesSet(getApplication())
                 : dayTypesToBeAddedToCalendar;
     }
 
-    Day.Type.List newDayTypeList(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
-        return Day.Type.newList(addNonCommerceDays, addHolidays, addCommerceSundays);
+    Day.Type.Set newDayTypesSet(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
+        return Day.Type.newSet(addNonCommerceDays, addHolidays, addCommerceSundays);
     }
 
     long getLastDateInMillis() {
         return Day.List.getLastDateInMillis(getApplication());
     }
 
-    void setDayTypesToBeAddedToCalendar(Day.Type.List dayTypes) {
+    void setDayTypesToBeAddedToCalendar(Day.Type.Set dayTypes) {
         dayTypesToBeAddedToCalendar = dayTypes;
     }
 
@@ -188,10 +188,11 @@ public class MainViewModel extends AppViewModel {
     }
 
     boolean checkIfDayTypesChanged() {
-        Day.Type.List oldDayTypesToBeDisplayed = dayTypesToBeDisplayed;
-        dayTypesToBeDisplayed = getAppPreferences().newDayTypesList(getApplication());
-        return !(isFirstRun() ||
-                dayTypesToBeDisplayed.equals(oldDayTypesToBeDisplayed));
+        Day.Type.Set oldDayTypesToBeDisplayed = dayTypesToBeDisplayed;
+        dayTypesToBeDisplayed = getAppPreferences().newDayTypesSet(getApplication());
+        boolean typesChanged = !dayTypesToBeDisplayed.equals(oldDayTypesToBeDisplayed);
+        if (typesChanged) dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed;
+        return !isFirstRun() && typesChanged;
     }
 
     private void setNotFirstRun() {

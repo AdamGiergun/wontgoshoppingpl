@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.wontgoshoppingpl.common.*;
@@ -281,26 +280,7 @@ public class Day implements Comparable<Day> {
             return String.valueOf(code);
         }
 
-        public static class List extends ArrayList<Type> {
-
-            public boolean equals(@Nullable List anotherList) {
-                if (anotherList == null) {
-                    return false;
-                } else {
-                    if (this.size() != anotherList.size()) {
-                        return false;
-                    } else {
-                        boolean[] thisArray = this.getArray();
-                        boolean[] anotherArray = anotherList.getArray();
-                        boolean result = true;
-                        for (int i = 0; i < this.size(); i++)
-                        {
-                            result = result && (thisArray[i] == anotherArray[i]);
-                        }
-                        return result;
-                    }
-                }
-            }
+        public static class Set extends TreeSet<Type> {
 
             private boolean[] getArray() {
                 boolean[] array = new boolean[]{false, false, false};
@@ -315,8 +295,8 @@ public class Day implements Comparable<Day> {
             }
         }
 
-        public static List newList(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
-            List types = new List();
+        public static Set newSet(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
+            Set types = new Set();
             if (addNonCommerceDays)
                 types.add(NON_COMMERCE_DAY);
             if (addHolidays)
@@ -371,11 +351,11 @@ public class Day implements Comparable<Day> {
 
         public static List newInstance(Context appContext) {
             AppPreferences appPreferences = AppPreferences.getInstance(appContext);
-            Type.List dayTypes = appPreferences.newDayTypesList(appContext);
+            Type.Set dayTypes = appPreferences.newDayTypesSet(appContext);
             return List.newInstance(appContext, dayTypes);
         }
 
-        private static List newInstance(Context appContext, @NonNull Type.List includedDaysTypes) {
+        private static List newInstance(Context appContext, @NonNull Type.Set includedDaysTypes) {
             List list = new List();
             Iterator<EventsTableRow> eventsIterator = getEventsIterator(appContext, includedDaysTypes);
             SimpleDate yesterday = SimpleDate.getYesterday();
@@ -389,7 +369,7 @@ public class Day implements Comparable<Day> {
             return list;
         }
 
-        private static Iterator<EventsTableRow> getEventsIterator(Context appContext, @NonNull Type.List includedDaysTypes) {
+        private static Iterator<EventsTableRow> getEventsIterator(Context appContext, @NonNull Type.Set includedDaysTypes) {
             DatabaseHandler databaseHandler = new DatabaseHandler(appContext);
             Iterator<EventsTableRow> eventsIterator =
                     databaseHandler.newEventsIterator(
@@ -398,7 +378,7 @@ public class Day implements Comparable<Day> {
             return eventsIterator;
         }
 
-        private static String[] getSelectionArgs(@NonNull Type.List includedDayTypes) {
+        private static String[] getSelectionArgs(@NonNull Type.Set includedDayTypes) {
             String[] selectionArgs = new String[includedDayTypes.size()];
             Iterator<Type> iterator = includedDayTypes.iterator();
             int i = 0;
@@ -412,7 +392,7 @@ public class Day implements Comparable<Day> {
             List days =
                     newInstance(
                             appContext,
-                            Type.newList(true, true, true));
+                            Type.newSet(true, true, true));
             return days.get(0);
         }
 
@@ -428,13 +408,13 @@ public class Day implements Comparable<Day> {
 
         public static boolean addToCalendar(
                 Context appContext,
-                Type.List dayTypesList,
+                Type.Set dayTypes,
                 SimpleReminder reminder,
                 String timeZoneId,
                 SimpleDate till) {
 
             List list =
-                    List.newInstance(appContext, dayTypesList);
+                    List.newInstance(appContext, dayTypes);
             list.skipReminderForConsecutiveDays();
             boolean result = true;
             for (Day day : list) {
