@@ -1,6 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -34,8 +35,12 @@ public class MainViewModel extends AppViewModel {
     void initialize() {
         actionAddList = false;
         recreatedOnDemand = false;
-        dayTypesToBeDisplayed = getAppPreferences().newDayTypesSet(getApplication());
+        dayTypesToBeDisplayed = getAppPreferences().newDayTypesSet(getAppContext());
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed;
+    }
+
+    private Context getAppContext() {
+        return getApplication().getApplicationContext();
     }
 
     void setReminderDialogArgs() {
@@ -95,8 +100,8 @@ public class MainViewModel extends AppViewModel {
     }
 
     void setAppWidgetInfoDisplayed() {
-        AppPreferences appPreferences = AppPreferences.getInstance(getApplication());
-        appPreferences.setAppWidgetInfoDisplayed(getApplication());
+        AppPreferences appPreferences = AppPreferences.getInstance(getAppContext());
+        appPreferences.setAppWidgetInfoDisplayed(getAppContext());
     }
 
     void setLastTouchedDay(Day day) {
@@ -116,14 +121,14 @@ public class MainViewModel extends AppViewModel {
         boolean result;
         if (actionAddList) {
             result = Day.List.addToCalendar(
-                    getApplication(),
+                    getAppContext(),
                     getDayTypesToBeAddedToCalendar(),
                     reminder.getValue(),
                     getTimeZoneId(),
                     till.getValue());
         } else {
             lastTouchedDay.setReminder(reminder.getValue());
-            result = lastTouchedDay.addToGoogleCalendar(getApplication(), getTimeZoneId());
+            result = lastTouchedDay.addToGoogleCalendar(getAppContext(), getTimeZoneId());
         }
 
         logCalendarEvent(result);
@@ -132,14 +137,14 @@ public class MainViewModel extends AppViewModel {
     }
 
     private String getTimeZoneId() {
-        return getAppPreferences().getUsePolishTimeZone(getApplication()) ?
+        return getAppPreferences().getUsePolishTimeZone(getAppContext()) ?
                 "Europe/Warsaw":
                 TimeZone.getDefault().getID();
     }
 
     Day.Type.Set getDayTypesToBeAddedToCalendar() {
         return dayTypesToBeAddedToCalendar==null ?
-                getAppPreferences().newDayTypesSet(getApplication())
+                getAppPreferences().newDayTypesSet(getAppContext())
                 : dayTypesToBeAddedToCalendar;
     }
 
@@ -148,7 +153,7 @@ public class MainViewModel extends AppViewModel {
     }
 
     long getLastDateInMillis() {
-        return Day.List.getLastDateInMillis(getApplication());
+        return Day.List.getLastDateInMillis(getAppContext());
     }
 
     void setDayTypesToBeAddedToCalendar(Day.Type.Set dayTypes) {
@@ -172,31 +177,31 @@ public class MainViewModel extends AppViewModel {
 
     //region AppPreferences proxy region
     private SimpleReminder getReminderPreference() {
-        return getAppPreferences().getReminder(getApplication(), SimpleReminder.METHOD_ALERT, getTimeZoneId());
+        return getAppPreferences().getReminder(getAppContext(), SimpleReminder.METHOD_ALERT, getTimeZoneId());
     }
 
     boolean isFirstRun() {
-        return getAppPreferences().isFirstRun(getApplication());
+        return getAppPreferences().isFirstRun(getAppContext());
     }
 
     boolean wasAppWidgetInfoDisplayed() {
-        return getAppPreferences().wasAppWidgetInfoDisplayed(getApplication());
+        return getAppPreferences().wasAppWidgetInfoDisplayed(getAppContext());
     }
 
     boolean isCalendarEnabledAndChosen() {
-        return  getAppPreferences().isUseGoogleCalendarSet(getApplication()) && getAppPreferences().isCalendarSet(getApplication());
+        return  getAppPreferences().isUseGoogleCalendarSet(getAppContext()) && getAppPreferences().isCalendarSet(getAppContext());
     }
 
     boolean checkIfDayTypesChanged() {
         Day.Type.Set oldDayTypesToBeDisplayed = dayTypesToBeDisplayed;
-        dayTypesToBeDisplayed = getAppPreferences().newDayTypesSet(getApplication());
+        dayTypesToBeDisplayed = getAppPreferences().newDayTypesSet(getAppContext());
         boolean typesChanged = !dayTypesToBeDisplayed.equals(oldDayTypesToBeDisplayed);
         if (typesChanged) dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed;
         return !isFirstRun() && typesChanged;
     }
 
     private void setNotFirstRun() {
-        getAppPreferences().setFirstRun(getApplication(), false);
+        getAppPreferences().setFirstRun(getAppContext(), false);
     }
     //endregion
 
@@ -212,7 +217,7 @@ public class MainViewModel extends AppViewModel {
     }
 
     private void logFirebaseEvent(String event, String fullText) {
-        FirebaseEvent.log(getApplication(), event, fullText);
+        FirebaseEvent.log(getAppContext(), event, fullText);
     }
 
     int getError() {

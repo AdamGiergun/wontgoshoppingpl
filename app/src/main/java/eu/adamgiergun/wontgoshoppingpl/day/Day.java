@@ -15,24 +15,72 @@ import java.util.*;
 
 public class Day implements Comparable<Day> {
 
-    private int dbId;
-    private String item;
-    private String name;
-    private SimpleDate date;
+    private final int dbId;
+    private final String item;
+    private final String name;
+    private final SimpleDate date;
+    private final String time;
+    private final String timeDescription;
+    private final boolean allDay;
+    private final Type type;
+    private final int backgroundColorResource;
+    private final int backgroundResource;
+
     private int noOfConsecutiveDays;
-    private String time;
-    private String timeDescription;
-    private boolean allDay;
     private SimpleReminder reminder;
     private String description;
     private boolean reminderNeeded;
-    private Type type;
     private String calendarId;
     private long calendarEventId;
-    private int backgroundColorResource;
-    private int backgroundResource;
 
-    private Day(){}
+    private Day(int id, String item, Type type){
+        this.dbId = id;
+        this.item = item;
+        this.type = type;
+        backgroundResource = newBackgroundResource();
+        backgroundColorResource = newBackgroundColorResource();
+
+        String[] pieces = item.split(",");
+        date = newDate(pieces[0]);
+        name = pieces[2];
+        time = pieces[1];
+        allDay = time.equals("00:00");
+        timeDescription = allDay ? LocalizedConst.getWholeDay() : LocalizedConst.getSince() + time;
+    }
+
+    private int newBackgroundResource() {
+        switch (type) {
+            case HOLIDAY:
+                return R.drawable.card_bg_red;
+            case NON_COMMERCE_DAY:
+                return R.drawable.card_bg_orange;
+            case COMMERCE_SUNDAY:
+                return R.drawable.card_bg_green;
+            default:
+                return 0;
+        }
+    }
+
+    private int newBackgroundColorResource() {
+        switch (type) {
+            case HOLIDAY:
+                return R.color.colorHoliday;
+            case NON_COMMERCE_DAY:
+                return R.color.colorNonCommerceDay;
+            case COMMERCE_SUNDAY:
+                return R.color.colorCommerceSunday;
+            default:
+                return 0;
+        }
+    }
+
+    private SimpleDate newDate(String date) {
+        String[] subPieces = date.split("_");
+        int year = Integer.valueOf(subPieces[0]);
+        int month = Integer.valueOf(subPieces[2]);
+        int day = Integer.valueOf(subPieces[1]);
+        return SimpleDate.newInstance(year, month, day);
+    }
 
     @Override
     public int compareTo(@NonNull Day another) {
@@ -158,70 +206,11 @@ public class Day implements Comparable<Day> {
     }
 
     private static Day newInstance(int id, String item, Type type) {
-        Day day = new Day();
-        day.dbId = id;
-        day.item = item;
-        day.type = type;
-        day.setBackgroundResource();
-        day.setBackgroundColorResource();
-
-        String[] pieces = item.split(",");
-        day.setDate(pieces[0]);
-        day.setTime(pieces[1]);
-        day.name = pieces[2];
-
+        Day day = new Day(id, item, type);
         day.description = day.name;
         day.reminderNeeded = true;
         day.noOfConsecutiveDays = 0;
         return day;
-    }
-
-    private void setBackgroundResource() {
-        switch (type) {
-            case HOLIDAY:
-                backgroundResource = R.drawable.card_bg_red;
-                break;
-            case NON_COMMERCE_DAY:
-                backgroundResource = R.drawable.card_bg_orange;
-                break;
-            case COMMERCE_SUNDAY:
-                backgroundResource = R.drawable.card_bg_green;
-                break;
-            default:
-                backgroundResource = 0;
-                break;
-        }
-    }
-
-    private void setBackgroundColorResource() {
-        switch (type) {
-            case HOLIDAY:
-                backgroundColorResource = R.color.colorHoliday;
-                break;
-            case NON_COMMERCE_DAY:
-                backgroundColorResource = R.color.colorNonCommerceDay;
-                break;
-            case COMMERCE_SUNDAY:
-                backgroundColorResource = R.color.colorCommerceSunday;
-                break;
-            default:
-                backgroundColorResource = 0;
-                break;
-        }
-    }
-
-    private void setDate(String date) {
-        String[] subPieces = date.split("_");
-        int year = Integer.valueOf(subPieces[0]);
-        int month = Integer.valueOf(subPieces[2]);
-        int day = Integer.valueOf(subPieces[1]);
-        this.date = SimpleDate.newInstance(year, month, day);
-    }
-
-    private void setTime(String string) {
-        time = string;
-        allDay = string.equals("00:00");
-        timeDescription = allDay ? LocalizedConst.getWholeDay() : LocalizedConst.getSince() + time;
     }
 
     private void appendToDescription(String string) {
@@ -280,20 +269,7 @@ public class Day implements Comparable<Day> {
             return String.valueOf(code);
         }
 
-        public static class Set extends TreeSet<Type> {
-
-            private boolean[] getArray() {
-                boolean[] array = new boolean[]{false, false, false};
-                Iterator<Type> iterator = this.iterator();
-                Type type;
-
-                while (iterator.hasNext()) {
-                    type = iterator.next();
-                    array[type.code] = true;
-                }
-                return array;
-            }
-        }
+        public static class Set extends TreeSet<Type> {}
 
         public static Set newSet(boolean addNonCommerceDays, boolean addHolidays, boolean addCommerceSundays) {
             Set types = new Set();

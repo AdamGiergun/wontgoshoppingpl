@@ -1,6 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.common;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,14 +13,18 @@ public class AppViewModel extends AndroidViewModel {
     }
 
     public boolean isLookRich() {
-        return getAppPreferences().isLookRich(getApplication());
+        return getAppPreferences().isLookRich(getContext());
     }
 
     protected void setLookRich(boolean isLookRich) {
-        getAppPreferences().setLookRich(getApplication(), isLookRich);
+        getAppPreferences().setLookRich(getContext(), isLookRich);
     }
 
     protected AppPreferences getAppPreferences() {
-        return AppPreferences.getInstance(getApplication());
+        return AppPreferences.getInstance(getContext());
+    }
+
+    private Context getContext() {
+        return getApplication().getApplicationContext();
     }
 }
