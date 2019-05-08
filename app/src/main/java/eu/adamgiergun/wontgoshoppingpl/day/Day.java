@@ -1,7 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.day;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -178,10 +177,6 @@ public class Day implements Comparable<Day> {
         return name;
     }
 
-    public String getTypeCode() {
-        return type.getCodeAsString();
-    }
-
     public String getTimeDescription() {
         return timeDescription;
     }
@@ -265,6 +260,19 @@ public class Day implements Comparable<Day> {
             }
         }
 
+        public static int getTypeCode(int idOfArray) {
+            switch (idOfArray) {
+                case R.array.holidays:
+                    return Type.HOLIDAY.code;
+                case R.array.non_commerce_days:
+                    return Type.NON_COMMERCE_DAY.code;
+                case R.array.commerce_sundays:
+                    return Type.COMMERCE_SUNDAY.code;
+                default:
+                    return -1;
+            }
+        }
+
         private String getCodeAsString() {
             return String.valueOf(code);
         }
@@ -285,46 +293,6 @@ public class Day implements Comparable<Day> {
 
     public static class List extends ArrayList<Day> {
 
-        public static Iterator<Day> newIterator(Resources resources) {
-            List days = newInstance(resources);
-            //days.removePastDays();
-            return days.iterator();
-        }
-
-        private static List newInstance(Resources resources) {
-            List days = new List();
-            days.addArray(resources, R.array.non_commerce_days);
-            days.addArray(resources, R.array.commerce_sundays);
-            days.addArray(resources, R.array.holidays);
-            Collections.sort(days);
-            return days;
-        }
-
-        private void addArray(Resources resources, int idOfArray) {
-            String[] array = resources.getStringArray(idOfArray);
-            SimpleDate yesterday = SimpleDate.getYesterday();
-            Type type = getType(idOfArray);
-            for (String item : array) {
-                Day day = Day.newInstance(0, item, type);
-                if (day.compareDateTo(yesterday) > 0) {
-                    this.add(day);
-                }
-            }
-        }
-
-        private Type getType(int idOfArray) {
-            switch (idOfArray) {
-                case R.array.holidays:
-                    return Type.HOLIDAY;
-                case R.array.non_commerce_days:
-                    return Type.NON_COMMERCE_DAY;
-                case R.array.commerce_sundays:
-                    return Type.COMMERCE_SUNDAY;
-                default:
-                    return null;
-            }
-        }
-
         public static List newInstance(Context appContext) {
             AppPreferences appPreferences = AppPreferences.getInstance(appContext);
             Type.Set dayTypes = appPreferences.newDayTypesSet(appContext);
@@ -333,7 +301,7 @@ public class Day implements Comparable<Day> {
 
         private static List newInstance(Context appContext, @NonNull Type.Set includedDaysTypes) {
             List list = new List();
-            Iterator<EventsTableRow> eventsIterator = getEventsIterator(appContext, includedDaysTypes);
+            Iterator<EventsTableRow> eventsIterator = newEventsIterator(appContext, includedDaysTypes);
             SimpleDate yesterday = SimpleDate.getYesterday();
 
             while (eventsIterator.hasNext()) {
@@ -345,7 +313,7 @@ public class Day implements Comparable<Day> {
             return list;
         }
 
-        private static Iterator<EventsTableRow> getEventsIterator(Context appContext, @NonNull Type.Set includedDayTypes) {
+        private static Iterator<EventsTableRow> newEventsIterator(Context appContext, @NonNull Type.Set includedDayTypes) {
             DatabaseHandler databaseHandler = new DatabaseHandler(appContext);
             Iterator<EventsTableRow> eventsIterator =
                     databaseHandler.newEventsIterator(
