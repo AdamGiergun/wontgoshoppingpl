@@ -10,9 +10,7 @@ import eu.adamgiergun.wontgoshoppingpl.R;
 public abstract class AppDialogFragment extends NoticeDialogFragment {
 
     protected AlertDialog.Builder getStyledBuilder(Context context) {
-        Context appContext = context.getApplicationContext();
-        AppPreferences appPreferences = AppPreferences.getInstance(appContext);
-        return  (appPreferences.isLookRich(appContext))
+        return  AppPreferences.isLookRich(context.getApplicationContext())
                 ? new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 : new AlertDialog.Builder(context);
     }

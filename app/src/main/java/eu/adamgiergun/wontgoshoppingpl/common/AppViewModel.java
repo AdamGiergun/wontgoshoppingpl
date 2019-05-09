@@ -13,18 +13,14 @@ public class AppViewModel extends AndroidViewModel {
     }
 
     public boolean isLookRich() {
-        return getAppPreferences().isLookRich(getContext());
+        return AppPreferences.isLookRich(getAppContext());
     }
 
     protected void setLookRich(boolean isLookRich) {
-        getAppPreferences().setLookRich(getContext(), isLookRich);
+        AppPreferences.setLookRich(getAppContext(), isLookRich);
     }
 
-    protected AppPreferences getAppPreferences() {
-        return AppPreferences.getInstance(getContext());
-    }
-
-    private Context getContext() {
+    protected Context getAppContext() {
         return getApplication().getApplicationContext();
     }
 }

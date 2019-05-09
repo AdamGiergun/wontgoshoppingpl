@@ -80,7 +80,7 @@ public class Day implements Comparable<Day> {
     }
 
     public boolean addToGoogleCalendar(Context appContext, String timeZoneId) {
-        calendarId = getDefaultCalendarIdFromPreferences(appContext);
+        calendarId = AppPreferences.getDefaultCalendarId(appContext);
         SimpleCalendarEvent calendarEvent = newCalendarEventInstance(appContext, timeZoneId);
 
         if (calendarEvent.exists(appContext, calendarId)) {
@@ -93,11 +93,6 @@ public class Day implements Comparable<Day> {
             updateEventInDb(appContext);
         }
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
-    }
-
-    private static String getDefaultCalendarIdFromPreferences(Context appContext) {
-        AppPreferences appPreferences = AppPreferences.getInstance(appContext);
-        return appPreferences.getDefaultCalendarId(appContext);
     }
 
     private SimpleCalendarEvent newCalendarEventInstance(Context appContext, String timeZoneId) {
@@ -287,8 +282,7 @@ public class Day implements Comparable<Day> {
     public static class List extends ArrayList<Day> {
 
         public static List newInstance(Context appContext) {
-            AppPreferences appPreferences = AppPreferences.getInstance(appContext);
-            Type.Set dayTypes = appPreferences.newDayTypesSet(appContext);
+            Type.Set dayTypes = AppPreferences.newDayTypeSet(appContext);
             return List.newInstance(appContext, dayTypes);
         }
 
