@@ -10,7 +10,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 75
-        versionName "2.0.999.25"
+        versionName "2.0.999.26"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
         //vectorDrawables.useSupportLibrary = true
@@ -44,7 +44,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'eu.adamgiergun:mylibrary:0.99.93.13@aar'
+    implementation 'eu.adamgiergun:mylibrary:0.99.93.16@aar'
     implementation 'eu.adamgiergun:myresources:1.0.4@aar'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -53,9 +53,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha5'
-    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.google.firebase:firebase-ads:17.2.0'
-    releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+    releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.21.0'
     androidTestImplementation 'androidx.test:runner:1.1.1'

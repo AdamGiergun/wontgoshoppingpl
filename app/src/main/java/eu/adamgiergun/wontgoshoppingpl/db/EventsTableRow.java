@@ -2,7 +2,9 @@ package eu.adamgiergun.wontgoshoppingpl.db;
 
 import java.util.TreeSet;
 
-public class EventsTableRow implements Comparable<EventsTableRow>{
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
+
+public class EventsTableRow implements Comparable<EventsTableRow> {
     public final int dbId;
     public final int typeId;
     public final String item;
@@ -20,20 +22,12 @@ public class EventsTableRow implements Comparable<EventsTableRow>{
         this.item = item;
         this.calendarId = calendarId;
         this.calendarEventId = calendarEventId;
-        dateHash = newDateHash(item);
+        dateHash = newDateHash();
     }
 
-    private static int newDateHash(String item) {
+    private int newDateHash() {
         String[] pieces = item.split(",");
-        String[] subPieces = pieces[0].split("_");
-        int year = Integer.valueOf(subPieces[0]);
-        int month = Integer.valueOf(subPieces[2]);
-        int day = Integer.valueOf(subPieces[1]);
-        return newDateHash(year, month, day);
-    }
-
-    static int newDateHash(int year, int month, int day) {
-        return year*10000 + month*100 + day;
+        return SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YDM).hashCode();
     }
 
     @Override
@@ -41,5 +35,6 @@ public class EventsTableRow implements Comparable<EventsTableRow>{
         return dateHash - otherRow.dateHash;
     }
 
-    static class Set extends TreeSet<EventsTableRow> {}
+    static class Set extends TreeSet<EventsTableRow> {
+    }
 }

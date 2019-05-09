@@ -40,9 +40,10 @@ public class Day implements Comparable<Day> {
         backgroundColorResource = newBackgroundColorResource();
 
         String[] pieces = item.split(",");
-        date = newDate(pieces[0]);
-        name = pieces[2];
+        date = SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YDM);
         time = pieces[1];
+        name = pieces[2];
+
         allDay = time.equals("00:00");
         timeDescription = allDay ? LocalizedConst.getWholeDay() : LocalizedConst.getSince() + time;
     }
@@ -73,14 +74,6 @@ public class Day implements Comparable<Day> {
         }
     }
 
-    private SimpleDate newDate(String date) {
-        String[] subPieces = date.split("_");
-        int year = Integer.valueOf(subPieces[0]);
-        int month = Integer.valueOf(subPieces[2]);
-        int day = Integer.valueOf(subPieces[1]);
-        return SimpleDate.newInstance(year, month, day);
-    }
-
     @Override
     public int compareTo(@NonNull Day another) {
         return this.date.compareTo(another.date);
@@ -102,7 +95,7 @@ public class Day implements Comparable<Day> {
         return (calendarEventId > SimpleCalendarEvent.NON_EXISTING);
     }
 
-    private String getDefaultCalendarIdFromPreferences(Context appContext) {
+    private static String getDefaultCalendarIdFromPreferences(Context appContext) {
         AppPreferences appPreferences = AppPreferences.getInstance(appContext);
         return appPreferences.getDefaultCalendarId(appContext);
     }

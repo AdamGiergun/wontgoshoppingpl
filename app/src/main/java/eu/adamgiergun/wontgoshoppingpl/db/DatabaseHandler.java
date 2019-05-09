@@ -49,7 +49,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static void addArray(EventsTableRow.Set rows, Resources resources, int idOfArray) {
         String[] array = resources.getStringArray(idOfArray);
-        int yesterdayHash = getYesterdayHash();
+        int yesterdayHash = SimpleDate.getYesterday().hashCode();
         int typeCode = Day.Type.getTypeCode(idOfArray);
         for (String item : array) {
             EventsTableRow row = new EventsTableRow(0, item, typeCode);
@@ -57,11 +57,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 rows.add(row);
             }
         }
-    }
-
-    private static int getYesterdayHash() {
-        SimpleDate yesterday = SimpleDate.getYesterday();
-        return EventsTableRow.newDateHash(yesterday.getYear(), yesterday.getMonth(), yesterday.getDay());
     }
 
     private void insertRowInDb(EventsTableRow row, SQLiteDatabase db) {
