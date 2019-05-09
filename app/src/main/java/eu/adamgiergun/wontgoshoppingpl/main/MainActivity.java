@@ -748,7 +748,7 @@ public class MainActivity
         }
 
         SimpleDate getDate() {
-            return SimpleDate.newInstance(getYear(), getMonth(), getDayOfMonth());
+            return SimpleDate.newInstance(getYear(), getMonth()+1, getDayOfMonth());
         }
     }
 

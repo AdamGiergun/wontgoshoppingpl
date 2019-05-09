@@ -130,9 +130,7 @@ public class Day implements Comparable<Day> {
     }
 
     private void updateEventInDb(Context appContext) {
-        DatabaseHandler databaseHandler = new DatabaseHandler(appContext);
-        databaseHandler.updateEvent(dbId, calendarId, calendarEventId);
-        databaseHandler.close();
+        DatabaseHandler.updateEvent(dbId, calendarId, calendarEventId, appContext);
     }
 
     public void deleteFromGoogleCalendar(Context appContext) {
@@ -235,34 +233,12 @@ public class Day implements Comparable<Day> {
             return code;
         }
 
-        public static Type getType(int code) {
-            switch (code) {
-                case 0:
-                    return NON_COMMERCE_DAY;
-                case 1:
-                    return HOLIDAY;
-                case 2:
-                    return COMMERCE_SUNDAY;
-                default:
-                    return null;
+        private static Type getType(int code) {
+            for (Type type : values()) {
+                if (type.code == code)
+                    return type;
             }
-        }
-
-        public static int getTypeCode(int idOfArray) {
-            switch (idOfArray) {
-                case R.array.holidays:
-                    return Type.HOLIDAY.code;
-                case R.array.non_commerce_days:
-                    return Type.NON_COMMERCE_DAY.code;
-                case R.array.commerce_sundays:
-                    return Type.COMMERCE_SUNDAY.code;
-                default:
-                    return -1;
-            }
-        }
-
-        private String getCodeAsString() {
-            return String.valueOf(code);
+            return null;
         }
 
         public static class Set extends TreeSet<Type> {}
@@ -288,7 +264,7 @@ public class Day implements Comparable<Day> {
 
         private static List newInstance(Context appContext, @NonNull Type.Set includedDaysTypes) {
             List list = new List();
-            Iterator<EventsTableRow> eventsIterator = newEventsIterator(appContext, includedDaysTypes);
+            Iterator<EventsTableRow> eventsIterator = DatabaseHandler.newEventsIterator(appContext, includedDaysTypes);
             SimpleDate yesterday = SimpleDate.getYesterday();
 
             while (eventsIterator.hasNext()) {
@@ -298,25 +274,6 @@ public class Day implements Comparable<Day> {
                 }
             }
             return list;
-        }
-
-        private static Iterator<EventsTableRow> newEventsIterator(Context appContext, @NonNull Type.Set includedDayTypes) {
-            DatabaseHandler databaseHandler = new DatabaseHandler(appContext);
-            Iterator<EventsTableRow> eventsIterator =
-                    databaseHandler.newEventsIterator(
-                            getSelectionArgs(includedDayTypes));
-            databaseHandler.close();
-            return eventsIterator;
-        }
-
-        private static String[] getSelectionArgs(@NonNull Type.Set includedDayTypes) {
-            String[] selectionArgs = new String[includedDayTypes.size()];
-            Iterator<Type> iterator = includedDayTypes.iterator();
-            int i = 0;
-            while (iterator.hasNext()) {
-                selectionArgs[i++] = iterator.next().getCodeAsString();
-            }
-            return selectionArgs;
         }
 
         public static Day getFirst(Context appContext) {
@@ -335,7 +292,6 @@ public class Day implements Comparable<Day> {
             }
             return (lastDay == null) ? Calendar.getInstance().getTimeInMillis() : lastDay.date.getTimeInMillis();
         }
-
 
         public static boolean addToCalendar(
                 Context appContext,
@@ -359,19 +315,17 @@ public class Day implements Comparable<Day> {
 
         private void skipReminderForConsecutiveDays() {
             ListIterator<Day> iterator = listIterator();
-            Day day, nextDay, previousDay;
+            Day firstDay, nextDay, previousDay;
             if (iterator.hasNext()) {
-                day = iterator.next();
-                nextDay = day;
+                nextDay = iterator.next();
                 while (iterator.hasNext()) {
-                    day = nextDay;
-                    previousDay = day;
+                    firstDay = nextDay;
+                    previousDay = firstDay;
                     nextDay = iterator.next();
-                    while (!(nextDay.isCommerceSunday())
-                            && nextDay.isTomorrowOf(previousDay)) {
+                    while (!firstDay.isCommerceSunday() && !nextDay.isCommerceSunday() && nextDay.isTomorrowOf(previousDay)) {
                         nextDay.setReminderNotNeeded();
-                        day.incrementNoOfConsecutiveDays();
-                        day.appendToDescription(nextDay.description);
+                        firstDay.incrementNoOfConsecutiveDays();
+                        firstDay.appendToDescription(nextDay.description);
                         if (iterator.hasNext()) {
                             previousDay = nextDay;
                             nextDay = iterator.next();

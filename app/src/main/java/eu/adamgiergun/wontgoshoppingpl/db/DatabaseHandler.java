@@ -6,6 +6,8 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.*;
 
+import androidx.annotation.NonNull;
+
 import java.util.Iterator;
 
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
@@ -13,13 +15,17 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.day.Day;
 
+import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.COMMERCE_SUNDAY;
+import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.HOLIDAY;
+import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.NON_COMMERCE_DAY;
+
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "events.db";
     private Resources resources;
 
-    public DatabaseHandler(Context appContext) {
+    private DatabaseHandler(Context appContext) {
         super(appContext, DATABASE_NAME, null, DATABASE_VERSION);
         resources = appContext.getResources();
     }
@@ -40,22 +46,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static Iterator<EventsTableRow> newEventsIterator(Resources resources) {
         EventsTableRow.Set rows = new EventsTableRow.Set();
-        addArray(rows, resources, R.array.non_commerce_days);
-        addArray(rows, resources, R.array.commerce_sundays);
-        addArray(rows, resources, R.array.holidays);
+        int yesterdayHash = SimpleDate.getYesterday().hashCode();//SimpleDate.newInstance(2019,12,20).hashCode();
+        int[] arraysIds = {R.array.non_commerce_days, R.array.commerce_sundays, R.array.holidays};
+        for (int arrayId : arraysIds) {
+            String[] array = resources.getStringArray(arrayId);
+            int typeCode = getDayTypeCode(arrayId);
+            for (String item : array) {
+                EventsTableRow row = new EventsTableRow(0, item, typeCode);
+                if (row.dateHash > yesterdayHash) {
+                    rows.add(row);
+                }
+            }
+        }
         //Collections.sort(rows);
         return rows.iterator();
     }
 
-    private static void addArray(EventsTableRow.Set rows, Resources resources, int idOfArray) {
-        String[] array = resources.getStringArray(idOfArray);
-        int yesterdayHash = SimpleDate.getYesterday().hashCode();
-        int typeCode = Day.Type.getTypeCode(idOfArray);
-        for (String item : array) {
-            EventsTableRow row = new EventsTableRow(0, item, typeCode);
-            if (row.dateHash > yesterdayHash) {
-                rows.add(row);
-            }
+    private static int getDayTypeCode(int idOfArray) {
+        switch (idOfArray) {
+            case R.array.holidays:
+                return HOLIDAY.getCode();
+            case R.array.non_commerce_days:
+                return NON_COMMERCE_DAY.getCode();
+            case R.array.commerce_sundays:
+                return COMMERCE_SUNDAY.getCode();
+            default:
+                return -1;
         }
     }
 
@@ -82,9 +98,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //stub for possible future upgrades
     }
 
-    public Iterator<EventsTableRow> newEventsIterator(String[] selectionArgs) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = newCursor(db, selectionArgs);
+    public static Iterator<EventsTableRow> newEventsIterator(Context appContext, Day.Type.Set includedDayTypes) {
+        DatabaseHandler dbh = new DatabaseHandler(appContext);
+        SQLiteDatabase db = dbh.getReadableDatabase();
+        Cursor cursor = newCursor(db, getSelectionArgs(includedDayTypes));
         EventsTableRow.Set rows = new EventsTableRow.Set();
 
         if (cursor!=null && cursor.getCount()>0) {
@@ -107,8 +124,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.close();
         db.close();
+        dbh.close();
 
         return rows.iterator();
+    }
+
+    private static String[] getSelectionArgs(@NonNull Day.Type.Set includedDayTypes) {
+        String[] selectionArgs = new String[includedDayTypes.size()];
+        Iterator<Day.Type> iterator = includedDayTypes.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            selectionArgs[i++] = String.valueOf(iterator.next().getCode());
+        }
+        return selectionArgs;
     }
 
     private static Cursor newCursor(SQLiteDatabase db, String[] selectionArgs) {
@@ -122,16 +150,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 null);
     }
 
-    public void updateEvent(int id, String calendarId, long calendarEventId) {
-        SQLiteDatabase db = getWritableDatabase();
+    public static void updateEvent(int id, String calendarId, long calendarEventId, Context appContext) {
+        DatabaseHandler dbh = new DatabaseHandler(appContext);
+        SQLiteDatabase db = dbh.getWritableDatabase();
         db.update(DBContract.Events.TABLE_NAME,
                 getContentValues(calendarId, calendarEventId),
                 DBContract.Events._ID + "=?",
                 new String[]{String.valueOf(id)});
         db.close();
+        dbh.close();
     }
 
-    private ContentValues getContentValues(String calendarId, long calendarEventId) {
+    private static ContentValues getContentValues(String calendarId, long calendarEventId) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_ID, calendarId);
         if (calendarEventId > SimpleCalendarEvent.NON_EXISTING) {
