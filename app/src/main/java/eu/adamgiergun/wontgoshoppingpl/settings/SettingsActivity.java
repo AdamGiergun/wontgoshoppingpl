@@ -280,10 +280,8 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
     private boolean areAllPermissionsGranted(int[] grantResults) {
         boolean result = true;
-        boolean permissionGranted;
         for (int grantResult : grantResults) {
-            permissionGranted = (grantResult == PackageManager.PERMISSION_GRANTED);
-            result = result && permissionGranted;
+            result = result && (grantResult == PackageManager.PERMISSION_GRANTED);
         }
         return result;
     }
