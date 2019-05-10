@@ -180,14 +180,10 @@ public class Day implements Comparable<Day> {
     }
 
     private static Day newInstance(EventsTableRow row) {
-        Day day = Day.newInstance(row.dbId, row.item, Type.getType(row.typeId));
+        Day day = new Day(row.dbId, row.item, Type.getType(row.typeId));
         day.calendarId = row.calendarId;
         day.calendarEventId = row.calendarEventId;
-        return day;
-    }
 
-    private static Day newInstance(int id, String item, Type type) {
-        Day day = new Day(id, item, type);
         day.description = day.name;
         day.reminderNeeded = true;
         day.noOfConsecutiveDays = 0;

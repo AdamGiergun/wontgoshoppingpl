@@ -23,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "events.db";
-    private Resources resources;
+    private final Resources resources;
 
     private DatabaseHandler(Context appContext) {
         super(appContext, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,7 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         fillDbWithEvents(db, resources);
     }
 
-    private void fillDbWithEvents(SQLiteDatabase db, Resources resources) {
+    private static void fillDbWithEvents(SQLiteDatabase db, Resources resources) {
         Iterator<EventsTableRow> iterator = newEventsIterator(resources);
         while (iterator.hasNext()) {
             insertRowInDb(iterator.next(), db);
@@ -75,14 +75,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    private void insertRowInDb(EventsTableRow row, SQLiteDatabase db) {
+    private static void insertRowInDb(EventsTableRow row, SQLiteDatabase db) {
         db.insertOrThrow(
                 DBContract.Events.TABLE_NAME,
                 null,
                 getContentValues(row));
     }
 
-    private ContentValues getContentValues(EventsTableRow row) {
+    private static ContentValues getContentValues(EventsTableRow row) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(
                 DBContract.Events.COLUMN_NAME_ITEM,
@@ -102,31 +102,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         DatabaseHandler dbh = new DatabaseHandler(appContext);
         SQLiteDatabase db = dbh.getReadableDatabase();
         Cursor cursor = newCursor(db, getSelectionArgs(includedDayTypes));
-        EventsTableRow.Set rows = new EventsTableRow.Set();
 
-        if (cursor!=null && cursor.getCount()>0) {
-            cursor.moveToFirst();
-            EventsTableRow row;
-
-            while (!cursor.isAfterLast()) {
-                row = new EventsTableRow(
-                        cursor.getInt(0),
-                        cursor.getString(1),
-                        cursor.getInt(2),
-                        cursor.getString(3),
-                        cursor.getLong(4)
-                );
-                rows.add(row);
-                cursor.moveToNext();
-            }
-        }
+        Iterator<EventsTableRow> rowsIterator = getEventsIterator(cursor);
 
         if (cursor != null)
             cursor.close();
         db.close();
         dbh.close();
 
-        return rows.iterator();
+        return rowsIterator;
     }
 
     private static String[] getSelectionArgs(@NonNull Day.Type.Set includedDayTypes) {
@@ -148,6 +132,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 null,
                 null,
                 null);
+    }
+
+
+    private static Iterator<EventsTableRow> getEventsIterator(Cursor cursor) {
+        EventsTableRow.Set rows = new EventsTableRow.Set();
+
+        if (cursor!=null && cursor.getCount()>0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                EventsTableRow row = new EventsTableRow(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getString(3),
+                        cursor.getLong(4)
+                );
+                rows.add(row);
+                cursor.moveToNext();
+            }
+        }
+        return rows.iterator();
     }
 
     public static void updateEvent(int id, String calendarId, long calendarEventId, Context appContext) {
