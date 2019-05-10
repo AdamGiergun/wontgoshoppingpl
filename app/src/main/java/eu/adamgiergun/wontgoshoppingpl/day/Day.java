@@ -281,11 +281,9 @@ public class Day implements Comparable<Day> {
         }
 
         public static long getLastDateInMillis(Context appContext) {
-            Iterator<Day> iterator = newInstance(appContext).iterator();
-            Day lastDay = null;
-            while (iterator.hasNext()) {
-                lastDay = iterator.next();
-            }
+            List list = newInstance(appContext);
+            int size = newInstance(appContext).size();
+            Day lastDay = list.get(size - 1);
             return (lastDay == null) ? Calendar.getInstance().getTimeInMillis() : lastDay.date.getTimeInMillis();
         }
 
@@ -311,12 +309,11 @@ public class Day implements Comparable<Day> {
 
         private void skipReminderForConsecutiveDays() {
             ListIterator<Day> iterator = listIterator();
-            Day firstDay, nextDay, previousDay;
             if (iterator.hasNext()) {
-                nextDay = iterator.next();
+                Day nextDay = iterator.next();
                 while (iterator.hasNext()) {
-                    firstDay = nextDay;
-                    previousDay = firstDay;
+                    Day firstDay = nextDay;
+                    Day previousDay = firstDay;
                     nextDay = iterator.next();
                     while (!firstDay.isCommerceSunday() && !nextDay.isCommerceSunday() && nextDay.isTomorrowOf(previousDay)) {
                         nextDay.setReminderNotNeeded();

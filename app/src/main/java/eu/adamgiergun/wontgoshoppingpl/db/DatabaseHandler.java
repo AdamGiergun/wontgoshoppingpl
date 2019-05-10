@@ -134,7 +134,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 null);
     }
 
-
     private static Iterator<EventsTableRow> getEventsIterator(Cursor cursor) {
         EventsTableRow.Set rows = new EventsTableRow.Set();
 
