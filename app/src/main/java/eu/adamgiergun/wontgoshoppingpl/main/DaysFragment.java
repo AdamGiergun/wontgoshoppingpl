@@ -15,7 +15,6 @@ public class DaysFragment extends Fragment {
 
     private OnListFragmentInteractionListener listener;
     private RecyclerView daysRecyclerView;
-    private DaysRecyclerViewAdapter daysRecyclerViewAdapter;
 
     private ItemTouchHelper.SimpleCallback dayTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
@@ -27,7 +26,7 @@ public class DaysFragment extends Fragment {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             DaysRecyclerViewAdapter.ViewHolder dayViewHolder = (DaysRecyclerViewAdapter.ViewHolder) viewHolder;
             dayViewHolder.getDay().deleteFromGoogleCalendar(getContext().getApplicationContext());
-            setAdapter();
+            setRecyclerViewAdapter();
             //daysRecyclerViewAdapter.notifyDataSetChanged();
         }
     };
@@ -36,20 +35,16 @@ public class DaysFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_day_list, container, false);
         if (view instanceof RecyclerView) {
-            initializeRecyclerView(view);
+            daysRecyclerView = (RecyclerView) view;
+            daysRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            setRecyclerViewAdapter();
+            attachItemTouchHelper(daysRecyclerView);
         }
         return view;
     }
 
-    private void initializeRecyclerView(View view) {
-        daysRecyclerView = (RecyclerView) view;
-        daysRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        setAdapter();
-        attachItemTouchHelper(daysRecyclerView);
-    }
-
-    void setAdapter() {
-        daysRecyclerViewAdapter = DaysRecyclerViewAdapter.newInstance(getContext().getApplicationContext(), listener);
+    void setRecyclerViewAdapter() {
+        DaysRecyclerViewAdapter daysRecyclerViewAdapter = DaysRecyclerViewAdapter.newInstance(getContext().getApplicationContext(), listener);
         daysRecyclerView.setAdapter(daysRecyclerViewAdapter);
     }
 

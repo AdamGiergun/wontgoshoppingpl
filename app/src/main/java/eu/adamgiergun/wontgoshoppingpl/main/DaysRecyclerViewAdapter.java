@@ -19,8 +19,8 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
 
     private final Day.List days;
     private final OnListFragmentInteractionListener listener;
-    private static boolean isLookRich;
-    private static float density;
+    private boolean isLookRich;
+    private float density;
 
     private DaysRecyclerViewAdapter(Day.List days, OnListFragmentInteractionListener listener) {
         this.days = days;
@@ -32,8 +32,8 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
                 new DaysRecyclerViewAdapter(
                         Day.List.newInstance(appContext),
                         listener);
-        isLookRich = AppPreferences.isLookRich(appContext);
-        density = appContext.getResources().getDisplayMetrics().density;
+        daysRecyclerViewAdapter.isLookRich = AppPreferences.isLookRich(appContext);
+        daysRecyclerViewAdapter.density = appContext.getResources().getDisplayMetrics().density;
         return daysRecyclerViewAdapter;
     }
 
