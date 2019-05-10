@@ -1,16 +1,10 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
-
 /*
-    TODO check Types chooser behaviour
-
     TODO "usuń wszystko z Kalendarza" w ustawieniach
     TODO grupa info w ustawieniach
- */
-
-import android.Manifest;
+*/
 import android.annotation.SuppressLint;
 import android.content.*;
-import android.content.pm.PackageManager;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -18,15 +12,15 @@ import android.widget.*;
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.*;
 import androidx.lifecycle.*;
 
 import com.google.android.gms.ads.*;
 
+import java.util.Locale;
+
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
-import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
 import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity;
@@ -39,9 +33,8 @@ import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.COMMERCE_SUNDAY;
 import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.HOLIDAY;
 import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.NON_COMMERCE_DAY;
 
-public class MainActivity
-        extends AppCompatActivityWithTheme
-        implements NoticeDialogFragment.NoticeDialogListener,
+public class MainActivity extends AppCompatActivityWithTheme implements
+        NoticeDialogFragment.NoticeDialogListener,
         DaysFragment.OnListFragmentInteractionListener,
         NoticeDialogFragment.NoticeDialogViewListener {
 
@@ -97,6 +90,12 @@ public class MainActivity
                     .newInstance()
                     .show(getSupportFragmentManager(), "");
         }
+    }
+
+    @Override
+    protected Context setDefaultLocale(Context context) {
+        LocalizedConst.setLocale(Locale.getDefault());
+        return super.setDefaultLocale(context);
     }
 
     //region Ads Handling region
@@ -198,6 +197,7 @@ public class MainActivity
         return super.onCreateOptionsMenu(menu);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -222,20 +222,13 @@ public class MainActivity
         startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void checkCalendarPermissions() {
-        if (isSystemLessThanMarshmallow() || areCalendarPermissionsGranted()) {
+        if (mViewModel.areCalendarPermissionsGranted()) {
             checkCalendarSettings();
         } else {
             requestCalendarPermissions();
         }
-    }
-
-    private boolean isSystemLessThanMarshmallow() {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
-    }
-
-    private boolean areCalendarPermissionsGranted() {
-        return isPermissionGranted(Manifest.permission.READ_CALENDAR) && isPermissionGranted(Manifest.permission.WRITE_CALENDAR);
     }
 
     private void checkCalendarSettings() {
@@ -269,6 +262,7 @@ public class MainActivity
     }
     //endregion
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onListFragmentInteraction(Day day) {
         mViewModel.setLastTouchedDay(day);
@@ -289,39 +283,10 @@ public class MainActivity
     }
     //endregion
 
-    //region PermissionsRegion
-    private boolean isPermissionGranted(String permission) {
-        int permissionState = ContextCompat.checkSelfPermission(getApplicationContext(), permission);
-        return permissionState == PackageManager.PERMISSION_GRANTED;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestCalendarPermissions() {
-        String[] listOfRequestedPermissions = new String[]{Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR};
-        int permissionTypeCode = PermissionType.CALENDAR.getCode();
-        requestPermissions(listOfRequestedPermissions, permissionTypeCode);
-    }
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PermissionType.CALENDAR.getCode()) {
-            if (areAllPermissionsGranted(grantResults)) {
-                checkCalendarSettings();
-            } else {
-                showInfo(eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, true);
-            }
-        }
+    protected void onAllPermissionsGranted() {
+        checkCalendarSettings();
     }
-
-    private boolean areAllPermissionsGranted(int[] grantResults) {
-        boolean result = true;
-        for (int grantResult : grantResults) {
-            result = result && (grantResult == PackageManager.PERMISSION_GRANTED);
-        }
-        return result;
-    }
-    //endregion
 
     //region on...ClickRegion
     @Override

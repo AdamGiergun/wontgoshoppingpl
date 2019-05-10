@@ -1,8 +1,12 @@
 package eu.adamgiergun.wontgoshoppingpl.settings;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class SettingsViewModel extends ViewModel {
+import androidx.annotation.NonNull;
+
+import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel;
+
+public class SettingsViewModel extends AppViewModel {
     static final String HEADERS = "headers";
     private static final String HEADERS_LAND = "headersWide";
     private static final String LOOK = "look";
@@ -16,6 +20,10 @@ public class SettingsViewModel extends ViewModel {
     private String lastFragment = HEADERS;
     private boolean startFragmentNotification;
     private int settingsFragmentId;
+
+    public SettingsViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     String getLastFragment() {
         return lastFragment;

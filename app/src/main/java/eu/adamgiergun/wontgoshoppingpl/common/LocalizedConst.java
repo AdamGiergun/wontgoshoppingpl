@@ -37,7 +37,7 @@ public class LocalizedConst {
         return locale;
     }
 
-    static void setLocale(Locale locale) {
+    public static void setLocale(Locale locale) {
         LocalizedConst.locale = locale;
     }
 

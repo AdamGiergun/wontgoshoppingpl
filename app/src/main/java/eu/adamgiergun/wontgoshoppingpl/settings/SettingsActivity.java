@@ -1,17 +1,15 @@
 package eu.adamgiergun.wontgoshoppingpl.settings;
 
-import android.Manifest;
 import android.content.*;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.annotation.*;
-import androidx.appcompat.app.*;
-import androidx.core.content.ContextCompat;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.*;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.*;
@@ -20,8 +18,7 @@ import java.util.List;
 
 import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.mylibrary.calendarmanagement.*;
-import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
-import eu.adamgiergun.wontgoshoppingpl.common.*;
+import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
@@ -103,7 +100,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
                         new LookPreferenceFragment(),
                         mViewModel.getLookTag(),
                         mViewModel.shouldBeDetached(isScreenNotWideEnough(), mViewModel.getLookTag())));
-        if (areCalendarPermissionsGranted()) {
+        if (mViewModel.areCalendarPermissionsGranted()) {
             settingsFragments.add(
                     FragmentWithTag.newInstance(
                             new NotificationPreferenceFragment(),
@@ -192,6 +189,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
         String headerTitle = pref.getTitle().toString();
@@ -232,8 +230,9 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         return (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean checkCalendarPermissions() {
-        if (!isSystemAtLeastMarshmallow() || areCalendarPermissionsGranted()) {
+        if (mViewModel.areCalendarPermissionsGranted()) {
             return true;
         } else {
             requestCalendarPermissions();
@@ -241,49 +240,14 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
-    private boolean isSystemAtLeastMarshmallow() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    }
-
-    private boolean areCalendarPermissionsGranted() {
-        return isPermissionGranted(Manifest.permission.READ_CALENDAR) && isPermissionGranted(Manifest.permission.WRITE_CALENDAR) ;
-    }
-
-    private boolean isPermissionGranted(String permission) {
-        int permissionState = ContextCompat.checkSelfPermission(getApplicationContext(), permission);
-        return permissionState == PackageManager.PERMISSION_GRANTED;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestCalendarPermissions() {
-        String[] listOfRequestedPermissions = new String[]{Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR};
-        int permissionTypeCode = PermissionType.CALENDAR.getCode();
-        requestPermissions(listOfRequestedPermissions, permissionTypeCode);
-    }
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PermissionType.CALENDAR.getCode()) {
-            if (areAllPermissionsGranted(grantResults)) {
-                FragmentWithTag.List newFragments = new FragmentWithTag.List();
-                newFragments.add(
-                        FragmentWithTag.newInstance(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), true));
-                addFragments(mViewModel.getSettingsFragmentId(), newFragments);
-                String switchedFragmentTag = isScreenNotWideEnough() ? mViewModel.getHeadersTag() : mViewModel.getLookTag();
-                switchFragment(switchedFragmentTag, mViewModel.getNotificationsTag());
-            } else {
-                Toast.makeText(getApplicationContext(), eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private boolean areAllPermissionsGranted(int[] grantResults) {
-        boolean result = true;
-        for (int grantResult : grantResults) {
-            result = result && (grantResult == PackageManager.PERMISSION_GRANTED);
-        }
-        return result;
+    protected void onAllPermissionsGranted() {
+        FragmentWithTag.List newFragments = new FragmentWithTag.List();
+        newFragments.add(
+                FragmentWithTag.newInstance(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), true));
+        addFragments(mViewModel.getSettingsFragmentId(), newFragments);
+        String switchedFragmentTag = isScreenNotWideEnough() ? mViewModel.getHeadersTag() : mViewModel.getLookTag();
+        switchFragment(switchedFragmentTag, mViewModel.getNotificationsTag());
     }
 
     @Override
