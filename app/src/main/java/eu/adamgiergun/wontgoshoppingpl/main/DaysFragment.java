@@ -17,7 +17,7 @@ public class DaysFragment extends Fragment {
     private RecyclerView daysRecyclerView;
     private DaysRecyclerViewAdapter daysRecyclerViewAdapter;
 
-    private ItemTouchHelper.SimpleCallback dayTouchHelper = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+    private ItemTouchHelper.SimpleCallback dayTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -25,14 +25,10 @@ public class DaysFragment extends Fragment {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            deleteDayFromGoogleCalendar((DaysRecyclerViewAdapter.ViewHolder) viewHolder);
-            daysRecyclerViewAdapter.notifyDataSetChanged();
-        }
-
-        private void deleteDayFromGoogleCalendar(DaysRecyclerViewAdapter.ViewHolder dayViewHolder) {
-            Day day = dayViewHolder.getDay();
-            day.deleteFromGoogleCalendar(getContext().getApplicationContext());
-            refreshRecyclerView();
+            DaysRecyclerViewAdapter.ViewHolder dayViewHolder = (DaysRecyclerViewAdapter.ViewHolder) viewHolder;
+            dayViewHolder.getDay().deleteFromGoogleCalendar(getContext().getApplicationContext());
+            setAdapter();
+            //daysRecyclerViewAdapter.notifyDataSetChanged();
         }
     };
 
@@ -47,18 +43,18 @@ public class DaysFragment extends Fragment {
 
     private void initializeRecyclerView(View view) {
         daysRecyclerView = (RecyclerView) view;
-        daysRecyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        daysRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         setAdapter();
         attachItemTouchHelper(daysRecyclerView);
     }
 
-    private void setAdapter() {
+    void setAdapter() {
         daysRecyclerViewAdapter = DaysRecyclerViewAdapter.newInstance(getContext().getApplicationContext(), listener);
         daysRecyclerView.setAdapter(daysRecyclerViewAdapter);
     }
 
     private void attachItemTouchHelper(RecyclerView recyclerView) {
-        ItemTouchHelper dayTouchHelper = new ItemTouchHelper(this.dayTouchHelper);
+        ItemTouchHelper dayTouchHelper = new ItemTouchHelper(dayTouchHelperCallback);
         dayTouchHelper.attachToRecyclerView(recyclerView);
     }
 
@@ -77,10 +73,6 @@ public class DaysFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
-    }
-
-    void refreshRecyclerView() {
-        setAdapter();
     }
 
     public interface OnListFragmentInteractionListener {

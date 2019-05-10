@@ -161,7 +161,7 @@ public class MainActivity
         //addFragment(new DaysFragment());
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG);
         if (fragment instanceof DaysFragment) {
-            ((DaysFragment) fragment).refreshRecyclerView();
+            ((DaysFragment) fragment).setAdapter();
         }
     }
 
