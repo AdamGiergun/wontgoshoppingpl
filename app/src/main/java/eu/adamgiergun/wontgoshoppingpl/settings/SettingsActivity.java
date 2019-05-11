@@ -1,7 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.settings;
 
-import android.content.*;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,9 +14,7 @@ import androidx.preference.*;
 import java.util.List;
 
 import eu.adamgiergun.mylibrary.*;
-import eu.adamgiergun.mylibrary.calendarmanagement.*;
 import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
-import eu.adamgiergun.wontgoshoppingpl.main.MainActivity;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
 import static eu.adamgiergun.wontgoshoppingpl.settings.SettingsViewModel.HEADERS;
@@ -42,7 +38,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         clearActivity();
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
         setContentView(R.layout.settings_activity);
-        addFragments(mViewModel.getSettingsFragmentId(), getSettingsFragments());
+        addFragments(mViewModel.newFragmentsWithTag());
     }
 
     private void initializeViewModel() {
@@ -74,50 +70,16 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
-    private FragmentWithTag.List getSettingsFragments() {
-        FragmentWithTag.List settingsFragments = new FragmentWithTag.List();
-        if (mViewModel.isScreenNotWideEnough()) {
-            settingsFragments.add(
-                    FragmentWithTag.newInstance(
-                            new SettingsHeadersFragment(),
-                            mViewModel.getHeadersTag(),
-                            mViewModel.shouldBeDetached(mViewModel.getHeadersTag())));
-        } else {
-            FragmentWithTag.List headersFragments = new FragmentWithTag.List();
-            headersFragments.add(
-                    FragmentWithTag.newInstance(
-                            new SettingsHeadersFragment(),
-                            mViewModel.getHeadersTag(),
-                            mViewModel.shouldBeDetached(mViewModel.getHeadersTag())));
-            addFragments(R.id.headersFragment, headersFragments);
-        }
-        settingsFragments.add(
-                FragmentWithTag.newInstance(
-                        new LookPreferenceFragment(),
-                        mViewModel.getLookTag(),
-                        mViewModel.shouldBeDetached(mViewModel.getLookTag())));
-        if (mViewModel.areCalendarPermissionsGranted()) {
-            settingsFragments.add(
-                    FragmentWithTag.newInstance(
-                            new NotificationPreferenceFragment(),
-                            mViewModel.getNotificationsTag(),
-                            mViewModel.shouldBeDetached(mViewModel.getNotificationsTag())));
-        }
-        return settingsFragments;
-    }
-
-    private void addFragments(int container, FragmentWithTag.List list) {
+    private void addFragments(FragmentWithTag.List list) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         for (FragmentWithTag fragmentWithTag : list) {
-            ft.add(container, fragmentWithTag.fragment, fragmentWithTag.tag);
+            ft.add(fragmentWithTag.containerId, fragmentWithTag.fragment, fragmentWithTag.tag);
             if (fragmentWithTag.detach)
                 ft.detach(fragmentWithTag.fragment);
         }
         ft.commit();
         getSupportFragmentManager().executePendingTransactions();
     }
-
-
 
     @Override
     protected void onResume() {
@@ -213,10 +175,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
     @Override
     protected void onAllPermissionsGranted() {
-        FragmentWithTag.List newFragments = new FragmentWithTag.List();
-        newFragments.add(
-                FragmentWithTag.newInstance(new NotificationPreferenceFragment(), mViewModel.getNotificationsTag(), true));
-        addFragments(mViewModel.getSettingsFragmentId(), newFragments);
+        addFragments(mViewModel.newNotificationPreferenceFragment());
         switchFragment(mViewModel.getSwitchedFragmentTag(), mViewModel.getNotificationsTag());
     }
 
@@ -235,124 +194,6 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     @Override
     public void onViewClick(NoticeDialogFragment stub) {
         //stub
-    }
-
-    public static class SettingsHeadersFragment extends PreferenceFragmentCompat {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            addPreferencesFromResource(R.xml.pref_headers);
-        }
-
-        @Override
-        public boolean onPreferenceTreeClick(Preference preference) {
-            String title = preference.getTitle().toString();
-            SettingsViewModel viewModel = getViewModel();
-            if (viewModel != null && !viewModel.isScreenNotWideEnough()) {
-                if (title.equals(getString(R.string.pref_header_look))) {
-                    getListView().getChildAt(0).setBackgroundColor(Color.LTGRAY);
-                    getListView().getChildAt(1).setBackgroundColor(Color.TRANSPARENT);
-                } else {
-                    getListView().getChildAt(1).setBackgroundColor(Color.LTGRAY);
-                    getListView().getChildAt(0).setBackgroundColor(Color.TRANSPARENT);
-                }
-            }
-            return super.onPreferenceTreeClick(preference);
-        }
-
-        SettingsViewModel getViewModel() {
-            FragmentActivity activity = getActivity();
-            return (activity==null) ? null : ViewModelProviders.of(activity).get(SettingsViewModel.class);
-        }
-    }
-
-    public static class LookPreferenceFragment extends BasePreferenceFragmentCompat {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.pref_look, rootKey);
-        }
-
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals(getString(R.string.app_look_preference_key))) {
-                SettingsViewModel viewModel = getViewModel();
-                if (viewModel!=null) viewModel.setLastFragment(HEADERS);
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        }
-
-        SettingsViewModel getViewModel() {
-            FragmentActivity activity = getActivity();
-            return (activity==null) ? null : ViewModelProviders.of(activity).get(SettingsViewModel.class);
-        }
-    }
-
-    public static class NotificationPreferenceFragment extends BasePreferenceFragmentCompat {
-
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.pref_notification, rootKey);
-            setSummaries();
-        }
-
-        private void setSummaries() {
-            IntegerDialogPreference daysBefore = (IntegerDialogPreference) findPreference(getString(R.string.default_reminder_days_before_preference_key));
-            daysBefore.setSummary(daysBefore.toString());
-        }
-
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals(getString(R.string.default_calendar_preference_key))) {
-                Preference preference = findPreference(key);
-                if (preference instanceof CalendarsListPreferenceNew) {
-                    CharSequence calendarId = sharedPreferences.getString(key, "0");
-                    CharSequence summary = ((CalendarsListPreferenceNew) preference).getCalendarName(calendarId);
-                    preference.setSummary(summary);
-                }
-            }
-        }
-
-        @Override
-        public void onDisplayPreferenceDialog(Preference preference) {
-            DialogFragment dialogFragment = null;
-            if (preference instanceof IntegerDialogPreference) {
-                dialogFragment = new IntegerPreferenceDialogFragmentCompat();
-            } else if (preference instanceof TimePreference) {
-                dialogFragment = new TimePreferenceDialogFragmentCompat();
-            }
-
-            if (dialogFragment != null) {
-                setDialogFragmentArguments(dialogFragment, preference.getKey());
-                dialogFragment.setTargetFragment(this, 0);
-                if (this.getFragmentManager() != null) {
-                    dialogFragment.show(this.getFragmentManager(), "androidx.preference.PreferenceFragmentCompat.DIALOG");
-                }
-            } else {
-                super.onDisplayPreferenceDialog(preference);
-            }
-        }
-
-        private void setDialogFragmentArguments(DialogFragment dialogFragment, String key) {
-            Bundle bundle = new Bundle(1);
-            bundle.putString("key", key);
-            dialogFragment.setArguments(bundle);
-        }
-
-        // TODO ChooseCalendarsForCleaning
-//        @Override
-//        public boolean onPreferenceTreeClick(Preference preference) {
-//            if (preference.getKey().equals(getString(R.string.key_delete_events))) {
-//                DialogFragment dialogFragment = new ChooseCalendarsForCleaning();
-//                if (this.getFragmentManager() != null) {
-//                    dialogFragment.show(this.getFragmentManager(), "test");
-//                }
-//                return true;
-//            } else {
-//                return super.onPreferenceTreeClick(preference);
-//            }
-//        }
     }
 
     // TODO ChooseCalendarsForCleaning

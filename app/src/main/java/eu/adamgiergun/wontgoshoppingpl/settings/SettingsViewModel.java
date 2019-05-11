@@ -109,6 +109,10 @@ public class SettingsViewModel extends AppViewModel {
         return isScreenNotWideEnough() ? getHeadersTag() : getLookTag();
     }
 
+//    boolean isLastFragmentLook() {
+//        return lastFragment.equals(LOOK) || lastFragment.equals(LOOK_LAND);
+//    }
+
     boolean isScreenSizeLesserThanLarge() {
         int screenSize = getAppContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         return (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE);
@@ -129,11 +133,51 @@ public class SettingsViewModel extends AppViewModel {
         return result;
     }
 
+    FragmentWithTag.List newFragmentsWithTag() {
+        FragmentWithTag.List settingsFragments = new FragmentWithTag.List();
+
+        settingsFragments.add(
+                FragmentWithTag.newInstance(
+                        new SettingsHeadersFragment(),
+                        headersTag,
+                        shouldBeDetached(headersTag),
+                        isScreenNotWideEnough() ? settingsFragmentId : R.id.headersFragment));
+
+        settingsFragments.add(
+                FragmentWithTag.newInstance(
+                        new LookPreferenceFragment(),
+                        lookTag,
+                        shouldBeDetached(lookTag),
+                        settingsFragmentId));
+
+        if (areCalendarPermissionsGranted()) {
+            settingsFragments.add(
+                    FragmentWithTag.newInstance(
+                            new NotificationPreferenceFragment(),
+                            notificationsTag,
+                            shouldBeDetached(notificationsTag),
+                            settingsFragmentId));
+        }
+
+        return settingsFragments;
+    }
+
+    FragmentWithTag.List newNotificationPreferenceFragment() {
+        FragmentWithTag.List list = new FragmentWithTag.List();
+        list.add(
+                FragmentWithTag.newInstance(
+                        new NotificationPreferenceFragment(),
+                        notificationsTag,
+                        true,
+                        settingsFragmentId));
+        return list;
+    }
+
     void setLastFragment(String tag) {
         lastFragment = tag;
     }
 
-    boolean shouldBeDetached(String fragmentTag) {
+    private boolean shouldBeDetached(String fragmentTag) {
         if (isScreenNotWideEnough()) {
             return !fragmentTag.equals(lastFragment);
         } else {

@@ -5,18 +5,20 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.ArrayList;
 
 class FragmentWithTag {
-    PreferenceFragmentCompat fragment;
-    String tag;
-    boolean detach;
+    final PreferenceFragmentCompat fragment;
+    final String tag;
+    final boolean detach;
+    final int containerId;
 
-    private FragmentWithTag() {}
+    private FragmentWithTag(PreferenceFragmentCompat fragment, String tag, boolean detach, int containerId) {
+        this.fragment = fragment;
+        this.tag = tag;
+        this.detach = detach;
+        this.containerId = containerId;
+    }
 
-    static FragmentWithTag newInstance(PreferenceFragmentCompat fragment, String tag, boolean detach) {
-        FragmentWithTag fragmentWithTag = new FragmentWithTag();
-        fragmentWithTag.fragment = fragment;
-        fragmentWithTag.tag = tag;
-        fragmentWithTag.detach = detach;
-        return fragmentWithTag;
+    static FragmentWithTag newInstance(PreferenceFragmentCompat fragment, String tag, boolean detach, int containerId) {
+        return new FragmentWithTag(fragment, tag, detach, containerId);
     }
 
     static class List extends ArrayList<FragmentWithTag> {
