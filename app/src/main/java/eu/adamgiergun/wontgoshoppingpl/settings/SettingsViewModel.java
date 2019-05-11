@@ -1,9 +1,11 @@
 package eu.adamgiergun.wontgoshoppingpl.settings;
 
 import android.app.Application;
+import android.content.res.Configuration;
 
 import androidx.annotation.NonNull;
 
+import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel;
 
 public class SettingsViewModel extends AppViewModel {
@@ -25,44 +27,14 @@ public class SettingsViewModel extends AppViewModel {
         super(application);
     }
 
-    String getLastFragment() {
-        return lastFragment;
+    void initialize(boolean startFromNotifications) {
+        startFragmentNotification = startFromNotifications;
+        setTagsAndFragments();
+        setSettingsFragmentId();
     }
 
-    String getHeadersTag() {
-        return headersTag;
-    }
-
-    String getLookTag() {
-        return lookTag;
-    }
-
-    String getNotificationsTag() {
-        return notificationsTag;
-    }
-
-    boolean isStartFragmentNotification() {
-        return startFragmentNotification;
-    }
-
-    void setStartFragmentNotification(boolean startFragmentNotification) {
-        this.startFragmentNotification = startFragmentNotification;
-    }
-
-    int getSettingsFragmentId() {
-        return settingsFragmentId;
-    }
-
-    void setSettingsFragmentId(int fragmentId) {
-        settingsFragmentId = fragmentId;
-    }
-
-    void setLastFragment(String tag) {
-        lastFragment = tag;
-    }
-
-    void setTagsAndFragments(boolean isOrientationLandscape) {
-        if (isOrientationLandscape) {
+    private void setTagsAndFragments() {
+        if (isOrientationLandscape()) {
             headersTag = HEADERS_LAND;
             lookTag = LOOK_LAND;
             notificationsTag = NOTIFICATIONS_LAND;
@@ -101,8 +73,68 @@ public class SettingsViewModel extends AppViewModel {
         }
     }
 
-    boolean shouldBeDetached(boolean screenNotWideEnough, String fragmentTag) {
-        if (screenNotWideEnough) {
+    private void setSettingsFragmentId() {
+        if (isScreenSizeLesserThanLarge()) {
+            settingsFragmentId = isOrientationLandscape() ?
+                    R.id.settingsFragmentLand :
+                    R.id.settingsFragment;
+        } else {
+            settingsFragmentId = isOrientationLandscape() ?
+                    R.id.settingsFragmentLargeLand :
+                    R.id.settingsFragmentLarge;
+        }
+    }
+
+    String getHeadersTag() {
+        return headersTag;
+    }
+
+    String getLastFragment() {
+        return lastFragment;
+    }
+
+    String getLookTag() {
+        return lookTag;
+    }
+
+    String getNotificationsTag() {
+        return notificationsTag;
+    }
+
+    int getSettingsFragmentId() {
+        return settingsFragmentId;
+    }
+
+    String getSwitchedFragmentTag() {
+        return isScreenNotWideEnough() ? getHeadersTag() : getLookTag();
+    }
+
+    boolean isScreenSizeLesserThanLarge() {
+        int screenSize = getAppContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        return (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE);
+    }
+
+    boolean isScreenNotWideEnough() {
+        return (!isOrientationLandscape()) && isScreenSizeLesserThanLarge();
+    }
+
+    private boolean isOrientationLandscape() {
+        int orientation = getAppContext().getResources().getConfiguration().orientation;
+        return (orientation == Configuration.ORIENTATION_LANDSCAPE);
+    }
+
+    boolean isStartFragmentNotification() {
+        boolean result = startFragmentNotification;
+        startFragmentNotification = false;
+        return result;
+    }
+
+    void setLastFragment(String tag) {
+        lastFragment = tag;
+    }
+
+    boolean shouldBeDetached(String fragmentTag) {
+        if (isScreenNotWideEnough()) {
             return !fragmentTag.equals(lastFragment);
         } else {
             if (fragmentTag.equals(headersTag) ||

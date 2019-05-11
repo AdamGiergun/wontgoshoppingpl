@@ -14,6 +14,8 @@ import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType;
 
 public class AppViewModel extends AndroidViewModel {
 
+    public static final String START_FROM_NOTIFICATIONS_IN_SETTINGS = "startFragmentNotification";
+
     public AppViewModel(@NonNull Application application) {
         super(application);
     }

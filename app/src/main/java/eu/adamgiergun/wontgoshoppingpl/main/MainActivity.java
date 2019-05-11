@@ -216,9 +216,9 @@ public class MainActivity extends AppCompatActivityWithTheme implements
         }
     }
 
-    private void startSettingsActivity(boolean startFragmentNotification) {
+    private void startSettingsActivity(boolean startFromNotifications) {
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-        intent.putExtra("startFragmentNotification", startFragmentNotification);
+        intent.putExtra(MainViewModel.START_FROM_NOTIFICATIONS_IN_SETTINGS, startFromNotifications);
         startActivity(intent);
     }
 
