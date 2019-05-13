@@ -28,7 +28,7 @@ public class SettingsHeadersFragment extends PreferenceFragmentCompat {
     private void highlightLeftTreeOption(boolean isLook) {
         SettingsViewModel viewModel = getViewModel();
         RecyclerView listView = getListView();
-        if (viewModel != null && !viewModel.isScreenNotWideEnough()) {
+        if (viewModel != null && viewModel.isScreenWideEnough()) {
             if (isLook) {
                 listView.getChildAt(0).setBackgroundColor(Color.LTGRAY);
                 listView.getChildAt(1).setBackgroundColor(Color.TRANSPARENT);

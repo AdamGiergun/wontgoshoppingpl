@@ -74,14 +74,15 @@ public class SettingsViewModel extends AppViewModel {
     }
 
     private void setSettingsFragmentId() {
-        if (isScreenSizeLesserThanLarge()) {
-            settingsFragmentId = isOrientationLandscape() ?
-                    R.id.settingsFragmentLand :
-                    R.id.settingsFragment;
-        } else {
+        if (isScreenSizeLarge()) {
             settingsFragmentId = isOrientationLandscape() ?
                     R.id.settingsFragmentLargeLand :
                     R.id.settingsFragmentLarge;
+
+        } else {
+            settingsFragmentId = isOrientationLandscape() ?
+                    R.id.settingsFragmentLand :
+                    R.id.settingsFragment;
         }
     }
 
@@ -101,25 +102,17 @@ public class SettingsViewModel extends AppViewModel {
         return notificationsTag;
     }
 
-    int getSettingsFragmentId() {
-        return settingsFragmentId;
-    }
-
     String getSwitchedFragmentTag() {
-        return isScreenNotWideEnough() ? getHeadersTag() : getLookTag();
+        return isScreenWideEnough() ? getLookTag() : getHeadersTag();
     }
 
-//    boolean isLastFragmentLook() {
-//        return lastFragment.equals(LOOK) || lastFragment.equals(LOOK_LAND);
-//    }
-
-    boolean isScreenSizeLesserThanLarge() {
+    boolean isScreenSizeLarge() {
         int screenSize = getAppContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        return (screenSize < Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (screenSize >= Configuration.SCREENLAYOUT_SIZE_LARGE);
     }
 
-    boolean isScreenNotWideEnough() {
-        return (!isOrientationLandscape()) && isScreenSizeLesserThanLarge();
+    boolean isScreenWideEnough() {
+        return isScreenSizeLarge() || isOrientationLandscape();
     }
 
     private boolean isOrientationLandscape() {
@@ -141,7 +134,7 @@ public class SettingsViewModel extends AppViewModel {
                         new SettingsHeadersFragment(),
                         headersTag,
                         shouldBeDetached(headersTag),
-                        isScreenNotWideEnough() ? settingsFragmentId : R.id.headersFragment));
+                        isScreenWideEnough() ? R.id.headersFragment : settingsFragmentId));
 
         settingsFragments.add(
                 FragmentWithTag.newInstance(
@@ -178,15 +171,15 @@ public class SettingsViewModel extends AppViewModel {
     }
 
     private boolean shouldBeDetached(String fragmentTag) {
-        if (isScreenNotWideEnough()) {
-            return !fragmentTag.equals(lastFragment);
-        } else {
+        if (isScreenWideEnough()) {
             if (fragmentTag.equals(headersTag) ||
                     (fragmentTag.equals(lookTag) && lastFragment.equals(headersTag))) {
                 return false;
             } else {
                 return !fragmentTag.equals(lastFragment);
             }
+        } else {
+            return !fragmentTag.equals(lastFragment);
         }
     }
 }

@@ -49,7 +49,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
     private void clearActivity() {
         removeAllFragments();
-        if (mViewModel.isScreenSizeLesserThanLarge())
+        if (!mViewModel.isScreenSizeLarge())
             popBackStackCompletely();
     }
 
@@ -85,13 +85,13 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     protected void onResume() {
         super.onResume();
         if (mViewModel.isStartFragmentNotification()) {
-            if (mViewModel.isScreenNotWideEnough()) {
-                mViewModel.setLastFragment(mViewModel.getNotificationsTag());
-            } else {
+            if (mViewModel.isScreenWideEnough()) {
                 switchFragment(mViewModel.getLookTag(), mViewModel.getNotificationsTag());
+            } else {
+                mViewModel.setLastFragment(mViewModel.getNotificationsTag());
             }
         }
-        if (mViewModel.isScreenNotWideEnough()) {
+        if (!mViewModel.isScreenWideEnough()) {
             switchFragment(mViewModel.getHeadersTag(), mViewModel.getLastFragment());
         }
     }
@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
             fragmentTransaction.attach(newFragment);
         mViewModel.setLastFragment(toTag);
 
-        if (mViewModel.isScreenNotWideEnough() && fromTag!=null && !toTag.equals(HEADERS))
+        if (!mViewModel.isScreenWideEnough() && fromTag!=null && !toTag.equals(HEADERS))
             fragmentTransaction.addToBackStack(null);
 
         fragmentTransaction.commit();
@@ -126,13 +126,13 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
     @Override
     public void onBackPressed() {
-        if (mViewModel.isScreenNotWideEnough() && !mViewModel.getLastFragment().equals(HEADERS)) {
-            super.onBackPressed();
-            switchFragment(mViewModel.getLastFragment(), HEADERS);
-        } else {
+        if (mViewModel.isScreenWideEnough() || mViewModel.getLastFragment().equals(HEADERS)) {
             mViewModel.setLastFragment(HEADERS);
             super.onBackPressed();
             super.onBackPressed();
+        } else {
+            super.onBackPressed();
+            switchFragment(mViewModel.getLastFragment(), HEADERS);
         }
     }
 
@@ -141,18 +141,18 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
         String headerTitle = pref.getTitle().toString();
         if (headerTitle.equals(getString(R.string.pref_header_look))) {
-            if (mViewModel.isScreenNotWideEnough()) {
-                switchFragment(mViewModel.getHeadersTag(), mViewModel.getLookTag());
-            } else {
+            if (mViewModel.isScreenWideEnough()) {
                 switchFragment(mViewModel.getNotificationsTag(), mViewModel.getLookTag());
+            } else {
+                switchFragment(mViewModel.getHeadersTag(), mViewModel.getLookTag());
             }
             return true;
         } else if (headerTitle.equals(getString(R.string.pref_header_notifications))) {
             if (checkCalendarPermissions()) {
-                if (mViewModel.isScreenNotWideEnough()) {
-                    switchFragment(mViewModel.getHeadersTag(), mViewModel.getNotificationsTag());
-                } else {
+                if (mViewModel.isScreenWideEnough()) {
                     switchFragment(mViewModel.getLookTag(), mViewModel.getNotificationsTag());
+                } else {
+                    switchFragment(mViewModel.getHeadersTag(), mViewModel.getNotificationsTag());
                 }
                 return true;
             } else {
