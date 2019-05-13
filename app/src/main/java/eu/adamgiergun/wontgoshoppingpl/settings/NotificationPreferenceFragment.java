@@ -65,6 +65,7 @@ public class NotificationPreferenceFragment extends BasePreferenceFragmentCompat
     }
 
     // TODO ChooseCalendarsForCleaning
+
 //        @Override
 //        public boolean onPreferenceTreeClick(Preference preference) {
 //            if (preference.getKey().equals(getString(R.string.key_delete_events))) {

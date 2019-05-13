@@ -196,17 +196,4 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         //stub
     }
 
-    // TODO ChooseCalendarsForCleaning
-//    public static class ChooseCalendarsForCleaning extends AppDialogFragment {
-//        @NonNull
-//        @Override
-//        public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-//            AlertDialog.Builder builder = getStyledBuilder(getContext());
-//            builder
-//                    .setMultiChoiceItems(null, null, null)//items, checkedItems, listener)
-//                    .setPositiveButton(android.R.string.ok, getPositiveButtonListener(ChooseCalendarsForCleaning.this))
-//                    .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(ChooseCalendarsForCleaning.this));
-//            return builder.create();
-//        }
-//    }
 }
