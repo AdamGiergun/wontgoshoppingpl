@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.NumberPicker;
@@ -16,7 +17,9 @@ public class ReminderDaysBeforeDialog extends MainDialogFragment {
 
     private NumberPicker picker;
 
-    public static NoticeDialogFragment newInstance() {
+    private ReminderDaysBeforeDialog() {}
+
+    protected static NoticeDialogFragment newInstance() {
         return new ReminderDaysBeforeDialog();
     }
 
@@ -51,5 +54,22 @@ public class ReminderDaysBeforeDialog extends MainDialogFragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(VALUE, picker.getValue());
+    }
+
+    private static class MyNumberPicker extends NumberPicker {
+
+        private MyNumberPicker(Context context) {
+            super(context);
+        }
+
+        private static NumberPicker newInstance(Context context, int value) {
+            NumberPicker picker = new NumberPicker(context);
+            picker.setSaveFromParentEnabled(false);
+            picker.setSaveEnabled(false);
+            picker.setMinValue(0);
+            picker.setMaxValue(9);
+            picker.setValue(value);
+            return picker;
+        }
     }
 }

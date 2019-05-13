@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Button;
@@ -17,9 +18,9 @@ import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.HOLIDAY;
 import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.NON_COMMERCE_DAY;
 
 public class DayTypesAddedToCalendarDialog extends MainDialogFragment {
-    private Button dialogButtonPositive;
+    private DayTypesAddedToCalendarDialog() {}
 
-    public static NoticeDialogFragment newInstance() {
+    protected static NoticeDialogFragment newInstance() {
         return new DayTypesAddedToCalendarDialog();
     }
 
@@ -29,7 +30,7 @@ public class DayTypesAddedToCalendarDialog extends MainDialogFragment {
         final boolean[] checkedItems = getCheckedItems();
         AlertDialog dialog = getAlertDialog(checkedItems);
         dialog.show();
-        dialogButtonPositive = getDialogButtonPositive(dialog, checkedItems);
+        enableDialogButtonPositive(dialog, checkedItems);
         return dialog;
     }
 
@@ -75,15 +76,16 @@ public class DayTypesAddedToCalendarDialog extends MainDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 getViewModel().setDayTypesToBeAddedToCalendar(getDayTypesSet(checkedItems));
-                dialogButtonPositive.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
+                enableDialogButtonPositive(getDialog(), checkedItems);
             }
         };
     }
 
-    private Button getDialogButtonPositive(AlertDialog dialog, boolean[] checkedItems) {
-        Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        button.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
-        return button;
+    private void enableDialogButtonPositive(Dialog dialog, boolean[] checkedItems) {
+        if (dialog instanceof AlertDialog) {
+            Button button = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setEnabled(isAnyValueInBooleanArrayTrue(checkedItems));
+        }
     }
 
     private boolean isAnyValueInBooleanArrayTrue(boolean[] array) {

@@ -306,16 +306,15 @@ public class MainActivity extends AppCompatActivityWithTheme implements
         }
     }
 
+    @Override
+    public void onViewClick(NoticeDialogFragment noticeDialogFragment) {
+        noticeDialogFragment.show(getSupportFragmentManager(), "");
+    }
+
     public void onLookButtonClick(View view) {
         boolean isLookRich = (view.getId() == R.id.imageButtonRich);
         mViewModel.onInitialLookChoice(isLookRich);
         recreate();
     }
-
-    @Override
-    public void onViewClick(NoticeDialogFragment noticeDialogFragment) {
-        noticeDialogFragment.show(getSupportFragmentManager(), "");
-    }
     //endregion
-
 }

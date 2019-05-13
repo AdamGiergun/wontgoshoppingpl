@@ -1,7 +1,10 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -16,7 +19,9 @@ public class ReminderTimeDialog extends MainDialogFragment {
 
     private MyTimePicker picker;
 
-    public static NoticeDialogFragment newInstance() {
+    private ReminderTimeDialog() {}
+
+    protected static NoticeDialogFragment newInstance() {
         return new ReminderTimeDialog();
     }
 
@@ -60,5 +65,39 @@ public class ReminderTimeDialog extends MainDialogFragment {
         super.onSaveInstanceState(outState);
         outState.putInt(HOUR, picker.getTime().getHour());
         outState.putInt(MINUTE, picker.getTime().getMinute());
+    }
+
+    private static class MyTimePicker extends TimePicker {
+
+        private MyTimePicker(Context context) {
+            super(context);
+        }
+
+        private static MyTimePicker newInstance(Context context, SimpleTime time) {
+            MyTimePicker picker = new MyTimePicker(context);
+            picker.initialize(time);
+            return picker;
+        }
+
+        private void initialize(SimpleTime time) {
+            setIs24HourView(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                setHour(time.getHour());
+                setMinute(time.getMinute());
+            } else {
+                setCurrentHour(time.getHour());
+                setCurrentMinute(time.getMinute());
+            }
+        }
+
+        private SimpleTime getTime() {
+            SimpleTime time;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                time = new SimpleTime(getHour(), getMinute());
+            } else {
+                time = new SimpleTime(getCurrentHour(), getCurrentMinute());
+            }
+            return time;
+        }
     }
 }

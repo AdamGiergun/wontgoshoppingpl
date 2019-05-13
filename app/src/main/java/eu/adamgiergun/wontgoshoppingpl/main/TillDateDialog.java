@@ -1,7 +1,9 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -17,7 +19,7 @@ public class TillDateDialog extends MainDialogFragment {
 
     private MyDatePicker picker;
 
-    public static NoticeDialogFragment newInstance() {
+    protected static NoticeDialogFragment newInstance() {
         return new TillDateDialog();
     }
 
@@ -38,11 +40,12 @@ public class TillDateDialog extends MainDialogFragment {
     }
 
     private MyDatePicker getPicker(Bundle savedInstanceState) {
+        MainViewModel viewModel = getViewModel();
         MyDatePicker myDatePicker =
                 MyDatePicker.newInstance(
                         getContext(),
-                        getViewModel().getTill(),
-                        getViewModel().getLastDateInMillis());
+                        viewModel.getTill(),
+                        viewModel.getLastDateInMillis());
         if (savedInstanceState != null) {
             int year = savedInstanceState.getInt(YEAR);
             int month = savedInstanceState.getInt(MONTH);
@@ -62,5 +65,23 @@ public class TillDateDialog extends MainDialogFragment {
         outState.putInt(YEAR, picker.getYear());
         outState.putInt(MONTH, picker.getMonth());
         outState.putInt(DAY, picker.getDayOfMonth());
+    }
+
+    private static class MyDatePicker extends DatePicker {
+
+        private MyDatePicker(Context context) {
+            super(context);
+        }
+
+        private static MyDatePicker newInstance(Context context, SimpleDate date, long maxDate) {
+            MyDatePicker picker = new MyDatePicker(context);
+            picker.setMaxDate(maxDate);
+            picker.updateDate(date.getYear(), date.getMonth() - 1, date.getDay());
+            return picker;
+        }
+
+        private SimpleDate getDate() {
+            return SimpleDate.newInstance(getYear(), getMonth()+1, getDayOfMonth());
+        }
     }
 }

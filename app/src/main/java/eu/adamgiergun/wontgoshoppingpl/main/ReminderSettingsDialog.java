@@ -18,6 +18,8 @@ import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class ReminderSettingsDialog extends MainDialogFragment {
 
+    private ReminderSettingsDialog() {}
+
     public static NoticeDialogFragment newInstance() {
         return new ReminderSettingsDialog();
     }
@@ -36,7 +38,6 @@ public class ReminderSettingsDialog extends MainDialogFragment {
         return builder.create();
     }
 
-    @SuppressLint("InflateParams")
     private View getDialogView() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         MainViewModel viewModel = getViewModel();
@@ -51,55 +52,57 @@ public class ReminderSettingsDialog extends MainDialogFragment {
         return view;
     }
 
-    private void initializeTillView(View view, MainViewModel viewModel) {
-        AppCompatTextView tillView = getTillView(view);
-        tillView.setText(viewModel.getTill().toString());
-        tillView.setOnClickListener(getViewListener(TillDateDialog.newInstance()));
-    }
-
-    private AppCompatTextView getTillView(View view) {
-        return view.findViewById(R.id.tillDateView);
-    }
-
     private void initializeReminderViews(final View view, final MainViewModel viewModel) {
-        final AppCompatTextView daysView = getDaysView(view);
-        daysView.setText(String.valueOf(viewModel.getReminder().getDaysBefore()));
-        daysView.setOnClickListener(getViewListener(ReminderDaysBeforeDialog.newInstance()));
+        final AppCompatTextView daysView = setupView(
+                getDaysView(view),
+                String.valueOf(viewModel.getReminder().getDaysBefore()),
+                ReminderDaysBeforeDialog.newInstance());
+        final AppCompatTextView timeView = setupView(
+                getTimeView(view),
+                viewModel.getReminder().getTime().toString(),
+                ReminderTimeDialog.newInstance());
 
-        final AppCompatTextView timeView = getTimeView(view);
-        timeView.setText(viewModel.getReminder().getTime().toString());
-        timeView.setOnClickListener(getViewListener(ReminderTimeDialog.newInstance()));
-
-        Observer<SimpleReminder> reminderObserver = new Observer<SimpleReminder>() {
+        viewModel.getReminderObservable().observe(this, new Observer<SimpleReminder>() {
             @Override
             public void onChanged(SimpleReminder reminder) {
                 daysView.setText(
-                        String.valueOf(reminder.getDaysBefore()
-                        ));
+                        String.valueOf(reminder.getDaysBefore()));
                 timeView.setText(
                         reminder.getTime().toString());
             }
-        };
+        });
+    }
 
-        viewModel.getReminderObservable().observe(this, reminderObserver);
+    private AppCompatTextView setupView(AppCompatTextView view, String text, NoticeDialogFragment dialogFragment) {
+        view.setText(text);
+        view.setOnClickListener(
+                getViewListener(dialogFragment));
+        return view;
+    }
 
-        if (viewModel.isActionAddList()) {
-            Observer<SimpleDate> tillObserver = new Observer<SimpleDate>() {
-                @Override
-                public void onChanged(SimpleDate till) {
-                    getTillView(view).setText(till.toString());
-                }
-            };
+    private void initializeTillView(final View view, MainViewModel viewModel) {
+        final AppCompatTextView tillView = setupView(
+                getTillView(view),
+                viewModel.getTill().toString(),
+                TillDateDialog.newInstance());
 
-            viewModel.getTillObservable().observe(this, tillObserver);
-        }
+        viewModel.getTillObservable().observe(this, new Observer<SimpleDate>() {
+            @Override
+            public void onChanged(SimpleDate till) {
+                tillView.setText(till.toString());
+            }
+        });
+    }
+
+    private AppCompatTextView getDaysView(View view) {
+        return view.findViewById(R.id.numberOfDaysBeforeView);
     }
 
     private AppCompatTextView getTimeView(View view) {
         return view.findViewById(R.id.timeView);
     }
 
-    private AppCompatTextView getDaysView(View view) {
-        return view.findViewById(R.id.numberOfDaysBeforeView);
+    private AppCompatTextView getTillView(View view) {
+        return view.findViewById(R.id.tillDateView);
     }
 }
