@@ -126,8 +126,8 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
     @Override
     public void onBackPressed() {
-        if (mViewModel.isScreenWideEnough() || mViewModel.getLastFragment().equals(HEADERS)) {
-            mViewModel.setLastFragment(HEADERS);
+        if (mViewModel.isScreenWideEnoughOrLastFragmentIsHEADERS()) {
+            //mViewModel.setLastFragment(HEADERS);
             super.onBackPressed();
             super.onBackPressed();
         } else {
@@ -176,7 +176,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
     @Override
     protected void onAllPermissionsGranted() {
         addFragments(mViewModel.newNotificationPreferenceFragment());
-        switchFragment(mViewModel.getSwitchedFragmentTag(), mViewModel.getNotificationsTag());
+        switchFragment(mViewModel.getSwitchedToNotificationsTag(), mViewModel.getNotificationsTag());
     }
 
     @Override

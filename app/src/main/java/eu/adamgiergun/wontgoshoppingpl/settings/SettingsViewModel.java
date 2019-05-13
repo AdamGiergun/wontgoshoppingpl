@@ -102,7 +102,7 @@ public class SettingsViewModel extends AppViewModel {
         return notificationsTag;
     }
 
-    String getSwitchedFragmentTag() {
+    String getSwitchedToNotificationsTag() {
         return isScreenWideEnough() ? getLookTag() : getHeadersTag();
     }
 
@@ -113,6 +113,10 @@ public class SettingsViewModel extends AppViewModel {
 
     boolean isScreenWideEnough() {
         return isScreenSizeLarge() || isOrientationLandscape();
+    }
+
+    boolean isScreenWideEnoughOrLastFragmentIsHEADERS() {
+        return isScreenWideEnough() || lastFragment.equals(HEADERS);
     }
 
     private boolean isOrientationLandscape() {
