@@ -34,7 +34,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/ad_mob_app_id" />
 
-        <receiver android:name=".widget.AppWidget">
+        <receiver android:name=".widget.Widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -48,10 +48,10 @@
             android:required="false" />
         <!--
                 <activity
-                    android:name=".main.MainActivity" >
+                    android:name=".main.Activity" >
         -->
         <activity
-            android:name=".main.MainActivity"
+            android:name=".main.Activity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="sensorPortrait">
 
@@ -62,25 +62,25 @@
         </activity>
         <!--
                 <activity
-                    android:name=".settings.SettingsActivity"
+                    android:name=".settings.Activity"
                     android:label="@string/title_activity_settings"
-                    android:parentActivityName=".main.MainActivity"
+                    android:parentActivityName=".main.Activity"
                     tools:targetApi="jelly_bean">
         -->
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".settings.Activity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".main.MainActivity"
+            android:parentActivityName=".main.Activity"
             android:screenOrientation="sensorPortrait"
             tools:targetApi="jelly_bean">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.adamgiergun.wontgoshoppingpl.main.MainActivity" />
+                android:value="eu.adamgiergun.wontgoshoppingpl.main.Activity" />
         </activity>
         <activity
-            android:name=".help.HelpActivity"
+            android:name=".help.Activity"
             android:label="@string/title_activity_help" />
         <!--                     <activity android:name="com.google.android.gms.ads.AdActivity" /> -->
         <activity

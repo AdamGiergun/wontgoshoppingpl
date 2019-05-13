@@ -14,12 +14,12 @@ import androidx.preference.*;
 import java.util.List;
 
 import eu.adamgiergun.mylibrary.*;
-import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
+import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-import static eu.adamgiergun.wontgoshoppingpl.settings.SettingsViewModel.HEADERS;
+import static eu.adamgiergun.wontgoshoppingpl.settings.ViewModel.HEADERS;
 
-public class SettingsActivity extends AppCompatActivityWithTheme
+public class Activity extends ActivityWithTheme
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
         NoticeDialogFragment.NoticeDialogListener,
         NoticeDialogFragment.NoticeDialogViewListener {
@@ -28,7 +28,7 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    private SettingsViewModel mViewModel;
+    private ViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,11 @@ public class SettingsActivity extends AppCompatActivityWithTheme
 
     private void initializeViewModel() {
         if (mViewModel==null)
-            mViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
-        mViewModel.initialize(getIntent().getBooleanExtra(SettingsViewModel.START_FROM_NOTIFICATIONS_IN_SETTINGS, false));
+            mViewModel = ViewModelProviders.of(this).get(ViewModel.class);
+        mViewModel.initialize(
+                getIntent().getBooleanExtra(
+                        ViewModel.START_FROM_NOTIFICATIONS_IN_SETTINGS,
+                        false));
     }
 
     private void clearActivity() {

@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import eu.adamgiergun.mylibrary.AppCompatActivityWithHomeInBar;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public abstract class AppCompatActivityWithTheme extends AppCompatActivityWithHomeInBar {
+public abstract class ActivityWithTheme extends AppCompatActivityWithHomeInBar {
     private AppViewModel mViewModel;
 
     @Override

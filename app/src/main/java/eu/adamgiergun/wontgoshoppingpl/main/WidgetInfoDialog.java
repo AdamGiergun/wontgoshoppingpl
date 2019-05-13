@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class WidgetInfoDialog extends MainDialogFragment {
+public class WidgetInfoDialog extends DialogFragment {
 
     public static NoticeDialogFragment newInstance() {
         return new WidgetInfoDialog();

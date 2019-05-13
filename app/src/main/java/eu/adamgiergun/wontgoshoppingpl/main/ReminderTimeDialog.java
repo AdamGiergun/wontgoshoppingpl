@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 
-public class ReminderTimeDialog extends MainDialogFragment {
+public class ReminderTimeDialog extends DialogFragment {
     private static final String HOUR = "hour";
     private static final String MINUTE = "minute";
 

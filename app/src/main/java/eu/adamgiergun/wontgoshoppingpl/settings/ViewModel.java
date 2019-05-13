@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel;
 
-public class SettingsViewModel extends AppViewModel {
+public class ViewModel extends AppViewModel {
     static final String HEADERS = "headers";
     private static final String HEADERS_LAND = "headersWide";
     private static final String LOOK = "look";
@@ -23,7 +23,7 @@ public class SettingsViewModel extends AppViewModel {
     private boolean startFragmentNotification;
     private int settingsFragmentId;
 
-    public SettingsViewModel(@NonNull Application application) {
+    public ViewModel(@NonNull Application application) {
         super(application);
     }
 
@@ -135,7 +135,7 @@ public class SettingsViewModel extends AppViewModel {
 
         settingsFragments.add(
                 FragmentWithTag.newInstance(
-                        new SettingsHeadersFragment(),
+                        new PreferenceHeadersFragment(),
                         headersTag,
                         shouldBeDetached(headersTag),
                         isScreenWideEnough() ? R.id.headersFragment : settingsFragmentId));

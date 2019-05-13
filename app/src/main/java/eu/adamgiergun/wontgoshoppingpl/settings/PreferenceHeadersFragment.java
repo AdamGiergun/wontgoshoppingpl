@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class SettingsHeadersFragment extends PreferenceFragmentCompat {
+public class PreferenceHeadersFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -26,7 +26,7 @@ public class SettingsHeadersFragment extends PreferenceFragmentCompat {
     }
 
     private void highlightLeftTreeOption(boolean isLook) {
-        SettingsViewModel viewModel = getViewModel();
+        ViewModel viewModel = getViewModel();
         RecyclerView listView = getListView();
         if (viewModel != null && viewModel.isScreenWideEnough()) {
             if (isLook) {
@@ -39,8 +39,8 @@ public class SettingsHeadersFragment extends PreferenceFragmentCompat {
         }
     }
 
-    private SettingsViewModel getViewModel() {
+    private ViewModel getViewModel() {
         FragmentActivity activity = getActivity();
-        return (activity==null) ? null : ViewModelProviders.of(activity).get(SettingsViewModel.class);
+        return (activity==null) ? null : ViewModelProviders.of(activity).get(ViewModel.class);
     }
 }

@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class ReminderDaysBeforeDialog extends MainDialogFragment {
+public class ReminderDaysBeforeDialog extends DialogFragment {
     private static final String VALUE = "value";
 
     private NumberPicker picker;

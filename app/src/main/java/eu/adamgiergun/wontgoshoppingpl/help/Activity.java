@@ -5,10 +5,10 @@ import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
+import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class HelpActivity extends AppCompatActivityWithTheme {
+public class Activity extends ActivityWithTheme {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

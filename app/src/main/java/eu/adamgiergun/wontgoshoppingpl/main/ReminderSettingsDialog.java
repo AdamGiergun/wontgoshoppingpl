@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class ReminderSettingsDialog extends MainDialogFragment {
+public class ReminderSettingsDialog extends DialogFragment {
 
     private ReminderSettingsDialog() {}
 
@@ -28,7 +27,7 @@ public class ReminderSettingsDialog extends MainDialogFragment {
     @Override
     public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = getStyledBuilder(getContext());
-        MainViewModel viewModel = getViewModel();
+        ViewModel viewModel = getViewModel();
         String title = viewModel.isActionAddList() ? getString(R.string.title_reminder) : getString(R.string.title_reminder_of) + " " + viewModel.getDayDescriptionForDialog();
         builder
                 .setTitle(title)
@@ -40,7 +39,7 @@ public class ReminderSettingsDialog extends MainDialogFragment {
 
     private View getDialogView() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        MainViewModel viewModel = getViewModel();
+        ViewModel viewModel = getViewModel();
         int viewLayoutId = viewModel.isActionAddList() ? R.layout.reminder_and_date_settings_dialog_view : R.layout.reminder_settings_dialog_view;
         View view = inflater.inflate(viewLayoutId, null);
 
@@ -52,7 +51,7 @@ public class ReminderSettingsDialog extends MainDialogFragment {
         return view;
     }
 
-    private void initializeReminderViews(final View view, final MainViewModel viewModel) {
+    private void initializeReminderViews(final View view, final ViewModel viewModel) {
         final AppCompatTextView daysView = setupView(
                 getDaysView(view),
                 String.valueOf(viewModel.getReminder().getDaysBefore()),
@@ -80,7 +79,7 @@ public class ReminderSettingsDialog extends MainDialogFragment {
         return view;
     }
 
-    private void initializeTillView(final View view, MainViewModel viewModel) {
+    private void initializeTillView(final View view, ViewModel viewModel) {
         final AppCompatTextView tillView = setupView(
                 getTillView(view),
                 viewModel.getTill().toString(),

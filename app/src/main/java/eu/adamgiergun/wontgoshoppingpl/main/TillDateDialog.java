@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
 
-public class TillDateDialog extends MainDialogFragment {
+public class TillDateDialog extends DialogFragment {
     private static final String YEAR = "year";
     private static final String MONTH = "month";
     private static final String DAY = "day";
@@ -40,7 +40,7 @@ public class TillDateDialog extends MainDialogFragment {
     }
 
     private MyDatePicker getPicker(Bundle savedInstanceState) {
-        MainViewModel viewModel = getViewModel();
+        ViewModel viewModel = getViewModel();
         MyDatePicker myDatePicker =
                 MyDatePicker.newInstance(
                         getContext(),

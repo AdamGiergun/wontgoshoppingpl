@@ -18,7 +18,7 @@ import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.LookFullText.
 import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.APP_THEME;
 import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.CALENDAR_EVENT;
 
-public class MainViewModel extends AppViewModel {
+public class ViewModel extends AppViewModel {
     private boolean actionAddList;
     private MutableLiveData<SimpleDate> till;
     private MutableLiveData<SimpleReminder> reminder;
@@ -27,7 +27,7 @@ public class MainViewModel extends AppViewModel {
     private Day.Type.Set dayTypesToBeDisplayed;
     private boolean recreatedOnDemand;
 
-    public MainViewModel(@NonNull Application application) {
+    public ViewModel(@NonNull Application application) {
         super(application);
     }
 

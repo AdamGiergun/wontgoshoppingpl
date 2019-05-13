@@ -7,7 +7,7 @@ import android.widget.RemoteViews;
 
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class AppWidget extends AppWidgetProvider {
+public class Widget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -16,11 +16,11 @@ public class AppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
-        WidgetViewModel.logUpdated(context.getApplicationContext());
+        ViewModel.logUpdated(context.getApplicationContext());
     }
 
     private RemoteViews newRemoteViews(Context context) {
-        WidgetViewModel viewModel = WidgetViewModel.newInstance(context.getApplicationContext());
+        ViewModel viewModel = ViewModel.newInstance(context.getApplicationContext());
         RemoteViews views = new RemoteViews(context.getPackageName(), viewModel.getLayoutId());
         views.setTextViewText(R.id.appwidget_text, viewModel.getText());
         views.setOnClickPendingIntent(R.id.appwidget_text, viewModel.getPendingIntent());
@@ -29,12 +29,12 @@ public class AppWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        WidgetViewModel.logFirstAdded(context.getApplicationContext());
+        ViewModel.logFirstAdded(context.getApplicationContext());
     }
 
     @Override
     public void onDisabled(Context context) {
-        WidgetViewModel.logLastRemoved(context.getApplicationContext());
+        ViewModel.logLastRemoved(context.getApplicationContext());
     }
 }
 

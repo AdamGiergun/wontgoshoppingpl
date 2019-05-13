@@ -17,7 +17,7 @@ import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.COMMERCE_SUNDAY;
 import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.HOLIDAY;
 import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.NON_COMMERCE_DAY;
 
-public class DayTypesAddedToCalendarDialog extends MainDialogFragment {
+public class DayTypesAddedToCalendarDialog extends DialogFragment {
     private DayTypesAddedToCalendarDialog() {}
 
     protected static NoticeDialogFragment newInstance() {

@@ -18,14 +18,12 @@ import java.util.Locale;
 
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 
-import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithTheme;
+import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
 import eu.adamgiergun.wontgoshoppingpl.day.Day;
-import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity;
 
-public class MainActivity extends AppCompatActivityWithTheme implements
+public class Activity extends ActivityWithTheme implements
         NoticeDialogFragment.NoticeDialogListener,
         DaysFragment.OnListFragmentInteractionListener,
         NoticeDialogFragment.NoticeDialogViewListener {
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivityWithTheme implements
     private static final String MAIN_FRAGMENT_TAG = "main_fragment";
     private InterstitialAd interstitialAd;
 
-    private MainViewModel mViewModel;
+    private ViewModel mViewModel;
 //    private Calendar calStart;
 
     //region ActivityLifeCycleRegion
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivityWithTheme implements
         setContentView(R.layout.activity_main);
         setupBannerAds();
         initializeOrLoadInterstitialAd(getApplicationContext());
-        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(ViewModel.class);
 
         if (savedInstanceState == null) {
             mViewModel.initialize();
@@ -209,8 +207,8 @@ public class MainActivity extends AppCompatActivityWithTheme implements
     }
 
     private void startSettingsActivity(boolean startFromNotifications) {
-        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-        intent.putExtra(MainViewModel.START_FROM_NOTIFICATIONS_IN_SETTINGS, startFromNotifications);
+        Intent intent = new Intent(getApplicationContext(), eu.adamgiergun.wontgoshoppingpl.settings.Activity.class);
+        intent.putExtra(ViewModel.START_FROM_NOTIFICATIONS_IN_SETTINGS, startFromNotifications);
         startActivity(intent);
     }
 
@@ -249,7 +247,7 @@ public class MainActivity extends AppCompatActivityWithTheme implements
     }
 
     private void startHelpActivity() {
-        Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+        Intent intent = new Intent(getApplicationContext(), eu.adamgiergun.wontgoshoppingpl.help.Activity.class);
         startActivity(intent);
     }
     //endregion

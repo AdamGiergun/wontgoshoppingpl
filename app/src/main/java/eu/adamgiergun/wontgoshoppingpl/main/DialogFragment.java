@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-class MainDialogFragment extends NoticeDialogFragment {
+class DialogFragment extends NoticeDialogFragment {
 
     AlertDialog.Builder getStyledBuilder(Context context) {
         return  getViewModel().isLookRich()
@@ -17,8 +17,8 @@ class MainDialogFragment extends NoticeDialogFragment {
                 : new AlertDialog.Builder(context);
     }
 
-    MainViewModel getViewModel() {
+    ViewModel getViewModel() {
         FragmentActivity activity = getActivity();
-        return (activity==null) ? null : ViewModelProviders.of(activity).get(MainViewModel.class);
+        return (activity==null) ? null : ViewModelProviders.of(activity).get(ViewModel.class);
     }
 }
