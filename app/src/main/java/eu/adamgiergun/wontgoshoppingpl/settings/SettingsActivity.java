@@ -70,9 +70,9 @@ public class SettingsActivity extends AppCompatActivityWithTheme
         }
     }
 
-    private void addFragments(FragmentWithTag.List list) {
+    private void addFragments(FragmentWithTag.Set set) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        for (FragmentWithTag fragmentWithTag : list) {
+        for (FragmentWithTag fragmentWithTag : set) {
             ft.add(fragmentWithTag.containerId, fragmentWithTag.fragment, fragmentWithTag.tag);
             if (fragmentWithTag.detach)
                 ft.detach(fragmentWithTag.fragment);

@@ -133,8 +133,8 @@ public class SettingsViewModel extends AppViewModel {
         return result;
     }
 
-    FragmentWithTag.List newFragmentsWithTag() {
-        FragmentWithTag.List settingsFragments = new FragmentWithTag.List();
+    FragmentWithTag.Set newFragmentsWithTag() {
+        FragmentWithTag.Set settingsFragments = new FragmentWithTag.Set();
 
         settingsFragments.add(
                 FragmentWithTag.newInstance(
@@ -162,15 +162,15 @@ public class SettingsViewModel extends AppViewModel {
         return settingsFragments;
     }
 
-    FragmentWithTag.List newNotificationPreferenceFragment() {
-        FragmentWithTag.List list = new FragmentWithTag.List();
-        list.add(
+    FragmentWithTag.Set newNotificationPreferenceFragment() {
+        FragmentWithTag.Set set = new FragmentWithTag.Set();
+        set.add(
                 FragmentWithTag.newInstance(
                         new NotificationPreferenceFragment(),
                         notificationsTag,
                         true,
                         settingsFragmentId));
-        return list;
+        return set;
     }
 
     void setLastFragment(String tag) {

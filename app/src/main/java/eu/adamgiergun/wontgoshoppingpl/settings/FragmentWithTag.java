@@ -2,7 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.settings;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 class FragmentWithTag {
     final PreferenceFragmentCompat fragment;
@@ -21,6 +21,6 @@ class FragmentWithTag {
         return new FragmentWithTag(fragment, tag, detach, containerId);
     }
 
-    static class List extends ArrayList<FragmentWithTag> {
+    static class Set extends HashSet<FragmentWithTag> {
     }
 }
