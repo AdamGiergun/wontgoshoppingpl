@@ -7,7 +7,6 @@ import android.content.Intent;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent;
 import eu.adamgiergun.wontgoshoppingpl.day.Day;
-import eu.adamgiergun.wontgoshoppingpl.main.Activity;
 
 import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.APP_WIDGET;
 import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.WidgetFullText.*;
@@ -21,7 +20,7 @@ class ViewModel {
     static ViewModel newInstance(Context appContext) {
         ViewModel viewModel = new ViewModel();
         viewModel.nearestDay = Day.List.getFirst(appContext);
-        Intent intent = new Intent(appContext, Activity.class);
+        Intent intent = new Intent(appContext, eu.adamgiergun.wontgoshoppingpl.main.Activity.class);
         viewModel.pendingIntent = PendingIntent.getActivity(appContext,0, intent,0);
         return viewModel;
     }
