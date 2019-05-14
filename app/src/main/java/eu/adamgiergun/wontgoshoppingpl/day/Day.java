@@ -284,8 +284,8 @@ public class Day implements Comparable<Day> {
 
         public static long getLastDateInMillis(Context appContext) {
             List list = newInstance(appContext);
-            int size = newInstance(appContext).size();
-            Day lastDay = list.get(size - 1);
+            int size = list.size();
+            Day lastDay = (size == 0) ? null : list.get(size - 1);
             return (lastDay == null) ? Calendar.getInstance().getTimeInMillis() : lastDay.date.getTimeInMillis();
         }
 
