@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
 
-class AskForLook extends Fragment {
+public class AskForLook extends Fragment {
 
     private AskForLook() {}
 

@@ -70,7 +70,7 @@ public class Activity extends ActivityWithTheme implements
 
     private void setDayFragment() {
         showWidgetInfoIfNeeded();
-        addFragment(new DaysFragment());
+        addFragment(DaysFragment.newInstance());
         mViewModel.logLook();
     }
 
@@ -312,6 +312,7 @@ public class Activity extends ActivityWithTheme implements
     public void onLookButtonClick(View view) {
         boolean isLookRich = (view.getId() == R.id.imageButtonRich);
         mViewModel.onInitialLookChoice(isLookRich);
+        removeAllFragments();
         recreate();
     }
     //endregion

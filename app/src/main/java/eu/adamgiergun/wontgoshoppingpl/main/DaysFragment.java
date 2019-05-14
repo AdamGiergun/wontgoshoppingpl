@@ -31,6 +31,12 @@ public class DaysFragment extends Fragment {
         }
     };
 
+    private DaysFragment() {}
+
+    static DaysFragment newInstance() {
+        return new DaysFragment();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_day_list, container, false);

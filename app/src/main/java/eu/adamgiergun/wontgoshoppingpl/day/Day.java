@@ -5,7 +5,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import eu.adamgiergun.mylibrary.calendarmanagement.*;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.db.*;
@@ -96,11 +99,10 @@ public class Day implements Comparable<Day> {
     }
 
     private SimpleCalendarEvent newCalendarEventInstance(Context appContext, String timeZoneId) {
-        return new SimpleCalendarEvent.Builder(calendarId, date, new SimpleTime(time))
+        return new SimpleCalendarEvent.Builder(calendarId, date, new SimpleTime(time), timeZoneId, allDay)
                 .setCalendarEventId(calendarEventId)
-                .setTimeZoneId(timeZoneId)
                 .setEndCalendar(getEndDate(), new SimpleTime("23:59"))
-                .setAllDay(allDay).setReminders(getReminders())
+                .setReminders(getReminders())
                 .setTitle((type == Type.COMMERCE_SUNDAY)
                         ? description + " - " + appContext.getString(R.string.go_shopping)
                         : description + " - " + appContext.getString(R.string.go_shopping_earlier))

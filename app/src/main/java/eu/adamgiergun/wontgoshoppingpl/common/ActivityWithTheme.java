@@ -8,7 +8,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.util.List;
 
 import eu.adamgiergun.mylibrary.AppCompatActivityWithHomeInBar;
 import eu.adamgiergun.wontgoshoppingpl.R;
@@ -82,4 +87,14 @@ public abstract class ActivityWithTheme extends AppCompatActivityWithHomeInBar {
     }
 
     protected void onAllPermissionsGranted() {}
+
+    protected void removeAllFragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        for (Fragment fragment : fragments)
+            fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+        getSupportFragmentManager().executePendingTransactions();
+    }
 }

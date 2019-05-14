@@ -11,8 +11,6 @@ import androidx.fragment.app.*;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.*;
 
-import java.util.List;
-
 import eu.adamgiergun.mylibrary.*;
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.R;
@@ -54,16 +52,6 @@ public class Activity extends ActivityWithTheme
         removeAllFragments();
         if (!mViewModel.isScreenSizeLarge())
             popBackStackCompletely();
-    }
-
-    private void removeAllFragments() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        List<Fragment> fragments = fragmentManager.getFragments();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        for (Fragment fragment : fragments)
-            fragmentTransaction.remove(fragment);
-        fragmentTransaction.commit();
-        getSupportFragmentManager().executePendingTransactions();
     }
 
     private void popBackStackCompletely() {

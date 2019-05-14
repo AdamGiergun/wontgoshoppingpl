@@ -8,7 +8,9 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import eu.adamgiergun.mylibrary.calendarmanagement.*;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
+import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.day.*;
 import eu.adamgiergun.wontgoshoppingpl.R;
