@@ -8,9 +8,6 @@ import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent;
 import eu.adamgiergun.wontgoshoppingpl.day.Day;
 
-import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.APP_WIDGET;
-import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.WidgetFullText.*;
-
 class ViewModel {
     private Day nearestDay;
     private PendingIntent pendingIntent;
@@ -38,18 +35,14 @@ class ViewModel {
     }
 
     static void logUpdated(Context appContext) {
-        logFirebaseEvent(appContext, UPDATED);
+        FirebaseEvent.logAppWidgetUpdated(appContext);
     }
 
     static void logFirstAdded(Context appContext) {
-        logFirebaseEvent(appContext, FIRST_ADDED_TO_HOME_SCREEN);
+        FirebaseEvent.logAppWidgetFirstAdded(appContext);
     }
 
     static void logLastRemoved(Context appContext) {
-        logFirebaseEvent(appContext, LAST_REMOVED_FROM_HOME_SCREEN);
-    }
-
-    private static void logFirebaseEvent(Context appContext, String fullText) {
-        FirebaseEvent.log(appContext, APP_WIDGET, fullText);
+        FirebaseEvent.logAppWidgetLastRemoved(appContext);
     }
 }

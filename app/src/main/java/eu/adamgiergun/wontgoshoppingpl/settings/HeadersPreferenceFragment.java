@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class PreferenceHeadersFragment extends PreferenceFragmentCompat {
+public class HeadersPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -20,22 +20,15 @@ public class PreferenceHeadersFragment extends PreferenceFragmentCompat {
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
-        String title = preference.getTitle().toString();
-        highlightLeftTreeOption(title.equals(getString(R.string.pref_header_look)));
+        highlightLeftTreePreference(preference.getOrder());
         return super.onPreferenceTreeClick(preference);
     }
 
-    private void highlightLeftTreeOption(boolean isLook) {
-        ViewModel viewModel = getViewModel();
+    private void highlightLeftTreePreference(int position) {
         RecyclerView listView = getListView();
-        if (viewModel != null && viewModel.isScreenWideEnough()) {
-            if (isLook) {
-                listView.getChildAt(0).setBackgroundColor(Color.LTGRAY);
-                listView.getChildAt(1).setBackgroundColor(Color.TRANSPARENT);
-            } else {
-                listView.getChildAt(1).setBackgroundColor(Color.LTGRAY);
-                listView.getChildAt(0).setBackgroundColor(Color.TRANSPARENT);
-            }
+        for (int i = 0; i < listView.getChildCount(); i++) {
+            listView.getChildAt(i).setBackgroundColor(
+                    i == position ? Color.LTGRAY : Color.TRANSPARENT);
         }
     }
 

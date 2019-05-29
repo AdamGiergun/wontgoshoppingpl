@@ -16,11 +16,6 @@ import eu.adamgiergun.wontgoshoppingpl.day.*;
 import eu.adamgiergun.wontgoshoppingpl.R;
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsFragment;
 
-import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.CalendarFullText.*;
-import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.LookFullText.*;
-import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.APP_THEME;
-import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.Type.CALENDAR_EVENT;
-
 public class ViewModel extends AppViewModel {
     private boolean actionAddList;
     private MutableLiveData<SimpleDate> till;
@@ -203,18 +198,11 @@ public class ViewModel extends AppViewModel {
     //endregion
 
     void logLook() {
-        String tag = isLookRich() ? RICH : MINI;
-        logFirebaseEvent(APP_THEME, tag);
+        FirebaseEvent.logAppTheme(getAppContext(), isLookRich());
     }
 
     private void logCalendarEvent(boolean result) {
-        String tag = actionAddList ? LIST : SINGLE;
-        tag = result ? tag : tag + FAILED;
-        logFirebaseEvent(CALENDAR_EVENT, tag);
-    }
-
-    private void logFirebaseEvent(String event, String fullText) {
-        FirebaseEvent.log(getAppContext(), event, fullText);
+        FirebaseEvent.logCalendarEvent(getAppContext(), actionAddList, result);
     }
 
     int getError() {

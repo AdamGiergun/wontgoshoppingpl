@@ -6,7 +6,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.ArrayList;
 
 public class SettingsFragment {
-    static final String HEADERS = PreferenceHeadersFragment.class.getName();
+    static final String HEADERS = HeadersPreferenceFragment.class.getName();
     static final String LOOK = LookPreferenceFragment.class.getName();
     static final String NOTIFICATIONS = NotificationPreferenceFragment.class.getName();
     public static final String START_FRAGMENT_ID_TAG = "start_fragment_id";
@@ -27,7 +27,7 @@ public class SettingsFragment {
 
     private static PreferenceFragmentCompat newFragment(@NonNull String fragmentId) {
         if(fragmentId.equals(HEADERS))
-            return new PreferenceHeadersFragment();
+            return new HeadersPreferenceFragment();
         else if (fragmentId.equals(LOOK))
             return new LookPreferenceFragment();
         else if (fragmentId.equals(NOTIFICATIONS))

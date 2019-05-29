@@ -85,10 +85,8 @@ public class SActivity extends ActivityWithTheme
         mViewModel.setStartedPreference(StartedPreference.newInstance(caller, pref));
         if (mViewModel.isStartedPreferenceNotNotifications() || checkCalendarPermissions()) {
             addStartedFragment();
-            return true;
-        } else {
-            return false;
         }
+        return true;
     }
 
     private void addStartedFragment() {
@@ -105,12 +103,8 @@ public class SActivity extends ActivityWithTheme
         // Replace the existing Fragment with the new Fragment
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                 .replace(R.id.settings, fragment);
-        if (fragment instanceof PreferenceHeadersFragment) {
-            fragmentManager.popBackStack();
-        } else {
-            if (!mViewModel.isScreenWideEnough())
-                fragmentTransaction.addToBackStack(null);
-        }
+        if (!mViewModel.isScreenWideEnough())
+            fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         setTitle(startedPreference.pref.getTitle());
         mViewModel.setStartedPreference(null);
@@ -135,6 +129,21 @@ public class SActivity extends ActivityWithTheme
     @Override
     protected void onCalendarPermissionNotGranted() {
         super.onCalendarPermissionNotGranted();
+        addEmptyNotificationsFragment();
+    }
+
+    private void addEmptyNotificationsFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment fragment = fragmentManager.getFragmentFactory().instantiate(
+                getClassLoader(),
+                EmptyPreferenceFragment.class.getName());
+        fragment.setTargetFragment(mViewModel.getStartedPreference().caller, 0);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                .replace(R.id.settings, fragment);
+        if (!mViewModel.isScreenWideEnough())
+            fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        setTitle(R.string.pref_header_notifications);
         mViewModel.setStartedPreference(null);
     }
 
@@ -155,4 +164,13 @@ public class SActivity extends ActivityWithTheme
         //stub
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        if (getSupportFragmentManager().popBackStackImmediate()) {
+            mViewModel.setLastFragmentIdHeaders();
+            setTitle(mViewModel.geTitle());
+            return true;
+        }
+        return super.onSupportNavigateUp();
+    }
 }
