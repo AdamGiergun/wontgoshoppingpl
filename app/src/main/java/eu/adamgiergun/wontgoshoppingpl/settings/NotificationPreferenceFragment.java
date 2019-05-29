@@ -9,7 +9,7 @@ import androidx.preference.Preference;
 import eu.adamgiergun.mylibrary.BasePreferenceFragmentCompat;
 import eu.adamgiergun.mylibrary.IntegerDialogPreference;
 import eu.adamgiergun.mylibrary.IntegerPreferenceDialogFragmentCompat;
-import eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreferenceNew;
+import eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreference;
 import eu.adamgiergun.mylibrary.calendarmanagement.TimePreference;
 import eu.adamgiergun.mylibrary.calendarmanagement.TimePreferenceDialogFragmentCompat;
 import eu.adamgiergun.wontgoshoppingpl.R;
@@ -22,17 +22,19 @@ public class NotificationPreferenceFragment extends BasePreferenceFragmentCompat
     }
 
     private void setSummaries() {
-        IntegerDialogPreference daysBefore = (IntegerDialogPreference) findPreference(getString(R.string.default_reminder_days_before_preference_key));
-        daysBefore.setSummary(daysBefore.toString());
+        IntegerDialogPreference daysBefore = findPreference(getString(R.string.default_reminder_days_before_preference_key));
+        if (daysBefore != null) {
+            daysBefore.setSummary(daysBefore.toString());
+        }
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.default_calendar_preference_key))) {
             Preference preference = findPreference(key);
-            if (preference instanceof CalendarsListPreferenceNew) {
+            if (preference instanceof CalendarsListPreference) {
                 CharSequence calendarId = sharedPreferences.getString(key, "0");
-                CharSequence summary = ((CalendarsListPreferenceNew) preference).getCalendarName(calendarId);
+                CharSequence summary = ((CalendarsListPreference) preference).getCalendarName(calendarId);
                 preference.setSummary(summary);
             }
         }

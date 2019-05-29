@@ -12,7 +12,7 @@
 
     <!-- NOTE: Listed below preferences will be enabled only when the checkbox above is checked.
         android:defaultValue="@string/calendar_not_set"-->
-    <eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreferenceNew
+    <eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreference
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_calendar_preference_key"
         android:title="@string/default_calendar_preference_title" />
@@ -22,8 +22,8 @@
         <eu.adamgiergun.mylibrary.IntegerDialogPreference
             android:defaultValue="@integer/reminder_days_before_default_value"
             android:dependency="@string/use_google_calendar_preference_key"
+            android:inputType="number"
             android:key="@string/default_reminder_days_before_preference_key"
-            android:numeric="integer"
             android:title="@string/default_days_before_event_preference_title"
             app:defValue="@integer/reminder_days_before_default_value"
             app:maxValue="7"
