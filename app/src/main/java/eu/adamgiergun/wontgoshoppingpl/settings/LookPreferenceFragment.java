@@ -10,8 +10,6 @@ import androidx.lifecycle.ViewModelProviders;
 import eu.adamgiergun.mylibrary.BasePreferenceFragmentCompat;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-import static eu.adamgiergun.wontgoshoppingpl.settings.ViewModel.HEADERS;
-
 public class LookPreferenceFragment extends BasePreferenceFragmentCompat {
 
     @Override
@@ -23,7 +21,8 @@ public class LookPreferenceFragment extends BasePreferenceFragmentCompat {
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.app_look_preference_key))) {
             ViewModel viewModel = getViewModel();
-            if (viewModel!=null) viewModel.setLastFragment(HEADERS);
+            if (viewModel!=null)
+                viewModel.setLastFragmentIdHeaders();
             Intent intent = new Intent(getActivity(), eu.adamgiergun.wontgoshoppingpl.main.Activity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

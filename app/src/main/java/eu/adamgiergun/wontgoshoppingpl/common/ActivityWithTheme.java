@@ -79,14 +79,18 @@ public abstract class ActivityWithTheme extends AppCompatActivityWithHomeInBar {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == AppViewModel.getCalendarPermissionsCode()) {
             if (AppViewModel.areAllPermissionsGranted(grantResults)) {
-                onAllPermissionsGranted();
+                onCalendarPermissionsGranted();
             } else {
-                Toast.makeText(getApplicationContext(), eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
+                onCalendarPermissionNotGranted();
             }
         }
     }
 
-    protected void onAllPermissionsGranted() {}
+    protected void onCalendarPermissionsGranted() {}
+
+    protected void onCalendarPermissionNotGranted() {
+        Toast.makeText(getApplicationContext(), eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show();
+    }
 
     protected void removeAllFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();

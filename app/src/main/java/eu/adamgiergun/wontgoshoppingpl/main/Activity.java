@@ -210,7 +210,9 @@ public class Activity extends ActivityWithTheme implements
 
     private void startSettingsActivity(boolean startFromNotifications) {
         Intent intent = new Intent(getApplicationContext(), SActivity.class);
-        intent.putExtra(ViewModel.START_FROM_NOTIFICATIONS_IN_SETTINGS, startFromNotifications);
+        intent.putExtra(
+                ViewModel.getStartFragmentIdTag(),
+                ViewModel.getStartFragmentId(startFromNotifications));
         startActivity(intent);
     }
 
@@ -276,7 +278,7 @@ public class Activity extends ActivityWithTheme implements
     //endregion
 
     @Override
-    protected void onAllPermissionsGranted() {
+    protected void onCalendarPermissionsGranted() {
         checkCalendarSettings();
     }
 

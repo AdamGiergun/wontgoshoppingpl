@@ -14,6 +14,7 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime;
 import eu.adamgiergun.wontgoshoppingpl.common.*;
 import eu.adamgiergun.wontgoshoppingpl.day.*;
 import eu.adamgiergun.wontgoshoppingpl.R;
+import eu.adamgiergun.wontgoshoppingpl.settings.SettingsFragment;
 
 import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.CalendarFullText.*;
 import static eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent.LookFullText.*;
@@ -218,5 +219,9 @@ public class ViewModel extends AppViewModel {
 
     int getError() {
         return actionAddList ? R.string.error_sth_went_wrong : R.string.error_adding_to_calendar_failed;
+    }
+
+    static String getStartFragmentId(boolean startFromNotifications) {
+        return SettingsFragment.getStartFragmentId(startFromNotifications);
     }
 }
