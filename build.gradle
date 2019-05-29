@@ -7,15 +7,9 @@ buildscript {
         maven {
             url 'https://maven.fabric.io/public'
         }
-        //fix for 5.5 beta 1
-        maven {
-            url "http://storage.googleapis.com/r8-releases/raw/master"
-        }
     }
     dependencies {
-        //fix for 5.5 beta 1
-        classpath 'com.android.tools:r8:522bd9fc1d398753fed5134b6c4fe32cdae482be'
-        classpath 'com.android.tools.build:gradle:3.5.0-beta01'
+        classpath 'com.android.tools.build:gradle:3.5.0-beta03'
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'io.fabric.tools:gradle:1.28.1'
 

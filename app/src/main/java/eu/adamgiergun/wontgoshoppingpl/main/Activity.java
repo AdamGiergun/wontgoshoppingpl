@@ -22,6 +22,8 @@ import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
 import eu.adamgiergun.wontgoshoppingpl.day.Day;
 import eu.adamgiergun.wontgoshoppingpl.R;
+import eu.adamgiergun.wontgoshoppingpl.help.HActivity;
+import eu.adamgiergun.wontgoshoppingpl.settings.SActivity;
 
 public class Activity extends ActivityWithTheme implements
         NoticeDialogFragment.NoticeDialogListener,
@@ -207,7 +209,7 @@ public class Activity extends ActivityWithTheme implements
     }
 
     private void startSettingsActivity(boolean startFromNotifications) {
-        Intent intent = new Intent(getApplicationContext(), eu.adamgiergun.wontgoshoppingpl.settings.Activity.class);
+        Intent intent = new Intent(getApplicationContext(), SActivity.class);
         intent.putExtra(ViewModel.START_FROM_NOTIFICATIONS_IN_SETTINGS, startFromNotifications);
         startActivity(intent);
     }
@@ -247,7 +249,7 @@ public class Activity extends ActivityWithTheme implements
     }
 
     private void startHelpActivity() {
-        Intent intent = new Intent(getApplicationContext(), eu.adamgiergun.wontgoshoppingpl.help.Activity.class);
+        Intent intent = new Intent(getApplicationContext(), HActivity.class);
         startActivity(intent);
     }
     //endregion

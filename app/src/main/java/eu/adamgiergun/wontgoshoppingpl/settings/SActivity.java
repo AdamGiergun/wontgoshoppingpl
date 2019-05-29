@@ -17,7 +17,7 @@ import eu.adamgiergun.wontgoshoppingpl.R;
 
 import static eu.adamgiergun.wontgoshoppingpl.settings.ViewModel.HEADERS;
 
-public class Activity extends ActivityWithTheme
+public class SActivity extends ActivityWithTheme
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
         NoticeDialogFragment.NoticeDialogListener,
         NoticeDialogFragment.NoticeDialogViewListener {

@@ -8,7 +8,7 @@ import android.widget.TextView;
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class Activity extends ActivityWithTheme {
+public class HActivity extends ActivityWithTheme {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
