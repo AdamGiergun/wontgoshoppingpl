@@ -9,8 +9,8 @@ android {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 83
-        versionName "2.2.1"
+        versionCode 86
+        versionName "2.2.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
         //vectorDrawables.useSupportLibrary = true
@@ -20,11 +20,21 @@ android {
         resValue "string", "interstitial_ad_id", WGS_INTERSTITIAL_AD_ID
     }
 
+    signingConfigs {
+        release {
+            keyAlias wgs_alias
+            keyPassword wgs_password
+            storeFile file(wgs_keystore)
+            storePassword wgs_password
+        }
+    }
+
     buildTypes {
         release {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
             resValue "bool", "GOOGLE_ANALYTICS_ADID_ENABLED", "true"
             resValue "bool", "FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED", "false"
             resValue "bool", "FIREBASE_ANALYTICS_COLLECTION_ENABLED", "true"
@@ -38,7 +48,6 @@ android {
             resValue "bool", "FIREBASE_ANALYTICS_COLLECTION_ENABLED", "false"
             resValue "bool", "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED", "false"
         }
-
     }
 }
 
