@@ -7,24 +7,24 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class FirebaseEvent {
 
-    private class Type {
+    private static class Type {
         private static final String APP_THEME = "app_theme";
         private static final String CALENDAR_EVENT = "calendar_event";
         private static final String APP_WIDGET = "app_widget";
     }
 
-    private class Look {
+    private static class Look {
         private static final String RICH = "look_rich";
         private static final String MINI = "look_mini";
     }
 
-    private class CalendarEvent {
+    private static class CalendarEvent {
         private static final String SINGLE = "single";
         private static final String LIST = "list";
         private static final String FAILED = "_failed";
     }
 
-    private class Widget {
+    private static class Widget {
         private static final String UPDATED = "updated";
         private static final String FIRST_ADDED_TO_HOME_SCREEN = "first_added";
         private static final String LAST_REMOVED_FROM_HOME_SCREEN = "last_removed";

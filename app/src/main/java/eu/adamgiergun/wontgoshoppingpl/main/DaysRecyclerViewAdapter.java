@@ -13,27 +13,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.day.Day;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnListFragmentInteractionListener;
+import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.onItemClickListener;
 
 public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerViewAdapter.ViewHolder> {
 
     private final Day.List days;
-    private final OnListFragmentInteractionListener listener;
-    private boolean isLookRich;
-    private float density;
+    private final onItemClickListener listener;
+    private static boolean isLookRich;
+    private static float density;
 
-    private DaysRecyclerViewAdapter(Day.List days, OnListFragmentInteractionListener listener) {
+    private DaysRecyclerViewAdapter(Day.List days, onItemClickListener listener) {
         this.days = days;
         this.listener = listener;
     }
 
-    static DaysRecyclerViewAdapter newInstance(Context appContext, OnListFragmentInteractionListener listener) {
+    static DaysRecyclerViewAdapter newInstance(Context appContext, DaysFragment.onItemClickListener listener) {
         DaysRecyclerViewAdapter daysRecyclerViewAdapter =
                 new DaysRecyclerViewAdapter(
                         Day.List.newInstance(appContext),
                         listener);
-        daysRecyclerViewAdapter.isLookRich = AppPreferences.isLookRich(appContext);
-        daysRecyclerViewAdapter.density = appContext.getResources().getDisplayMetrics().density;
+        DaysRecyclerViewAdapter.isLookRich = AppPreferences.isLookRich(appContext);
+        DaysRecyclerViewAdapter.density = appContext.getResources().getDisplayMetrics().density;
         return daysRecyclerViewAdapter;
     }
 
@@ -49,6 +49,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         Day day = days.get(position);
         holder.setup(day);
+        holder.bind(listener);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
         return days.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView cardView;
         private final TextView dayView;
         private final TextView timeView;
@@ -82,14 +83,6 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
         }
 
         private void setupCardView() {
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (null != listener) {
-                        listener.onListFragmentInteraction(day);
-                    }
-                }
-            });
             if (isLookRich) {
                 cardView.setBackgroundResource(day.getBackgroundResource());
             } else {
@@ -110,14 +103,25 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
             }
         }
 
-        Day getDay() {
-            return day;
-        }
-
         @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + timeView.getText() + "'";
+        }
+
+        void bind(final onItemClickListener listener) {
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != listener) {
+                        listener.onItemClick(day);
+                    }
+                }
+            });
+        }
+
+        void deleteFromGoogleCalendar(Context appContext) {
+            day.deleteFromGoogleCalendar(appContext);
         }
     }
 }

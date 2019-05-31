@@ -13,7 +13,7 @@ import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class DaysFragment extends Fragment {
 
-    private OnListFragmentInteractionListener listener;
+    private onItemClickListener listener;
     private RecyclerView daysRecyclerView;
 
     private ItemTouchHelper.SimpleCallback dayTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -25,9 +25,8 @@ public class DaysFragment extends Fragment {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             DaysRecyclerViewAdapter.ViewHolder dayViewHolder = (DaysRecyclerViewAdapter.ViewHolder) viewHolder;
-            dayViewHolder.getDay().deleteFromGoogleCalendar(getContext().getApplicationContext());
+            dayViewHolder.deleteFromGoogleCalendar(getContext().getApplicationContext());
             setRecyclerViewAdapter();
-            //daysRecyclerViewAdapter.notifyDataSetChanged();
         }
     };
 
@@ -60,13 +59,13 @@ public class DaysFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            listener = (OnListFragmentInteractionListener) context;
+        if (context instanceof onItemClickListener) {
+            listener = (onItemClickListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement onItemClickListener");
         }
     }
 
@@ -76,7 +75,7 @@ public class DaysFragment extends Fragment {
         listener = null;
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Day day);
+    public interface onItemClickListener {
+        void onItemClick(Day day);
     }
 }

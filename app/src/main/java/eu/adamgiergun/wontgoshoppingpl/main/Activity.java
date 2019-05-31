@@ -27,7 +27,7 @@ import eu.adamgiergun.wontgoshoppingpl.settings.SActivity;
 
 public class Activity extends ActivityWithTheme implements
         NoticeDialogFragment.NoticeDialogListener,
-        DaysFragment.OnListFragmentInteractionListener,
+        DaysFragment.onItemClickListener,
         NoticeDialogFragment.NoticeDialogViewListener {
 
     private static final String MAIN_FRAGMENT_TAG = "main_fragment";
@@ -258,7 +258,7 @@ public class Activity extends ActivityWithTheme implements
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void onListFragmentInteraction(Day day) {
+    public void onItemClick(Day day) {
         mViewModel.setLastTouchedDay(day);
         checkCalendarPermissions();
     }
