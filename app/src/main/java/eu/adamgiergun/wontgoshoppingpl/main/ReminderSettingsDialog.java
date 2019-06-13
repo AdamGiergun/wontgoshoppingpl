@@ -56,10 +56,10 @@ public class ReminderSettingsDialog extends MyDialogFragment {
                 getDaysView(view),
                 String.valueOf(viewModel.getReminder().getDaysBefore()),
                 ReminderDaysBeforeDialog.newInstance());
-        final AppCompatTextView timeView = setupView2(
+        final AppCompatTextView timeView = setupView(
                 getTimeView(view),
                 viewModel.getReminder().getTime().toString(),
-                NewReminderTimeDialog.newInstance(getActivity()));
+                ReminderTimeDialog.newInstance());
 
         viewModel.getReminderObservable().observe(this, new Observer<SimpleReminder>() {
             @Override
@@ -76,17 +76,6 @@ public class ReminderSettingsDialog extends MyDialogFragment {
         view.setText(text);
         view.setOnClickListener(
                 getViewListener(dialogFragment));
-        return view;
-    }
-
-    private AppCompatTextView setupView2(AppCompatTextView view, String text, final Dialog dialog) {
-        view.setText(text);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.show();
-            }
-        });
         return view;
     }
 
