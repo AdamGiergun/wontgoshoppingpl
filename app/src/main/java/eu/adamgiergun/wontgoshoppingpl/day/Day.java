@@ -128,6 +128,7 @@ public class Day implements Comparable<Day> {
     private void finishDeleting(Context appContext) {
         Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show();
         calendarEventId = SimpleCalendarEvent.NON_EXISTING;
+        calendarId = null;
         updateEventInDb(appContext);
     }
 

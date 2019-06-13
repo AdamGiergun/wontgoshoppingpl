@@ -48,8 +48,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         Day day = days.get(position);
-        holder.setup(day);
-        holder.bind(listener);
+        holder.bind(day, listener);
     }
 
     @Override
@@ -59,9 +58,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView cardView;
-        private final TextView dayView;
-        private final TextView timeView;
-        private final TextView nameView;
+        private final TextView dayView, timeView, nameView;
         private Day day;
 
         private ViewHolder(CardView view) {
@@ -72,9 +69,21 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
             nameView = view.findViewById(R.id.name);
         }
 
+
+        private void bind(final Day day, final onItemClickListener listener) {
+            setup(day);
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != listener) {
+                        listener.onItemClick(day);
+                    }
+                }
+            });
+        }
+
         private void setup(final Day day) {
             this.day = day;
-
             dayView.setText(day.getDateAndWeekdayString());
             timeView.setText(day.getTimeDescription());
             nameView.setText(day.getName());
@@ -107,17 +116,6 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
         @Override
         public String toString() {
             return super.toString() + " '" + timeView.getText() + "'";
-        }
-
-        void bind(final onItemClickListener listener) {
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (null != listener) {
-                        listener.onItemClick(day);
-                    }
-                }
-            });
         }
 
         void deleteFromGoogleCalendar(Context appContext) {

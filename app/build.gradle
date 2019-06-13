@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     //buildToolsVersion '28.0.2'
 
     defaultConfig {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 86
         versionName "2.2.99.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -53,12 +53,12 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'eu.adamgiergun:mylibrary:0.99.94.1@aar'
-    implementation 'eu.adamgiergun:myresources:1.0.4@aar'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
+    implementation 'eu.adamgiergun:mylibrary:0.99.95.0@aar'
+    implementation 'eu.adamgiergun:myresources:1.0.5@aar'
+    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.preference:preference:1.1.0-alpha05'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
+    implementation 'androidx.preference:preference:1.1.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
@@ -67,8 +67,8 @@ dependencies {
     releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.21.0'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 //    configurations {
 //        all*.exclude group: 'com.google.firebase', module: 'firebase-core'
 //        all*.exclude group: 'com.google.firebase', module: 'firebase-iid'
