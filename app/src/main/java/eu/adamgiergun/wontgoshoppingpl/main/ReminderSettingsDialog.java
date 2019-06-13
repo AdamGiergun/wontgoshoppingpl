@@ -1,5 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,10 +58,10 @@ public class ReminderSettingsDialog extends DialogFragment {
                 getDaysView(view),
                 String.valueOf(viewModel.getReminder().getDaysBefore()),
                 ReminderDaysBeforeDialog.newInstance());
-        final AppCompatTextView timeView = setupView(
+        final AppCompatTextView timeView = setupView2(
                 getTimeView(view),
                 viewModel.getReminder().getTime().toString(),
-                ReminderTimeDialog.newInstance());
+                NewReminderTimeDialog.newInstance(getActivity()));
 
         viewModel.getReminderObservable().observe(this, new Observer<SimpleReminder>() {
             @Override
@@ -76,6 +78,17 @@ public class ReminderSettingsDialog extends DialogFragment {
         view.setText(text);
         view.setOnClickListener(
                 getViewListener(dialogFragment));
+        return view;
+    }
+
+    private AppCompatTextView setupView2(AppCompatTextView view, String text, final Dialog dialog) {
+        view.setText(text);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show();
+            }
+        });
         return view;
     }
 
