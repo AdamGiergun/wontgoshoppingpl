@@ -1,7 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
-import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

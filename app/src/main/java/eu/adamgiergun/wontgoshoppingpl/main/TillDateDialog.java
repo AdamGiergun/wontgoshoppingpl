@@ -37,7 +37,7 @@ public class TillDateDialog extends MyDialogFragment
             day = savedInstanceState.getInt(DAY);
         }
 
-        return getViewModel().isLookRich() ?
+        DatePickerDialog datePickerDialog = getViewModel().isLookRich() ?
                 new DatePickerDialog(
                         getContext(),
                         R.style.MyAlertDialogStyle,
@@ -51,6 +51,8 @@ public class TillDateDialog extends MyDialogFragment
                         year,
                         month,
                         day);
+        datePickerDialog.getDatePicker().setMaxDate(getViewModel().getLastDateInMillis());
+        return datePickerDialog;
     }
 
     @Override

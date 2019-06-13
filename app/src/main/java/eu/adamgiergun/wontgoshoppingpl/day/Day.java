@@ -18,7 +18,6 @@ import java.util.*;
 public class Day implements Comparable<Day> {
 
     private final int dbId;
-    private final String item;
     private final String name;
     private final SimpleDate date;
     private final String time;
@@ -37,7 +36,6 @@ public class Day implements Comparable<Day> {
 
     private Day(int id, String item, Type type){
         this.dbId = id;
-        this.item = item;
         this.type = type;
         backgroundResource = newBackgroundResource();
         backgroundColorResource = newBackgroundColorResource();
@@ -158,10 +156,6 @@ public class Day implements Comparable<Day> {
         return (type == Type.HOLIDAY) ? description : getDateAndWeekdayString();
     }
 
-    public String getItem() {
-        return item;
-    }
-
     public String getName() {
         return name;
     }
@@ -222,7 +216,7 @@ public class Day implements Comparable<Day> {
         HOLIDAY(1),
         COMMERCE_SUNDAY(2);
 
-        private int code;
+        private final int code;
 
         Type(int code) {
             this.code = code;

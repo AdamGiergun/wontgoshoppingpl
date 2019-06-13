@@ -31,9 +31,4 @@ public class HeadersPreferenceFragment extends PreferenceFragmentCompat {
                     i == position ? Color.LTGRAY : Color.TRANSPARENT);
         }
     }
-
-    private ViewModel getViewModel() {
-        FragmentActivity activity = getActivity();
-        return (activity==null) ? null : ViewModelProviders.of(activity).get(ViewModel.class);
-    }
 }
