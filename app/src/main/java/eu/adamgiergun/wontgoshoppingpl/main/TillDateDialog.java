@@ -1,23 +1,22 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 
-import android.content.Context;
-import android.content.DialogInterface;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDialog;
 
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
+import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class TillDateDialog extends MyDialogFragment {
+public class TillDateDialog extends MyDialogFragment
+        implements DatePickerDialog.OnDateSetListener {
+
     private static final String YEAR = "year";
     private static final String MONTH = "month";
     private static final String DAY = "day";
-
-    private MyDatePicker picker;
 
     protected static NoticeDialogFragment newInstance() {
         return new TillDateDialog();
@@ -25,63 +24,50 @@ public class TillDateDialog extends MyDialogFragment {
 
     @NonNull
     @Override
-    public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-        picker = getPicker(savedInstanceState);
-        AlertDialog.Builder builder = getStyledBuilder(getContext());
-        builder
-                .setView(picker)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        updateTill(picker.getDate());
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null);
-        return builder.create();
-    }
-
-    private MyDatePicker getPicker(Bundle savedInstanceState) {
-        ViewModel viewModel = getViewModel();
-        MyDatePicker myDatePicker =
-                MyDatePicker.newInstance(
-                        getContext(),
-                        viewModel.getTill(),
-                        viewModel.getLastDateInMillis());
-        if (savedInstanceState != null) {
-            int year = savedInstanceState.getInt(YEAR);
-            int month = savedInstanceState.getInt(MONTH);
-            int day = savedInstanceState.getInt(DAY);
-            myDatePicker.updateDate(year, month, day);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        int year, month, day;
+        if (savedInstanceState == null) {
+            SimpleDate date = getViewModel().getTill();
+            year = date.getYear();
+            month = date.getMonth() - 1;
+            day = date.getDay();
+        } else {
+            year = savedInstanceState.getInt(YEAR);
+            month = savedInstanceState.getInt(MONTH);
+            day = savedInstanceState.getInt(DAY);
         }
-        return myDatePicker;
+
+        return getViewModel().isLookRich() ?
+                new DatePickerDialog(
+                        getContext(),
+                        R.style.MyAlertDialogStyle,
+                        this,
+                        year,
+                        month,
+                        day) :
+                new DatePickerDialog(
+                        getContext(),
+                        this,
+                        year,
+                        month,
+                        day);
     }
 
-    private void updateTill(SimpleDate date) {
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        SimpleDate date = SimpleDate.newInstance(year, month + 1, day);
         getViewModel().setTill(date);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(YEAR, picker.getYear());
-        outState.putInt(MONTH, picker.getMonth());
-        outState.putInt(DAY, picker.getDayOfMonth());
-    }
-
-    private static class MyDatePicker extends DatePicker {
-
-        private MyDatePicker(Context context) {
-            super(context);
-        }
-
-        private static MyDatePicker newInstance(Context context, SimpleDate date, long maxDate) {
-            MyDatePicker picker = new MyDatePicker(context);
-            picker.setMaxDate(maxDate);
-            picker.updateDate(date.getYear(), date.getMonth() - 1, date.getDay());
-            return picker;
-        }
-
-        private SimpleDate getDate() {
-            return SimpleDate.newInstance(getYear(), getMonth()+1, getDayOfMonth());
+        DatePickerDialog dialog = (DatePickerDialog) getDialog();
+        if (dialog != null) {
+            DatePicker picker = dialog.getDatePicker();
+            outState.putInt(YEAR, picker.getYear());
+            outState.putInt(MONTH, picker.getMonth());
+            outState.putInt(DAY, picker.getDayOfMonth());
         }
     }
 }
