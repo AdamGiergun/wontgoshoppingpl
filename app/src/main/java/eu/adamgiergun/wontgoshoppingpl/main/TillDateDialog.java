@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
 
-public class TillDateDialog extends DialogFragment {
+public class TillDateDialog extends MyDialogFragment {
     private static final String YEAR = "year";
     private static final String MONTH = "month";
     private static final String DAY = "day";

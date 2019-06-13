@@ -15,8 +15,6 @@ import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst;
 
 public class AskForLook extends Fragment {
 
-    private AskForLook() {}
-
     static AskForLook newInstance() {
         return new AskForLook();
     }

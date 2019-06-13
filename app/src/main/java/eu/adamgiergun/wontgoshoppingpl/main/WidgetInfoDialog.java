@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class WidgetInfoDialog extends DialogFragment {
+public class WidgetInfoDialog extends MyDialogFragment {
 
     public static NoticeDialogFragment newInstance() {
         return new WidgetInfoDialog();
@@ -30,7 +30,8 @@ public class WidgetInfoDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 getViewModel().setAppWidgetInfoDisplayed();
-                getDialog().dismiss();
+                if (getDialog() != null)
+                    getDialog().dismiss();
             }
         });
         return view;

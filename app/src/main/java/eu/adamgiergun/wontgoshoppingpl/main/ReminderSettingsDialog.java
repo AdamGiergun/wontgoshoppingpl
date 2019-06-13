@@ -17,9 +17,7 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-public class ReminderSettingsDialog extends DialogFragment {
-
-    private ReminderSettingsDialog() {}
+public class ReminderSettingsDialog extends MyDialogFragment {
 
     public static NoticeDialogFragment newInstance() {
         return new ReminderSettingsDialog();

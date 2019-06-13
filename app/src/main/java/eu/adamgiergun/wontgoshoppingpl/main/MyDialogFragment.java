@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
-class DialogFragment extends NoticeDialogFragment {
+class MyDialogFragment extends NoticeDialogFragment {
 
     AlertDialog.Builder getStyledBuilder(Context context) {
         return  getViewModel().isLookRich()

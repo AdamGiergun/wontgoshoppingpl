@@ -30,8 +30,6 @@ public class DaysFragment extends Fragment {
         }
     };
 
-    private DaysFragment() {}
-
     static DaysFragment newInstance() {
         return new DaysFragment();
     }
