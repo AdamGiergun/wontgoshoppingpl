@@ -111,8 +111,8 @@ public class Day implements Comparable<Day> {
         return date.addDays(noOfConsecutiveDays);
     }
 
-    private ArrayList<SimpleReminder> getReminders() {
-        ArrayList<SimpleReminder> reminders = new ArrayList<>();
+    private SimpleReminder.List getReminders() {
+        SimpleReminder.List reminders = new SimpleReminder.List();
         reminders.add(reminder);
         return reminders;
     }

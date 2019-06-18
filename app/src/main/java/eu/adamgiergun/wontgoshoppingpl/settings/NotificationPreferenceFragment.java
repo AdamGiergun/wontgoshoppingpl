@@ -52,8 +52,8 @@ public class NotificationPreferenceFragment extends BasePreferenceFragmentCompat
         if (dialogFragment != null) {
             setDialogFragmentArguments(dialogFragment, preference.getKey());
             dialogFragment.setTargetFragment(this, 0);
-            if (this.getFragmentManager() != null) {
-                dialogFragment.show(this.getFragmentManager(), preference.getClass().getName());
+            if (getFragmentManager() != null) {
+                dialogFragment.show(getFragmentManager(), preference.getClass().getName());
             }
         } else {
             super.onDisplayPreferenceDialog(preference);
