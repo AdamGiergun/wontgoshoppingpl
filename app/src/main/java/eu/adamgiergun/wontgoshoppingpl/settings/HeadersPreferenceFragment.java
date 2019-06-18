@@ -3,8 +3,6 @@ package eu.adamgiergun.wontgoshoppingpl.settings;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.RecyclerView;
