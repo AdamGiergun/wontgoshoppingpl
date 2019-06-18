@@ -39,7 +39,9 @@ public class SActivity extends ActivityWithTheme
             String startFragmentId = getIntent().getStringExtra(ViewModel.getStartFragmentIdTag());
             addFragments(mViewModel.getInitialFragments(startFragmentId));
         } else {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M ||
+                    Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1 ||
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 onScreenWideEnoughChanged();
             }
         }
