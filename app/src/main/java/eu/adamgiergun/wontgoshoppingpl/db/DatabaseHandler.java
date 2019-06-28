@@ -21,9 +21,9 @@ import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.NON_COMMERCE_DAY;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "events.db";
-    private final Resources resources;
+    private Resources resources;
 
     private DatabaseHandler(Context appContext) {
         super(appContext, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,21 +34,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBContract.SQL_CREATE_EVENTS);
         db.execSQL(DBContract.SQL_CREATE_REMINDERS);
-        fillDbWithEvents(db, resources);
+        fillDbWithEvents(db, resources, 2019);
+        fillDbWithEvents(db, resources, 2020);
+        resources = null;
     }
 
-    private static void fillDbWithEvents(SQLiteDatabase db, Resources resources) {
-        Iterator<EventsTableRow> iterator = newEventsIterator(resources);
+    private static void fillDbWithEvents(SQLiteDatabase db, Resources resources, int year) {
+        Iterator<EventsTableRow> iterator = newEventsIterator(resources, year);
         while (iterator.hasNext()) {
             insertRowInDb(iterator.next(), db);
         }
     }
 
-    private static Iterator<EventsTableRow> newEventsIterator(Resources resources) {
+    private static Iterator<EventsTableRow> newEventsIterator(Resources resources, int year) {
         EventsTableRow.Set rows = new EventsTableRow.Set();
-        int yesterdayHash = SimpleDate.getYesterday().hashCode();//SimpleDate.newInstance(2019,12,20).hashCode();
-        int[] arraysIds = {R.array.non_commerce_days, R.array.commerce_sundays, R.array.holidays};
-        for (int arrayId : arraysIds) {
+        int yesterdayHash = SimpleDate.getYesterday().hashCode();
+        for (int arrayId : getArrays(year)) {
             String[] array = resources.getStringArray(arrayId);
             int typeCode = getDayTypeCode(arrayId);
             for (String item : array) {
@@ -62,13 +63,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return rows.iterator();
     }
 
+    private static int[] getArrays(int year) {
+        if (year == 2019) {
+            return new int[]{R.array.non_commerce_days, R.array.commerce_sundays, R.array.holidays};
+        } else {
+            return new int[]{R.array.non_commerce_days_2020, R.array.commerce_sundays_2020, R.array.holidays_2020};
+        }
+    }
+
     private static int getDayTypeCode(int idOfArray) {
         switch (idOfArray) {
             case R.array.holidays:
+            case R.array.holidays_2020:
                 return HOLIDAY.getCode();
             case R.array.non_commerce_days:
+            case R.array.non_commerce_days_2020:
                 return NON_COMMERCE_DAY.getCode();
             case R.array.commerce_sundays:
+            case R.array.commerce_sundays_2020:
                 return COMMERCE_SUNDAY.getCode();
             default:
                 return -1;
@@ -95,7 +107,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //stub for possible future upgrades
+        if (oldVersion == 1) {
+            if (newVersion == 2) {
+                fillDbWithEvents(db, resources, 2020);
+            }
+        }
+        resources = null;
     }
 
     public static Iterator<EventsTableRow> newEventsIterator(Context appContext, Day.Type.Set includedDayTypes) {
@@ -137,7 +154,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static Iterator<EventsTableRow> getEventsIterator(Cursor cursor) {
         EventsTableRow.Set rows = new EventsTableRow.Set();
 
-        if (cursor!=null && cursor.getCount()>0) {
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 EventsTableRow row = new EventsTableRow(

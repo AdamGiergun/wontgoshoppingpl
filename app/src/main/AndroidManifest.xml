@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:fullBackupContent="@xml/backup_descriptor">
         <!--android:forceDarkAllowed="true"-->
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
@@ -48,12 +49,12 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".main.Activity">
+        <activity
+            android:name=".main.Activity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="sensorPortrait">
             <!--
-            <activity
-                android:name=".main.Activity"
-                android:configChanges="orientation|screenSize|keyboardHidden"
-                android:screenOrientation="sensorPortrait">
+            <activity android:name=".main.Activity">
             -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,18 +64,17 @@
 
         <activity
             android:name=".settings.SActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".main.Activity"
+            android:screenOrientation="sensorPortrait"
+            tools:targetApi="jelly_bean">
+            <!--
+                    <activity
+            android:name=".settings.SActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".main.Activity"
             tools:targetApi="jelly_bean">
-
-            <!--
-    <activity
-        android:name=".settings.SActivity"
-        android:configChanges="orientation|screenSize|keyboardHidden"
-        android:label="@string/title_activity_settings"
-        android:parentActivityName=".main.Activity"
-        android:screenOrientation="sensorPortrait"
-        tools:targetApi="jelly_bean">
             -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -41,7 +41,11 @@ public class Day implements Comparable<Day> {
         backgroundColorResource = newBackgroundColorResource();
 
         String[] pieces = item.split(",");
-        date = SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YDM);
+        if (pieces[0].startsWith("2019")) {
+            date = SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YDM);
+        } else {
+            date = SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YMD);
+        }
         time = pieces[1];
         name = pieces[2];
 

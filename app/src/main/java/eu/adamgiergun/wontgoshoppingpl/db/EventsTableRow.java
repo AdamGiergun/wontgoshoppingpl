@@ -27,7 +27,9 @@ public class EventsTableRow implements Comparable<EventsTableRow> {
 
     private int newDateHash() {
         String[] pieces = item.split(",");
-        return SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YDM).hashCode();
+        return (pieces[0].startsWith("2019"))
+                ? SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YDM).hashCode()
+                : SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YMD).hashCode();
     }
 
     @Override

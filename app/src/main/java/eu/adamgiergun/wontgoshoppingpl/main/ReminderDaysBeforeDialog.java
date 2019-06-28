@@ -54,11 +54,9 @@ public class ReminderDaysBeforeDialog extends MyDialogFragment {
         outState.putInt(VALUE, picker.getValue());
     }
 
-    private static class MyNumberPicker extends NumberPicker {
+    private static class MyNumberPicker {
 
-        private MyNumberPicker(Context context) {
-            super(context);
-        }
+        private MyNumberPicker() {}
 
         private static NumberPicker newInstance(Context context, int value) {
             NumberPicker picker = new NumberPicker(context);
