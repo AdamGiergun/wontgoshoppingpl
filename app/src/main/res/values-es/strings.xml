@@ -12,7 +12,11 @@
     <string name="error_sth_went_wrong">Error\nAlgo salió mal</string>
     <string name="go_shopping">¡ir de compras!</string>
     <string name="go_shopping_earlier">ir de compras antes!</string>
-    <string name="help_text_1">Desde 2018, la ley que introduce restricciones comerciales en la mayoría de los domingos y días seleccionados entró en vigencia en Polonia. Solo las tiendas en las estaciones de tren, autobuses y gasolineras, y algunas tiendas pequeñas pueden estar abiertas en ese momento.</string>
+    <string name="help_text_1">Desde 2018, la ley que introduce restricciones comerciales en la mayoría de los
+        domingos y días seleccionados entró en vigencia en Polonia. Solo las tiendas en las estaciones de tren,
+        autobuses y gasolineras, y algunas tiendas pequeñas pueden estar abiertas en ese momento. Esta aplicación
+        contiene un calendario provisional para el año 2020 (existe alguna posibilidad de cambio debido a los
+        resultados de las elecciones parlamentarias en otoño).</string>
     <string name="help_text_2">Con esta aplicación puede ver una lista de dichos días, días festivos y domingos comerciales. Los tipos de estos elementos que se mostrarán en la lista se pueden cambiar en Configuración (el icono de la herramienta en la barra superior).</string>
     <string name="help_text_3">También es posible agregar estos eventos, junto con recordatorios sobre ellos, al calendario seleccionado en la Configuración (en las versiones más recientes de Android, esto requiere que la aplicación acceda al Calendario). Dichos calendarios se pueden agregar en <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> (+ derecho a Agregar un calendario de amigos, en la sitio de escritorio, no móvil!). Puede agregar tipos de eventos seleccionados hasta una fecha específica (el icono de calendario en la barra superior) o eventos individuales (tocando cualquier elemento de la lista).</string>
     <string name="help_text_4">Al agregar eventos, puede cambiar temporalmente la configuración de los recordatorios para ellos. Los valores predeterminados para los recordatorios se pueden cambiar en la Configuración.</string>

@@ -48,11 +48,13 @@
 
     <string name="help_text_1">Seit 2018 wird das Gesetz zur Einführung von Handelsbeschränkungen an den meisten
         Sonntagen und ausgewählt Tage ist in Polen in Kraft getreten. Nur Geschäfte an Bahn-, Bus- und
-        Tankstellen und einige kleine Läden können zu dieser Zeit geöffnet sein.</string>
+        Tankstellen und einige kleine Läden können zu dieser Zeit geöffnet sein. Diese App enthält einen vorläufigen
+        Zeitplan für das Jahr 2020 (es gibt einige Änderungsmöglichkeiten aufgrund der Ergebnisse der Parlamentswahlen im Herbst).</string>
     <string name="help_text_2">Mit dieser App können Sie eine Liste solcher Tage, Feiertage und kommerzieller
         anzeigen Sonntags Welche Arten dieser Elemente in der Liste angezeigt werden, kann in den Einstellungen
         (das Werkzeugsymbol) geändert werden in der oberen Leiste).</string>
-    <string name="help_text_3">Es ist auch möglich, diese Ereignisse zusammen mit Erinnerungen dazu hinzuzufügen, auf den in den Einstellungen ausgewählten Kalender (in neueren Versionen von Android erfordert dies das Erteilen der Anwendung Zugriff auf den Kalender). Solche Kalender können unter <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> hinzugefügt werden (+ Recht auf Einen Freundeskalender hinzufügen, auf der Desktop-Site, nicht mobil!). Sie können ausgewählt hinzufügen Ereignistypen bis zu einem bestimmten Datum (das Kalendersymbol in der oberen Leiste), oder einzelne Ereignisse (durch Berühren eines Listenelements).</string>
+    <string name="help_text_3">Es ist auch möglich, diese Ereignisse zusammen mit Erinnerungen dazu hinzuzufügen,
+        auf den in den Einstellungen ausgewählten Kalender (in neueren Versionen von Android erfordert dies das Erteilen der Anwendung Zugriff auf den Kalender). Solche Kalender können unter <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> hinzugefügt werden (+ Recht auf Einen Freundeskalender hinzufügen, auf der Desktop-Site, nicht mobil!). Sie können ausgewählt hinzufügen Ereignistypen bis zu einem bestimmten Datum (das Kalendersymbol in der oberen Leiste), oder einzelne Ereignisse (durch Berühren eines Listenelements).</string>
     <string name="help_text_4">Wenn Sie Ereignisse hinzufügen, können Sie die Erinnerungseinstellungen für sie vorübergehend ändern.
         Die Standardwerte für Erinnerungen können in den Einstellungen geändert werden.</string>
     <string name="help_text_5">Ein zum Kalender hinzugefügter Tag kann aus dem Kalender gelöscht werden,

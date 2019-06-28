@@ -53,7 +53,8 @@
 
     <string name="help_text_1">Since 2018, the law introducing trade restrictions on most Sundays and selected
         days has come into force in Poland. Only shops at railway, bus and petrol stations, and some small
-        shops can be open at that time.</string>
+        shops can be open at that time. This app contains provisional schedule for the year 2020 (there is
+        some possibility of change due to the results of the parliamentary elections in autumn).</string>
     <string name="help_text_2">With this app you can view a list of such days, holidays and commercial
         Sundays. Which types of these elements will be shown in the list can be changed in Settings (the tool icon
         in the top bar).</string>

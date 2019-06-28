@@ -12,7 +12,11 @@
     <string name="error_sth_went_wrong">Errore\nQualcosa è andato storto</string>
     <string name="go_shopping">andare a fare shopping!</string>
     <string name="go_shopping_earlier">fare shopping prima!</string>
-    <string name="help_text_1">Dal 2018, la legge che introduce restrizioni commerciali nella maggior parte delle domeniche e giorni selezionati è entrata in vigore in Polonia. Solo i negozi di ferrovie, autobus e distributori di benzina e alcuni piccoli negozi possono essere aperti in quel momento.</string>
+    <string name="help_text_1">Dal 2018, la legge che introduce restrizioni commerciali nella maggior
+        parte delle domeniche e giorni selezionati è entrata in vigore in Polonia. Solo i negozi di ferrovie,
+        autobus e distributori di benzina e alcuni piccoli negozi possono essere aperti in quel momento.
+        Questa app contiene un programma provvisorio per l\'anno 2020 (vi sono alcune possibilità di cambiamento
+        a causa dei risultati delle elezioni parlamentari in autunno).</string>
     <string name="help_text_2">Con questa app è possibile visualizzare un elenco di tali giorni, festività e domeniche commerciali. I tipi di questi elementi mostrati nell\'elenco possono essere modificati in Impostazioni (l\'icona dello strumento nella barra in alto).</string>
     <string name="help_text_3">È anche possibile aggiungere questi eventi, insieme ai relativi promemoria, al calendario selezionato nelle Impostazioni (nelle versioni più recenti di Android è necessario concedere l\'accesso dell\'applicazione al Calendario). Tali calendari possono essere aggiunti all\'indirizzo <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> (+ diritto di aggiungere un calendario di amici, al sito desktop, non mobile!). È possibile aggiungere tipi di eventi selezionati fino a una data specifica (l\'icona del calendario nella barra superiore) o singoli eventi (toccando qualsiasi elemento dell\'elenco).</string>
     <string name="help_text_4">Quando aggiungi eventi, puoi modificare temporaneamente le impostazioni dei promemoria per loro. I valori predefiniti per i promemoria possono essere modificati nelle Impostazioni.</string>
