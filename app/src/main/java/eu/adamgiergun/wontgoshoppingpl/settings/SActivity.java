@@ -36,7 +36,7 @@ public class SActivity extends ActivityWithTheme
 
         mViewModel = ViewModelProviders.of(this).get(ViewModel.class);
         if (savedInstanceState == null) {
-            String startFragmentId = getIntent().getStringExtra(ViewModel.getStartFragmentIdTag());
+            String startFragmentId = getIntent().getStringExtra(ViewModel.START_FRAGMENT_ID_TAG);
             addFragments(mViewModel.getInitialFragments(startFragmentId));
         } else {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M ||

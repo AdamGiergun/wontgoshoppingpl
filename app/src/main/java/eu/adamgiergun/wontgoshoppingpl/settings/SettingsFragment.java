@@ -9,7 +9,6 @@ public class SettingsFragment {
     static final String HEADERS = HeadersPreferenceFragment.class.getName();
     static final String LOOK = LookPreferenceFragment.class.getName();
     static final String NOTIFICATIONS = NotificationPreferenceFragment.class.getName();
-    public static final String START_FRAGMENT_ID_TAG = "start_fragment_id";
 
     final PreferenceFragmentCompat fragment;
     final int containerId;

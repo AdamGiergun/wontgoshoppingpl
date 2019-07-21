@@ -1,7 +1,8 @@
 package eu.adamgiergun.wontgoshoppingpl.main;
 /*
-    TODO "usuń wszystko z Kalendarza" w ustawieniach
-    TODO grupa info w ustawieniach
+    TODO "remove all events from calendar" in Settings
+    TODO "Info" group in Settings(?)
+    TODO move events filtering from settings to app bar(?)
 */
 import android.content.*;
 import android.os.*;
@@ -211,7 +212,7 @@ public class Activity extends ActivityWithTheme implements
     private void startSettingsActivity(boolean startFromNotifications) {
         Intent intent = new Intent(getApplicationContext(), SActivity.class);
         intent.putExtra(
-                ViewModel.getStartFragmentIdTag(),
+                ViewModel.START_FRAGMENT_ID_TAG,
                 ViewModel.getStartFragmentId(startFromNotifications));
         startActivity(intent);
     }

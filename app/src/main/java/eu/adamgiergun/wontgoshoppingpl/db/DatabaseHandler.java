@@ -23,6 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "events.db";
+    private static final String NULL_VALUE = null; //used to avoid some disambiguation in ContentValues.put
     private Resources resources;
 
     private DatabaseHandler(Context appContext) {
@@ -53,7 +54,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String[] array = resources.getStringArray(arrayId);
             int typeCode = getDayTypeCode(arrayId);
             for (String item : array) {
-                EventsTableRow row = new EventsTableRow(0, item, typeCode);
+                EventsTableRow row = EventsTableRow.newRow(item, typeCode);
                 if (row.dateHash > yesterdayHash) {
                     rows.add(row);
                 }
@@ -188,8 +189,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (calendarEventId > SimpleCalendarEvent.NON_EXISTING) {
             contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, calendarEventId);
         } else {
-            String nullValue = null;
-            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, nullValue);
+            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, NULL_VALUE);
         }
         return contentValues;
     }

@@ -12,10 +12,6 @@ public class EventsTableRow implements Comparable<EventsTableRow> {
     public final long calendarEventId;
     final int dateHash;
 
-    EventsTableRow(int dbId, String item, int typeId) {
-        this(dbId, item, typeId, null, -1);
-    }
-
     EventsTableRow(int dbId, String item, int typeId, String calendarId, long calendarEventId) {
         this.dbId = dbId;
         this.typeId = typeId;
@@ -23,6 +19,10 @@ public class EventsTableRow implements Comparable<EventsTableRow> {
         this.calendarId = calendarId;
         this.calendarEventId = calendarEventId;
         dateHash = newDateHash();
+    }
+
+    static EventsTableRow newRow(String item, int typeId) {
+        return new EventsTableRow(0, item, typeId, null, -1);
     }
 
     private int newDateHash() {
