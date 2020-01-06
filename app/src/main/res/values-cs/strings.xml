@@ -40,8 +40,7 @@
     <string name="commerce_sundays">Obchod neděle</string>
     <string name="help_text_1">Od roku 2018 vstoupil v platnost zákon o zavedení omezení obchodu ve většině nedělí
         a vybraných dnů v Polsku. Pouze obchody v železniční, autobusové a čerpací stanici a některé malé obchody
-        mohou být v té době otevřené. Tato aplikace obsahuje předběžný harmonogram na rok 2020 (existuje možnost změny
-        v důsledku výsledků parlamentních voleb na podzim)</string>
+        mohou být v té době otevřené.</string>
     <string name="help_text_2">Pomocí této aplikace můžete zobrazit seznam takových dnů, prázdnin a obchodních nedělí. Které typy těchto prvků budou zobrazeny v seznamu lze změnit v Nastavení (ikona nástroje v horním řádku).</string>
     <string name="help_text_3">Je také možné přidat tyto události a jejich připomenutí do kalendáře vybraného v Nastavení (v novějších verzích systému Android to vyžaduje, aby aplikace přistupovala do kalendáře). Takové kalendáře lze přidat na stránce <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> (+ vpravo pro přidání kalendáře přátel, na desktop, nikoliv mobilní!). Do vybraného data můžete přidat vybrané typy událostí (ikona kalendáře v horním řádku) nebo jednotlivé události (dotykem libovolného prvku seznamu).</string>
     <string name="help_text_4">Při přidávání událostí můžete dočasně změnit nastavení upomínek pro ně. Výchozí hodnoty pro připomenutí lze změnit v Nastavení.</string>

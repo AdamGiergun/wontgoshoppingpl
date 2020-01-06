@@ -40,8 +40,7 @@
     <string name="commerce_sundays">Obchod nedeľa</string>
     <string name="help_text_1">Od roku 2018 vstúpil do platnosti v Poľsku zákon, ktorým sa zavádzajú obchodné
         obmedzenia vo väčšine nedele a vybraných dní. V tom čase môžu byť otvorené iba obchody na železničných,
-        autobusových a čerpacích staniciach a niektoré malé obchody. Táto aplikácia obsahuje predbežný harmonogram
-        na rok 2020 (existuje možnosť zmeny v dôsledku výsledkov parlamentných volieb na jeseň).</string>
+        autobusových a čerpacích staniciach a niektoré malé obchody.</string>
     <string name="help_text_2">Pomocou tejto aplikácie môžete zobraziť zoznam takýchto dní, sviatkov a obchodných nedelí. Ktoré typy týchto prvkov sa zobrazia v zozname, môžete zmeniť v nastaveniach (ikona nástroja v hornom paneli).</string>
     <string name="help_text_3">Tiež je možné pridať tieto udalosti spolu s pripomienkami o nich do kalendára vybratého v Nastaveniach (v novších verziách Android to vyžaduje udelenie prístupu aplikácie do Kalendára). Takéto kalendáre je možné pridať na stránke <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> (+ vpravo na Pridať kalendár priateľov, na desktop site, nie mobilný!). Do vybraného dátumu môžete pridať vybrané typy udalostí (ikona kalendára v hornom paneli) alebo jednotlivé udalosti (dotykom ktoréhokoľvek prvku zoznamu).</string>
     <string name="help_text_4">Pri pridávaní udalostí môžete dočasne zmeniť nastavenia upomienok pre tieto udalosti. Predvolené hodnoty pripomienok je možné zmeniť v nastaveniach.</string>

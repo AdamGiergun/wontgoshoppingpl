@@ -15,9 +15,7 @@
     <string name="help_text_1">Depuis 2018, la loi introduisant des restrictions commerciales la plupart
         des dimanches et jours sélectionnés est entrée en vigueur en Pologne. Seuls les magasins situés
         dans les gares des chemins de fer, des autobus et stations-service, ainsi que certains petits
-        magasins, peuvent être ouverts à cette heure. Cette application contient un calendrier provisoire
-        pour l\'année 2020 (il y a une possibilité de changement en raison des résultats des élections
-        législatives de l\'automne).</string>
+        magasins,</string>
     <string name="help_text_2">Avec cette application, vous pouvez voir une liste de ces jours, les jours fériés et les dimanches commerciaux. Les types de ces éléments qui seront affichés dans la liste peuvent être modifiés dans Paramètres (l\'icône de l\'outil dans la barre supérieure).</string>
     <string name="help_text_3">Il est également possible d\'ajouter ces événements, ainsi que des rappels à leur sujet, au calendrier sélectionné dans les paramètres (dans les versions plus récentes d\'Android, cela nécessite d\'accorder à l\'application un accès au calendrier). Vous pouvez ajouter de tels calendriers à l’aide de <a href="https://calendar.google.com/calendar/r"> calendar.google.com/calendar/r </a> (+ à droite pour ajouter un calendrier d\'amis, à site de bureau, pas mobile!). Vous pouvez ajouter des types d\'événements sélectionnés jusqu\'à une date spécifique (l\'icône du calendrier dans la barre supérieure) ou des événements individuels (en touchant un élément de la liste).</string>
     <string name="help_text_4">Lorsque vous ajoutez des événements, vous pouvez modifier temporairement leurs paramètres de rappel. Les valeurs par défaut pour les rappels peuvent être modifiées dans les paramètres.</string>
