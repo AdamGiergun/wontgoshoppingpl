@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 'android-R'
     // buildToolsVersion '28.0.2'
 
     defaultConfig {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 93
-        versionName "2.3.6"
+        versionCode 94
+        versionName "2.3.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
         //vectorDrawables.useSupportLibrary = true
@@ -53,17 +53,17 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'eu.adamgiergun:mylibrary:0.99.98.3@aar'
-    implementation 'eu.adamgiergun:myresources:1.0.8@aar'
+    implementation 'eu.adamgiergun:mylibrary:0.99.98.5@aar'
+    implementation 'eu.adamgiergun:myresources:1.0.9@aar'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
-    implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-ads:18.3.0'
+    implementation 'com.google.firebase:firebase-core:17.2.3'
+    implementation 'com.google.firebase:firebase-ads:19.0.1'
     releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.21.0'

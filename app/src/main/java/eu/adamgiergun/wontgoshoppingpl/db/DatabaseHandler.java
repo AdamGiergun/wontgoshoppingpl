@@ -21,7 +21,7 @@ import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.NON_COMMERCE_DAY;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "events.db";
     private static final String NULL_VALUE = null; //used to avoid some disambiguation in ContentValues.put
     private Resources resources;
@@ -35,8 +35,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBContract.SQL_CREATE_EVENTS);
         db.execSQL(DBContract.SQL_CREATE_REMINDERS);
-        fillDbWithEvents(db, resources, 2019);
+        //fillDbWithEvents(db, resources, 2019);
         fillDbWithEvents(db, resources, 2020);
+        fillDbWithEvents(db, resources, 2021);
+        fillDbWithEvents(db, resources, 2022);
+        fillDbWithEvents(db, resources, 2023);
         resources = null;
     }
 
@@ -65,23 +68,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     private static int[] getArrays(int year) {
-        if (year == 2019) {
-            return new int[]{R.array.non_commerce_days, R.array.commerce_sundays, R.array.holidays};
-        } else {
-            return new int[]{R.array.non_commerce_days_2020, R.array.commerce_sundays_2020, R.array.holidays_2020};
+        switch (year) {
+            case 2020:
+                return new int[]{R.array.non_commerce_days_2020, R.array.commerce_sundays_2020, R.array.holidays_2020};
+            case 2021:
+                return new int[]{R.array.non_commerce_days_2021, R.array.commerce_sundays_2021, R.array.holidays_2021};
+            case 2022:
+                return new int[]{R.array.non_commerce_days_2022, R.array.commerce_sundays_2022, R.array.holidays_2022};
+            case 2023:
+                return new int[]{R.array.non_commerce_days_2023, R.array.commerce_sundays_2023, R.array.holidays_2023};
+            default:
+                return new int[0];
         }
     }
 
     private static int getDayTypeCode(int idOfArray) {
         switch (idOfArray) {
-            case R.array.holidays:
             case R.array.holidays_2020:
+            case R.array.holidays_2021:
+            case R.array.holidays_2022:
+            case R.array.holidays_2023:
                 return HOLIDAY.getCode();
-            case R.array.non_commerce_days:
             case R.array.non_commerce_days_2020:
+            case R.array.non_commerce_days_2021:
+            case R.array.non_commerce_days_2022:
+            case R.array.non_commerce_days_2023:
                 return NON_COMMERCE_DAY.getCode();
-            case R.array.commerce_sundays:
             case R.array.commerce_sundays_2020:
+            case R.array.commerce_sundays_2021:
+            case R.array.commerce_sundays_2022:
+            case R.array.commerce_sundays_2023:
                 return COMMERCE_SUNDAY.getCode();
             default:
                 return -1;
@@ -108,12 +124,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == 1) {
-            if (newVersion == 2) {
-                fillDbWithEvents(db, resources, 2020);
-            }
+        switch (oldVersion) {
+            case 1:
+                putPack1(db);
+                putPack2(db);
+                break;
+            case 2:
+                putPack2(db);
+                break;
+            default:
+                break;
         }
         resources = null;
+    }
+
+    private void putPack1(SQLiteDatabase db) {
+        fillDbWithEvents(db, resources, 2020);
+    }
+
+    private void putPack2(SQLiteDatabase db) {
+        fillDbWithEvents(db, resources, 2021);
+        fillDbWithEvents(db, resources, 2022);
+        fillDbWithEvents(db, resources, 2023);
     }
 
     public static Iterator<EventsTableRow> newEventsIterator(Context appContext, Day.Type.Set includedDayTypes) {

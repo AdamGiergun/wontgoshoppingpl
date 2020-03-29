@@ -20,79 +20,6 @@
     <!ENTITY second_day_of_christmas "Secondo giorno di Natale">
 ]>
 <resources>
-    <string-array name="non_commerce_days">
-        <item>2019_13_01,00:00,&non_commerce_sunday;</item>
-        <item>2019_20_01,00:00,&non_commerce_sunday;</item>
-        <item>2019_03_02,00:00,&non_commerce_sunday;</item>
-        <item>2019_10_02,00:00,&non_commerce_sunday;</item>
-        <item>2019_17_02,00:00,&non_commerce_sunday;</item>
-        <item>2019_03_03,00:00,&non_commerce_sunday;</item>
-        <item>2019_10_03,00:00,&non_commerce_sunday;</item>
-        <item>2019_17_03,00:00,&non_commerce_sunday;</item>
-        <item>2019_24_03,00:00,&non_commerce_sunday;</item>
-        <item>2019_07_04,00:00,&non_commerce_sunday;</item>
-        <item>2019_20_04,13:00,&holy_saturday;</item>
-        <item>2019_05_05,00:00,&non_commerce_sunday;</item>
-        <item>2019_12_05,00:00,&non_commerce_sunday;</item>
-        <item>2019_19_05,00:00,&non_commerce_sunday;</item>
-        <item>2019_02_06,00:00,&non_commerce_sunday;</item>
-        <item>2019_16_06,00:00,&non_commerce_sunday;</item>
-        <item>2019_23_06,00:00,&non_commerce_sunday;</item>
-        <item>2019_07_07,00:00,&non_commerce_sunday;</item>
-        <item>2019_14_07,00:00,&non_commerce_sunday;</item>
-        <item>2019_21_07,00:00,&non_commerce_sunday;</item>
-        <item>2019_04_08,00:00,&non_commerce_sunday;</item>
-        <item>2019_11_08,00:00,&non_commerce_sunday;</item>
-        <item>2019_18_08,00:00,&non_commerce_sunday;</item>
-        <item>2019_01_09,00:00,&non_commerce_sunday;</item>
-        <item>2019_08_09,00:00,&non_commerce_sunday;</item>
-        <item>2019_15_09,00:00,&non_commerce_sunday;</item>
-        <item>2019_22_09,00:00,&non_commerce_sunday;</item>
-        <item>2019_06_10,00:00,&non_commerce_sunday;</item>
-        <item>2019_13_10,00:00,&non_commerce_sunday;</item>
-        <item>2019_20_10,00:00,&non_commerce_sunday;</item>
-        <item>2019_03_11,00:00,&non_commerce_sunday;</item>
-        <item>2019_10_11,00:00,&non_commerce_sunday;</item>
-        <item>2019_17_11,00:00,&non_commerce_sunday;</item>
-        <item>2019_01_12,00:00,&non_commerce_sunday;</item>
-        <item>2019_08_12,00:00,&non_commerce_sunday;</item>
-        <item>2019_24_12,13:00,&christmas_eve;</item>
-    </string-array>
-
-    <string-array name="holidays">
-        <item>2019_01_01,00:00,&new_year;</item>
-        <item>2019_06_01,00:00,&epiphany;</item>
-        <item>2019_21_04,00:00,&easter_sunday;</item>
-        <item>2019_22_04,00:00,&easter_monday;</item>
-        <item>2019_01_05,00:00,&labour_day;</item>
-        <item>2019_03_05,00:00,&constitution_day;</item>
-        <item>2019_09_06,00:00,&whit_sunday;</item>
-        <item>2019_20_06,00:00,&corpus_christi;</item>
-        <item>2019_15_08,00:00,&assumption;</item>
-        <item>2019_01_11,00:00,&all_saints;</item>
-        <item>2019_11_11,00:00,&independence_day;</item>
-        <item>2019_25_12,00:00,&christmas_day;</item>
-        <item>2019_26_12,00:00,&second_day_of_christmas;</item>
-    </string-array>
-
-    <string-array name="commerce_sundays">
-        <item>2019_27_01,00:00,&commerce_sunday;</item>
-        <item>2019_24_02,00:00,&commerce_sunday;</item>
-        <item>2019_31_03,00:00,&commerce_sunday;</item>
-        <item>2019_14_04,00:00,&commerce_sunday;</item>
-        <item>2019_28_04,00:00,&commerce_sunday;</item>
-        <item>2019_26_05,00:00,&commerce_sunday;</item>
-        <item>2019_30_06,00:00,&commerce_sunday;</item>
-        <item>2019_28_07,00:00,&commerce_sunday;</item>
-        <item>2019_25_08,00:00,&commerce_sunday;</item>
-        <item>2019_29_09,00:00,&commerce_sunday;</item>
-        <item>2019_27_10,00:00,&commerce_sunday;</item>
-        <item>2019_24_11,00:00,&commerce_sunday;</item>
-        <item>2019_15_12,00:00,&commerce_sunday;</item>
-        <item>2019_22_12,00:00,&commerce_sunday;</item>
-        <item>2019_29_12,00:00,&commerce_sunday;</item>
-    </string-array>
-
     <string-array name="non_commerce_days_2020">
         <item>2020_01_05,00:00,&non_commerce_sunday;</item>
         <item>2020_01_12,00:00,&non_commerce_sunday;</item>
@@ -163,5 +90,222 @@
         <item>2020_08_30,00:00,&commerce_sunday;</item>
         <item>2020_12_13,00:00,&commerce_sunday;</item>
         <item>2020_12_20,00:00,&commerce_sunday;</item>
+    </string-array>
+
+    <string-array name="non_commerce_days_2021">
+        <item>2021_01_03,00:00,&non_commerce_sunday;</item>
+        <item>2021_01_10,00:00,&non_commerce_sunday;</item>
+        <item>2021_01_17,00:00,&non_commerce_sunday;</item>
+        <item>2021_01_24,00:00,&non_commerce_sunday;</item>
+        <item>2021_02_07,00:00,&non_commerce_sunday;</item>
+        <item>2021_02_14,00:00,&non_commerce_sunday;</item>
+        <item>2021_02_21,00:00,&non_commerce_sunday;</item>
+        <item>2021_02_28,00:00,&non_commerce_sunday;</item>
+        <item>2021_03_07,00:00,&non_commerce_sunday;</item>
+        <item>2021_03_14,00:00,&non_commerce_sunday;</item>
+        <item>2021_03_21,00:00,&non_commerce_sunday;</item>
+        <item>2021_04_03,13:00,&holy_saturday;</item>
+        <item>2021_04_11,00:00,&non_commerce_sunday;</item>
+        <item>2021_04_18,00:00,&non_commerce_sunday;</item>
+        <item>2021_05_02,00:00,&non_commerce_sunday;</item>
+        <item>2021_05_09,00:00,&non_commerce_sunday;</item>
+        <item>2021_05_16,00:00,&non_commerce_sunday;</item>
+        <item>2021_05_30,00:00,&non_commerce_sunday;</item>
+        <item>2021_06_06,00:00,&non_commerce_sunday;</item>
+        <item>2021_06_13,00:00,&non_commerce_sunday;</item>
+        <item>2021_06_20,00:00,&non_commerce_sunday;</item>
+        <item>2021_07_04,00:00,&non_commerce_sunday;</item>
+        <item>2021_07_11,00:00,&non_commerce_sunday;</item>
+        <item>2021_07_18,00:00,&non_commerce_sunday;</item>
+        <item>2021_07_25,00:00,&non_commerce_sunday;</item>
+        <item>2021_08_01,00:00,&non_commerce_sunday;</item>
+        <item>2021_08_08,00:00,&non_commerce_sunday;</item>
+        <item>2021_08_22,00:00,&non_commerce_sunday;</item>
+        <item>2021_09_05,00:00,&non_commerce_sunday;</item>
+        <item>2021_09_12,00:00,&non_commerce_sunday;</item>
+        <item>2021_09_19,00:00,&non_commerce_sunday;</item>
+        <item>2021_09_26,00:00,&non_commerce_sunday;</item>
+        <item>2021_10_03,00:00,&non_commerce_sunday;</item>
+        <item>2021_10_10,00:00,&non_commerce_sunday;</item>
+        <item>2021_10_17,00:00,&non_commerce_sunday;</item>
+        <item>2021_10_24,00:00,&non_commerce_sunday;</item>
+        <item>2021_10_31,00:00,&non_commerce_sunday;</item>
+        <item>2021_11_07,00:00,&non_commerce_sunday;</item>
+        <item>2021_11_14,00:00,&non_commerce_sunday;</item>
+        <item>2021_11_21,00:00,&non_commerce_sunday;</item>
+        <item>2021_11_28,00:00,&non_commerce_sunday;</item>
+        <item>2021_12_05,00:00,&non_commerce_sunday;</item>
+        <item>2021_12_24,13:00,&christmas_eve;</item>
+    </string-array>
+
+    <string-array name="holidays_2021">
+        <item>2021_01_01,00:00,&new_year;</item>
+        <item>2021_01_06,00:00,&epiphany;</item>
+        <item>2021_04_04,00:00,&easter_sunday;</item>
+        <item>2021_04_05,00:00,&easter_monday;</item>
+        <item>2021_05_01,00:00,&labour_day;</item>
+        <item>2021_05_03,00:00,&constitution_day;</item>
+        <item>2021_05_23,00:00,&whit_sunday;</item>
+        <item>2021_06_03,00:00,&corpus_christi;</item>
+        <item>2021_08_15,00:00,&assumption;</item>
+        <item>2021_11_01,00:00,&all_saints;</item>
+        <item>2021_11_11,00:00,&independence_day;</item>
+        <item>2021_12_25,00:00,&christmas_day;</item>
+        <item>2021_12_26,00:00,&second_day_of_christmas;</item>
+    </string-array>
+
+    <string-array name="commerce_sundays_2021">
+        <item>2021_01_31,00:00,&commerce_sunday;</item>
+        <item>2021_03_28,00:00,&commerce_sunday;</item>
+        <item>2021_04_25,00:00,&commerce_sunday;</item>
+        <item>2021_06_27,00:00,&commerce_sunday;</item>
+        <item>2021_08_29,00:00,&commerce_sunday;</item>
+        <item>2021_12_12,00:00,&commerce_sunday;</item>
+        <item>2021_12_19,00:00,&commerce_sunday;</item>
+    </string-array>
+
+    <string-array name="non_commerce_days_2022">
+        <item>2022_01_02,00:00,&non_commerce_sunday;</item>
+        <item>2022_01_09,00:00,&non_commerce_sunday;</item>
+        <item>2022_01_16,00:00,&non_commerce_sunday;</item>
+        <item>2022_01_23,00:00,&non_commerce_sunday;</item>
+        <item>2022_02_06,00:00,&non_commerce_sunday;</item>
+        <item>2022_02_13,00:00,&non_commerce_sunday;</item>
+        <item>2022_02_20,00:00,&non_commerce_sunday;</item>
+        <item>2022_02_27,00:00,&non_commerce_sunday;</item>
+        <item>2022_03_06,00:00,&non_commerce_sunday;</item>
+        <item>2022_03_13,00:00,&non_commerce_sunday;</item>
+        <item>2022_03_20,00:00,&non_commerce_sunday;</item>
+        <item>2022_03_27,00:00,&non_commerce_sunday;</item>
+        <item>2022_04_03,00:00,&non_commerce_sunday;</item>
+        <item>2022_04_16,13:00,&holy_saturday;</item>
+        <item>2022_05_08,00:00,&non_commerce_sunday;</item>
+        <item>2022_05_15,00:00,&non_commerce_sunday;</item>
+        <item>2022_05_22,00:00,&non_commerce_sunday;</item>
+        <item>2022_05_29,00:00,&non_commerce_sunday;</item>
+        <item>2022_06_12,00:00,&non_commerce_sunday;</item>
+        <item>2022_06_19,00:00,&non_commerce_sunday;</item>
+        <item>2022_07_03,00:00,&non_commerce_sunday;</item>
+        <item>2022_07_10,00:00,&non_commerce_sunday;</item>
+        <item>2022_07_17,00:00,&non_commerce_sunday;</item>
+        <item>2022_07_24,00:00,&non_commerce_sunday;</item>
+        <item>2022_07_31,00:00,&non_commerce_sunday;</item>
+        <item>2022_08_07,00:00,&non_commerce_sunday;</item>
+        <item>2022_08_14,00:00,&non_commerce_sunday;</item>
+        <item>2022_08_21,00:00,&non_commerce_sunday;</item>
+        <item>2022_09_04,00:00,&non_commerce_sunday;</item>
+        <item>2022_09_11,00:00,&non_commerce_sunday;</item>
+        <item>2022_09_18,00:00,&non_commerce_sunday;</item>
+        <item>2022_09_25,00:00,&non_commerce_sunday;</item>
+        <item>2022_10_02,00:00,&non_commerce_sunday;</item>
+        <item>2022_10_09,00:00,&non_commerce_sunday;</item>
+        <item>2022_10_16,00:00,&non_commerce_sunday;</item>
+        <item>2022_10_23,00:00,&non_commerce_sunday;</item>
+        <item>2022_10_30,00:00,&non_commerce_sunday;</item>
+        <item>2022_11_06,00:00,&non_commerce_sunday;</item>
+        <item>2022_11_13,00:00,&non_commerce_sunday;</item>
+        <item>2022_11_20,00:00,&non_commerce_sunday;</item>
+        <item>2022_11_27,00:00,&non_commerce_sunday;</item>
+        <item>2022_12_04,00:00,&non_commerce_sunday;</item>
+        <item>2022_12_24,13:00,&christmas_eve;</item>
+    </string-array>
+
+    <string-array name="holidays_2022">
+        <item>2022_01_01,00:00,&new_year;</item>
+        <item>2022_01_06,00:00,&epiphany;</item>
+        <item>2022_04_17,00:00,&easter_sunday;</item>
+        <item>2022_04_18,00:00,&easter_monday;</item>
+        <item>2022_05_01,00:00,&labour_day;</item>
+        <item>2022_05_03,00:00,&constitution_day;</item>
+        <item>2022_06_05,00:00,&whit_sunday;</item>
+        <item>2022_06_16,00:00,&corpus_christi;</item>
+        <item>2022_08_15,00:00,&assumption;</item>
+        <item>2022_11_01,00:00,&all_saints;</item>
+        <item>2022_11_11,00:00,&independence_day;</item>
+        <item>2022_12_25,00:00,&christmas_day;</item>
+        <item>2022_12_26,00:00,&second_day_of_christmas;</item>
+    </string-array>
+
+    <string-array name="commerce_sundays_2022">
+        <item>2022_01_30,00:00,&commerce_sunday;</item>
+        <item>2022_04_10,00:00,&commerce_sunday;</item>
+        <item>2022_04_24,00:00,&commerce_sunday;</item>
+        <item>2022_06_26,00:00,&commerce_sunday;</item>
+        <item>2022_08_28,00:00,&commerce_sunday;</item>
+        <item>2022_12_11,00:00,&commerce_sunday;</item>
+        <item>2022_12_18,00:00,&commerce_sunday;</item>
+    </string-array>
+
+    <string-array name="non_commerce_days_2023">
+        <item>2023_01_08,00:00,&non_commerce_sunday;</item>
+        <item>2023_01_15,00:00,&non_commerce_sunday;</item>
+        <item>2023_01_22,00:00,&non_commerce_sunday;</item>
+        <item>2023_02_05,00:00,&non_commerce_sunday;</item>
+        <item>2023_02_12,00:00,&non_commerce_sunday;</item>
+        <item>2023_02_19,00:00,&non_commerce_sunday;</item>
+        <item>2023_02_26,00:00,&non_commerce_sunday;</item>
+        <item>2023_03_05,00:00,&non_commerce_sunday;</item>
+        <item>2023_03_12,00:00,&non_commerce_sunday;</item>
+        <item>2023_03_19,00:00,&non_commerce_sunday;</item>
+        <item>2023_03_26,00:00,&non_commerce_sunday;</item>
+        <item>2023_04_08,13:00,&holy_saturday;</item>
+        <item>2023_04_16,00:00,&non_commerce_sunday;</item>
+        <item>2023_04_23,00:00,&non_commerce_sunday;</item>
+        <item>2023_05_07,00:00,&non_commerce_sunday;</item>
+        <item>2023_05_14,00:00,&non_commerce_sunday;</item>
+        <item>2023_05_21,00:00,&non_commerce_sunday;</item>
+        <item>2023_06_04,00:00,&non_commerce_sunday;</item>
+        <item>2023_06_11,00:00,&non_commerce_sunday;</item>
+        <item>2023_06_18,00:00,&non_commerce_sunday;</item>
+        <item>2023_07_02,00:00,&non_commerce_sunday;</item>
+        <item>2023_07_09,00:00,&non_commerce_sunday;</item>
+        <item>2023_07_16,00:00,&non_commerce_sunday;</item>
+        <item>2023_07_23,00:00,&non_commerce_sunday;</item>
+        <item>2023_07_30,00:00,&non_commerce_sunday;</item>
+        <item>2023_08_06,00:00,&non_commerce_sunday;</item>
+        <item>2023_08_13,00:00,&non_commerce_sunday;</item>
+        <item>2023_08_20,00:00,&non_commerce_sunday;</item>
+        <item>2023_09_03,00:00,&non_commerce_sunday;</item>
+        <item>2023_09_10,00:00,&non_commerce_sunday;</item>
+        <item>2023_09_17,00:00,&non_commerce_sunday;</item>
+        <item>2023_09_24,00:00,&non_commerce_sunday;</item>
+        <item>2023_10_01,00:00,&non_commerce_sunday;</item>
+        <item>2023_10_08,00:00,&non_commerce_sunday;</item>
+        <item>2023_10_15,00:00,&non_commerce_sunday;</item>
+        <item>2023_10_22,00:00,&non_commerce_sunday;</item>
+        <item>2023_10_29,00:00,&non_commerce_sunday;</item>
+        <item>2023_11_05,00:00,&non_commerce_sunday;</item>
+        <item>2023_11_12,00:00,&non_commerce_sunday;</item>
+        <item>2023_11_19,00:00,&non_commerce_sunday;</item>
+        <item>2023_11_26,00:00,&non_commerce_sunday;</item>
+        <item>2023_12_03,00:00,&non_commerce_sunday;</item>
+        <item>2023_12_10,00:00,&non_commerce_sunday;</item>
+        <item>2023_12_24,13:00,&christmas_eve;</item>
+        <item>2023_12_31,00:00,&non_commerce_sunday;</item>
+    </string-array>
+
+    <string-array name="holidays_2023">
+        <item>2023_01_01,00:00,&new_year;</item>
+        <item>2023_01_06,00:00,&epiphany;</item>
+        <item>2023_04_09,00:00,&easter_sunday;</item>
+        <item>2023_04_10,00:00,&easter_monday;</item>
+        <item>2023_05_01,00:00,&labour_day;</item>
+        <item>2023_05_03,00:00,&constitution_day;</item>
+        <item>2023_05_28,00:00,&whit_sunday;</item>
+        <item>2023_06_08,00:00,&corpus_christi;</item>
+        <item>2023_08_15,00:00,&assumption;</item>
+        <item>2023_11_01,00:00,&all_saints;</item>
+        <item>2023_11_11,00:00,&independence_day;</item>
+        <item>2023_12_25,00:00,&christmas_day;</item>
+        <item>2023_12_26,00:00,&second_day_of_christmas;</item>
+    </string-array>
+
+    <string-array name="commerce_sundays_2023">
+        <item>2023_01_29,00:00,&commerce_sunday;</item>
+        <item>2023_04_02,00:00,&commerce_sunday;</item>
+        <item>2023_04_30,00:00,&commerce_sunday;</item>
+        <item>2023_06_25,00:00,&commerce_sunday;</item>
+        <item>2023_08_27,00:00,&commerce_sunday;</item>
+        <item>2023_12_17,00:00,&commerce_sunday;</item>
     </string-array>
 </resources>
