@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 'android-R'
+    compileSdkVersion 29
     // buildToolsVersion '28.0.2'
 
     defaultConfig {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 94
-        versionName "2.3.7"
+        versionCode 95
+        versionName "2.3.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
         //vectorDrawables.useSupportLibrary = true
@@ -53,8 +53,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'eu.adamgiergun:mylibrary:0.99.98.5@aar'
-    implementation 'eu.adamgiergun:myresources:1.0.9@aar'
+    implementation 'eu.adamgiergun:mylibrary:0.99.98.6@aar'
+    implementation 'eu.adamgiergun:myresources:1.0.10@aar'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.1.0'
