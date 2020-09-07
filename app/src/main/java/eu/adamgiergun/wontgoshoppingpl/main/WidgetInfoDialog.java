@@ -19,7 +19,7 @@ public class WidgetInfoDialog extends MyDialogFragment {
     @NonNull
     @Override
     public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = getStyledBuilder(getContext());
+        AlertDialog.Builder builder = getStyledBuilder();
         builder.setView(getDialogView());
         return builder.create();
     }

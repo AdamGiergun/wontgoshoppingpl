@@ -21,7 +21,7 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
     private val checkedItems: BooleanArray
         get() {
             val checkedItems = BooleanArray(3)
-            val dayTypesToBeAddedToCalendar = viewModel.dayTypesToBeAddedToCalendar
+            val dayTypesToBeAddedToCalendar = viewModel!!.dayTypesToBeAddedToCalendar
             checkedItems[Day.Type.NON_COMMERCE_DAY.code] = dayTypesToBeAddedToCalendar.contains(Day.Type.NON_COMMERCE_DAY)
             checkedItems[Day.Type.HOLIDAY.code] = dayTypesToBeAddedToCalendar.contains(Day.Type.HOLIDAY)
             checkedItems[Day.Type.COMMERCE_SUNDAY.code] = dayTypesToBeAddedToCalendar.contains(Day.Type.COMMERCE_SUNDAY)
@@ -31,12 +31,12 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
     private fun getAlertDialog(checkedItems: BooleanArray): AlertDialog {
         val items = items
         val listener = getOnMultiChoiceClickListener(checkedItems)
-        val builder = getStyledBuilder(context)
+        val builder = getStyledBuilder()
         builder
                 .setTitle(R.string.title_choose_events)
                 .setMultiChoiceItems(items, checkedItems, listener)
                 .setPositiveButton(android.R.string.ok) { dialog, id ->
-                    viewModel.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
+                    viewModel!!.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
                     noticeDialogListener.onDialogPositiveClick(this@DayTypesAddedToCalendarDialog)
                 }
                 .setPositiveButton(android.R.string.ok, getPositiveButtonListener(this))
@@ -53,7 +53,7 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
 
     private fun getOnMultiChoiceClickListener(checkedItems: BooleanArray): OnMultiChoiceClickListener {
         return OnMultiChoiceClickListener { dialog, which, isChecked ->
-            viewModel.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
+            viewModel!!.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
             enableDialogButtonPositive(getDialog(), checkedItems)
         }
     }
@@ -71,7 +71,7 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
     }
 
     private fun getDayTypesSet(checkedItems: BooleanArray): Day.Type.Set {
-        return viewModel.newDayTypesSet(
+        return viewModel!!.newDayTypesSet(
                 checkedItems[Day.Type.NON_COMMERCE_DAY.code],
                 checkedItems[Day.Type.HOLIDAY.code],
                 checkedItems[Day.Type.COMMERCE_SUNDAY.code])

@@ -25,7 +25,7 @@ public class ReminderDaysBeforeDialog extends MyDialogFragment {
     @Override
     public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
         picker = getPicker(savedInstanceState);
-        AlertDialog.Builder builder = getStyledBuilder(getContext());
+        AlertDialog.Builder builder = getStyledBuilder();
         builder
                 .setTitle(R.string.days_before)
                 .setView(picker)

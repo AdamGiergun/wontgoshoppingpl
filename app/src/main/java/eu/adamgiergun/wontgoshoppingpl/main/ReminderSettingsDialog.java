@@ -24,7 +24,7 @@ public class ReminderSettingsDialog extends MyDialogFragment {
     @NonNull
     @Override
     public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = getStyledBuilder(getContext());
+        AlertDialog.Builder builder = getStyledBuilder();
         ViewModel viewModel = getViewModel();
         String title = viewModel.isActionAddList() ? getString(R.string.title_reminder) : getString(R.string.title_reminder_of) + " " + viewModel.getDayDescriptionForDialog();
         builder
