@@ -20,17 +20,17 @@ public class LookPreferenceFragment extends BasePreferenceFragmentCompat {
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.app_look_preference_key))) {
-            ViewModel viewModel = getViewModel();
-            if (viewModel!=null)
-                viewModel.setLastFragmentIdHeaders();
+            SettingsViewModel settingsViewModel = getViewModel();
+            if (settingsViewModel !=null)
+                settingsViewModel.setLastFragmentIdHeaders();
             Intent intent = new Intent(getActivity(), eu.adamgiergun.wontgoshoppingpl.main.Activity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }
 
-    private ViewModel getViewModel() {
+    private SettingsViewModel getViewModel() {
         FragmentActivity activity = getActivity();
-        return (activity==null) ? null : new ViewModelProvider(activity).get(ViewModel.class);
+        return (activity==null) ? null : new ViewModelProvider(activity).get(SettingsViewModel.class);
     }
 }

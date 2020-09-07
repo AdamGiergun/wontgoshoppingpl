@@ -10,7 +10,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 internal class ReminderSettingsDialog : MyDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         val builder = getStyledBuilder()
-        val viewModel = viewModel!!
+        val viewModel = mainViewModel!!
         val title = if (viewModel.isActionAddList) getString(R.string.title_reminder) else getString(R.string.title_reminder_of) + " " + viewModel.dayDescriptionForDialog
         builder
                 .setTitle(title)
@@ -23,7 +23,7 @@ internal class ReminderSettingsDialog : MyDialogFragment() {
     private val dialogView: View
         get() {
             val inflater = requireActivity().layoutInflater
-            val viewModel = viewModel!!
+            val viewModel = mainViewModel!!
             val viewLayoutId = if (viewModel.isActionAddList) R.layout.reminder_and_date_settings_dialog_view else R.layout.reminder_settings_dialog_view
             val view = inflater.inflate(viewLayoutId, null)
             initializeReminderViews(view, viewModel)
@@ -33,16 +33,16 @@ internal class ReminderSettingsDialog : MyDialogFragment() {
             return view
         }
 
-    private fun initializeReminderViews(view: View, viewModel: ViewModel) {
+    private fun initializeReminderViews(view: View, mainViewModel: MainViewModel) {
         val daysView = setupView(
-                getDaysView(view), viewModel.reminder.daysBefore.toString(),
+                getDaysView(view), mainViewModel.getReminder()!!.daysBefore.toString(),
                 ReminderDaysBeforeDialog.newInstance())
         val timeView = setupView(
                 getTimeView(view),
-                viewModel.reminder.time.toString(),
+                mainViewModel.getReminder()!!.time.toString(),
                 ReminderTimeDialog.newInstance())
-        viewModel.reminderObservable.observe(this, { reminder ->
-            daysView.text = reminder.daysBefore.toString()
+        mainViewModel.reminderObservable!!.observe(this, { reminder ->
+            daysView.text = reminder!!.daysBefore.toString()
             timeView.text = reminder.time.toString()
         })
     }
@@ -54,12 +54,12 @@ internal class ReminderSettingsDialog : MyDialogFragment() {
         return view
     }
 
-    private fun initializeTillView(view: View, viewModel: ViewModel) {
+    private fun initializeTillView(view: View, mainViewModel: MainViewModel) {
         val tillView = setupView(
                 getTillView(view),
-                viewModel.till.toString(),
+                mainViewModel.getTill().toString(),
                 TillDateDialog.newInstance())
-        viewModel.tillObservable.observe(this, { till -> tillView.text = till.toString() })
+        mainViewModel.tillObservable!!.observe(this, { till -> tillView.text = till.toString() })
     }
 
     private fun getDaysView(view: View): AppCompatTextView {

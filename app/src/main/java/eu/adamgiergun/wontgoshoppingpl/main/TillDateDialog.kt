@@ -15,8 +15,8 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
         val month: Int
         val day: Int
         if (savedInstanceState == null) {
-            val date = viewModel!!.till
-            year = date.year
+            val date = mainViewModel!!.getTill()
+            year = date!!.year
             month = date.month - 1
             day = date.day
         } else {
@@ -24,7 +24,7 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
             month = savedInstanceState.getInt(MONTH)
             day = savedInstanceState.getInt(DAY)
         }
-        val datePickerDialog = if (viewModel!!.isLookRich) DatePickerDialog(
+        val datePickerDialog = if (mainViewModel!!.isLookRich) DatePickerDialog(
                 requireContext(),
                 R.style.MyAlertDialogStyle,
                 this,
@@ -36,13 +36,13 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
                 year,
                 month,
                 day)
-        datePickerDialog.datePicker.maxDate = viewModel!!.lastDateInMillis
+        datePickerDialog.datePicker.maxDate = mainViewModel!!.lastDateInMillis
         return datePickerDialog
     }
 
     override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, day: Int) {
         val date = SimpleDate.newInstance(year, month + 1, day)
-        viewModel!!.till = date
+        mainViewModel!!.setTill(date)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

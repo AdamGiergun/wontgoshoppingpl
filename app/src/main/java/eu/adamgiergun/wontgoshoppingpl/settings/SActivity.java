@@ -25,7 +25,7 @@ public class SActivity extends ActivityWithTheme
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    private ViewModel mViewModel;
+    private SettingsViewModel mSettingsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +34,10 @@ public class SActivity extends ActivityWithTheme
         setContentView(R.layout.settings_activity);
         setupHomeInBar();
 
-        mViewModel = new ViewModelProvider(this).get(ViewModel.class);
+        mSettingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
         if (savedInstanceState == null) {
-            String startFragmentId = getIntent().getStringExtra(ViewModel.START_FRAGMENT_ID_TAG);
-            addFragments(mViewModel.getInitialFragments(startFragmentId));
+            String startFragmentId = getIntent().getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG);
+            addFragments(mSettingsViewModel.getInitialFragments(startFragmentId));
         } else {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M ||
                     Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1 ||
@@ -45,7 +45,7 @@ public class SActivity extends ActivityWithTheme
                 onScreenWideEnoughChanged();
             }
         }
-        setTitle(mViewModel.geTitle());
+        setTitle(mSettingsViewModel.geTitle());
     }
 
     private void addFragments(SettingsFragment.List fragments) {
@@ -66,11 +66,11 @@ public class SActivity extends ActivityWithTheme
     }
 
     private void onScreenWideEnoughChanged() {
-        if (mViewModel.hasScreenWideEnoughChanged()) {
+        if (mSettingsViewModel.hasScreenWideEnoughChanged()) {
             popBackStackCompletely();
             setContentView(R.layout.settings_activity);
-            addFragments(mViewModel.getRotatedFragments());
-            setTitle(mViewModel.geTitle());
+            addFragments(mSettingsViewModel.getRotatedFragments());
+            setTitle(mSettingsViewModel.geTitle());
         }
     }
 
@@ -84,37 +84,37 @@ public class SActivity extends ActivityWithTheme
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
-        mViewModel.setStartedPreference(StartedPreference.newInstance(caller, pref));
-        if (mViewModel.isStartedPreferenceNotNotifications() || checkCalendarPermissions()) {
+        mSettingsViewModel.setStartedPreference(StartedPreference.newInstance(caller, pref));
+        if (mSettingsViewModel.isStartedPreferenceNotNotifications() || checkCalendarPermissions()) {
             addStartedFragment();
         }
         return true;
     }
 
     private void addStartedFragment() {
-        StartedPreference startedPreference = mViewModel.getStartedPreference();
-        mViewModel.setLastFragmentId(startedPreference.pref.getFragment());
+        StartedPreference startedPreference = mSettingsViewModel.getStartedPreference();
+        mSettingsViewModel.setLastFragmentId(startedPreference.getPref().getFragment());
         // Instantiate the new Fragment
-        final Bundle args = startedPreference.pref.getExtras();
+        final Bundle args = startedPreference.getPref().getExtras();
         FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment fragment = fragmentManager.getFragmentFactory().instantiate(
                 getClassLoader(),
-                startedPreference.pref.getFragment());
+                startedPreference.getPref().getFragment());
         fragment.setArguments(args);
-        fragment.setTargetFragment(startedPreference.caller, 0);
+        fragment.setTargetFragment(startedPreference.getCaller(), 0);
         // Replace the existing Fragment with the new Fragment
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                 .replace(R.id.settings, fragment);
-        if (!mViewModel.isScreenWideEnough())
+        if (!mSettingsViewModel.isScreenWideEnough())
             fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        setTitle(startedPreference.pref.getTitle());
-        mViewModel.setStartedPreference(null);
+        setTitle(startedPreference.getPref().getTitle());
+        mSettingsViewModel.setStartedPreference(null);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean checkCalendarPermissions() {
-        if (mViewModel.areCalendarPermissionsGranted()) {
+        if (mSettingsViewModel.areCalendarPermissionsGranted()) {
             return true;
         } else {
             requestCalendarPermissions();
@@ -139,14 +139,14 @@ public class SActivity extends ActivityWithTheme
         final Fragment fragment = fragmentManager.getFragmentFactory().instantiate(
                 getClassLoader(),
                 EmptyPreferenceFragment.class.getName());
-        fragment.setTargetFragment(mViewModel.getStartedPreference().caller, 0);
+        fragment.setTargetFragment(mSettingsViewModel.getStartedPreference().getCaller(), 0);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                 .replace(R.id.settings, fragment);
-        if (!mViewModel.isScreenWideEnough())
+        if (!mSettingsViewModel.isScreenWideEnough())
             fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         setTitle(R.string.pref_header_notifications);
-        mViewModel.setStartedPreference(null);
+        mSettingsViewModel.setStartedPreference(null);
     }
 
     @Override
@@ -169,8 +169,8 @@ public class SActivity extends ActivityWithTheme
     @Override
     public boolean onSupportNavigateUp() {
         if (getSupportFragmentManager().popBackStackImmediate()) {
-            mViewModel.setLastFragmentIdHeaders();
-            setTitle(mViewModel.geTitle());
+            mSettingsViewModel.setLastFragmentIdHeaders();
+            setTitle(mSettingsViewModel.geTitle());
             return true;
         }
         return super.onSupportNavigateUp();

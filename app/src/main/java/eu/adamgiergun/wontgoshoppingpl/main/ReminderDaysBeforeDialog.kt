@@ -21,11 +21,11 @@ internal class ReminderDaysBeforeDialog : MyDialogFragment() {
     }
 
     private fun getPicker(savedInstanceState: Bundle?): NumberPicker {
-        return if (savedInstanceState == null) MyNumberPicker.newInstance(context, viewModel!!.reminderDaysBefore) else MyNumberPicker.newInstance(context, savedInstanceState.getInt(VALUE))
+        return if (savedInstanceState == null) MyNumberPicker.newInstance(context, mainViewModel!!.reminderDaysBefore) else MyNumberPicker.newInstance(context, savedInstanceState.getInt(VALUE))
     }
 
     private fun updateReminder(daysBefore: Int) {
-        viewModel!!.reminderDaysBefore = daysBefore
+        mainViewModel!!.reminderDaysBefore = daysBefore
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
