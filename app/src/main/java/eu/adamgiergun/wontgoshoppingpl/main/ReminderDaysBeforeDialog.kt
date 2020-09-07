@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.mylibrary.NoticeDialogFragment
 import eu.adamgiergun.wontgoshoppingpl.R
 
-class ReminderDaysBeforeDialog : MyDialogFragment() {
+internal class ReminderDaysBeforeDialog : MyDialogFragment() {
     private var picker: NumberPicker? = null
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         picker = getPicker(savedInstanceState)
@@ -47,7 +47,7 @@ class ReminderDaysBeforeDialog : MyDialogFragment() {
 
     companion object {
         private const val VALUE = "value"
-        fun newInstance(): NoticeDialogFragment {
+        internal fun newInstance(): NoticeDialogFragment {
             return ReminderDaysBeforeDialog()
         }
     }

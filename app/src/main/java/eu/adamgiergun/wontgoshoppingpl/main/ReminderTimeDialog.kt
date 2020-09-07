@@ -9,7 +9,7 @@ import eu.adamgiergun.mylibrary.NoticeDialogFragment
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime
 import eu.adamgiergun.wontgoshoppingpl.R
 
-class ReminderTimeDialog : MyDialogFragment(), OnTimeSetListener {
+internal class ReminderTimeDialog : MyDialogFragment(), OnTimeSetListener {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var hour = 0
         var minute = 0
@@ -38,7 +38,7 @@ class ReminderTimeDialog : MyDialogFragment(), OnTimeSetListener {
     }
 
     companion object {
-        fun newInstance(): NoticeDialogFragment {
+        internal fun newInstance(): NoticeDialogFragment {
             return ReminderTimeDialog()
         }
     }

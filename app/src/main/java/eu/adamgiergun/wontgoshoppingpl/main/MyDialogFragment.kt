@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import eu.adamgiergun.mylibrary.NoticeDialogFragment
 import eu.adamgiergun.wontgoshoppingpl.R
 
-open class MyDialogFragment : NoticeDialogFragment() {
+internal open class MyDialogFragment : NoticeDialogFragment() {
     fun getStyledBuilder(): AlertDialog.Builder {
         return if (viewModel!!.isLookRich) AlertDialog.Builder(requireContext(), R.style.MyAlertDialogStyle) else AlertDialog.Builder(requireContext())
     }

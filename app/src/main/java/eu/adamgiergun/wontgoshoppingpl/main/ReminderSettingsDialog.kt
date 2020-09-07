@@ -7,7 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import eu.adamgiergun.mylibrary.NoticeDialogFragment
 import eu.adamgiergun.wontgoshoppingpl.R
 
-class ReminderSettingsDialog : MyDialogFragment() {
+internal class ReminderSettingsDialog : MyDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         val builder = getStyledBuilder()
         val viewModel = viewModel!!
@@ -75,7 +75,7 @@ class ReminderSettingsDialog : MyDialogFragment() {
     }
 
     companion object {
-        fun newInstance(): NoticeDialogFragment {
+        internal fun newInstance(): NoticeDialogFragment {
             return ReminderSettingsDialog()
         }
     }
