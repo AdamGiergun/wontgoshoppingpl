@@ -7,13 +7,13 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
-    <style name="AppThemeCustomizationsMini">
+    <style name="AppThemeCustomizationsMini" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryMini</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkMini</item>
     </style>
 
-    <style name="AppThemeCustomizationsRich">
+    <style name="AppThemeCustomizationsRich" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryRich</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkRich</item>

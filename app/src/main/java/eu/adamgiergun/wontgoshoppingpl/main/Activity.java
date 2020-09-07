@@ -60,7 +60,22 @@ public class Activity extends ActivityWithTheme implements
                 setDayFragment();
             }
         }
+        //addCrashTestButton();
     }
+
+//    private void addCrashTestButton() {
+//        Button crashButton = new Button(this);
+//        crashButton.setText("Crash!");
+//        crashButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                throw new RuntimeException("Test Crash"); // Force a crash
+//            }
+//        });
+//
+//        addContentView(crashButton, new ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT));
+//    }
 
     private void setLocalizedConst() {
         if (!LocalizedConst.isSet()) {
