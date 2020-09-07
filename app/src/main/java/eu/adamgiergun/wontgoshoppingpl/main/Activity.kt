@@ -24,7 +24,7 @@ import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.help.HActivity
-import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.onItemClickListener
+import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener
 import eu.adamgiergun.wontgoshoppingpl.settings.SActivity
 import java.util.*
 
@@ -32,7 +32,8 @@ import java.util.*
     TODO "remove all events from calendar" in Settings
     TODO "Info" group in Settings(?)
     TODO move events filtering from settings to app bar(?)
-*/   class Activity : ActivityWithTheme(), NoticeDialogListener, onItemClickListener, NoticeDialogViewListener {
+*/  
+class Activity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener, NoticeDialogViewListener {
     private var interstitialAd: InterstitialAd? = null
     private var mViewModel: ViewModel? = null
 
@@ -263,7 +264,7 @@ import java.util.*
 
     //endregion
     @RequiresApi(api = Build.VERSION_CODES.M)
-    override fun onItemClick(day: Day) {
+    override fun onItemClick(day: Day?) {
         mViewModel!!.setLastTouchedDay(day)
         checkCalendarPermissions()
     }

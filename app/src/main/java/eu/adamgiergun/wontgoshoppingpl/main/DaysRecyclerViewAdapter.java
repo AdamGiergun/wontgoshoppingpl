@@ -13,21 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences;
 import eu.adamgiergun.wontgoshoppingpl.day.Day;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.onItemClickListener;
+import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener;
 
 public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerViewAdapter.ViewHolder> {
 
     private final Day.List days;
-    private final onItemClickListener listener;
+    private final OnItemClickListener listener;
     private static boolean isLookRich;
     private static float density;
 
-    private DaysRecyclerViewAdapter(Day.List days, onItemClickListener listener) {
+    private DaysRecyclerViewAdapter(Day.List days, OnItemClickListener listener) {
         this.days = days;
         this.listener = listener;
     }
 
-    static DaysRecyclerViewAdapter newInstance(Context appContext, DaysFragment.onItemClickListener listener) {
+    static DaysRecyclerViewAdapter newInstance(Context appContext, DaysFragment.OnItemClickListener listener) {
         DaysRecyclerViewAdapter daysRecyclerViewAdapter =
                 new DaysRecyclerViewAdapter(
                         Day.List.newInstance(appContext),
@@ -70,7 +70,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
         }
 
 
-        private void bind(final Day day, final onItemClickListener listener) {
+        private void bind(final Day day, final OnItemClickListener listener) {
             setup(day);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
