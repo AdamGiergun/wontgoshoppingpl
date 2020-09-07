@@ -45,7 +45,7 @@ public class Activity extends ActivityWithTheme implements
         setContentView(R.layout.activity_main);
         setupBannerAds();
         initializeOrLoadInterstitialAd(getApplicationContext());
-        mViewModel = ViewModelProviders.of(this).get(ViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(ViewModel.class);
 
         if (savedInstanceState == null) {
             mViewModel.initialize();
@@ -109,7 +109,7 @@ public class Activity extends ActivityWithTheme implements
     //region Ads Handling region
     private void setupBannerAds() {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(getApplicationContext(), getString(R.string.ad_mob_app_id));
+        MobileAds.initialize(getApplicationContext());
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);

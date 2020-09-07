@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import eu.adamgiergun.mylibrary.BasePreferenceFragmentCompat;
 import eu.adamgiergun.wontgoshoppingpl.R;
@@ -31,6 +31,6 @@ public class LookPreferenceFragment extends BasePreferenceFragmentCompat {
 
     private ViewModel getViewModel() {
         FragmentActivity activity = getActivity();
-        return (activity==null) ? null : ViewModelProviders.of(activity).get(ViewModel.class);
+        return (activity==null) ? null : new ViewModelProvider(activity).get(ViewModel.class);
     }
 }

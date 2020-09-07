@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import eu.adamgiergun.mylibrary.NoticeDialogFragment;
 import eu.adamgiergun.wontgoshoppingpl.R;
@@ -19,6 +19,6 @@ class MyDialogFragment extends NoticeDialogFragment {
 
     ViewModel getViewModel() {
         FragmentActivity activity = getActivity();
-        return (activity==null) ? null : ViewModelProviders.of(activity).get(ViewModel.class);
+        return (activity==null) ? null : new ViewModelProvider(activity).get(ViewModel.class);
     }
 }

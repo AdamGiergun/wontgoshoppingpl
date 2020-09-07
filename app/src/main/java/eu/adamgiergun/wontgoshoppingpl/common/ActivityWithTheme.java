@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public abstract class ActivityWithTheme extends AppCompatActivityWithHomeInBar {
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
         if (mViewModel == null) {
-            mViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
+            mViewModel = new ViewModelProvider(this).get(AppViewModel.class);
             int style = mViewModel.isLookRich() ? R.style.AppThemeCustomizationsRich : R.style.AppThemeCustomizationsMini;
             theme.applyStyle(style, true);
         }

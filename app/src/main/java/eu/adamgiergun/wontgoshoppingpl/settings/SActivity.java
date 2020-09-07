@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.*;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.*;
 
 import eu.adamgiergun.mylibrary.*;
@@ -34,7 +34,7 @@ public class SActivity extends ActivityWithTheme
         setContentView(R.layout.settings_activity);
         setupHomeInBar();
 
-        mViewModel = ViewModelProviders.of(this).get(ViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(ViewModel.class);
         if (savedInstanceState == null) {
             String startFragmentId = getIntent().getStringExtra(ViewModel.START_FRAGMENT_ID_TAG);
             addFragments(mViewModel.getInitialFragments(startFragmentId));
