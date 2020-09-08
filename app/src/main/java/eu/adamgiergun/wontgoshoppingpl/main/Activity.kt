@@ -23,7 +23,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst
 import eu.adamgiergun.wontgoshoppingpl.day.Day
-import eu.adamgiergun.wontgoshoppingpl.help.HActivity
+import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener
 import eu.adamgiergun.wontgoshoppingpl.settings.SActivity
 import java.util.*
@@ -258,7 +258,7 @@ class Activity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener,
     }
 
     private fun startHelpActivity() {
-        val intent = Intent(applicationContext, HActivity::class.java)
+        val intent = Intent(applicationContext, HelpActivity::class.java)
         startActivity(intent)
     }
 

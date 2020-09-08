@@ -81,7 +81,7 @@
                 android:value="eu.adamgiergun.wontgoshoppingpl.main.Activity" />
         </activity>
         <activity
-            android:name=".help.HActivity"
+            android:name=".help.HelpActivity"
             android:label="@string/title_activity_help" />
         <!--                     <activity android:name="com.google.android.gms.ads.AdActivity" /> -->
         <activity
