@@ -28,17 +28,17 @@ class WidgetViewModel private constructor() {
         }
 
         @JvmStatic
-        fun logUpdated(appContext: Context?) {
+        fun logUpdated(appContext: Context) {
             FirebaseEvent.logAppWidgetUpdated(appContext)
         }
 
         @JvmStatic
-        fun logFirstAdded(appContext: Context?) {
+        fun logFirstAdded(appContext: Context) {
             FirebaseEvent.logAppWidgetFirstAdded(appContext)
         }
 
         @JvmStatic
-        fun logLastRemoved(appContext: Context?) {
+        fun logLastRemoved(appContext: Context) {
             FirebaseEvent.logAppWidgetLastRemoved(appContext)
         }
     }
