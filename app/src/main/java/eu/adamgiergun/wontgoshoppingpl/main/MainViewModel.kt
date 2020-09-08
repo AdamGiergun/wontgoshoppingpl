@@ -70,7 +70,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     val dayDescriptionForDialog: String
-        get() = lastTouchedDay!!.descriptionForDialog
+        get() = lastTouchedDay!!.descriptionForDialog!!
 
     fun getTill(): SimpleDate? {
         return tillObservable!!.value
@@ -93,10 +93,10 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         val result: Boolean = if (isActionAddList) {
             Day.List.addToCalendar(
                     appContext,
-                    dayTypesToBeAddedToCalendar,
+                    dayTypesToBeAddedToCalendar!!,
                     reminderObservable!!.value,
                     timeZoneId,
-                    tillObservable!!.value)
+                    tillObservable!!.value!!)
         } else {
             lastTouchedDay!!.setReminder(reminderObservable!!.value)
             lastTouchedDay!!.addToGoogleCalendar(appContext, timeZoneId)

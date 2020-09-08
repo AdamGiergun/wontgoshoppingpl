@@ -20,7 +20,7 @@ class DaysRecyclerViewAdapter private constructor(private val days: Day.List, pr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val day = days[position]
-        holder.bind(day, listener)
+        holder.bind(day!!, listener)
     }
 
     override fun getItemCount(): Int {
@@ -72,7 +72,7 @@ class DaysRecyclerViewAdapter private constructor(private val days: Day.List, pr
         }
 
         fun deleteFromGoogleCalendar(appContext: Context?) {
-            day!!.deleteFromGoogleCalendar(appContext)
+            day!!.deleteFromGoogleCalendar(appContext!!)
         }
 
     }

@@ -21,7 +21,7 @@ class WidgetViewModel private constructor() {
         @JvmStatic
         fun newInstance(appContext: Context?): WidgetViewModel {
             val widgetViewModel = WidgetViewModel()
-            widgetViewModel.nearestDay = Day.List.getFirst(appContext)
+            widgetViewModel.nearestDay = Day.List.getFirst(appContext!!)
             val intent = Intent(appContext, Activity::class.java)
             widgetViewModel.pendingIntent = PendingIntent.getActivity(appContext, 0, intent, 0)
             return widgetViewModel
