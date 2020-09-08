@@ -25,7 +25,7 @@ import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener
-import eu.adamgiergun.wontgoshoppingpl.settings.SActivity
+import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 import java.util.*
 
 /*
@@ -216,7 +216,7 @@ class Activity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener,
     }
 
     private fun startSettingsActivity(startFromNotifications: Boolean) {
-        val intent = Intent(applicationContext, SActivity::class.java)
+        val intent = Intent(applicationContext, SettingsActivity::class.java)
         intent.putExtra(
                 MainViewModel.START_FRAGMENT_ID_TAG,
                 MainViewModel.getStartFragmentId(startFromNotifications))

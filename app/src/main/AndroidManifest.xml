@@ -63,7 +63,7 @@
         </activity>
 
         <activity
-            android:name=".settings.SActivity"
+            android:name=".settings.SettingsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".main.Activity"
