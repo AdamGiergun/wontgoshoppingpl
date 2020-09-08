@@ -46,8 +46,8 @@ class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.OnPrefere
         for (fragment in fragments) {
             val fm = supportFragmentManager
                     .beginTransaction()
-            fm.replace(fragment.containerId, fragment.fragment)
-            if (fragment.addToBackStack) fm.addToBackStack(null)
+            fragment?.containerId?.let { fm.replace(it, fragment.fragment!!) }
+            if (fragment!!.addToBackStack) fm.addToBackStack(null)
             fm.commit()
         }
     }
