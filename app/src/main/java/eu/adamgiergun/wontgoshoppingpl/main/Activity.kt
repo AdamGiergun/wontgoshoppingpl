@@ -98,7 +98,7 @@ class Activity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener,
         }
     }
 
-    override fun setDefaultLocale(context: Context): Context {
+    override fun setDefaultLocale(context: Context?): Context? {
         LocalizedConst.setLocale(Locale.getDefault())
         return super.setDefaultLocale(context)
     }
