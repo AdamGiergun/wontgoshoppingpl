@@ -18,7 +18,7 @@ class AskForLook : Fragment() {
 
     private fun setText(parentView: View) {
         val textView = parentView.findViewById<TextView>(R.id.textView)
-        textView.text = LocalizedConst.getAskForLook()
+        textView.text = LocalizedConst.askForLook
     }
 
     companion object {

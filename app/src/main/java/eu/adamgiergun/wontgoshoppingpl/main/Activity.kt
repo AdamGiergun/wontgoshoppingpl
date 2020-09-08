@@ -76,11 +76,11 @@ class Activity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener,
     //                ViewGroup.LayoutParams.WRAP_CONTENT));
     //    }
     private fun setLocalizedConst() {
-        if (!LocalizedConst.isSet()) {
-            LocalizedConst.setWholeDay(getString(R.string.whole_day))
-            LocalizedConst.setSince(getString(R.string.since))
-            LocalizedConst.setAskForLook(getString(R.string.ask_for_look))
-            LocalizedConst.setSet()
+        if (!LocalizedConst.isSet) {
+            LocalizedConst.wholeDay = getString(R.string.whole_day)
+            LocalizedConst.since = getString(R.string.since)
+            LocalizedConst.askForLook = getString(R.string.ask_for_look)
+            LocalizedConst.isSet = true
         }
     }
 
@@ -99,7 +99,7 @@ class Activity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener,
     }
 
     override fun setDefaultLocale(context: Context?): Context? {
-        LocalizedConst.setLocale(Locale.getDefault())
+        LocalizedConst.locale = Locale.getDefault()
         return super.setDefaultLocale(context)
     }
 

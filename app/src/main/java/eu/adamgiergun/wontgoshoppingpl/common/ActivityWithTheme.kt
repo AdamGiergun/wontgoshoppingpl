@@ -36,16 +36,16 @@ abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
 
     protected open fun setDefaultLocale(context: Context?): Context? {
         val config = Configuration()
-        if (LocalizedConst.getLocale() != null) setLocale(config)
+        if (LocalizedConst.locale != null) setLocale(config)
         return updateConfiguration(context, config)
     }
 
     private fun setLocale(config: Configuration) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
             @Suppress("DEPRECATION")
-            config.locale = LocalizedConst.getLocale()
+            config.locale = LocalizedConst.locale
         } else {
-            config.setLocale(LocalizedConst.getLocale())
+            config.setLocale(LocalizedConst.locale)
         }
     }
 
