@@ -6,38 +6,31 @@ import android.content.Intent
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
 import eu.adamgiergun.wontgoshoppingpl.day.Day
-import eu.adamgiergun.wontgoshoppingpl.main.Activity
+import eu.adamgiergun.wontgoshoppingpl.main.MainActivity
 
-class WidgetViewModel private constructor() {
-    private var nearestDay: Day? = null
-    var pendingIntent: PendingIntent? = null
-        private set
-    val layoutId: Int
-        get() = if (nearestDay!!.isCommerceSunday) R.layout.app_widget_shopping else R.layout.app_widget_no_shopping
-    val text: CharSequence
-        get() = nearestDay!!.widgetText
+internal class WidgetViewModel private constructor(val layoutId: Int, val text: CharSequence, val pendingIntent: PendingIntent?) {
 
-    companion object {
-        @JvmStatic
+    internal companion object {
+        const val widgetTextViewId = R.id.appwidget_text
+
         fun newInstance(appContext: Context?): WidgetViewModel {
-            val widgetViewModel = WidgetViewModel()
-            widgetViewModel.nearestDay = Day.List.getFirst(appContext!!)
-            val intent = Intent(appContext, Activity::class.java)
-            widgetViewModel.pendingIntent = PendingIntent.getActivity(appContext, 0, intent, 0)
-            return widgetViewModel
+            val nearestDay = Day.List.getFirst(appContext!!)
+            val intent = Intent(appContext, MainActivity::class.java)
+            return WidgetViewModel(
+                    if (nearestDay!!.isCommerceSunday) R.layout.app_widget_shopping else R.layout.app_widget_no_shopping,
+                    nearestDay.widgetText,
+                    PendingIntent.getActivity(appContext, 0, intent, 0)
+            )
         }
 
-        @JvmStatic
         fun logUpdated(appContext: Context) {
             FirebaseEvent.logAppWidgetUpdated(appContext)
         }
 
-        @JvmStatic
         fun logFirstAdded(appContext: Context) {
             FirebaseEvent.logAppWidgetFirstAdded(appContext)
         }
 
-        @JvmStatic
         fun logLastRemoved(appContext: Context) {
             FirebaseEvent.logAppWidgetLastRemoved(appContext)
         }

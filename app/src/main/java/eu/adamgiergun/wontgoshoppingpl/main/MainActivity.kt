@@ -33,7 +33,7 @@ import java.util.*
     TODO "Info" group in Settings(?)
     TODO move events filtering from settings to app bar(?)
 */  
-class Activity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener, NoticeDialogViewListener {
+class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener, NoticeDialogViewListener {
     private var interstitialAd: InterstitialAd? = null
     private var mMainViewModel: MainViewModel? = null
 

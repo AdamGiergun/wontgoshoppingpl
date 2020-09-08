@@ -23,7 +23,7 @@ public class LookPreferenceFragment extends BasePreferenceFragmentCompat {
             SettingsViewModel settingsViewModel = getViewModel();
             if (settingsViewModel !=null)
                 settingsViewModel.setLastFragmentIdHeaders();
-            Intent intent = new Intent(getActivity(), eu.adamgiergun.wontgoshoppingpl.main.Activity.class);
+            Intent intent = new Intent(getActivity(), eu.adamgiergun.wontgoshoppingpl.main.MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
