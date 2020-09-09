@@ -19,7 +19,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     var isActionAddList = false
 
     private val _tillObservable = MutableLiveData<SimpleDate>()
-
     val tillObservable: LiveData<SimpleDate>
         get() = _tillObservable
 
@@ -81,8 +80,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         return tillObservable.value
     }
 
-    fun setTill(till: SimpleDate) {
-        _tillObservable.value = till
+    fun setTill(year: Int, month: Int, day: Int) {
+        _tillObservable.value = SimpleDate.newInstance(year, month + 1, day)
     }
 
     fun setAppWidgetInfoDisplayed() {

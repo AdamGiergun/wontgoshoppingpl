@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
 import eu.adamgiergun.mylibrary.NoticeDialogFragment
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate
 import eu.adamgiergun.wontgoshoppingpl.R
 
 internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
@@ -41,8 +40,7 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
     }
 
     override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, day: Int) {
-        val date = SimpleDate.newInstance(year, month + 1, day)
-        mainViewModel!!.setTill(date)
+        mainViewModel!!.setTill(year, month + 1, day)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

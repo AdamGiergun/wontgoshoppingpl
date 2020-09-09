@@ -35,7 +35,7 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
         builder
                 .setTitle(R.string.title_choose_events)
                 .setMultiChoiceItems(items, checkedItems, listener)
-                .setPositiveButton(android.R.string.ok) { dialog, id ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     mainViewModel!!.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
                     noticeDialogListener.onDialogPositiveClick(this@DayTypesAddedToCalendarDialog)
                 }
@@ -52,9 +52,9 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
         )
 
     private fun getOnMultiChoiceClickListener(checkedItems: BooleanArray): OnMultiChoiceClickListener {
-        return OnMultiChoiceClickListener { dialog, which, isChecked ->
+        return OnMultiChoiceClickListener { _, _, _ ->
             mainViewModel!!.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
-            enableDialogButtonPositive(getDialog(), checkedItems)
+            enableDialogButtonPositive(dialog, checkedItems)
         }
     }
 
