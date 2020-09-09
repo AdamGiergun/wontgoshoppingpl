@@ -11,9 +11,8 @@ internal class ReminderSettingsDialog : MyDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         val builder = getStyledBuilder()
         val viewModel = mainViewModel!!
-        val title = if (viewModel.isActionAddList) getString(R.string.title_reminder) else getString(R.string.title_reminder_of) + " " + viewModel.dayDescriptionForDialog
-        builder
-                .setTitle(title)
+        val title = getString(R.string.title_reminder_of) + " " + viewModel.dayDescriptionForDialog
+        builder.setTitle(title)
                 .setView(dialogView)
                 .setPositiveButton(android.R.string.ok, getPositiveButtonListener(this))
                 .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(this))
@@ -24,12 +23,9 @@ internal class ReminderSettingsDialog : MyDialogFragment() {
         get() {
             val inflater = requireActivity().layoutInflater
             val viewModel = mainViewModel!!
-            val viewLayoutId = if (viewModel.isActionAddList) R.layout.reminder_and_date_settings_dialog_view else R.layout.reminder_settings_dialog_view
+            val viewLayoutId = R.layout.reminder_settings_dialog_view
             val view = inflater.inflate(viewLayoutId, null)
             initializeReminderViews(view, viewModel)
-            if (viewModel.isActionAddList) {
-                initializeTillView(view, viewModel)
-            }
             return view
         }
 
@@ -54,24 +50,12 @@ internal class ReminderSettingsDialog : MyDialogFragment() {
         return view
     }
 
-    private fun initializeTillView(view: View, mainViewModel: MainViewModel) {
-        val tillView = setupView(
-                getTillView(view),
-                mainViewModel.getTill().toString(),
-                TillDateDialog.newInstance())
-        mainViewModel.tillObservable!!.observe(this, { till -> tillView.text = till.toString() })
-    }
-
     private fun getDaysView(view: View): AppCompatTextView {
         return view.findViewById(R.id.numberOfDaysBeforeView)
     }
 
     private fun getTimeView(view: View): AppCompatTextView {
         return view.findViewById(R.id.timeView)
-    }
-
-    private fun getTillView(view: View): AppCompatTextView {
-        return view.findViewById(R.id.tillDateView)
     }
 
     companion object {

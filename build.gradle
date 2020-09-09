@@ -5,8 +5,9 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'https://maven.fabric.io/public'}
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        //maven { url 'https://maven.fabric.io/public'}
+        //maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        //mavenCentral()
     }
 
     dependencies {
@@ -25,8 +26,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://maven.google.com/' }
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        //maven { url 'https://maven.google.com/' }
+        //maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         maven {
             credentials {
                 username GC_USER
@@ -34,6 +35,7 @@ allprojects {
             }
             url "https://adam-giergun-maven-repo.appspot.com/"
         }
+        //mavenCentral()
     }
 }
 

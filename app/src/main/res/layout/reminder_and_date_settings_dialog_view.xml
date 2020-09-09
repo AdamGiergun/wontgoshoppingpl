@@ -1,49 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="@dimen/reminder_view_padding"
-    android:paddingLeft="@dimen/reminder_view_padding"
-    android:paddingEnd="@dimen/reminder_view_padding"
-    android:paddingRight="@dimen/reminder_view_padding">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/reminder_settings"/>
+    <data>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/spacer3"
+        <variable
+            name="viewModel"
+            type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/reminder_dialog_spacing"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reminder_settings" />
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/reminder_view_padding"
+        android:paddingLeft="@dimen/reminder_view_padding"
+        android:paddingEnd="@dimen/reminder_view_padding"
+        android:paddingRight="@dimen/reminder_view_padding">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tillDatePrefix"
-        style="@style/MyTextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="@string/till"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spacer3" />
+        <include layout="@layout/reminder_settings" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tillDateView"
-        style="@style/MyEditTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:cursorVisible="false"
-        android:inputType="number"
-        app:layout_constraintLeft_toRightOf="@+id/tillDatePrefix"
-        app:layout_constraintTop_toBottomOf="@id/spacer3" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/spacer3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/reminder_dialog_spacing"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reminder_settings" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tillDateSuffix"
-        style="@style/MyTextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dot"
-        app:layout_constraintLeft_toRightOf="@+id/tillDateView"
-        app:layout_constraintTop_toBottomOf="@+id/spacer3" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tillDatePrefix"
+            style="@style/MyTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="@string/till"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spacer3" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tillDateView"
+            style="@style/MyEditTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:cursorVisible="false"
+            android:inputType="number"
+            android:text="@{viewModel.tillObservable.toString()}"
+            app:layout_constraintLeft_toRightOf="@+id/tillDatePrefix"
+            app:layout_constraintTop_toBottomOf="@id/spacer3" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tillDateSuffix"
+            style="@style/MyTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dot"
+            app:layout_constraintLeft_toRightOf="@+id/tillDateView"
+            app:layout_constraintTop_toBottomOf="@+id/spacer3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

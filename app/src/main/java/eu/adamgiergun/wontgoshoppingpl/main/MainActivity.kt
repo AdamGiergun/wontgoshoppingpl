@@ -47,7 +47,6 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
         initializeOrLoadInterstitialAd(applicationContext)
         mMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         if (savedInstanceState == null) {
-            mMainViewModel!!.initialize()
             setLocalizedConst()
             if (mMainViewModel!!.isFirstRun) {
                 addFragment(AskForLook.newInstance())
@@ -246,9 +245,15 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
 
     private fun askForReminderSettings() {
         mMainViewModel!!.setReminderDialogArgs()
-        ReminderSettingsDialog
-                .newInstance()
-                .show(supportFragmentManager, "")
+        if (mMainViewModel!!.isActionAddList) {
+            ReminderSettingsAndDateTillDialog
+                    .newInstance()
+                    .show(supportFragmentManager, "")
+        } else {
+            ReminderSettingsDialog
+                    .newInstance()
+                    .show(supportFragmentManager, "")
+        }
     }
 
     private fun askForDayTypesAddedToCalendar() {
@@ -291,7 +296,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     override fun onDialogPositiveClick(dialog: NoticeDialogFragment) {
         if (dialog is DayTypesAddedToCalendarDialog) {
             askForReminderSettings()
-        } else if (dialog is ReminderSettingsDialog) {
+        } else if (dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
             addToCalendar()
         }
     }
@@ -306,7 +311,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     }
 
     override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {
-        if (dialog is DayTypesAddedToCalendarDialog || dialog is ReminderSettingsDialog) {
+        if (dialog is DayTypesAddedToCalendarDialog || dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
             showInfo(R.string.info_cancelled, false)
         }
     }

@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/reminder_settings_dv"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="@dimen/reminder_view_padding"
-    android:paddingLeft="@dimen/reminder_view_padding"
-    android:paddingEnd="@dimen/reminder_view_padding"
-    android:paddingRight="@dimen/reminder_view_padding">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <include layout="@layout/reminder_settings"/>
+    <data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <variable
+            name="viewModel"
+            type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reminder_settings_dv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/reminder_view_padding"
+        android:paddingLeft="@dimen/reminder_view_padding"
+        android:paddingEnd="@dimen/reminder_view_padding"
+        android:paddingRight="@dimen/reminder_view_padding">
+
+        <include layout="@layout/reminder_settings" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

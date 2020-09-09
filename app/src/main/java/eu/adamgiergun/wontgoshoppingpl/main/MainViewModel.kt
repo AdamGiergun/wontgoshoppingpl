@@ -1,6 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder
@@ -14,9 +15,14 @@ import eu.adamgiergun.wontgoshoppingpl.settings.SettingsFragment
 import java.util.*
 
 internal class MainViewModel(application: Application) : AppViewModel(application) {
+
     var isActionAddList = false
-    var tillObservable: MutableLiveData<SimpleDate>? = null
-        private set
+
+    private val _tillObservable = MutableLiveData<SimpleDate>()
+
+    val tillObservable: LiveData<SimpleDate>
+        get() = _tillObservable
+
     var reminderObservable: MutableLiveData<SimpleReminder?>? = null
         private set
     private var lastTouchedDay: Day? = null
@@ -30,7 +36,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     private var dayTypesToBeDisplayed: Day.Type.Set? = null
     private var recreatedOnDemand = false
-    fun initialize() {
+    init {
         isActionAddList = false
         recreatedOnDemand = false
         dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
@@ -41,9 +47,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         reminderObservable = MutableLiveData()
         reminderObservable!!.value = reminderPreference
         if (isActionAddList) {
-            tillObservable = MutableLiveData()
             val today = Calendar.getInstance()
-            tillObservable!!.value = SimpleDate.getLastDayOfMonth(today[Calendar.YEAR], today[Calendar.MONTH] + 2)
+            _tillObservable.value = SimpleDate.getLastDayOfMonth(today[Calendar.YEAR], today[Calendar.MONTH] + 2)
         }
     }
 
@@ -73,11 +78,11 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         get() = lastTouchedDay!!.descriptionForDialog!!
 
     fun getTill(): SimpleDate? {
-        return tillObservable!!.value
+        return tillObservable.value
     }
 
     fun setTill(till: SimpleDate) {
-        tillObservable!!.value = till
+        _tillObservable.value = till
     }
 
     fun setAppWidgetInfoDisplayed() {
@@ -96,7 +101,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
                     dayTypesToBeAddedToCalendar!!,
                     reminderObservable!!.value,
                     timeZoneId,
-                    tillObservable!!.value!!)
+                    tillObservable.value!!)
         } else {
             lastTouchedDay!!.setReminder(reminderObservable!!.value)
             lastTouchedDay!!.addToGoogleCalendar(appContext, timeZoneId)
