@@ -14,11 +14,11 @@ internal class ReminderTimeDialog : MyDialogFragment(), OnTimeSetListener {
         var hour = 0
         var minute = 0
         if (savedInstanceState == null) {
-            val time = mainViewModel!!.getReminder()!!.time
+            val time = mainViewModel.getReminder()!!.time
             hour = time.hour
             minute = time.minute
         }
-        return if (mainViewModel!!.isLookRich) TimePickerDialog(
+        return if (mainViewModel.isLookRich) TimePickerDialog(
                 context,
                 R.style.MyAlertDialogStyle,
                 this,
@@ -34,7 +34,7 @@ internal class ReminderTimeDialog : MyDialogFragment(), OnTimeSetListener {
 
     override fun onTimeSet(timePicker: TimePicker, hour: Int, minute: Int) {
         val time = SimpleTime(hour, minute)
-        mainViewModel!!.setReminderTime(time)
+        mainViewModel.setReminderTime(time)
     }
 
     companion object {

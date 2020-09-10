@@ -10,7 +10,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 internal class ReminderSettingsDialog : MyDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         val builder = getStyledBuilder()
-        val viewModel = mainViewModel!!
+        val viewModel = mainViewModel
         val title = getString(R.string.title_reminder_of) + " " + viewModel.dayDescriptionForDialog
         builder.setTitle(title)
                 .setView(dialogView)
@@ -22,7 +22,7 @@ internal class ReminderSettingsDialog : MyDialogFragment() {
     private val dialogView: View
         get() {
             val inflater = requireActivity().layoutInflater
-            val viewModel = mainViewModel!!
+            val viewModel = mainViewModel
             val viewLayoutId = R.layout.reminder_settings_dialog_view
             val view = inflater.inflate(viewLayoutId, null)
             initializeReminderViews(view, viewModel)

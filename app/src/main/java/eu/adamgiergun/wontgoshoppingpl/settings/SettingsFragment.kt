@@ -6,9 +6,10 @@ import java.util.*
 class SettingsFragment private constructor(val fragment: PreferenceFragmentCompat?, val containerId: Int, val addToBackStack: Boolean) {
     internal class List : ArrayList<SettingsFragment?>()
     companion object {
-        val HEADERS = HeadersPreferenceFragment::class.java.name
-        val LOOK = LookPreferenceFragment::class.java.name
-        val NOTIFICATIONS = NotificationPreferenceFragment::class.java.name
+        val HEADERS: String = HeadersPreferenceFragment::class.java.name
+        val LOOK: String = LookPreferenceFragment::class.java.name
+        val NOTIFICATIONS: String = NotificationPreferenceFragment::class.java.name
+
         fun newInstance(fragmentId: String, containerId: Int, addToBackStack: Boolean): SettingsFragment {
             return SettingsFragment(newFragment(fragmentId), containerId, addToBackStack)
         }

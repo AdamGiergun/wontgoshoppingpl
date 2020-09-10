@@ -21,7 +21,7 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
     private val checkedItems: BooleanArray
         get() {
             val checkedItems = BooleanArray(3)
-            val dayTypesToBeAddedToCalendar = mainViewModel!!.dayTypesToBeAddedToCalendar
+            val dayTypesToBeAddedToCalendar = mainViewModel.dayTypesToBeAddedToCalendar
             checkedItems[Day.Type.NON_COMMERCE_DAY.code] = dayTypesToBeAddedToCalendar!!.contains(Day.Type.NON_COMMERCE_DAY)
             checkedItems[Day.Type.HOLIDAY.code] = dayTypesToBeAddedToCalendar.contains(Day.Type.HOLIDAY)
             checkedItems[Day.Type.COMMERCE_SUNDAY.code] = dayTypesToBeAddedToCalendar.contains(Day.Type.COMMERCE_SUNDAY)
@@ -36,7 +36,7 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
                 .setTitle(R.string.title_choose_events)
                 .setMultiChoiceItems(items, checkedItems, listener)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    mainViewModel!!.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
+                    mainViewModel.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
                     noticeDialogListener.onDialogPositiveClick(this@DayTypesAddedToCalendarDialog)
                 }
                 .setPositiveButton(android.R.string.ok, getPositiveButtonListener(this))
@@ -53,7 +53,7 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
 
     private fun getOnMultiChoiceClickListener(checkedItems: BooleanArray): OnMultiChoiceClickListener {
         return OnMultiChoiceClickListener { _, _, _ ->
-            mainViewModel!!.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
+            mainViewModel.dayTypesToBeAddedToCalendar = getDayTypesSet(checkedItems)
             enableDialogButtonPositive(dialog, checkedItems)
         }
     }
@@ -71,7 +71,7 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
     }
 
     private fun getDayTypesSet(checkedItems: BooleanArray): Day.Type.Set {
-        return mainViewModel!!.newDayTypesSet(
+        return mainViewModel.newDayTypesSet(
                 checkedItems[Day.Type.NON_COMMERCE_DAY.code],
                 checkedItems[Day.Type.HOLIDAY.code],
                 checkedItems[Day.Type.COMMERCE_SUNDAY.code])
