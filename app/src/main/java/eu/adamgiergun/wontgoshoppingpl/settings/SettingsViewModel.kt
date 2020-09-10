@@ -6,12 +6,15 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
 
 internal class SettingsViewModel(application: Application) : AppViewModel(application) {
-    private val SETTINGS_TITLE: String
-    private val LOOK_TITLE: String
-    private val NOTIFICATIONS_TITLE: String
+
+    private val settingsTitle = appContext.getString(R.string.title_activity_settings)
+    private val lookTitle = appContext.getString(R.string.pref_header_look)
+    private val notificationsTitle = appContext.getString(R.string.pref_header_notifications)
+
     private var lastIsScreenWideEnough: Boolean
     private var title: CharSequence? = null
     private var lastFragmentId: String? = null
+
     var startedPreference: StartedPreference? = null
     val isScreenWideEnough: Boolean
         get() = isScreenSizeLarge || isOrientationLandscape
@@ -56,7 +59,7 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     }
 
     private fun setTitle() {
-        title = if (lastFragmentId == SettingsFragment.LOOK) LOOK_TITLE else if (lastFragmentId == SettingsFragment.NOTIFICATIONS) NOTIFICATIONS_TITLE else SETTINGS_TITLE
+        title = if (lastFragmentId == SettingsFragment.LOOK) lookTitle else if (lastFragmentId == SettingsFragment.NOTIFICATIONS) notificationsTitle else settingsTitle
     }
 
     val rotatedFragments: SettingsFragment.List
@@ -80,9 +83,6 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
 
     init {
         lastIsScreenWideEnough = isScreenWideEnough
-        SETTINGS_TITLE = appContext.getString(R.string.title_activity_settings)
-        LOOK_TITLE = appContext.getString(R.string.pref_header_look)
-        NOTIFICATIONS_TITLE = appContext.getString(R.string.pref_header_notifications)
     }
 
     companion object {
