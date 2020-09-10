@@ -32,8 +32,10 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         _tillDate.value = SimpleDate.newInstance(year, month + 1, day)
     }
 
-    var reminderObservable: MutableLiveData<SimpleReminder?>? = null
-        private set
+    private var _reminder = MutableLiveData<SimpleReminder>()
+    val reminder: LiveData<SimpleReminder>
+        get() = _reminder
+
     private var lastTouchedDay: Day? = null
 
     var dayTypesToBeAddedToCalendar: Day.Type.Set? = null
@@ -53,8 +55,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     fun setReminderDialogArgs() {
-        reminderObservable = MutableLiveData()
-        reminderObservable!!.value = reminderPreference
+        _reminder = MutableLiveData()
+        _reminder.value = reminderPreference
         if (_isActionAddList) {
             val today = Calendar.getInstance()
             _tillDate.value = SimpleDate.getLastDayOfMonth(today[Calendar.YEAR], today[Calendar.MONTH] + 2)
@@ -62,24 +64,24 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     fun getReminder(): SimpleReminder? {
-        return reminderObservable!!.value
+        return _reminder.value
     }
 
     var reminderDaysBefore: Int
-        get() = if (reminderObservable!!.value == null) 1 else reminderObservable!!.value!!.daysBefore
+        get() = if (_reminder.value == null) 1 else _reminder.value!!.daysBefore
         set(daysBefore) {
-            val simpleReminder = reminderObservable!!.value
+            val simpleReminder = _reminder.value
             if (simpleReminder != null) {
                 simpleReminder.daysBefore = daysBefore
-                reminderObservable!!.value = simpleReminder
+                _reminder.value = simpleReminder
             }
         }
 
     fun setReminderTime(time: SimpleTime?) {
-        val simpleReminder = reminderObservable!!.value
+        val simpleReminder = _reminder.value
         if (simpleReminder != null) {
             simpleReminder.time = time
-            reminderObservable!!.value = simpleReminder
+            _reminder.value = simpleReminder
         }
     }
 
@@ -100,11 +102,11 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
             Day.List.addToCalendar(
                     appContext,
                     dayTypesToBeAddedToCalendar!!,
-                    reminderObservable!!.value,
+                    _reminder.value,
                     timeZoneId,
                     tillDate.value!!)
         } else {
-            lastTouchedDay!!.setReminder(reminderObservable!!.value)
+            lastTouchedDay!!.setReminder(_reminder.value)
             lastTouchedDay!!.addToGoogleCalendar(appContext, timeZoneId)
         }
         logCalendarEvent(result)
