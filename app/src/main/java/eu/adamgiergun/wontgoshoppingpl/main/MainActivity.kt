@@ -34,8 +34,12 @@ import java.util.*
     TODO move events filtering from settings to app bar(?)
 */  
 class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener, NoticeDialogViewListener {
+
     private var interstitialAd: InterstitialAd? = null
-    private var mMainViewModel: MainViewModel? = null
+
+    private val mMainViewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
     //    private Calendar calStart;
     //region ActivityLifeCycleRegion
@@ -45,16 +49,15 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
         setContentView(R.layout.activity_main)
         setupBannerAds()
         initializeOrLoadInterstitialAd(applicationContext)
-        mMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         if (savedInstanceState == null) {
             setLocalizedConst()
-            if (mMainViewModel!!.isFirstRun) {
+            if (mMainViewModel.isFirstRun) {
                 addFragment(AskForLook.newInstance())
             } else {
                 setDayFragment()
             }
         } else {
-            if (mMainViewModel!!.isRecreatedOnDemand()) {
+            if (mMainViewModel.isRecreatedOnDemand()) {
                 setDayFragment()
             }
         }
@@ -86,11 +89,11 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     private fun setDayFragment() {
         showWidgetInfoIfNeeded()
         addFragment(DaysFragment.newInstance())
-        mMainViewModel!!.logLook()
+        mMainViewModel.logLook()
     }
 
     private fun showWidgetInfoIfNeeded() {
-        if (!mMainViewModel!!.wasAppWidgetInfoDisplayed()) {
+        if (!mMainViewModel.wasAppWidgetInfoDisplayed()) {
             WidgetInfoDialog
                     .newInstance()
                     .show(supportFragmentManager, "")
@@ -148,10 +151,10 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     //endregion
     override fun onResume() {
         super.onResume()
-        if (mMainViewModel!!.checkIfDayTypesChanged()) {
+        if (mMainViewModel.checkIfDayTypesChanged()) {
             refreshList()
         }
-        if (mMainViewModel!!.isLookRich) {
+        if (mMainViewModel.isLookRich) {
             setLookRich()
         }
         //        showStartTime();
@@ -189,7 +192,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     //endregion
     //region AppMenuHandlingRegion
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val menuLayoutId = if (mMainViewModel!!.isFirstRun) R.menu.main_activity_actions_first_run else R.menu.main_activity_actions
+        val menuLayoutId = if (mMainViewModel.isFirstRun) R.menu.main_activity_actions_first_run else R.menu.main_activity_actions
         menuInflater.inflate(menuLayoutId, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -202,7 +205,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
                 true
             }
             R.id.calendar -> {
-                mMainViewModel!!.isActionAddList = true
+                mMainViewModel.isActionAddList = true
                 checkCalendarPermissions()
                 true
             }
@@ -224,7 +227,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private fun checkCalendarPermissions() {
-        if (mMainViewModel!!.areCalendarPermissionsGranted()) {
+        if (mMainViewModel.areCalendarPermissionsGranted()) {
             checkCalendarSettings()
         } else {
             requestCalendarPermissions()
@@ -232,8 +235,8 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     }
 
     private fun checkCalendarSettings() {
-        if (mMainViewModel!!.isCalendarEnabledAndChosen) {
-            if (mMainViewModel!!.isActionAddList) {
+        if (mMainViewModel.isCalendarEnabledAndChosen) {
+            if (mMainViewModel.isActionAddList) {
                 askForDayTypesAddedToCalendar()
             } else {
                 askForReminderSettings()
@@ -244,8 +247,8 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     }
 
     private fun askForReminderSettings() {
-        mMainViewModel!!.setReminderDialogArgs()
-        if (mMainViewModel!!.isActionAddList) {
+        mMainViewModel.setReminderDialogArgs()
+        if (mMainViewModel.isActionAddList) {
             ReminderSettingsAndDateTillDialog
                     .newInstance()
                     .show(supportFragmentManager, "")
@@ -270,7 +273,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     //endregion
     @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onItemClick(day: Day?) {
-        mMainViewModel!!.setLastTouchedDay(day)
+        mMainViewModel.setLastTouchedDay(day)
         checkCalendarPermissions()
     }
 
@@ -303,11 +306,11 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
 
     private fun addToCalendar() {
         showBigAd()
-        val isResultPositive = mMainViewModel!!.addToCalendar()
+        val isResultPositive = mMainViewModel.addToCalendar()
         if (isResultPositive) {
             refreshList()
         }
-        showInfo(isResultPositive, R.string.info_added_to_calendar, mMainViewModel!!.error)
+        showInfo(isResultPositive, R.string.info_added_to_calendar, mMainViewModel.error)
     }
 
     override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {
@@ -322,7 +325,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
 
     fun onLookButtonClick(view: View) {
         val isLookRich = view.id == R.id.imageButtonRich
-        mMainViewModel!!.onInitialLookChoice(isLookRich)
+        mMainViewModel.onInitialLookChoice(isLookRich)
         removeAllFragments()
         recreate()
     } //endregion
