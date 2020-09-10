@@ -1,37 +1,37 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.mylibrary.NoticeDialogFragment
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.ReminderAndDateSettingsDialogViewBinding
 
 internal class ReminderSettingsAndDateTillDialog : MyDialogFragment() {
+
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
-        val title = getString(R.string.title_reminder)
-        val builder = getStyledBuilder()
-        builder.setTitle(title)
-                .setView(dialogView)
-                .setPositiveButton(android.R.string.ok, getPositiveButtonListener(this))
-                .setNegativeButton(android.R.string.cancel, getNegativeButtonListener(this))
-        return builder.create()
+        val binding = bind()
+        return getStyledBuilder().run {
+            setTitle(getString(R.string.title_reminder))
+            setView(binding.root)
+            setPositiveButton(android.R.string.ok, getPositiveButtonListener(this@ReminderSettingsAndDateTillDialog))
+            setNegativeButton(android.R.string.cancel, getNegativeButtonListener(this@ReminderSettingsAndDateTillDialog))
+            create()
+        }
     }
 
-    private val dialogView: View
-        get() {
-            val inflater = requireActivity().layoutInflater
-            val binding = ReminderAndDateSettingsDialogViewBinding.inflate(inflater)
-            binding.lifecycleOwner = this
-            binding.viewModel = mainViewModel
-            binding.numberOfDaysBeforeView.setOnClickListener(
+    private fun bind(): ReminderAndDateSettingsDialogViewBinding {
+        val inflater = requireActivity().layoutInflater
+        return ReminderAndDateSettingsDialogViewBinding.inflate(inflater).apply {
+            lifecycleOwner = this@ReminderSettingsAndDateTillDialog
+            viewModel = mainViewModel
+            numberOfDaysBeforeView.setOnClickListener(
                     getViewListener(ReminderDaysBeforeDialog.newInstance()))
-            binding.timeView.setOnClickListener(
+            timeView.setOnClickListener(
                     getViewListener(ReminderTimeDialog.newInstance()))
-            binding.tillDateView.setOnClickListener(
+            tillDateView.setOnClickListener(
                     getViewListener(TillDateDialog.newInstance()))
-            return binding.root
         }
+    }
 
 
     companion object {
