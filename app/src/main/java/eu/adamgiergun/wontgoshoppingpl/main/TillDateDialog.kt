@@ -14,7 +14,7 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
         val month: Int
         val day: Int
         if (savedInstanceState == null) {
-            val date = mainViewModel!!.getTill()
+            val date = mainViewModel!!.tillDate.value
             year = date!!.year
             month = date.month - 1
             day = date.day
@@ -40,7 +40,7 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
     }
 
     override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, day: Int) {
-        mainViewModel!!.setTill(year, month + 1, day)
+        mainViewModel!!.setTillDate(year, month + 1, day)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

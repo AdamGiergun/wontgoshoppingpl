@@ -111,7 +111,7 @@
             android:layout_height="0dp"
             android:cursorVisible="false"
             android:inputType="number"
-            android:text="@{viewModel.tillObservable.toString()}"
+            android:text="@{viewModel.tillDate.toString()}"
             app:layout_constraintLeft_toRightOf="@+id/tillDatePrefix"
             app:layout_constraintTop_toBottomOf="@id/spacer3" />
 

@@ -18,9 +18,13 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     var isActionAddList = false
 
-    private val _tillObservable = MutableLiveData<SimpleDate>()
-    val tillObservable: LiveData<SimpleDate>
-        get() = _tillObservable
+    private val _tillDate = MutableLiveData<SimpleDate>()
+    val tillDate: LiveData<SimpleDate>
+        get() = _tillDate
+
+    fun setTillDate(year: Int, month: Int, day: Int) {
+        _tillDate.value = SimpleDate.newInstance(year, month + 1, day)
+    }
 
     var reminderObservable: MutableLiveData<SimpleReminder?>? = null
         private set
@@ -47,7 +51,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         reminderObservable!!.value = reminderPreference
         if (isActionAddList) {
             val today = Calendar.getInstance()
-            _tillObservable.value = SimpleDate.getLastDayOfMonth(today[Calendar.YEAR], today[Calendar.MONTH] + 2)
+            _tillDate.value = SimpleDate.getLastDayOfMonth(today[Calendar.YEAR], today[Calendar.MONTH] + 2)
         }
     }
 
@@ -76,14 +80,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val dayDescriptionForDialog: String
         get() = lastTouchedDay!!.descriptionForDialog!!
 
-    fun getTill(): SimpleDate? {
-        return tillObservable.value
-    }
-
-    fun setTill(year: Int, month: Int, day: Int) {
-        _tillObservable.value = SimpleDate.newInstance(year, month + 1, day)
-    }
-
     fun setAppWidgetInfoDisplayed() {
         AppPreferences.setAppWidgetInfoDisplayed(appContext)
     }
@@ -100,7 +96,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
                     dayTypesToBeAddedToCalendar!!,
                     reminderObservable!!.value,
                     timeZoneId,
-                    tillObservable.value!!)
+                    tillDate.value!!)
         } else {
             lastTouchedDay!!.setReminder(reminderObservable!!.value)
             lastTouchedDay!!.addToGoogleCalendar(appContext, timeZoneId)
