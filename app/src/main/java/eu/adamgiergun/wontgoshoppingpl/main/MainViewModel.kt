@@ -16,7 +16,13 @@ import java.util.*
 
 internal class MainViewModel(application: Application) : AppViewModel(application) {
 
-    var isActionAddList = false
+    private var _isActionAddList = false
+    val isActionAddList
+        get() = _isActionAddList
+
+    fun setActionAddList() {
+        _isActionAddList = true
+    }
 
     private val _tillDate = MutableLiveData<SimpleDate>()
     val tillDate: LiveData<SimpleDate>
@@ -40,7 +46,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private var dayTypesToBeDisplayed: Day.Type.Set? = null
     private var recreatedOnDemand = false
     init {
-        isActionAddList = false
+        _isActionAddList = false
         recreatedOnDemand = false
         dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
@@ -49,7 +55,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     fun setReminderDialogArgs() {
         reminderObservable = MutableLiveData()
         reminderObservable!!.value = reminderPreference
-        if (isActionAddList) {
+        if (_isActionAddList) {
             val today = Calendar.getInstance()
             _tillDate.value = SimpleDate.getLastDayOfMonth(today[Calendar.YEAR], today[Calendar.MONTH] + 2)
         }
@@ -86,11 +92,11 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     fun setLastTouchedDay(day: Day?) {
         lastTouchedDay = day
-        isActionAddList = false
+        _isActionAddList = false
     }
 
     fun addToCalendar(): Boolean {
-        val result: Boolean = if (isActionAddList) {
+        val result: Boolean = if (_isActionAddList) {
             Day.List.addToCalendar(
                     appContext,
                     dayTypesToBeAddedToCalendar!!,
@@ -169,11 +175,11 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     private fun logCalendarEvent(result: Boolean) {
-        FirebaseEvent.logCalendarEvent(appContext, isActionAddList, result)
+        FirebaseEvent.logCalendarEvent(appContext, _isActionAddList, result)
     }
 
     val error: Int
-        get() = if (isActionAddList) R.string.error_sth_went_wrong else R.string.error_adding_to_calendar_failed
+        get() = if (_isActionAddList) R.string.error_sth_went_wrong else R.string.error_adding_to_calendar_failed
 
     companion object {
         const val START_FRAGMENT_ID_TAG = AppViewModel.START_FRAGMENT_ID_TAG

@@ -205,7 +205,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
                 true
             }
             R.id.calendar -> {
-                mMainViewModel.isActionAddList = true
+                mMainViewModel.setActionAddList()
                 checkCalendarPermissions()
                 true
             }
