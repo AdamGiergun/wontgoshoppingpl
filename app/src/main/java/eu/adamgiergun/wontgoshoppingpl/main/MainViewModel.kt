@@ -47,42 +47,32 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     private var dayTypesToBeDisplayed: Day.Type.Set? = null
     private var recreatedOnDemand = false
+
     init {
         _isActionAddList = false
         recreatedOnDemand = false
         dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
+        resetReminderToDefaultValue()
+        val today = Calendar.getInstance()
+        _tillDate.value = SimpleDate.getLastDayOfMonth(today[Calendar.YEAR], today[Calendar.MONTH] + 2)
     }
 
-    fun setReminderDialogArgs() {
-        _reminder = MutableLiveData()
+    fun resetReminderToDefaultValue() {
         _reminder.value = reminderPreference
-        if (_isActionAddList) {
-            val today = Calendar.getInstance()
-            _tillDate.value = SimpleDate.getLastDayOfMonth(today[Calendar.YEAR], today[Calendar.MONTH] + 2)
-        }
     }
 
-    fun getReminder(): SimpleReminder? {
-        return _reminder.value
-    }
-
-    var reminderDaysBefore: Int
-        get() = if (_reminder.value == null) 1 else _reminder.value!!.daysBefore
-        set(daysBefore) {
-            val simpleReminder = _reminder.value
-            if (simpleReminder != null) {
-                simpleReminder.daysBefore = daysBefore
-                _reminder.value = simpleReminder
-            }
-        }
-
-    fun setReminderTime(time: SimpleTime?) {
+    fun setReminderDaysBefore(daysBefore: Int) {
         val simpleReminder = _reminder.value
-        if (simpleReminder != null) {
-            simpleReminder.time = time
-            _reminder.value = simpleReminder
-        }
+        simpleReminder!!.daysBefore = daysBefore
+        _reminder.value = simpleReminder
+    }
+
+    fun setReminderTime(hour: Int, minute: Int) {
+        val time = SimpleTime(hour, minute)
+        val simpleReminder = _reminder.value
+        simpleReminder!!.time = time
+        _reminder.value = simpleReminder
     }
 
     val dayDescriptionForDialog: String

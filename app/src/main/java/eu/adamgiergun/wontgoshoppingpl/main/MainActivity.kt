@@ -247,7 +247,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     }
 
     private fun askForReminderSettings() {
-        mMainViewModel.setReminderDialogArgs()
+        mMainViewModel.resetReminderToDefaultValue()
         if (mMainViewModel.isActionAddList) {
             ReminderSettingsAndDateTillDialog
                     .newInstance()

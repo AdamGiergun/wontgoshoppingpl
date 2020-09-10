@@ -9,8 +9,8 @@ import eu.adamgiergun.wontgoshoppingpl.databinding.ReminderAndDateSettingsDialog
 
 internal class ReminderSettingsAndDateTillDialog : MyDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
-        val builder = getStyledBuilder()
         val title = getString(R.string.title_reminder)
+        val builder = getStyledBuilder()
         builder.setTitle(title)
                 .setView(dialogView)
                 .setPositiveButton(android.R.string.ok, getPositiveButtonListener(this))

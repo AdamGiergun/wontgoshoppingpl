@@ -8,33 +8,33 @@ import eu.adamgiergun.mylibrary.NoticeDialogFragment
 import eu.adamgiergun.wontgoshoppingpl.R
 
 internal class ReminderDaysBeforeDialog : MyDialogFragment() {
-    private var picker: NumberPicker? = null
+    private lateinit var picker: NumberPicker
+
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         picker = getPicker(savedInstanceState)
-        val builder = getStyledBuilder()
-        builder
-                .setTitle(R.string.days_before)
-                .setView(picker)
-                .setPositiveButton(android.R.string.ok) { dialog, id -> updateReminder(picker!!.value) }
-                .setNegativeButton(android.R.string.cancel, null)
-        return builder.create()
+        return getStyledBuilder().run {
+            setTitle(R.string.days_before)
+            setView(picker)
+            setPositiveButton(android.R.string.ok) { _, _ -> mainViewModel.setReminderDaysBefore(picker.value) }
+            setNegativeButton(android.R.string.cancel, null)
+            create()
+        }
     }
 
     private fun getPicker(savedInstanceState: Bundle?): NumberPicker {
-        return if (savedInstanceState == null) MyNumberPicker.newInstance(context, mainViewModel.reminderDaysBefore) else MyNumberPicker.newInstance(context, savedInstanceState.getInt(VALUE))
-    }
-
-    private fun updateReminder(daysBefore: Int) {
-        mainViewModel.reminderDaysBefore = daysBefore
+        return if (savedInstanceState == null)
+            MyNumberPicker.newInstance(requireContext(), mainViewModel.reminder.value!!.daysBefore)
+        else
+            MyNumberPicker.newInstance(requireContext(), savedInstanceState.getInt(VALUE))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(VALUE, picker!!.value)
+        outState.putInt(VALUE, picker.value)
     }
 
     private object MyNumberPicker {
-        fun newInstance(context: Context?, value: Int): NumberPicker {
+        fun newInstance(context: Context, value: Int): NumberPicker {
             val picker = NumberPicker(context)
             picker.isSaveFromParentEnabled = false
             picker.isSaveEnabled = false
