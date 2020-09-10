@@ -29,7 +29,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         get() = _tillDate
 
     fun setTillDate(year: Int, month: Int, day: Int) {
-        _tillDate.value = SimpleDate.newInstance(year, month + 1, day)
+        _tillDate.value = SimpleDate.newInstance(year, month, day)
     }
 
     private var _reminder = MutableLiveData<SimpleReminder>()
