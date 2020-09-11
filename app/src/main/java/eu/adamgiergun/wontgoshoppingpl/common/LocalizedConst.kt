@@ -2,19 +2,11 @@ package eu.adamgiergun.wontgoshoppingpl.common
 
 import java.util.*
 
-object LocalizedConst {
-    @JvmStatic
-    var wholeDay: String? = null
-        get() = if (field == null) "" else field
+internal object LocalizedConst {
 
-    @JvmStatic
-    var since: String? = null
-        get() = if (field == null) "" else field
-
-    var askForLook: String? = null
-        get() = if (field == null) "" else field
-
+    lateinit var askForLook: String
+    lateinit var locale: Locale
+    lateinit var since: String
+    lateinit var wholeDay: String
     var isSet = false
-
-    var locale: Locale? = null
 }

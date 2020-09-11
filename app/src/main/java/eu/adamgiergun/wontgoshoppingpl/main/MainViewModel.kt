@@ -10,6 +10,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
+import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsFragment
 import java.util.*
@@ -176,4 +177,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
             return SettingsFragment.getStartFragmentId(startFromNotifications)
         }
     }
+
+    val askForLookText
+        get() = LocalizedConst.askForLook
 }

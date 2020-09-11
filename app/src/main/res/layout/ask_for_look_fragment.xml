@@ -1,45 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal" />
-    </LinearLayout>
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.askForLookText}"
+                android:gravity="center_horizontal" />
+        </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/imageButtonMini"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:onClick="onLookButtonClick"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/look_mini" />
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButtonRich"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:onClick="onLookButtonClick"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/look_rich" />
+            <ImageButton
+                android:id="@+id/imageButtonMini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:onClick="onLookButtonClick"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/look_mini" />
+
+            <ImageButton
+                android:id="@+id/imageButtonRich"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:onClick="onLookButtonClick"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/look_rich" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</layout>
