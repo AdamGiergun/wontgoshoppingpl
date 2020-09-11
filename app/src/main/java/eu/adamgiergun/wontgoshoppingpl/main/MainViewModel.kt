@@ -56,7 +56,16 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         )
     }
 
-    private var recreatedOnDemand = false
+    private var _isRecreatedOnDemand = false
+    val isRecreatedOnDemand: Boolean
+        get(): Boolean {
+            return if (_isRecreatedOnDemand) {
+                _isRecreatedOnDemand = false
+                true
+            } else {
+                false
+            }
+        }
 
     init {
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
@@ -116,24 +125,16 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val lastDateInMillis: Long
         get() = Day.List.getLastDateInMillis(appContext)
 
-    fun isRecreatedOnDemand(): Boolean {
-        return if (recreatedOnDemand) {
-            recreatedOnDemand = false
-            true
-        } else {
-            false
-        }
-    }
-
     fun onInitialLookChoice(newIsLookRich: Boolean) {
         isLookRich = newIsLookRich
         setNotFirstRun()
-        recreatedOnDemand = true
+        _isRecreatedOnDemand = true
     }
 
     //region AppPreferences proxy region
     private val reminderPreference: SimpleReminder
         get() = AppPreferences.getReminder(appContext, SimpleReminder.METHOD_ALERT, timeZoneId)
+
     val isFirstRun: Boolean
         get() = AppPreferences.isFirstRun(appContext)
 

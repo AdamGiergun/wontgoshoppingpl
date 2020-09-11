@@ -57,7 +57,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
                 setDayFragment()
             }
         } else {
-            if (mMainViewModel.isRecreatedOnDemand()) {
+            if (mMainViewModel.isRecreatedOnDemand) {
                 setDayFragment()
             }
         }
