@@ -36,22 +36,29 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val reminder: LiveData<SimpleReminder>
         get() = _reminder
 
-    private var lastTouchedDay: Day? = null
+    private lateinit var lastTouchedDay: Day
 
-    var dayTypesToBeAddedToCalendar: Day.Type.Set? = null
-        get() = if (field == null) {
-            AppPreferences.newDayTypeSet(appContext)
-        } else {
-            field!!
-        }
+    private var dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
+    private var dayTypesToBeAddedToCalendar: Day.Type.Set
 
-    private var dayTypesToBeDisplayed: Day.Type.Set? = null
+    fun setDayTypesToBeAddedToCalendar(array: BooleanArray) {
+        dayTypesToBeAddedToCalendar = Day.Type.newSet(
+                array[Day.Type.NON_COMMERCE_DAY.code],
+                array[Day.Type.HOLIDAY.code],
+                array[Day.Type.COMMERCE_SUNDAY.code])
+    }
+
+    fun getDayTypesToBeAddedToCalendarAsArray(): BooleanArray {
+        return booleanArrayOf(
+                dayTypesToBeAddedToCalendar.contains(Day.Type.NON_COMMERCE_DAY),
+                dayTypesToBeAddedToCalendar.contains(Day.Type.HOLIDAY),
+                dayTypesToBeAddedToCalendar.contains(Day.Type.COMMERCE_SUNDAY)
+        )
+    }
+
     private var recreatedOnDemand = false
 
     init {
-        _isActionAddList = false
-        recreatedOnDemand = false
-        dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
         resetReminderToDefaultValue()
         val today = Calendar.getInstance()
@@ -76,13 +83,13 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     val dayDescriptionForDialog: String
-        get() = lastTouchedDay!!.descriptionForDialog!!
+        get() = lastTouchedDay.descriptionForDialog!!
 
     fun setAppWidgetInfoDisplayed() {
         AppPreferences.setAppWidgetInfoDisplayed(appContext)
     }
 
-    fun setLastTouchedDay(day: Day?) {
+    fun setLastTouchedDay(day: Day) {
         lastTouchedDay = day
         _isActionAddList = false
     }
@@ -91,13 +98,13 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         val result: Boolean = if (_isActionAddList) {
             Day.List.addToCalendar(
                     appContext,
-                    dayTypesToBeAddedToCalendar!!,
+                    dayTypesToBeAddedToCalendar,
                     _reminder.value,
                     timeZoneId,
                     tillDate.value!!)
         } else {
-            lastTouchedDay!!.setReminder(_reminder.value)
-            lastTouchedDay!!.addToGoogleCalendar(appContext, timeZoneId)
+            lastTouchedDay.setReminder(_reminder.value)
+            lastTouchedDay.addToGoogleCalendar(appContext, timeZoneId)
         }
         logCalendarEvent(result)
         return result
@@ -106,20 +113,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private val timeZoneId: String
         get() = if (AppPreferences.getUsePolishTimeZone(appContext)) "Europe/Warsaw" else TimeZone.getDefault().id
 
-//    fun getDayTypesToBeAddedToCalendar(): Day.Type.Set {
-//        return if (dayTypesToBeAddedToCalendar == null) AppPreferences.newDayTypeSet(appContext) else dayTypesToBeAddedToCalendar!!
-//    }
-
-    fun newDayTypesSet(addNonCommerceDays: Boolean, addHolidays: Boolean, addCommerceSundays: Boolean): Day.Type.Set {
-        return Day.Type.newSet(addNonCommerceDays, addHolidays, addCommerceSundays)
-    }
-
     val lastDateInMillis: Long
         get() = Day.List.getLastDateInMillis(appContext)
-
-//    fun setDayTypesToBeAddedToCalendar(dayTypes: Day.Type.Set?) {
-//        dayTypesToBeAddedToCalendar = dayTypes
-//    }
 
     fun isRecreatedOnDemand(): Boolean {
         return if (recreatedOnDemand) {

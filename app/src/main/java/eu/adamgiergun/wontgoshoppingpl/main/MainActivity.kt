@@ -272,7 +272,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
 
     //endregion
     @RequiresApi(api = Build.VERSION_CODES.M)
-    override fun onItemClick(day: Day?) {
+    override fun onItemClick(day: Day) {
         mMainViewModel.setLastTouchedDay(day)
         checkCalendarPermissions()
     }

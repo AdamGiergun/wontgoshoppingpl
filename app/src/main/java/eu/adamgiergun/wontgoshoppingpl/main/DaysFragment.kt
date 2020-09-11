@@ -64,7 +64,7 @@ class DaysFragment : Fragment() {
     }
 
     interface OnItemClickListener {
-        fun onItemClick(day: Day?)
+        fun onItemClick(day: Day)
     }
 
     companion object {
