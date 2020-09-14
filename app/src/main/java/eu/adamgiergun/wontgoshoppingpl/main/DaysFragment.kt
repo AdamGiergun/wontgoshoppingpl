@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.day.Day
+import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
 
 class DaysFragment : Fragment() {
     private var listener: OnItemClickListener? = null
@@ -29,6 +30,7 @@ class DaysFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_day_list, container, false)
+        //val dataSource = AppDatabase.getInstance(requireActivity().application)
         if (view is RecyclerView) {
             daysRecyclerView = view
             daysRecyclerView!!.layoutManager = LinearLayoutManager(context)

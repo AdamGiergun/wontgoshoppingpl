@@ -11,6 +11,7 @@ class Widget : AppWidgetProvider() {
             context: Context,
             appWidgetManager: AppWidgetManager,
             appWidgetIds: IntArray) {
+        WidgetViewModel.setLocalizedConstants(context.applicationContext)
         val remoteViews = newRemoteViews(context)
         appWidgetIds.forEach { appWidgetId ->
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
