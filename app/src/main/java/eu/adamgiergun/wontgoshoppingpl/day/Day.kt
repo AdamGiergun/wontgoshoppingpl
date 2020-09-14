@@ -111,13 +111,16 @@ class Day private constructor(private val dbId: Int, item: String, private val t
                ${date.toString()}
                ${date!!.weekdayName}
                """.trimIndent()
+
     val descriptionForDialog: String?
         get() = if (type == Type.HOLIDAY) description else dateAndWeekdayString
+
     val widgetText: CharSequence
         get() = """
                ${date.toString()}
                PL: $description
                """.trimIndent()
+
     val isCommerceSunday: Boolean
         get() = type == Type.COMMERCE_SUNDAY
 

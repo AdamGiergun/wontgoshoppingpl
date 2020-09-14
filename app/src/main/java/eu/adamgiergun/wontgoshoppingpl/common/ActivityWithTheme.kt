@@ -14,7 +14,9 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPer
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPermissionsCode
 
 abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
+
     private var mViewModel: AppViewModel? = null
+
     override fun getTheme(): Theme {
         val theme = super.getTheme()
         if (mViewModel == null) {
@@ -35,9 +37,10 @@ abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
     }
 
     protected open fun setDefaultLocale(context: Context?): Context? {
-        val config = Configuration()
-        if (LocalizedConst.locale != null) setLocale(config)
-        return updateConfiguration(context, config)
+        return Configuration().run {
+            setLocale(this)
+            updateConfiguration(context, this)
+        }
     }
 
     private fun setLocale(config: Configuration) {
