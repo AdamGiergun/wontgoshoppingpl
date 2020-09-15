@@ -16,7 +16,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 99
-        versionName "2.99.2.0"
+        versionName "2.99.2.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
@@ -68,27 +68,36 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     implementation 'eu.adamgiergun:mylibrary:0.99.98.8@aar'
     implementation 'eu.adamgiergun:myresources:1.0.11@aar'
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.core:core-ktx:1.3.1"
+
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
     implementation 'com.google.firebase:firebase-ads:19.4.0'
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
     implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
-    implementation "androidx.core:core-ktx:1.3.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
-//    kapt "androidx.room:room-compiler:$room_version"
+
 
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:2.21.0'

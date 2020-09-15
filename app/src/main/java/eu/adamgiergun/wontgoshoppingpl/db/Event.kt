@@ -7,7 +7,7 @@ import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate
 
 @Entity(tableName = "events")
 data class Event(
-        @PrimaryKey(autoGenerate = true) val id: Int,
+        @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID_NAME) val id: Int,
         @ColumnInfo(name = "type_id") val typeId: Int,
         val item: String,
         @ColumnInfo(name = "calendar_id") val calendarId: String,
@@ -29,5 +29,9 @@ data class Event(
 
     override fun equals(other: Any?): Boolean {
         return hashCode() == other.hashCode()
+    }
+
+    companion object {
+        const val COLUMN_ID_NAME = "_id"
     }
 }

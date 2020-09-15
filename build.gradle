@@ -8,6 +8,13 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            credentials {
+                username GC_USER
+                password GC_USER_PASS
+            }
+            url "https://adam-giergun-maven-repo.appspot.com/"
+        }
         //maven { url 'https://maven.fabric.io/public'}
         //maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         //mavenCentral()
