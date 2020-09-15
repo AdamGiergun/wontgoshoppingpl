@@ -12,10 +12,23 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst
 import eu.adamgiergun.wontgoshoppingpl.day.Day
+import eu.adamgiergun.wontgoshoppingpl.db.EventDao
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsFragment
 import java.util.*
 
 internal class MainViewModel(application: Application) : AppViewModel(application) {
+
+    private lateinit var database: EventDao
+
+    fun setDatabase(dataSource: EventDao) {
+        database = dataSource
+    }
+
+    var days = Day.List.newInstance(appContext)
+
+    fun refreshDaysList() {
+        days = Day.List.newInstance(appContext)
+    }
 
     private var _isActionAddList = false
     val isActionAddList

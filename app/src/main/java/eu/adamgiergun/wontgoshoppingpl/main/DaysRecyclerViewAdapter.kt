@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 
-class DaysRecyclerViewAdapter private constructor(private val days: Day.List, private val listener: DaysFragment.OnItemClickListener?) : RecyclerView.Adapter<DaysRecyclerViewAdapter.ViewHolder>() {
+class DaysRecyclerViewAdapter private constructor(private val days: Day.List?, private val listener: DaysFragment.OnItemClickListener?) : ListAdapter<Day, DaysRecyclerViewAdapter.ViewHolder>(DayDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_day, parent, false) as CardView
@@ -19,12 +21,12 @@ class DaysRecyclerViewAdapter private constructor(private val days: Day.List, pr
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val day = days[position]
+        val day = days!![position]
         holder.bind(day!!, listener)
     }
 
     override fun getItemCount(): Int {
-        return days.size
+        return days!!.size
     }
 
     class ViewHolder(private val cardView: CardView) : RecyclerView.ViewHolder(cardView) {
@@ -82,11 +84,22 @@ class DaysRecyclerViewAdapter private constructor(private val days: Day.List, pr
         private var density = 0f
         fun newInstance(appContext: Context, listener: DaysFragment.OnItemClickListener?): DaysRecyclerViewAdapter {
             val daysRecyclerViewAdapter = DaysRecyclerViewAdapter(
-                    Day.List.newInstance(appContext),
+                    Day.List.newInstance(appContext).value,
                     listener)
             isLookRich = AppPreferences.isLookRich(appContext)
             density = appContext.resources.displayMetrics.density
             return daysRecyclerViewAdapter
         }
+    }
+}
+
+class DayDiffCallback : DiffUtil.ItemCallback<Day>() {
+
+    override fun areItemsTheSame(oldItem: Day, newItem: Day): Boolean {
+        return oldItem.hashCode() == newItem.hashCode()
+    }
+
+    override fun areContentsTheSame(oldItem: Day, newItem: Day): Boolean {
+        return oldItem.hashCode() == newItem.hashCode()
     }
 }

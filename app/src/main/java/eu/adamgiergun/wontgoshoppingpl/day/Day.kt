@@ -2,6 +2,8 @@ package eu.adamgiergun.wontgoshoppingpl.day
 
 import android.content.Context
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder
@@ -196,21 +198,23 @@ class Day private constructor(private val dbId: Int, item: String, private val t
         }
 
         companion object {
-            fun newInstance(appContext: Context): List {
+            fun newInstance(appContext: Context): LiveData<List> {
                 val dayTypes = AppPreferences.newDayTypeSet(appContext)
                 return newInstance(appContext, dayTypes)
             }
 
-            private fun newInstance(appContext: Context, includedDaysTypes: Type.Set): List {
-                val list = List()
+            private fun newInstance(appContext: Context, includedDaysTypes: Type.Set): LiveData<List> {
+                val list = MutableLiveData<List>()
+                list.value = List()
                 val eventsIterator = DatabaseHandler.newEventsIterator(appContext, includedDaysTypes)
                 val yesterday = SimpleDate.getYesterday()
                 while (eventsIterator.hasNext()) {
                     val day = newInstance(eventsIterator.next())
                     if (day.compareDateTo(yesterday) > 0) {
-                        list.add(day)
+                        list.value!!.add(day)
                     }
                 }
+
                 return list
             }
 
@@ -218,13 +222,13 @@ class Day private constructor(private val dbId: Int, item: String, private val t
                 val days = newInstance(
                         appContext,
                         Type.newSet(addNonCommerceDays = true, addHolidays = true, addCommerceSundays = true))
-                return days[0]
+                return days.value!![0]
             }
 
             fun getLastDateInMillis(appContext: Context): Long {
                 val list = newInstance(appContext)
-                val size = list.size
-                val lastDay = if (size == 0) null else list[size - 1]
+                val size = list.value!!.size
+                val lastDay = if (size == 0) null else list.value!![size - 1]
                 return if (lastDay == null) Calendar.getInstance().timeInMillis else lastDay.date!!.timeInMillis
             }
 
@@ -235,9 +239,9 @@ class Day private constructor(private val dbId: Int, item: String, private val t
                     timeZoneId: String,
                     till: SimpleDate): Boolean {
                 val list = newInstance(appContext, dayTypes)
-                list.skipReminderForConsecutiveDays()
+                list.value!!.skipReminderForConsecutiveDays()
                 var result = true
-                for (day in list) {
+                for (day in list.value!!) {
                     if (day!!.compareDateTo(till) <= 0 && day.isReminderNeeded) {
                         day.setReminder(reminder)
                         result = result && day.addToGoogleCalendar(appContext, timeZoneId)

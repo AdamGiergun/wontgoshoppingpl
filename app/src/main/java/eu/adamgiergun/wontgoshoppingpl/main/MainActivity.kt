@@ -151,9 +151,9 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     //endregion
     override fun onResume() {
         super.onResume()
-        if (mMainViewModel.checkIfDayTypesChanged()) {
-            refreshList()
-        }
+//        if (mMainViewModel.checkIfDayTypesChanged()) {
+//            refreshList()
+//        }
         if (mMainViewModel.isLookRich) {
             setLookRich()
         }
@@ -307,9 +307,9 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     private fun addToCalendar() {
         showBigAd()
         val isResultPositive = mMainViewModel.addToCalendar()
-        if (isResultPositive) {
-            refreshList()
-        }
+//        if (isResultPositive) {
+//            refreshList()
+//        }
         showInfo(isResultPositive, R.string.info_added_to_calendar, mMainViewModel.error)
     }
 
