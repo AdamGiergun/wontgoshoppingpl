@@ -38,7 +38,7 @@ class DaysFragment : Fragment() {
         val dataSource = AppDatabase.getInstance(requireActivity().application).eventDao()
         val mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         mainViewModel.setDatabase(dataSource)
-        binding.viewModel = mainViewModel
+        //binding.viewModel = mainViewModel
         binding.lifecycleOwner = this
         adapter = DaysRecyclerViewAdapter.newInstance(requireContext().applicationContext, listener)
         binding.list.adapter = adapter

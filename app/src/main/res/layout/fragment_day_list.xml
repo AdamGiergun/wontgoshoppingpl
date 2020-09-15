@@ -5,9 +5,9 @@
 
     <data>
 
-        <variable
-            name="viewModel"
-            type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
+<!--        <variable-->
+<!--            name="viewModel"-->
+<!--            type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />-->
     </data>
 
     <androidx.recyclerview.widget.RecyclerView
