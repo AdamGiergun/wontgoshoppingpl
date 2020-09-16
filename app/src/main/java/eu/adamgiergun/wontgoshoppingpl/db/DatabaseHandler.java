@@ -21,7 +21,7 @@ import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.NON_COMMERCE_DAY;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "events.db";
     private static final String NULL_VALUE = null; //used to avoid some disambiguation in ContentValues.put
     private Resources resources;
