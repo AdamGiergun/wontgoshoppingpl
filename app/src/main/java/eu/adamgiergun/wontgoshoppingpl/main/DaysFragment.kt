@@ -13,12 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.FragmentDayListBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
-import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
 
 class DaysFragment : Fragment() {
-    private lateinit var adapter: DaysRecyclerViewAdapter
+    private lateinit var recyclerViewAdapter: DaysRecyclerViewAdapter
     private var listener: OnItemClickListener? = null
-    private var daysRecyclerView: RecyclerView? = null
+
     private val dayTouchHelperCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
             return false
@@ -27,40 +26,25 @@ class DaysFragment : Fragment() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val dayViewHolder = viewHolder as DaysRecyclerViewAdapter.ViewHolder
             dayViewHolder.deleteFromGoogleCalendar(context!!.applicationContext)
-            adapter.notifyItemChanged(viewHolder.adapterPosition)
-            //setRecyclerViewAdapter()
+            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentDayListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_day_list, container, false)
-        //val view = inflater.inflate(R.layout.fragment_day_list, container, false)
-        val dataSource = AppDatabase.getInstance(requireActivity().application).eventDao()
-        val mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        mainViewModel.setDatabase(dataSource)
-        //binding.viewModel = mainViewModel
         binding.lifecycleOwner = this
-        adapter = DaysRecyclerViewAdapter.newInstance(requireContext().applicationContext, listener)
-        binding.list.adapter = adapter
+        recyclerViewAdapter = DaysRecyclerViewAdapter.newInstance(requireContext().applicationContext, listener)
+        binding.list.adapter = recyclerViewAdapter
         attachItemTouchHelper(binding.list)
+
+        val mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        //binding.viewModel = mainViewModel
         mainViewModel.days.observe(viewLifecycleOwner, {
             it?.let {
-                adapter.submitList(it)
+                recyclerViewAdapter.submitList(it)
             }
         })
-
-//        if (view is RecyclerView) {
-//            daysRecyclerView = view
-//            daysRecyclerView!!.layoutManager = LinearLayoutManager(context)
-//            setRecyclerViewAdapter()
-//            attachItemTouchHelper(daysRecyclerView)
-//        }
         return binding.root
-    }
-
-    fun setRecyclerViewAdapter() {
-        val daysRecyclerViewAdapter = DaysRecyclerViewAdapter.newInstance(requireContext().applicationContext, listener)
-        daysRecyclerView!!.adapter = daysRecyclerViewAdapter
     }
 
     private fun attachItemTouchHelper(recyclerView: RecyclerView?) {

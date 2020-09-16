@@ -160,14 +160,6 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
         //        showStartTime();
     }
 
-    private fun refreshList() {
-        //addFragment(new DaysFragment());
-        val fragment = supportFragmentManager.findFragmentByTag(MAIN_FRAGMENT_TAG)
-        if (fragment is DaysFragment) {
-            fragment.setRecyclerViewAdapter()
-        }
-    }
-
     private fun setLookRich() {
         val recyclerViewContainer = findViewById<View>(R.id.main_view)
         recyclerViewContainer.setBackgroundResource(R.drawable.bg_red)
