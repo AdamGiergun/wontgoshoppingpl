@@ -13,7 +13,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 
-class DaysRecyclerViewAdapter private constructor(private val days: Day.List?, private val listener: DaysFragment.OnItemClickListener?) : ListAdapter<Day, DaysRecyclerViewAdapter.ViewHolder>(DayDiffCallback()) {
+class DaysRecyclerViewAdapter private constructor(private val listener: DaysFragment.OnItemClickListener?) : ListAdapter<Day, DaysRecyclerViewAdapter.ViewHolder>(DayDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_day, parent, false) as CardView
@@ -21,12 +21,8 @@ class DaysRecyclerViewAdapter private constructor(private val days: Day.List?, p
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val day = days!![position]
+        val day = getItem(position)
         holder.bind(day!!, listener)
-    }
-
-    override fun getItemCount(): Int {
-        return days!!.size
     }
 
     class ViewHolder(private val cardView: CardView) : RecyclerView.ViewHolder(cardView) {
@@ -83,9 +79,7 @@ class DaysRecyclerViewAdapter private constructor(private val days: Day.List?, p
         private var isLookRich = false
         private var density = 0f
         fun newInstance(appContext: Context, listener: DaysFragment.OnItemClickListener?): DaysRecyclerViewAdapter {
-            val daysRecyclerViewAdapter = DaysRecyclerViewAdapter(
-                    Day.List.newInstance(appContext).value,
-                    listener)
+            val daysRecyclerViewAdapter = DaysRecyclerViewAdapter(listener)
             isLookRich = AppPreferences.isLookRich(appContext)
             density = appContext.resources.displayMetrics.density
             return daysRecyclerViewAdapter

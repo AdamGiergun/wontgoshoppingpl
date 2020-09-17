@@ -3,25 +3,23 @@ package eu.adamgiergun.wontgoshoppingpl.main
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime
 import eu.adamgiergun.wontgoshoppingpl.R
-import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
-import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
-import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
-import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst
+import eu.adamgiergun.wontgoshoppingpl.common.*
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
-import eu.adamgiergun.wontgoshoppingpl.db.EventDao
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsFragment
+import kotlinx.coroutines.launch
 import java.util.*
 
 internal class MainViewModel(application: Application) : AppViewModel(application) {
 
-    private var database: EventDao = AppDatabase.getInstance(application).eventDao()
-
-    var days = Day.List.newInstance(appContext)
+    private var _days = MutableLiveData<List<Day>>()
+    val days: LiveData<List<Day>>
+        get() = _days
 
     private var _isActionAddList = false
     val isActionAddList
@@ -47,6 +45,10 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     private var dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
     private var dayTypesToBeAddedToCalendar: Day.Type.Set
+
+    private val dayTypes = dayTypesToBeDisplayed.map {
+        it!!.code.toString()
+    }.toList()
 
     fun setDayTypesToBeAddedToCalendar(array: BooleanArray) {
         dayTypesToBeAddedToCalendar = Day.Type.newSet(
@@ -77,8 +79,15 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     init {
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
         resetReminderToDefaultValue()
-        val today = Calendar.getInstance()
-        _tillDate.value = SimpleDate.getLastDayOfMonth(today[Calendar.YEAR], today[Calendar.MONTH] + 2)
+        val todayCal = Calendar.getInstance()
+        _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
+
+        viewModelScope.launch {
+            val database = AppDatabase.getInstance(application).eventDao()
+            _days.value = database.getAllEventsOfTypeNotBefore(dayTypes, today)!!.map {
+                Day.newInstance(it)
+            }
+        }
     }
 
     fun resetReminderToDefaultValue() {
@@ -152,13 +161,13 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val isCalendarEnabledAndChosen: Boolean
         get() = AppPreferences.isUseGoogleCalendarSet(appContext) && AppPreferences.isCalendarSet(appContext)
 
-    fun checkIfDayTypesChanged(): Boolean {
-        val oldDayTypesToBeDisplayed = dayTypesToBeDisplayed
-        dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
-        val typesChanged = dayTypesToBeDisplayed != oldDayTypesToBeDisplayed
-        if (typesChanged) dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
-        return !isFirstRun && typesChanged
-    }
+//    fun checkIfDayTypesChanged(): Boolean {
+//        val oldDayTypesToBeDisplayed = dayTypesToBeDisplayed
+//        dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
+//        val typesChanged = dayTypesToBeDisplayed != oldDayTypesToBeDisplayed
+//        if (typesChanged) dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
+//        return !isFirstRun && typesChanged
+//    }
 
     private fun setNotFirstRun() {
         AppPreferences.setFirstRun(appContext, false)

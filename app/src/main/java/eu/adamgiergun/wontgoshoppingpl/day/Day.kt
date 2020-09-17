@@ -219,13 +219,6 @@ class Day private constructor(private val dbId: Int, item: String, private val t
                 return list
             }
 
-            fun getFirst(appContext: Context): Day? {
-                val days = newInstance(
-                        appContext,
-                        Type.newSet(addNonCommerceDays = true, addHolidays = true, addCommerceSundays = true))
-                return days.value!![0]
-            }
-
             fun getLastDateInMillis(appContext: Context): Long {
                 val list = newInstance(appContext)
                 val size = list.value!!.size
@@ -273,6 +266,16 @@ class Day private constructor(private val dbId: Int, item: String, private val t
             val day = Day(row.dbId, row.item, Type.getType(row.typeId))
             day.calendarId = row.calendarId
             day.calendarEventId = row.calendarEventId
+            day.description = day.name
+            day.isReminderNeeded = true
+            day.noOfConsecutiveDays = 0
+            return day
+        }
+
+        fun newInstance(event: Event): Day {
+            val day = Day(event.id!!, event.item, Type.getType(event.typeId))
+            day.calendarId = event.calendarId
+            day.calendarEventId = event.calendarEventId ?: 0
             day.description = day.name
             day.isReminderNeeded = true
             day.noOfConsecutiveDays = 0
