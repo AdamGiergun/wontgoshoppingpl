@@ -35,7 +35,6 @@ data class Event(
         const val TABLE_NAME = "events"
         const val COLUMN_ID = "_id"
         const val COLUMN_TYPE_ID = "type_id"
-        const val COLUMN_ITEM = "item"
         const val COLUMN_CALENDAR_ID = "calendar_id"
         const val COLUMN_CALENDAR_EVENT_ID = "calendar_event_id"
     }
