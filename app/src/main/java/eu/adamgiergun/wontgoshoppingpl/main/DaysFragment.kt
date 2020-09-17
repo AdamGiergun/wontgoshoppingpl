@@ -37,7 +37,7 @@ class DaysFragment : Fragment() {
         binding.list.adapter = recyclerViewAdapter
         attachItemTouchHelper(binding.list)
 
-        val mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         //binding.viewModel = mainViewModel
         mainViewModel.days.observe(viewLifecycleOwner, {
             it?.let {
