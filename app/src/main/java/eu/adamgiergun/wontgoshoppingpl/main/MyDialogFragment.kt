@@ -11,9 +11,7 @@ internal open class MyDialogFragment : NoticeDialogFragment() {
     else
         AlertDialog.Builder(requireContext())
 
-
-    val mainViewModel: MainViewModel
-        get() {
-            return ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        }
+    val mainViewModel: MainViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    }
 }

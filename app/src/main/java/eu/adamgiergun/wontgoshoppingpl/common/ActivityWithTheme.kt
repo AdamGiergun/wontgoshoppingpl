@@ -15,16 +15,15 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPer
 
 abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
 
-    private var mViewModel: AppViewModel? = null
+    private val mViewModel by lazy {
+        ViewModelProvider(this).get(AppViewModel::class.java)
+    }
 
     override fun getTheme(): Theme {
-        val theme = super.getTheme()
-        if (mViewModel == null) {
-            mViewModel = ViewModelProvider(this).get(AppViewModel::class.java)
-            val style = if (mViewModel!!.isLookRich) R.style.AppThemeCustomizationsRich else R.style.AppThemeCustomizationsMini
-            theme.applyStyle(style, true)
+        return super.getTheme().apply {
+            val style = if (mViewModel.isLookRich) R.style.AppThemeCustomizationsRich else R.style.AppThemeCustomizationsMini
+            applyStyle(style, true)
         }
-        return theme
     }
 
     override fun attachBaseContext(newBase: Context) {

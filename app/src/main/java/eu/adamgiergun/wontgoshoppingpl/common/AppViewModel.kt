@@ -25,6 +25,7 @@ internal open class AppViewModel(application: Application) : AndroidViewModel(ap
         protected set(isLookRich) {
             AppPreferences.setLookRich(appContext, isLookRich)
         }
+
     protected val appContext: Context
         get() = getApplication<Application>().applicationContext
 
