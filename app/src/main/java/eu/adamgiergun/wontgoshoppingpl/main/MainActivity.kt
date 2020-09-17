@@ -151,9 +151,6 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     //endregion
     override fun onResume() {
         super.onResume()
-//        if (mMainViewModel.checkIfDayTypesChanged()) {
-//            refreshList()
-//        }
         if (mMainViewModel.isLookRich) {
             setLookRich()
         }

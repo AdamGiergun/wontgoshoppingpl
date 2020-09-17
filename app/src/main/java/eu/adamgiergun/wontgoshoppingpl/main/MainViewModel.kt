@@ -43,12 +43,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     private lateinit var lastTouchedDay: Day
 
-    private var dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
+    private val dayTypesToBeDisplayed = MutableLiveData<Day.Type.Set>()
     private var dayTypesToBeAddedToCalendar: Day.Type.Set
-
-    private val dayTypes = dayTypesToBeDisplayed.map {
-        it!!.code.toString()
-    }.toList()
 
     fun setDayTypesToBeAddedToCalendar(array: BooleanArray) {
         dayTypesToBeAddedToCalendar = Day.Type.newSet(
@@ -77,16 +73,24 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         }
 
     init {
-        dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
+        dayTypesToBeDisplayed.value = AppPreferences.newDayTypeSet(appContext)
+        dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed.value!!
         resetReminderToDefaultValue()
         val todayCal = Calendar.getInstance()
         _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
 
         viewModelScope.launch {
-            val database = AppDatabase.getInstance(application).eventDao()
-            _days.value = database.getAllEventsOfTypeNotBefore(dayTypes, today)!!.map {
-                Day.newInstance(it)
-            }
+            setDays(application)
+        }
+    }
+
+    private suspend fun setDays(application: Application) {
+        val dayTypes = dayTypesToBeDisplayed.value!!.map {
+            it!!.code.toString()
+        }.toList()
+        val database = AppDatabase.getInstance(application).eventDao()
+        _days.value = database.getAllEventsOfTypeNotBefore(dayTypes, today)!!.map {
+            Day.newInstance(it)
         }
     }
 
@@ -160,14 +164,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     val isCalendarEnabledAndChosen: Boolean
         get() = AppPreferences.isUseGoogleCalendarSet(appContext) && AppPreferences.isCalendarSet(appContext)
-
-//    fun checkIfDayTypesChanged(): Boolean {
-//        val oldDayTypesToBeDisplayed = dayTypesToBeDisplayed
-//        dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
-//        val typesChanged = dayTypesToBeDisplayed != oldDayTypesToBeDisplayed
-//        if (typesChanged) dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
-//        return !isFirstRun && typesChanged
-//    }
 
     private fun setNotFirstRun() {
         AppPreferences.setFirstRun(appContext, false)
