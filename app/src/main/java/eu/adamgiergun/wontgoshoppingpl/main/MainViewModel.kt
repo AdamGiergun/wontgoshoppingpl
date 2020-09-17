@@ -43,7 +43,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     private lateinit var lastTouchedDay: Day
 
-    private val dayTypesToBeDisplayed = MutableLiveData<Day.Type.Set>()
+    private val dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
     private var dayTypesToBeAddedToCalendar: Day.Type.Set
 
     fun setDayTypesToBeAddedToCalendar(array: BooleanArray) {
@@ -73,8 +73,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         }
 
     init {
-        dayTypesToBeDisplayed.value = AppPreferences.newDayTypeSet(appContext)
-        dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed.value!!
+        dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
         resetReminderToDefaultValue()
         val todayCal = Calendar.getInstance()
         _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
@@ -85,7 +84,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     private suspend fun setDays(application: Application) {
-        val dayTypes = dayTypesToBeDisplayed.value!!.map {
+        val dayTypes = dayTypesToBeDisplayed.map {
             it!!.code.toString()
         }.toList()
         val database = AppDatabase.getInstance(application).eventDao()
