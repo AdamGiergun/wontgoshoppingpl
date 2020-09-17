@@ -5,24 +5,29 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.NO_ACTION
 import androidx.room.PrimaryKey
+import eu.adamgiergun.wontgoshoppingpl.db.Reminder.Companion.COLUMN_EVENT_ID
+import eu.adamgiergun.wontgoshoppingpl.db.Reminder.Companion.TABLE_NAME
 
 @Entity(
-        tableName = "events_reminders",
+        tableName = TABLE_NAME,
         foreignKeys = [ForeignKey(
                 entity = Event::class,
                 onDelete = NO_ACTION,
                 onUpdate = NO_ACTION,
-                childColumns = ["event_id"],
-                parentColumns = ["_id"])]
+                childColumns = [COLUMN_EVENT_ID],
+                parentColumns = [Event.COLUMN_ID])]
 )
 data class Reminder(
-        @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "_id")  val id: Int?,
-        @ColumnInfo(name = COLUMN_EVENT_ID_NAME) val eventId: Int,
+        @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID)  val id: Int?,
+        @ColumnInfo(name = COLUMN_EVENT_ID) val eventId: Int,
         val hour: Int,
         val minute: Int,
-        @ColumnInfo(name = "days_before") val daysBefore: Int
+        @ColumnInfo(name = COLUMN_DAYS_BEFORE) val daysBefore: Int
 ) {
     companion object {
-        const val COLUMN_EVENT_ID_NAME = "event_id"
+        const val TABLE_NAME = "events_reminders"
+        const val COLUMN_EVENT_ID = "event_id"
+        const val COLUMN_ID = "_id"
+        const val COLUMN_DAYS_BEFORE = "days_before"
     }
 }

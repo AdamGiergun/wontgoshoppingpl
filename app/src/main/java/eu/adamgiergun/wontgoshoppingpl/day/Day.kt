@@ -13,6 +13,7 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst.since
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst.wholeDay
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler
+import eu.adamgiergun.wontgoshoppingpl.db.Event
 import eu.adamgiergun.wontgoshoppingpl.db.EventsTableRow
 import java.util.*
 
@@ -250,7 +251,9 @@ class Day private constructor(private val dbId: Int, item: String, private val t
                 return result
             }
         }
-    } //        private void removePastDays() {
+    }
+
+    //        private void removePastDays() {
 
     //            Iterator<Day> iterator = this.iterator();
     //            Calendar yesterday = getYesterday();
@@ -264,6 +267,7 @@ class Day private constructor(private val dbId: Int, item: String, private val t
     //                }
     //            }
     //        }
+
     companion object {
         private fun newInstance(row: EventsTableRow): Day {
             val day = Day(row.dbId, row.item, Type.getType(row.typeId))
@@ -273,6 +277,12 @@ class Day private constructor(private val dbId: Int, item: String, private val t
             day.isReminderNeeded = true
             day.noOfConsecutiveDays = 0
             return day
+        }
+
+        fun getDayForWidget(event: Event): Day {
+            return Day(event.id!!, event.item, Type.getType(event.typeId)).apply {
+                description = name
+            }
         }
     }
 
