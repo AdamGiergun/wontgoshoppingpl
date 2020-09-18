@@ -21,12 +21,12 @@ interface EventDao {
     suspend fun getLastEvent(): Event?
 
     @Insert
-    fun insertAll(vararg events: Event)
+    suspend fun insertAll(vararg events: Event)
 
     @Update
-    fun update(event: Event)
+    suspend fun update(event: Event)
 
-    @Transaction
-    @Query("SELECT * FROM events")
-    fun getEventsWithReminders(): List<EventWithReminders>?
+//    @Transaction
+//    @Query("SELECT * FROM events")
+//    suspend fun getEventsWithReminders(): List<EventWithReminders>?
 }

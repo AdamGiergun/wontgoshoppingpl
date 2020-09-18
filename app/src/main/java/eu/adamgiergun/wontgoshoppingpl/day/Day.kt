@@ -12,12 +12,11 @@ import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst.since
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst.wholeDay
 import eu.adamgiergun.wontgoshoppingpl.common.today
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
-import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler
 import eu.adamgiergun.wontgoshoppingpl.db.Event
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Day private constructor(private val dbId: Int, item: String, private val type: Type?) : Comparable<Day> {
+class Day private constructor(private val dbId: Int, private val item: String, private val type: Type?) : Comparable<Day> {
     val name: String
     private var date: SimpleDate? = null
 
@@ -57,7 +56,7 @@ class Day private constructor(private val dbId: Int, item: String, private val t
         return date!!.compareTo(other.date!!)
     }
 
-    fun addToGoogleCalendar(appContext: Context, timeZoneId: String): Boolean {
+    suspend fun addToGoogleCalendar(appContext: Context, timeZoneId: String): Boolean {
         calendarId = AppPreferences.getDefaultCalendarId(appContext)
         val calendarEvent = newCalendarEventInstance(appContext, timeZoneId)
         if (calendarEvent.exists(appContext, calendarId)) {
@@ -90,24 +89,27 @@ class Day private constructor(private val dbId: Int, item: String, private val t
             return reminders
         }
 
-    private fun deleteFromGoogleCalendar(calendarEvent: SimpleCalendarEvent, appContext: Context) {
+    private suspend fun deleteFromGoogleCalendar(calendarEvent: SimpleCalendarEvent, appContext: Context) {
         if (calendarEventId != SimpleCalendarEvent.NON_EXISTING.toLong() && calendarEvent.delete(appContext)) {
             finishDeleting(appContext)
         }
     }
 
-    private fun finishDeleting(appContext: Context) {
+    private suspend fun finishDeleting(appContext: Context) {
         Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show()
         calendarEventId = SimpleCalendarEvent.NON_EXISTING.toLong()
         calendarId = null
         updateEventInDb(appContext)
     }
 
-    private fun updateEventInDb(appContext: Context) {
-        DatabaseHandler.updateEvent(dbId, calendarId, calendarEventId, appContext)
+    private suspend fun updateEventInDb(appContext: Context) {
+        val database = AppDatabase.getInstance(appContext).eventDao()
+        val event = Event(dbId, type!!.code, item, calendarId, calendarEventId)
+        database.update(event)
+//        DatabaseHandler.updateEvent(dbId, calendarId, calendarEventId, appContext)
     }
 
-    fun deleteFromGoogleCalendar(appContext: Context) {
+    suspend fun deleteFromGoogleCalendar(appContext: Context) {
         if (calendarEventId != SimpleCalendarEvent.NON_EXISTING.toLong() && SimpleCalendarEvent.delete(calendarEventId, appContext, calendarId)) {
             finishDeleting(appContext)
         }

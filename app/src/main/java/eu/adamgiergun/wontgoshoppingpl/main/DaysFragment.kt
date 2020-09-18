@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.FragmentDayListBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
+import kotlinx.coroutines.launch
 
 class DaysFragment : Fragment() {
     private lateinit var recyclerViewAdapter: DaysRecyclerViewAdapter
@@ -24,9 +26,11 @@ class DaysFragment : Fragment() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val dayViewHolder = viewHolder as DaysRecyclerViewAdapter.ViewHolder
-            dayViewHolder.deleteFromGoogleCalendar(context!!.applicationContext)
-            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+            lifecycleScope.launch {
+                val dayViewHolder = viewHolder as DaysRecyclerViewAdapter.ViewHolder
+                dayViewHolder.deleteFromGoogleCalendar(context!!.applicationContext)
+                recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+            }
         }
     }
 

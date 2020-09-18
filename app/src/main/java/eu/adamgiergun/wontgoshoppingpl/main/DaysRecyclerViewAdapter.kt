@@ -69,7 +69,7 @@ class DaysRecyclerViewAdapter private constructor(private val listener: DaysFrag
             return super.toString() + " '" + timeView.text + "'"
         }
 
-        fun deleteFromGoogleCalendar(appContext: Context?) {
+        suspend fun deleteFromGoogleCalendar(appContext: Context?) {
             day!!.deleteFromGoogleCalendar(appContext!!)
         }
 
