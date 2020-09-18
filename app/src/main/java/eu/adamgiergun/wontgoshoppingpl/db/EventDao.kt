@@ -17,6 +17,9 @@ interface EventDao {
     @Query("SELECT * FROM events WHERE item>=:date ORDER BY item LIMIT 1")
     suspend fun getFirstEventNotBefore(date: String): Event?
 
+    @Query("SELECT * FROM events ORDER BY item DESC LIMIT 1")
+    suspend fun getLastEvent(): Event?
+
     @Insert
     fun insertAll(vararg events: Event)
 

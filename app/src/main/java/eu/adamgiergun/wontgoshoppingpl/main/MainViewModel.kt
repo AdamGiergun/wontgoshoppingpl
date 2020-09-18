@@ -72,6 +72,9 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
             }
         }
 
+    var lastDateInMillis = 0L
+        private set
+
     init {
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
         resetReminderToDefaultValue()
@@ -90,6 +93,10 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         val database = AppDatabase.getInstance(application).eventDao()
         _days.value = database.getAllEventsOfTypeNotBefore(dayTypes, today)!!.map {
             Day.newInstance(it)
+        }
+        database.getLastEvent()?.let {
+            val lastDay = Day.newInstance(it)
+            lastDateInMillis = lastDay.dateInMillis
         }
     }
 
@@ -140,9 +147,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     private val timeZoneId: String
         get() = if (AppPreferences.getUsePolishTimeZone(appContext)) "Europe/Warsaw" else TimeZone.getDefault().id
-
-    val lastDateInMillis: Long
-        get() = Day.List.getLastDateInMillis(appContext)
 
     fun onInitialLookChoice(newIsLookRich: Boolean) {
         isLookRich = newIsLookRich

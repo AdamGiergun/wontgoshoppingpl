@@ -1,10 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.db
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.NO_ACTION
-import androidx.room.PrimaryKey
 import eu.adamgiergun.wontgoshoppingpl.db.Reminder.Companion.COLUMN_EVENT_ID
 import eu.adamgiergun.wontgoshoppingpl.db.Reminder.Companion.TABLE_NAME
 
@@ -15,7 +12,8 @@ import eu.adamgiergun.wontgoshoppingpl.db.Reminder.Companion.TABLE_NAME
                 onDelete = NO_ACTION,
                 onUpdate = NO_ACTION,
                 childColumns = [COLUMN_EVENT_ID],
-                parentColumns = [Event.COLUMN_ID])]
+                parentColumns = [Event.COLUMN_ID])]//,
+        //indices = [Index("event_id")]
 )
 data class Reminder(
         @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID)  val id: Int?,

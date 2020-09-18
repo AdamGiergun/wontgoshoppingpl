@@ -20,6 +20,10 @@ import java.util.*
 class Day private constructor(private val dbId: Int, item: String, private val type: Type?) : Comparable<Day> {
     val name: String
     private var date: SimpleDate? = null
+
+    val dateInMillis: Long
+        get() = date!!.timeInMillis
+
     private val time: String
     val timeDescription: String?
     private val allDay: Boolean
@@ -217,13 +221,6 @@ class Day private constructor(private val dbId: Int, item: String, private val t
                 }
 
                 return list
-            }
-
-            fun getLastDateInMillis(appContext: Context): Long {
-                val list = newInstance(appContext)
-                val size = list.value!!.size
-                val lastDay = if (size == 0) null else list.value!![size - 1]
-                return if (lastDay == null) Calendar.getInstance().timeInMillis else lastDay.date!!.timeInMillis
             }
 
             fun addToCalendar(
