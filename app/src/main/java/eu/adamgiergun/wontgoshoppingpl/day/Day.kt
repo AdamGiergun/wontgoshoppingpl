@@ -2,8 +2,6 @@ package eu.adamgiergun.wontgoshoppingpl.day
 
 import android.content.Context
 import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder
@@ -12,10 +10,12 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst.since
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst.wholeDay
+import eu.adamgiergun.wontgoshoppingpl.common.today
+import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
 import eu.adamgiergun.wontgoshoppingpl.db.DatabaseHandler
 import eu.adamgiergun.wontgoshoppingpl.db.Event
-import eu.adamgiergun.wontgoshoppingpl.db.EventsTableRow
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Day private constructor(private val dbId: Int, item: String, private val type: Type?) : Comparable<Day> {
     val name: String
@@ -178,62 +178,49 @@ class Day private constructor(private val dbId: Int, item: String, private val t
         }
     }
 
-    class List : ArrayList<Day?>() {
-        private fun skipReminderForConsecutiveDays() {
-            val iterator: ListIterator<Day?> = listIterator()
-            if (iterator.hasNext()) {
-                var nextDay = iterator.next()
-                while (iterator.hasNext()) {
-                    val firstDay = nextDay
-                    var previousDay = firstDay
-                    nextDay = iterator.next()
-                    while (!firstDay!!.isCommerceSunday && !nextDay!!.isCommerceSunday && nextDay.isTomorrowOf(previousDay)) {
-                        nextDay.setReminderNotNeeded()
-                        firstDay.incrementNoOfConsecutiveDays()
-                        firstDay.appendToDescription(nextDay.description)
-                        if (iterator.hasNext()) {
-                            previousDay = nextDay
-                            nextDay = iterator.next()
-                        } else {
-                            break
+    class List : ArrayList<Day>() {
+        companion object {
+            private fun skipReminderForConsecutiveDays(list: ArrayList<Day>): ArrayList<Day> {
+                val iterator: ListIterator<Day?> = list.listIterator()
+                if (iterator.hasNext()) {
+                    var nextDay = iterator.next()
+                    while (iterator.hasNext()) {
+                        val firstDay = nextDay
+                        var previousDay = firstDay
+                        nextDay = iterator.next()
+                        while (!firstDay!!.isCommerceSunday && !nextDay!!.isCommerceSunday && nextDay.isTomorrowOf(previousDay)) {
+                            nextDay.setReminderNotNeeded()
+                            firstDay.incrementNoOfConsecutiveDays()
+                            firstDay.appendToDescription(nextDay.description)
+                            if (iterator.hasNext()) {
+                                previousDay = nextDay
+                                nextDay = iterator.next()
+                            } else {
+                                break
+                            }
                         }
                     }
                 }
-            }
-        }
-
-        companion object {
-            fun newInstance(appContext: Context): LiveData<List> {
-                val dayTypes = AppPreferences.newDayTypeSet(appContext)
-                return newInstance(appContext, dayTypes)
-            }
-
-            private fun newInstance(appContext: Context, includedDaysTypes: Type.Set): LiveData<List> {
-                val list = MutableLiveData<List>()
-                list.value = List()
-                val eventsIterator = DatabaseHandler.newEventsIterator(appContext, includedDaysTypes)
-                val yesterday = SimpleDate.getYesterday()
-                while (eventsIterator.hasNext()) {
-                    val day = newInstance(eventsIterator.next())
-                    if (day.compareDateTo(yesterday) > 0) {
-                        list.value!!.add(day)
-                    }
-                }
-
                 return list
             }
 
-            fun addToCalendar(
+            suspend fun addToCalendar(
                     appContext: Context,
                     dayTypes: Type.Set,
                     reminder: SimpleReminder?,
                     timeZoneId: String,
                     till: SimpleDate): Boolean {
-                val list = newInstance(appContext, dayTypes)
-                list.value!!.skipReminderForConsecutiveDays()
+                val dayTypesArray = dayTypes.map {
+                    it!!.code.toString()
+                }.toList()
+                val database = AppDatabase.getInstance(appContext).eventDao()
+                val list = database.getAllEventsOfTypeNotBefore(dayTypesArray, today)!!.map {
+                    newInstance(it)
+                } as ArrayList<Day>
+                val finalList = skipReminderForConsecutiveDays(list)
                 var result = true
-                for (day in list.value!!) {
-                    if (day!!.compareDateTo(till) <= 0 && day.isReminderNeeded) {
+                for (day in finalList) {
+                    if (day.compareDateTo(till) <= 0 && day.isReminderNeeded) {
                         day.setReminder(reminder)
                         result = result && day.addToGoogleCalendar(appContext, timeZoneId)
                     }
@@ -259,16 +246,6 @@ class Day private constructor(private val dbId: Int, item: String, private val t
     //        }
 
     companion object {
-        private fun newInstance(row: EventsTableRow): Day {
-            val day = Day(row.dbId, row.item, Type.getType(row.typeId))
-            day.calendarId = row.calendarId
-            day.calendarEventId = row.calendarEventId
-            day.description = day.name
-            day.isReminderNeeded = true
-            day.noOfConsecutiveDays = 0
-            return day
-        }
-
         fun newInstance(event: Event): Day {
             val day = Day(event.id!!, event.item, Type.getType(event.typeId))
             day.calendarId = event.calendarId

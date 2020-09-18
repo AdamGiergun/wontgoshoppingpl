@@ -129,7 +129,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         _isActionAddList = false
     }
 
-    fun addToCalendar(): Boolean {
+    suspend fun addToCalendar(): Boolean {
         val result: Boolean = if (_isActionAddList) {
             Day.List.addToCalendar(
                     appContext,

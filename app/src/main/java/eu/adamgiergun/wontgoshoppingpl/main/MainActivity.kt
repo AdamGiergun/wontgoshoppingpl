@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.InterstitialAd
@@ -26,6 +27,7 @@ import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
+import kotlinx.coroutines.launch
 import java.util.*
 
 /*
@@ -61,22 +63,23 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
                 setDayFragment()
             }
         }
-        //addCrashTestButton();
+//        addCrashTestButton();
     }
 
-    //    private void addCrashTestButton() {
-    //        Button crashButton = new Button(this);
-    //        crashButton.setText("Crash!");
-    //        crashButton.setOnClickListener(new View.OnClickListener() {
-    //            public void onClick(View view) {
-    //                throw new RuntimeException("Test Crash"); // Force a crash
-    //            }
-    //        });
-    //
-    //        addContentView(crashButton, new ViewGroup.LayoutParams(
-    //                ViewGroup.LayoutParams.MATCH_PARENT,
-    //                ViewGroup.LayoutParams.WRAP_CONTENT));
-    //    }
+//        private void addCrashTestButton() {
+//            Button crashButton = new Button(this);
+//            crashButton.setText("Crash!");
+//            crashButton.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    throw new RuntimeException("Test Crash"); // Force a crash
+//                }
+//            });
+//
+//            addContentView(crashButton, new ViewGroup.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT));
+//        }
+
     private fun setLocalizedConst() {
         if (!LocalizedConst.isSet) {
             LocalizedConst.wholeDay = getString(R.string.whole_day)
@@ -289,11 +292,13 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
         if (dialog is DayTypesAddedToCalendarDialog) {
             askForReminderSettings()
         } else if (dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
-            addToCalendar()
+            lifecycleScope.launch {
+                addToCalendar()
+            }
         }
     }
 
-    private fun addToCalendar() {
+    private suspend fun addToCalendar() {
         showBigAd()
         val isResultPositive = mMainViewModel.addToCalendar()
 //        if (isResultPositive) {
