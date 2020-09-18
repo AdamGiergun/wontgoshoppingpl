@@ -21,7 +21,7 @@ interface EventDao {
     suspend fun getLastEvent(): Event?
 
     @Insert
-    suspend fun insertAll(vararg events: Event)
+    fun insertAll(vararg events: Event)
 
     @Update
     suspend fun update(event: Event)

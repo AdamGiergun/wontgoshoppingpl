@@ -82,15 +82,16 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
 
         viewModelScope.launch {
-            setDays(application)
+            setDaysAndLastDate(application)
         }
     }
 
-    private suspend fun setDays(application: Application) {
+    private suspend fun setDaysAndLastDate(application: Application) {
         val dayTypes = dayTypesToBeDisplayed.map {
             it!!.code.toString()
         }.toList()
         val database = AppDatabase.getInstance(application).eventDao()
+        database.getLastEvent()
         _days.value = database.getAllEventsOfTypeNotBefore(dayTypes, today)!!.map {
             Day.newInstance(it)
         }
