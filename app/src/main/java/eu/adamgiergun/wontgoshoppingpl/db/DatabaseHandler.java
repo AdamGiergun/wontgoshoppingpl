@@ -3,17 +3,12 @@ package eu.adamgiergun.wontgoshoppingpl.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.database.sqlite.*;
-
-import androidx.annotation.NonNull;
 
 import java.util.Iterator;
 
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent;
 import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate;
 import eu.adamgiergun.wontgoshoppingpl.R;
-import eu.adamgiergun.wontgoshoppingpl.day.Day;
 
 import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.COMMERCE_SUNDAY;
 import static eu.adamgiergun.wontgoshoppingpl.day.Day.Type.HOLIDAY;
@@ -146,83 +141,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         fillDbWithEvents(db, resources, 2021);
         fillDbWithEvents(db, resources, 2022);
         fillDbWithEvents(db, resources, 2023);
-    }
-
-    public static Iterator<EventsTableRow> newEventsIterator(Context appContext, Day.Type.Set includedDayTypes) {
-        DatabaseHandler dbh = new DatabaseHandler(appContext);
-        SQLiteDatabase db = dbh.getReadableDatabase();
-        Cursor cursor = newCursor(db, getSelectionArgs(includedDayTypes));
-
-        Iterator<EventsTableRow> rowsIterator = getEventsIterator(cursor);
-
-        if (cursor != null)
-            cursor.close();
-        db.close();
-        dbh.close();
-
-        return rowsIterator;
-    }
-
-    private static String[] getSelectionArgs(@NonNull Day.Type.Set includedDayTypes) {
-        String[] selectionArgs = new String[includedDayTypes.size()];
-        Iterator<Day.Type> iterator = includedDayTypes.iterator();
-        int i = 0;
-        while (iterator.hasNext()) {
-            selectionArgs[i++] = String.valueOf(iterator.next().getCode());
-        }
-        return selectionArgs;
-    }
-
-    private static Cursor newCursor(SQLiteDatabase db, String[] selectionArgs) {
-        return db.query(
-                DBContract.Events.TABLE_NAME,
-                null,
-                DBContract.Events.COLUMN_NAME_TYPE_ID + "  IN (?, ?, ?)",
-                selectionArgs,
-                null,
-                null,
-                null);
-    }
-
-    private static Iterator<EventsTableRow> getEventsIterator(Cursor cursor) {
-        EventsTableRow.Set rows = new EventsTableRow.Set();
-
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                EventsTableRow row = new EventsTableRow(
-                        cursor.getInt(0),
-                        cursor.getString(1),
-                        cursor.getInt(2),
-                        cursor.getString(3),
-                        cursor.getLong(4)
-                );
-                rows.add(row);
-                cursor.moveToNext();
-            }
-        }
-        return rows.iterator();
-    }
-
-    public static void updateEvent(int id, String calendarId, long calendarEventId, Context appContext) {
-        DatabaseHandler dbh = new DatabaseHandler(appContext);
-        SQLiteDatabase db = dbh.getWritableDatabase();
-        db.update(DBContract.Events.TABLE_NAME,
-                getContentValues(calendarId, calendarEventId),
-                DBContract.Events._ID + "=?",
-                new String[]{String.valueOf(id)});
-        db.close();
-        dbh.close();
-    }
-
-    private static ContentValues getContentValues(String calendarId, long calendarEventId) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_ID, calendarId);
-        if (calendarEventId > SimpleCalendarEvent.NON_EXISTING) {
-            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, calendarEventId);
-        } else {
-            contentValues.put(DBContract.Events.COLUMN_NAME_CALENDAR_EVENT_ID, NULL_VALUE);
-        }
-        return contentValues;
     }
 }

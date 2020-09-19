@@ -10,7 +10,6 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import java.util.concurrent.Executors
 
-
 @Database(entities = [Event::class, Reminder::class], version = 4)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
@@ -23,20 +22,26 @@ abstract class AppDatabase : RoomDatabase() {
         fun getInstance(context: Context): AppDatabase {
             val rdc: Callback = object : Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
-                    var array = emptyArray<Event>()
-                    val years = arrayOf(2020, 2021, 2022, 2023)
-                    for (year in years) {
-                        getArrays(year).forEach { arrayId ->
-                            val eventsArray = context.resources.getStringArray(arrayId).map {
-                                Event(null, getDayTypeCode(arrayId), it, null, null)
-                            }
-                            array = array.plus(eventsArray)
-                        }
-                    }
-                    array.sort()
-                    Executors.newSingleThreadScheduledExecutor().execute {
-                        getInstance(context).eventDao().insertAll(*array)
-                    }
+                    addEventsToDb(arrayOf(2020, 2021, 2022, 2023), context)
+                }
+            }
+
+            val migration3to4: Migration = object : Migration(3, 4) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    // Since we didn't alter the table, there's nothing else to do here.
+                    // It's done only for marking migration to Room
+                }
+            }
+
+            val migration2to4: Migration = object : Migration(2, 4) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    addEventsToDb(arrayOf(2021, 2022, 2023), context)
+                }
+            }
+
+            val migration1to4: Migration = object : Migration(1, 4) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    addEventsToDb(arrayOf(2020, 2021, 2022, 2023), context)
                 }
             }
 
@@ -53,7 +58,9 @@ abstract class AppDatabase : RoomDatabase() {
                             // migration with Room in this blog post:
                             // https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
                             .addCallback(rdc)
-                            .addMigrations(MIGRATION_3_4)
+                            .addMigrations(migration3to4)
+                            .addMigrations(migration2to4)
+                            .addMigrations(migration1to4)
                             .fallbackToDestructiveMigration()
                             .build()
                     INSTANCE = instance
@@ -62,9 +69,19 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        private val MIGRATION_3_4: Migration = object : Migration(3, 4) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                // Since we didn't alter the table, there's nothing else to do here.
+        private fun addEventsToDb(years: Array<Int>, context: Context) {
+            var array = emptyArray<Event>()
+            for (year in years) {
+                getArrays(year).forEach { arrayId ->
+                    val eventsArray = context.resources.getStringArray(arrayId).map {
+                        Event(null, getEventTypeId(arrayId), it, null, null)
+                    }
+                    array = array.plus(eventsArray)
+                }
+            }
+            array.sort()
+            Executors.newSingleThreadScheduledExecutor().execute {
+                getInstance(context).eventDao().insertAll(*array)
             }
         }
 
@@ -83,7 +100,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        fun getDayTypeCode(idOfArray: Int): Int {
+        private fun getEventTypeId(idOfArray: Int): Int {
             return when (idOfArray) {
                 R.array.holidays_2020, R.array.holidays_2021, R.array.holidays_2022, R.array.holidays_2023 ->
                     Day.Type.HOLIDAY.code
