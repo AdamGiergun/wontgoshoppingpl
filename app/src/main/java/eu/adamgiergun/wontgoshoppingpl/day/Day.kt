@@ -106,7 +106,6 @@ class Day private constructor(private val dbId: Int, private val item: String, p
         val database = AppDatabase.getInstance(appContext).eventDao()
         val event = Event(dbId, type!!.code, item, calendarId, calendarEventId)
         database.update(event)
-//        DatabaseHandler.updateEvent(dbId, calendarId, calendarEventId, appContext)
     }
 
     suspend fun deleteFromGoogleCalendar(appContext: Context) {
