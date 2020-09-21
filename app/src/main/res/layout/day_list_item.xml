@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="day"
             type="eu.adamgiergun.wontgoshoppingpl.day.Day" />
+
+        <variable
+            name="isLookRich"
+            type="Boolean" />
+
+        <variable
+            name="density"
+            type="Float" />
+
         <variable
             name="clickListener"
             type="eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener" />
@@ -12,9 +23,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
+        style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/MyCardViewStyle">
+        android:onClick="@{() -> clickListener.onItemClick(day)}"
+        app:day="@{day}"
+        app:density="@{density}"
+        app:isLookRich="@{isLookRich}">
 
         <LinearLayout
             android:id="@+id/LinearLayoutInCardView"
@@ -25,25 +40,30 @@
 
             <TextView
                 android:id="@+id/date"
+                style="@style/MyTextViewStyleInList"
+                android:layout_gravity="start|center_vertical"
                 android:layout_weight="@dimen/date_field_weight"
-                style="@style/MyTextViewStyleInList" />
+                android:text="@{day.dateAndWeekdayString}"
+                android:textAlignment="textStart" />
 
             <TextView
                 android:id="@+id/time"
-                android:layout_weight="@dimen/time_field_weight"
                 style="@style/MyTextViewStyleInList"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
+                android:layout_weight="@dimen/time_field_weight"
+                android:text="@{day.timeDescription}"
                 android:textAlignment="center" />
 
             <TextView
-                android:layout_weight="@dimen/separator_field_weight"
-                style="@style/MyTextViewStyleInList" />
+                style="@style/MyTextViewStyleInList"
+                android:layout_weight="@dimen/separator_field_weight" />
 
             <TextView
                 android:id="@+id/name"
-                android:layout_weight="@dimen/name_field_weight"
                 style="@style/MyTextViewStyleInList"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
+                android:layout_weight="@dimen/name_field_weight"
+                android:text="@{day.name}"
                 android:textAlignment="center" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -1,17 +1,20 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 
-class DaysRecyclerViewAdapter private constructor(private val listener: DaysFragment.OnItemClickListener?) : ListAdapter<Day, DaysRecyclerViewAdapter.DayViewHolder>(DayDiffCallback()) {
+internal class DaysRecyclerViewAdapter(
+        private val listener: DaysFragment.OnItemClickListener?,
+        private val isLookRich: Boolean,
+        private val density: Float
+)
+    : ListAdapter<Day, DaysRecyclerViewAdapter.DayViewHolder>(DayDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         return DayViewHolder.from(parent)
@@ -19,54 +22,18 @@ class DaysRecyclerViewAdapter private constructor(private val listener: DaysFrag
 
     override fun onBindViewHolder(holderDay: DayViewHolder, position: Int) {
         val day = getItem(position)
-        holderDay.bind(day!!, listener)
+        holderDay.bind(day!!, listener, isLookRich, density)
     }
 
-    class DayViewHolder(binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val dayView = binding.date //: TextView = cardView.findViewById(R.id.date)
-        private val timeView = binding.time //: TextView = cardView.findViewById(R.id.time)
-        private val nameView = binding.name // TextView = cardView.findViewById(R.id.name)
-        private val cardView = binding.cardView
-
+    internal class DayViewHolder private constructor(private val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         private lateinit var day: Day
 
-        fun bind(day: Day, listener: DaysFragment.OnItemClickListener?) {
-            setup(day)
-            cardView.setOnClickListener { listener?.onItemClick(day) }
-        }
-
-        private fun setup(day: Day) {
-            this.day = day
-            dayView.text = day.dateAndWeekdayString
-            timeView.text = day.timeDescription
-            nameView.text = day.name
-            setupCardView()
-        }
-
-        private fun setupCardView() {
-            if (isLookRich) {
-                cardView.setBackgroundResource(day.backgroundResource)
-            } else {
-                cardView.setCardBackgroundColor(color)
-                cardView.radius = 8 * density
-                cardView.cardElevation = 4 * density
-            }
-        }
-
-        private val color: Int
-            get() {
-                val colorRes = day.backgroundColorResource
-                val resources = cardView.context.resources
-                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    resources.getColor(colorRes, null)
-                } else {
-                    @Suppress("DEPRECATION")
-                    resources.getColor(colorRes)
-                }
-            }
-
-        override fun toString(): String {
-            return super.toString() + " '" + timeView.text + "'"
+        fun bind(item: Day, listener: DaysFragment.OnItemClickListener?, isLookRich: Boolean, density: Float) {
+            day = item
+            binding.day = item
+            binding.isLookRich = isLookRich
+            binding.density = density
+            binding.clickListener = listener
         }
 
         suspend fun deleteFromGoogleCalendar(appContext: Context?) {
@@ -82,25 +49,14 @@ class DaysRecyclerViewAdapter private constructor(private val listener: DaysFrag
         }
     }
 
-    companion object {
-        private var isLookRich = false
-        private var density = 0f
-        fun newInstance(appContext: Context, listener: DaysFragment.OnItemClickListener?): DaysRecyclerViewAdapter {
-            val daysRecyclerViewAdapter = DaysRecyclerViewAdapter(listener)
-            isLookRich = AppPreferences.isLookRich(appContext)
-            density = appContext.resources.displayMetrics.density
-            return daysRecyclerViewAdapter
+    private class DayDiffCallback : DiffUtil.ItemCallback<Day>() {
+
+        override fun areItemsTheSame(oldItem: Day, newItem: Day): Boolean {
+            return oldItem.hashCode() == newItem.hashCode()
         }
-    }
-}
 
-class DayDiffCallback : DiffUtil.ItemCallback<Day>() {
-
-    override fun areItemsTheSame(oldItem: Day, newItem: Day): Boolean {
-        return oldItem.hashCode() == newItem.hashCode()
-    }
-
-    override fun areContentsTheSame(oldItem: Day, newItem: Day): Boolean {
-        return oldItem.hashCode() == newItem.hashCode()
+        override fun areContentsTheSame(oldItem: Day, newItem: Day): Boolean {
+            return oldItem.hashCode() == newItem.hashCode()
+        }
     }
 }

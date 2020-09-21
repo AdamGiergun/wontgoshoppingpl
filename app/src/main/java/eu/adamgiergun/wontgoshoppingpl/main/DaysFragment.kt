@@ -37,11 +37,16 @@ class DaysFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentDayListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_day_list, container, false)
         binding.lifecycleOwner = this
-        recyclerViewAdapter = DaysRecyclerViewAdapter.newInstance(requireContext().applicationContext, listener)
+        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+        recyclerViewAdapter = DaysRecyclerViewAdapter(
+                listener,
+                mainViewModel.isLookRich,
+                requireContext().resources.displayMetrics.density
+                )
         binding.list.adapter = recyclerViewAdapter
         attachItemTouchHelper(binding.list)
 
-        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
         //binding.viewModel = mainViewModel
         mainViewModel.days.observe(viewLifecycleOwner, {
             it?.let {
