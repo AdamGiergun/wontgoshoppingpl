@@ -4,32 +4,32 @@ import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
+import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 
-class DaysRecyclerViewAdapter private constructor(private val listener: DaysFragment.OnItemClickListener?) : ListAdapter<Day, DaysRecyclerViewAdapter.ViewHolder>(DayDiffCallback()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_day, parent, false) as CardView
-        return ViewHolder(view)
+class DaysRecyclerViewAdapter private constructor(private val listener: DaysFragment.OnItemClickListener?) : ListAdapter<Day, DaysRecyclerViewAdapter.DayViewHolder>(DayDiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
+        return DayViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holderDay: DayViewHolder, position: Int) {
         val day = getItem(position)
-        holder.bind(day!!, listener)
+        holderDay.bind(day!!, listener)
     }
 
-    class ViewHolder(private val cardView: CardView) : RecyclerView.ViewHolder(cardView) {
-        private val dayView: TextView = cardView.findViewById(R.id.date)
-        private val timeView: TextView = cardView.findViewById(R.id.time)
-        private val nameView: TextView = cardView.findViewById(R.id.name)
-        private var day: Day? = null
+    class DayViewHolder(binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val dayView = binding.date //: TextView = cardView.findViewById(R.id.date)
+        private val timeView = binding.time //: TextView = cardView.findViewById(R.id.time)
+        private val nameView = binding.name // TextView = cardView.findViewById(R.id.name)
+        private val cardView = binding.cardView
+
+        private lateinit var day: Day
+
         fun bind(day: Day, listener: DaysFragment.OnItemClickListener?) {
             setup(day)
             cardView.setOnClickListener { listener?.onItemClick(day) }
@@ -45,7 +45,7 @@ class DaysRecyclerViewAdapter private constructor(private val listener: DaysFrag
 
         private fun setupCardView() {
             if (isLookRich) {
-                cardView.setBackgroundResource(day!!.backgroundResource)
+                cardView.setBackgroundResource(day.backgroundResource)
             } else {
                 cardView.setCardBackgroundColor(color)
                 cardView.radius = 8 * density
@@ -55,7 +55,7 @@ class DaysRecyclerViewAdapter private constructor(private val listener: DaysFrag
 
         private val color: Int
             get() {
-                val colorRes = day!!.backgroundColorResource
+                val colorRes = day.backgroundColorResource
                 val resources = cardView.context.resources
                 return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     resources.getColor(colorRes, null)
@@ -70,9 +70,16 @@ class DaysRecyclerViewAdapter private constructor(private val listener: DaysFrag
         }
 
         suspend fun deleteFromGoogleCalendar(appContext: Context?) {
-            day!!.deleteFromGoogleCalendar(appContext!!)
+            day.deleteFromGoogleCalendar(appContext!!)
         }
 
+        companion object {
+            fun from(parent: ViewGroup): DayViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = DayListItemBinding.inflate(layoutInflater, parent, false)
+                return DayViewHolder(binding)
+            }
+        }
     }
 
     companion object {
