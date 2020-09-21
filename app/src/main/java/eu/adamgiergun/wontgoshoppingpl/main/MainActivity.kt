@@ -111,10 +111,12 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     //region Ads Handling region
     private fun setupBannerAds() {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(applicationContext)
-        val mAdView = findViewById<AdView>(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+        lifecycleScope.launch {
+            MobileAds.initialize(applicationContext)
+            val mAdView = findViewById<AdView>(R.id.adView)
+            val adRequest = AdRequest.Builder().build()
+            mAdView.loadAd(adRequest)
+        }
     }
 
     private fun initializeOrLoadInterstitialAd(context: Context) {
@@ -126,8 +128,10 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     }
 
     private fun loadInterstitialAd() {
-        val adRequest = AdRequest.Builder().build()
-        interstitialAd!!.loadAd(adRequest)
+        lifecycleScope.launch {
+            val adRequest = AdRequest.Builder().build()
+            interstitialAd!!.loadAd(adRequest)
+        }
     }
 
     private fun getInterstitialAd(): InterstitialAd? {
