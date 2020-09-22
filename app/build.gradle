@@ -16,7 +16,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 103
-        versionName "2.99.3.2"
+        versionName "2.99.4.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
@@ -97,7 +97,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-    implementation 'com.google.firebase:firebase-ads:19.4.0'
+    //implementation 'com.google.firebase:firebase-ads:19.4.0'
+    implementation 'com.google.android.gms:play-services-ads:19.4.0'
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
     implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
 

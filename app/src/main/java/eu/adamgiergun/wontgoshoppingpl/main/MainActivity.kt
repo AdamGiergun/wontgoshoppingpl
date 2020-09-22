@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,7 @@ import eu.adamgiergun.mylibrary.NoticeDialogFragment.NoticeDialogViewListener
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst
+import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener
@@ -34,7 +36,7 @@ import java.util.*
     TODO "remove all events from calendar" in Settings
     TODO "Info" group in Settings(?)
     TODO move events filtering from settings to app bar(?)
-*/  
+*/
 class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener, NoticeDialogViewListener {
 
     private var interstitialAd: InterstitialAd? = null
@@ -43,13 +45,14 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    //    private Calendar calStart;
+    //    private var calStart: Calendar
     //region ActivityLifeCycleRegion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //        calStart = Calendar.getInstance();
-        setContentView(R.layout.activity_main)
-        setupBannerAds()
+//        calStart = Calendar.getInstance();
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.isLookRich = mMainViewModel.isLookRich
+        setupBannerAds(binding.adView)
         initializeOrLoadInterstitialAd(applicationContext)
         if (savedInstanceState == null) {
             setLocalizedConst()
@@ -109,29 +112,28 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     }
 
     //region Ads Handling region
-    private fun setupBannerAds() {
+    private fun setupBannerAds(mAdView: AdView) {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         lifecycleScope.launch {
-            MobileAds.initialize(applicationContext)
-            val mAdView = findViewById<AdView>(R.id.adView)
+            MobileAds.initialize(this@MainActivity)
             val adRequest = AdRequest.Builder().build()
             mAdView.loadAd(adRequest)
         }
     }
 
     private fun initializeOrLoadInterstitialAd(context: Context) {
-        if (interstitialAd == null) {
-            interstitialAd = InterstitialAd(context)
-            interstitialAd!!.adUnitId = context.getString(R.string.interstitial_ad_id)
+        lifecycleScope.launch {
+            if (interstitialAd == null) {
+                interstitialAd = InterstitialAd(context)
+                interstitialAd!!.adUnitId = context.getString(R.string.interstitial_ad_id)
+            }
+            loadInterstitialAd()
         }
-        loadInterstitialAd()
     }
 
     private fun loadInterstitialAd() {
-        lifecycleScope.launch {
-            val adRequest = AdRequest.Builder().build()
-            interstitialAd!!.loadAd(adRequest)
-        }
+        val adRequest = AdRequest.Builder().build()
+        interstitialAd!!.loadAd(adRequest)
     }
 
     private fun getInterstitialAd(): InterstitialAd? {
@@ -149,28 +151,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
             }
         }
     }
-
-    private fun showBigAd() {
-        val interstitialAd = getInterstitialAd()
-        interstitialAd?.show()
-    }
-
     //endregion
-    override fun onResume() {
-        super.onResume()
-        if (mMainViewModel.isLookRich) {
-            setLookRich()
-        }
-        //        showStartTime();
-    }
-
-    private fun setLookRich() {
-        val recyclerViewContainer = findViewById<View>(R.id.main_view)
-        recyclerViewContainer.setBackgroundResource(R.drawable.bg_red)
-        val adViewLayout = findViewById<View>(R.id.adViewLayout)
-        adViewLayout.setBackgroundResource(R.drawable.bg_red)
-    }
-
     private fun addFragment(fragment: Fragment) {
         val ft = supportFragmentManager.beginTransaction()
         val oldFragment = supportFragmentManager.findFragmentByTag(MAIN_FRAGMENT_TAG)
@@ -181,8 +162,8 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     }
 
     //    private void showStartTime() {
-    //        Calendar calEnd = Calendar.getInstance();
-    //        String timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
+    //        val calEnd = Calendar.getInstance()
+    //        val timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
     //        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
     //    }
     //endregion
@@ -303,12 +284,11 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     }
 
     private suspend fun addToCalendar() {
-        showBigAd()
-        val isResultPositive = mMainViewModel.addToCalendar()
-//        if (isResultPositive) {
-//            refreshList()
-//        }
-        showInfo(isResultPositive, R.string.info_added_to_calendar, mMainViewModel.error)
+        lifecycleScope.launch {
+            getInterstitialAd()?.show()
+            val isResultPositive = mMainViewModel.addToCalendar()
+            showInfo(isResultPositive, R.string.info_added_to_calendar, mMainViewModel.error)
+        }
     }
 
     override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {

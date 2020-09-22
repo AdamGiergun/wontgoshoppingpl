@@ -1,8 +1,11 @@
-package eu.adamgiergun.wontgoshoppingpl.day
+package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.os.Build
+import android.view.View
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
+import eu.adamgiergun.wontgoshoppingpl.R
+import eu.adamgiergun.wontgoshoppingpl.day.Day
 
 @BindingAdapter("day", "isLookRich", "density")
 internal fun CardView.setLook(item: Day?, isLookRich: Boolean, density: Float) {
@@ -26,4 +29,10 @@ internal fun CardView.setLook(item: Day?, isLookRich: Boolean, density: Float) {
             cardElevation = 4 * density
         }
     }
+}
+
+@BindingAdapter("isLookRich")
+internal fun View.setRichBackgroundResource(isLookRich: Boolean) {
+    if (isLookRich)
+        setBackgroundResource(R.drawable.bg_red)
 }
