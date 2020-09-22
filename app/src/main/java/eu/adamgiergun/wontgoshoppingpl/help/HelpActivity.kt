@@ -2,27 +2,21 @@ package eu.adamgiergun.wontgoshoppingpl.help
 
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
+import android.text.method.MovementMethod
 import android.view.MenuItem
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
+import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityHelpBinding
 
 class HelpActivity : ActivityWithTheme() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_help)
+        val binding: ActivityHelpBinding = DataBindingUtil.setContentView(this, R.layout.activity_help)
+        binding.linkMovementMethod = LinkMovementMethod.getInstance()
         setupHomeInBar()
-        activateLinks()
-    }
-
-    private fun activateLinks() {
-        activateLink(R.id.privacyPolicyLink)
-        activateLink(R.id.helpTextView3)
-    }
-
-    private fun activateLink(viewId: Int) {
-        val view = findViewById<TextView>(viewId)
-        view.movementMethod = LinkMovementMethod.getInstance()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -32,4 +26,9 @@ class HelpActivity : ActivityWithTheme() {
         }
         return super.onOptionsItemSelected(item)
     }
+}
+
+@BindingAdapter("linkMovementMethod")
+internal fun AppCompatTextView.setLinkMovementMethod(linkMovementMethod: MovementMethod) {
+    movementMethod = linkMovementMethod
 }
