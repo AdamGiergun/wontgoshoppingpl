@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="isLookRich"
-            type="Boolean" />
+            name="vieModel"
+            type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,32 +15,26 @@
         android:layout_height="match_parent"
         tools:context="eu.adamgiergun.wontgoshoppingpl.main.MainActivity">
 
-        <LinearLayout
-            android:id="@+id/main_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/main_nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
-            android:orientation="horizontal"
-            app:isLookRich="@{isLookRich}"
+            app:defaultNavHost="true"
+            app:isLookRich="@{vieModel.isLookRich}"
             app:layout_constraintBottom_toTopOf="@+id/adViewLayout"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:id="@+id/main_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraphId="@{vieModel.mainNavigationId}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/adViewLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:isLookRich="@{isLookRich}"
+            app:isLookRich="@{vieModel.isLookRich}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">

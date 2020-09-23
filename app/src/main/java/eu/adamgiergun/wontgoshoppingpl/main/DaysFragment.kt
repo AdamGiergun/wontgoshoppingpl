@@ -53,6 +53,7 @@ class DaysFragment : Fragment() {
                 recyclerViewAdapter.submitList(it)
             }
         })
+        mainViewModel.logLook()
         return binding.root
     }
 

@@ -62,17 +62,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         )
     }
 
-    private var _isRecreatedOnDemand = false
-    val isRecreatedOnDemand: Boolean
-        get(): Boolean {
-            return if (_isRecreatedOnDemand) {
-                _isRecreatedOnDemand = false
-                true
-            } else {
-                false
-            }
-        }
-
     var lastDateInMillis = 0L
         private set
 
@@ -160,7 +149,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     fun onInitialLookChoice(newIsLookRich: Boolean) {
         isLookRich = newIsLookRich
         setNotFirstRun()
-        _isRecreatedOnDemand = true
     }
 
     //region AppPreferences proxy region
@@ -169,6 +157,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     val isFirstRun: Boolean
         get() = AppPreferences.isFirstRun(appContext)
+    val mainNavigationId: Int
+        get() = if (isFirstRun) R.navigation.main_navigation_first_run else R.navigation.main_navigation
 
     fun wasAppWidgetInfoDisplayed(): Boolean {
         return AppPreferences.wasAppWidgetInfoDisplayed(appContext)

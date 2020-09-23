@@ -4,6 +4,8 @@ import android.os.Build
 import android.view.View
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
+import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.findNavController
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 
@@ -35,4 +37,9 @@ internal fun CardView.setLook(item: Day?, isLookRich: Boolean, density: Float) {
 internal fun View.setRichBackgroundResource(isLookRich: Boolean) {
     if (isLookRich)
         setBackgroundResource(R.drawable.bg_red)
+}
+
+@BindingAdapter("navGraphId")
+internal fun FragmentContainerView.bindNavigation(navGraphId: Int) {
+    findNavController().setGraph(navGraphId)
 }

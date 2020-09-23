@@ -11,9 +11,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.InterstitialAd
@@ -51,20 +51,12 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
         super.onCreate(savedInstanceState)
 //        calStart = Calendar.getInstance();
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.isLookRich = mMainViewModel.isLookRich
+        binding.vieModel = mMainViewModel
+        showWidgetInfoIfNeeded()
         setupBannerAds(binding.adView)
         initializeOrLoadInterstitialAd(applicationContext)
         if (savedInstanceState == null) {
             setLocalizedConst()
-            if (mMainViewModel.isFirstRun) {
-                addFragment(AskForLook.newInstance())
-            } else {
-                setDayFragment()
-            }
-        } else {
-            if (mMainViewModel.isRecreatedOnDemand) {
-                setDayFragment()
-            }
         }
 //        addCrashTestButton();
     }
@@ -90,12 +82,6 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
             LocalizedConst.askForLook = getString(R.string.ask_for_look)
             LocalizedConst.isSet = true
         }
-    }
-
-    private fun setDayFragment() {
-        showWidgetInfoIfNeeded()
-        addFragment(DaysFragment.newInstance())
-        mMainViewModel.logLook()
     }
 
     private fun showWidgetInfoIfNeeded() {
@@ -152,14 +138,6 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
         }
     }
     //endregion
-    private fun addFragment(fragment: Fragment) {
-        val ft = supportFragmentManager.beginTransaction()
-        val oldFragment = supportFragmentManager.findFragmentByTag(MAIN_FRAGMENT_TAG)
-        if (oldFragment != null) ft.detach(oldFragment)
-        ft.add(R.id.main_fragment, fragment, MAIN_FRAGMENT_TAG)
-        ft.commit()
-        supportFragmentManager.executePendingTransactions()
-    }
 
     //    private void showStartTime() {
     //        val calEnd = Calendar.getInstance()
@@ -257,14 +235,11 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     //region ShowingInfoRegion
     private fun showInfo(resultIsPositive: Boolean, positiveInfo: Int, negativeInfo: Int) {
         val info = if (resultIsPositive) positiveInfo else negativeInfo
-        showInfo(info, false)
+        showInfo(info)
     }
 
-    private fun showInfo(info: Int, isLengthLong: Boolean) {
-        val length = if (isLengthLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
-        Toast
-                .makeText(applicationContext, info, length)
-                .show()
+    private fun showInfo(info: Int) {
+        Toast.makeText(applicationContext, info, Toast.LENGTH_SHORT).show()
     }
 
     //endregion
@@ -293,7 +268,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
 
     override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {
         if (dialog is DayTypesAddedToCalendarDialog || dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
-            showInfo(R.string.info_cancelled, false)
+            showInfo(R.string.info_cancelled)
         }
     }
 
@@ -304,11 +279,8 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     fun onLookButtonClick(view: View) {
         val isLookRich = view.id == R.id.imageButtonRich
         mMainViewModel.onInitialLookChoice(isLookRich)
-        removeAllFragments()
-        recreate()
-    } //endregion
-
-    companion object {
-        private const val MAIN_FRAGMENT_TAG = "main_fragment"
+        view.findNavController().navigate(AskForLookDirections.actionAskForLookToDaysFragment())
+        invalidateOptionsMenu()
     }
+    //endregion
 }
