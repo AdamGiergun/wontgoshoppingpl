@@ -11,7 +11,6 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.*
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
-import eu.adamgiergun.wontgoshoppingpl.db.EventDao
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsFragment
 import kotlinx.coroutines.launch
 import java.util.*
@@ -81,7 +80,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
             it!!.code.toString()
         }.toList()
         val eventDao = AppDatabase.getInstance(application).eventDao()
-        if (isFirstRun) initializeDb(eventDao)
+        if (isFirstRun) eventDao.initialize()
         _days.value = eventDao.getAllEventsOfTypeNotBefore(dayTypes, today)!!.map {
             Day.newInstance(it)
         }
@@ -89,13 +88,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
             val lastDay = Day.newInstance(it)
             lastDateInMillis = lastDay.dateInMillis
         }
-    }
-
-    private suspend fun initializeDb(eventDao: EventDao) {
-        var hash: Int
-        do {
-            hash = eventDao.getLastEvent().hashCode()
-        } while (hash == 0)
     }
 
     fun resetReminderToDefaultValue() {

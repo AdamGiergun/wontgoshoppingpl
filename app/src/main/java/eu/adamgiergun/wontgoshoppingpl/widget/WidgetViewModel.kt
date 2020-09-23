@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import eu.adamgiergun.wontgoshoppingpl.R
+import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
 import eu.adamgiergun.wontgoshoppingpl.common.setLocalizedConst
 import eu.adamgiergun.wontgoshoppingpl.common.today
@@ -17,6 +18,9 @@ internal class WidgetViewModel private constructor(val layoutId: Int, val text: 
         const val widgetTextViewId = R.id.appwidget_text
 
         suspend fun newInstance(appContext: Context?): WidgetViewModel {
+            if (AppPreferences.isFirstRun(appContext)) {
+                AppDatabase.getInstance(appContext!!).eventDao().initialize()
+            }
             val nearestDay = getNearestDay(appContext!!)
             val intent = Intent(appContext, MainActivity::class.java)
             return WidgetViewModel(

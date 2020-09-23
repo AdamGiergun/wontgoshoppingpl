@@ -26,6 +26,13 @@ interface EventDao {
     @Update
     suspend fun update(event: Event)
 
+    suspend fun initialize() {
+        var hash: Int
+        do {
+            hash = getLastEvent().hashCode()
+        } while (hash == 0)
+    }
+
 //    @Transaction
 //    @Query("SELECT * FROM events")
 //    suspend fun getEventsWithReminders(): List<EventWithReminders>?
