@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleReminder
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleTime
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.*
 import eu.adamgiergun.wontgoshoppingpl.day.Day
@@ -34,7 +34,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         get() = _tillDate
 
     fun setTillDate(year: Int, month: Int, day: Int) {
-        _tillDate.value = SimpleDate.newInstance(year, month, day)
+        _tillDate.value = SimpleDate(year, month, day)
     }
 
     private var _reminder = MutableLiveData<SimpleReminder>()

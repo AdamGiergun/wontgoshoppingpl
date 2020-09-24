@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.common
 
-import java.lang.StringBuilder
 import java.util.*
 
 val today

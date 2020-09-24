@@ -23,7 +23,8 @@ class Widget : AppWidgetProvider() {
             appWidgetIds.forEach { appWidgetId ->
                 appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
             }
-            WidgetViewModel.logUpdated(context.applicationContext) }
+            WidgetViewModel.logUpdated(context.applicationContext)
+        }
     }
 
     private suspend fun newRemoteViews(context: Context): RemoteViews {

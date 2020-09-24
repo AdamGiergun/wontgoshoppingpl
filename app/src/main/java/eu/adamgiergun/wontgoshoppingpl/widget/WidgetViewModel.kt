@@ -18,10 +18,10 @@ internal class WidgetViewModel private constructor(val layoutId: Int, val text: 
         const val widgetTextViewId = R.id.appwidget_text
 
         suspend fun newInstance(appContext: Context?): WidgetViewModel {
-            if (AppPreferences.isFirstRun(appContext)) {
-                AppDatabase.getInstance(appContext!!).eventDao().initialize()
+            if (AppPreferences.isFirstRun(appContext!!)) {
+                AppDatabase.getInstance(appContext).eventDao().initialize()
             }
-            val nearestDay = getNearestDay(appContext!!)
+            val nearestDay = getNearestDay(appContext)
             val intent = Intent(appContext, MainActivity::class.java)
             return WidgetViewModel(
                     if (nearestDay!!.isCommerceSunday) R.layout.app_widget_shopping else R.layout.app_widget_no_shopping,

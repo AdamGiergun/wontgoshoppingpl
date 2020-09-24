@@ -9,9 +9,9 @@ import androidx.preference.Preference;
 import eu.adamgiergun.mylibrary.BasePreferenceFragmentCompat;
 import eu.adamgiergun.mylibrary.IntegerDialogPreference;
 import eu.adamgiergun.mylibrary.IntegerPreferenceDialogFragmentCompat;
-import eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreference;
-import eu.adamgiergun.mylibrary.calendarmanagement.TimePreference;
-import eu.adamgiergun.mylibrary.calendarmanagement.TimePreferenceDialogFragmentCompat;
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference;
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreference;
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreferenceDialogFragmentCompat;
 import eu.adamgiergun.wontgoshoppingpl.R;
 
 public class NotificationPreferenceFragment extends BasePreferenceFragmentCompat {
@@ -34,6 +34,7 @@ public class NotificationPreferenceFragment extends BasePreferenceFragmentCompat
             Preference preference = findPreference(key);
             if (preference instanceof CalendarsListPreference) {
                 CharSequence calendarId = sharedPreferences.getString(key, "0");
+                assert calendarId != null;
                 CharSequence summary = ((CalendarsListPreference) preference).getCalendarName(calendarId);
                 preference.setSummary(summary);
             }
@@ -52,9 +53,7 @@ public class NotificationPreferenceFragment extends BasePreferenceFragmentCompat
         if (dialogFragment != null) {
             setDialogFragmentArguments(dialogFragment, preference.getKey());
             dialogFragment.setTargetFragment(this, 0);
-            if (getFragmentManager() != null) {
-                dialogFragment.show(getFragmentManager(), preference.getClass().getName());
-            }
+            dialogFragment.show(getParentFragmentManager(), preference.getClass().getName());
         } else {
             super.onDisplayPreferenceDialog(preference);
         }

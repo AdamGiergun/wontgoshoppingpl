@@ -2,10 +2,10 @@ package eu.adamgiergun.wontgoshoppingpl.day
 
 import android.content.Context
 import android.widget.Toast
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleCalendarEvent
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleReminder
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleTime
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleCalendarEvent
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleReminder
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleTime
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst.since
@@ -59,7 +59,7 @@ class Day private constructor(private val dbId: Int, private val item: String, p
     suspend fun addToGoogleCalendar(appContext: Context, timeZoneId: String): Boolean {
         calendarId = AppPreferences.getDefaultCalendarId(appContext)
         val calendarEvent = newCalendarEventInstance(appContext, timeZoneId)
-        if (calendarEvent.exists(appContext, calendarId)) {
+        if (calendarEvent.exists(appContext, calendarId!!)) {
             calendarEvent.writeReminders(appContext)
         } else {
             if (calendarEvent.exists(appContext)) {
@@ -72,7 +72,7 @@ class Day private constructor(private val dbId: Int, private val item: String, p
     }
 
     private fun newCalendarEventInstance(appContext: Context, timeZoneId: String): SimpleCalendarEvent {
-        return SimpleCalendarEvent.Builder(calendarId, date, SimpleTime(time), timeZoneId, allDay)
+        return SimpleCalendarEvent.Builder(calendarId!!, date!!, SimpleTime(time), timeZoneId, allDay)
                 .setCalendarEventId(calendarEventId)
                 .setEndCalendar(endDate, SimpleTime("23:59"))
                 .setReminders(reminders)

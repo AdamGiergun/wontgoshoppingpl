@@ -3,7 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import eu.adamgiergun.mylibrary.calendarmanagement.SimpleDate
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
 
 @Entity(tableName = Event.TABLE_NAME)
 data class Event(
