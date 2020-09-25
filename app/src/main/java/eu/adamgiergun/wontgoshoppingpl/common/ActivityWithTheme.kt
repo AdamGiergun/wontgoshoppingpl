@@ -7,7 +7,7 @@ import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
-import eu.adamgiergun.mylibrary.AppCompatActivityWithHomeInBar
+import eu.adamgiergun.mykotlinlibrary.AppCompatActivityWithHomeInBar
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.areAllPermissionsGranted
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPermissions
@@ -59,7 +59,7 @@ abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
                     resources.displayMetrics)
             null
         } else {
-            context!!.createConfigurationContext(config)
+            context?.createConfigurationContext(config)
         }
     }
 
@@ -80,16 +80,8 @@ abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
     }
 
     protected open fun onCalendarPermissionsGranted() {}
-    protected open fun onCalendarPermissionNotGranted() {
-        Toast.makeText(applicationContext, eu.adamgiergun.mylibrary.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
-    }
 
-    protected fun removeAllFragments() {
-        val fragmentManager = supportFragmentManager
-        val fragments = fragmentManager.fragments
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        for (fragment in fragments) fragmentTransaction.remove(fragment!!)
-        fragmentTransaction.commit()
-        supportFragmentManager.executePendingTransactions()
+    protected open fun onCalendarPermissionNotGranted() {
+        Toast.makeText(applicationContext, R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
     }
 }
