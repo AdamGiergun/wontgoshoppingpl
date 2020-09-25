@@ -77,7 +77,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     private suspend fun setDaysAndLastDate(application: Application) {
         val dayTypes = dayTypesToBeDisplayed.map {
-            it!!.code.toString()
+            it.code.toString()
         }.toList()
         val eventDao = AppDatabase.getInstance(application).eventDao()
         if (isFirstRun) eventDao.initialize()
