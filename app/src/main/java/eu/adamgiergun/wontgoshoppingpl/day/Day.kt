@@ -82,11 +82,10 @@ class Day private constructor(private val dbId: Int, private val item: String, p
 
     private val endDate: SimpleDate
         get() = date!!.addDays(noOfConsecutiveDays)
+
     private val reminders: SimpleReminder.List
         get() {
-            val reminders = SimpleReminder.List()
-            reminders.add(reminder)
-            return reminders
+            return SimpleReminder.List().apply { add(reminder) }
         }
 
     private suspend fun deleteFromGoogleCalendar(calendarEvent: SimpleCalendarEvent, appContext: Context) {
