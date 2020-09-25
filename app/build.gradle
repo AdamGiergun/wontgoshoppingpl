@@ -16,8 +16,8 @@ android {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 103
-        versionName "2.99.6.1"
+        versionCode 104
+        versionName "2.99.6.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
@@ -80,7 +80,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'eu.adamgiergun:mylibrary:0.99.98.10@aar'
-    implementation 'eu.adamgiergun:mykotlinlibrary:0.1.13@aar'
+    implementation 'eu.adamgiergun:mykotlinlibrary:0.1.14@aar'
     implementation 'eu.adamgiergun:myresources:1.0.12@aar'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
