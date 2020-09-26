@@ -22,7 +22,7 @@ internal class DaysRecyclerViewAdapter(
 
     override fun onBindViewHolder(holderDay: DayViewHolder, position: Int) {
         val day = getItem(position)
-        holderDay.bind(day!!, listener, isLookRich, density)
+        holderDay.bind(day, listener, isLookRich, density)
     }
 
     internal class DayViewHolder private constructor(private val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {

@@ -250,8 +250,8 @@ class Day private constructor(private val dbId: Int, private val item: String, p
             return day
         }
 
-        fun getDayForWidget(event: Event): Day {
-            return Day(event.id!!, event.item, Type.getType(event.typeId)!!)
+        fun getDayForWidget(event: Event?): Day? {
+            return event?.let { Day(event.id!!, event.item, Type.getType(event.typeId)!!) }
         }
     }
 

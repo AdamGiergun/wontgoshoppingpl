@@ -12,27 +12,29 @@ import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity
 
-internal class WidgetViewModel private constructor(val layoutId: Int, val text: CharSequence, val pendingIntent: PendingIntent?) {
+internal class WidgetViewModel private constructor(val layoutId: Int, val text: CharSequence, val pendingIntent: PendingIntent) {
 
     internal companion object {
         const val widgetTextViewId = R.id.appwidget_text
 
-        suspend fun newInstance(appContext: Context?): WidgetViewModel {
-            if (AppPreferences.isFirstRun(appContext!!)) {
+        suspend fun newInstance(appContext: Context): WidgetViewModel {
+            if (AppPreferences.isFirstRun(appContext)) {
                 AppDatabase.getInstance(appContext).eventDao().initialize()
             }
-            val nearestDay = getNearestDay(appContext)
+            var layoutId = R.layout.app_widget_no_shopping
+            var widgetText: CharSequence = ""
+            getNearestDay(appContext)?.let {
+                layoutId = if (it.isCommerceSunday) R.layout.app_widget_shopping else R.layout.app_widget_no_shopping
+                widgetText = it.widgetText
+            }
             val intent = Intent(appContext, MainActivity::class.java)
-            return WidgetViewModel(
-                    if (nearestDay!!.isCommerceSunday) R.layout.app_widget_shopping else R.layout.app_widget_no_shopping,
-                    nearestDay.widgetText,
-                    PendingIntent.getActivity(appContext, 0, intent, 0)
-            )
+            val pendingIntent = PendingIntent.getActivity(appContext, 0, intent, 0)
+            return WidgetViewModel(layoutId, widgetText, pendingIntent)
         }
 
         private suspend fun getNearestDay(appContext: Context): Day? {
             val database = AppDatabase.getInstance(appContext).eventDao()
-            return Day.getDayForWidget(database.getFirstEventNotBefore(today)!!)
+            return Day.getDayForWidget(database.getFirstEventNotBefore(today))
         }
 
         fun logUpdated(appContext: Context) {

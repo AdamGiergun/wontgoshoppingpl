@@ -110,8 +110,9 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     private fun initializeOrLoadInterstitialAd(context: Context) {
         lifecycleScope.launch {
             if (interstitialAd == null) {
-                interstitialAd = InterstitialAd(context)
-                interstitialAd!!.adUnitId = context.getString(R.string.interstitial_ad_id)
+                interstitialAd = InterstitialAd(context).apply {
+                    adUnitId = context.getString(R.string.interstitial_ad_id)
+                }
             }
             loadInterstitialAd()
         }
@@ -119,7 +120,7 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
 
     private fun loadInterstitialAd() {
         val adRequest = AdRequest.Builder().build()
-        interstitialAd!!.loadAd(adRequest)
+        interstitialAd?.loadAd(adRequest)
     }
 
     private fun getInterstitialAd(): InterstitialAd? {
