@@ -36,8 +36,8 @@ internal class DaysRecyclerViewAdapter(
             binding.clickListener = listener
         }
 
-        suspend fun deleteFromGoogleCalendar(appContext: Context?) {
-            day.deleteFromGoogleCalendar(appContext!!)
+        suspend fun deleteFromGoogleCalendar(appContext: Context) {
+            day.deleteFromGoogleCalendar(appContext)
         }
 
         companion object {

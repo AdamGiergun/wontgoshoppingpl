@@ -4,11 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatDialog
-import eu.adamgiergun.mylibrary.NoticeDialogFragment
 import eu.adamgiergun.wontgoshoppingpl.R
 
 internal class ReminderDaysBeforeDialog : MyDialogFragment() {
-    private lateinit var picker: NumberPicker
+
+    private lateinit var picker : NumberPicker
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         picker = getPicker(savedInstanceState)
@@ -34,21 +34,18 @@ internal class ReminderDaysBeforeDialog : MyDialogFragment() {
     }
 
     private object MyNumberPicker {
-        fun newInstance(context: Context, value: Int): NumberPicker {
-            val picker = NumberPicker(context)
-            picker.isSaveFromParentEnabled = false
-            picker.isSaveEnabled = false
-            picker.minValue = 0
-            picker.maxValue = 9
-            picker.value = value
-            return picker
+        fun newInstance(context: Context, newValue: Int): NumberPicker {
+            return NumberPicker(context).apply {
+                isSaveFromParentEnabled = false
+                isSaveEnabled = false
+                minValue = 0
+                maxValue = 9
+                value = newValue
+            }
         }
     }
 
     companion object {
         private const val VALUE = "value"
-        internal fun newInstance(): NoticeDialogFragment {
-            return ReminderDaysBeforeDialog()
-        }
     }
 }

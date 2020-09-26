@@ -28,8 +28,10 @@ class DaysFragment : Fragment() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             lifecycleScope.launch {
                 val dayViewHolder = viewHolder as DaysRecyclerViewAdapter.DayViewHolder
-                dayViewHolder.deleteFromGoogleCalendar(context!!.applicationContext)
-                recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                context?.applicationContext?.let {
+                    dayViewHolder.deleteFromGoogleCalendar(it)
+                    recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                }
             }
         }
     }

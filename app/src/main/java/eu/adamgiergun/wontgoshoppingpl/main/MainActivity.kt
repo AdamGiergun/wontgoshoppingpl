@@ -204,12 +204,10 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     private fun askForReminderSettings() {
         mMainViewModel.resetReminderToDefaultValue()
         if (mMainViewModel.isActionAddList) {
-            ReminderSettingsAndDateTillDialog
-                    .newInstance()
+            ReminderSettingsAndDateTillDialog()
                     .show(supportFragmentManager, "")
         } else {
-            ReminderSettingsDialog
-                    .newInstance()
+            ReminderSettingsDialog()
                     .show(supportFragmentManager, "")
         }
     }

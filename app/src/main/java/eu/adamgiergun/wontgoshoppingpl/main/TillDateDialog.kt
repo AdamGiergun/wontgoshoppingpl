@@ -5,25 +5,30 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
-import eu.adamgiergun.mylibrary.NoticeDialogFragment
 import eu.adamgiergun.wontgoshoppingpl.R
 
 internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val year: Int
-        val month: Int
-        val day: Int
+        var year = 2100
+        var month = 0
+        var day = 1
+
         if (savedInstanceState == null) {
-            val date = mainViewModel.tillDate.value
-            year = date!!.year
-            month = date.month - 1
-            day = date.day
+            mainViewModel.tillDate.value?.let { date ->
+                year = date.year
+                month = date.month - 1
+                day = date.day
+            }
         } else {
-            year = savedInstanceState.getInt(YEAR)
-            month = savedInstanceState.getInt(MONTH)
-            day = savedInstanceState.getInt(DAY)
+            savedInstanceState.run {
+                year = getInt(YEAR)
+                month = getInt(MONTH)
+                day = getInt(DAY)
+            }
         }
-        val datePickerDialog = if (mainViewModel.isLookRich) {
+
+        return if (mainViewModel.isLookRich) {
             DatePickerDialog(
                     requireContext(),
                     R.style.MyAlertDialogStyle,
@@ -38,9 +43,9 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
                     year,
                     month,
                     day)
+        }.apply {
+            datePicker.maxDate = mainViewModel.lastDateInMillis
         }
-        datePickerDialog.datePicker.maxDate = mainViewModel.lastDateInMillis
-        return datePickerDialog
     }
 
     override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, day: Int) {
@@ -50,8 +55,7 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val dialog = dialog as DatePickerDialog?
-        if (dialog != null) {
-            val picker = dialog.datePicker
+        dialog?.datePicker?.let { picker ->
             outState.putInt(YEAR, picker.year)
             outState.putInt(MONTH, picker.month)
             outState.putInt(DAY, picker.dayOfMonth)
@@ -62,8 +66,5 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
         private const val YEAR = "year"
         private const val MONTH = "month"
         private const val DAY = "day"
-        internal fun newInstance(): NoticeDialogFragment {
-            return TillDateDialog()
-        }
     }
 }
