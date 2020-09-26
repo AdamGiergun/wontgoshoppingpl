@@ -57,25 +57,27 @@ class Day private constructor(private val dbId: Int, private val item: String, p
     suspend fun addToGoogleCalendar(appContext: Context, timeZoneId: String): Boolean {
         calendarId = AppPreferences.getDefaultCalendarId(appContext)
         val calendarEvent = newCalendarEventInstance(appContext, timeZoneId)
-        if (calendarEvent.exists(appContext, calendarId)) {
+        if (calendarEvent?.exists(appContext, calendarId) == true) {
             calendarEvent.writeReminders(appContext)
         } else {
-            if (calendarEvent.exists(appContext)) {
+            if (calendarEvent?.exists(appContext) == true) {
                 deleteFromGoogleCalendar(calendarEvent, appContext)
             }
-            calendarEventId = calendarEvent.write(appContext)
+            calendarEventId = calendarEvent?.write(appContext) ?: SimpleCalendarEvent.NON_EXISTING.toLong()
             updateEventInDb(appContext)
         }
         return calendarEventId > SimpleCalendarEvent.NON_EXISTING
     }
 
-    private fun newCalendarEventInstance(appContext: Context, timeZoneId: String): SimpleCalendarEvent {
-        return SimpleCalendarEvent.Builder(calendarId!!, date, SimpleTime(time), timeZoneId, allDay)
+    private fun newCalendarEventInstance(appContext: Context, timeZoneId: String): SimpleCalendarEvent? {
+        return calendarId?.let {
+            SimpleCalendarEvent.Builder(it, date, SimpleTime(time), timeZoneId, allDay)
                 .setCalendarEventId(calendarEventId)
                 .setEndCalendar(endDate, SimpleTime("23:59"))
                 .setReminders(reminders)
                 .setTitle(description + " - " + if (type == Type.COMMERCE_SUNDAY) appContext.getString(R.string.go_shopping) else appContext.getString(R.string.go_shopping_earlier))
                 .build()
+        }
     }
 
     private val endDate: SimpleDate
@@ -117,7 +119,7 @@ class Day private constructor(private val dbId: Int, private val item: String, p
                ${date.weekdayName}
                """.trimIndent()
 
-    val descriptionForDialog: String?
+    val descriptionForDialog: String
         get() = if (type == Type.HOLIDAY) description else dateAndWeekdayString
 
     val widgetText: CharSequence
@@ -145,8 +147,8 @@ class Day private constructor(private val dbId: Int, private val item: String, p
         noOfConsecutiveDays++
     }
 
-    private fun isTomorrowOf(otherDay: Day?): Boolean {
-        return date == otherDay!!.date.addDays(1)
+    private fun isTomorrowOf(otherDay: Day): Boolean {
+        return date == otherDay.date.addDays(1)
     }
 
     private fun setReminderNotNeeded() {
@@ -176,14 +178,14 @@ class Day private constructor(private val dbId: Int, private val item: String, p
     class List : ArrayList<Day>() {
         companion object {
             private fun skipReminderForConsecutiveDays(list: ArrayList<Day>): ArrayList<Day> {
-                val iterator: ListIterator<Day?> = list.listIterator()
+                val iterator: ListIterator<Day> = list.listIterator()
                 if (iterator.hasNext()) {
                     var nextDay = iterator.next()
                     while (iterator.hasNext()) {
                         val firstDay = nextDay
                         var previousDay = firstDay
                         nextDay = iterator.next()
-                        while (!firstDay!!.isCommerceSunday && !nextDay!!.isCommerceSunday && nextDay.isTomorrowOf(previousDay)) {
+                        while (!firstDay.isCommerceSunday && !nextDay.isCommerceSunday && nextDay.isTomorrowOf(previousDay)) {
                             nextDay.setReminderNotNeeded()
                             firstDay.incrementNoOfConsecutiveDays()
                             firstDay.appendToDescription(nextDay.description)

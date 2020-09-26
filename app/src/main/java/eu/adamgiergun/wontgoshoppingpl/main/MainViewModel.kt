@@ -81,7 +81,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         }.toList()
         val eventDao = AppDatabase.getInstance(application).eventDao()
         if (isFirstRun) eventDao.initialize()
-        _days.value = eventDao.getAllEventsOfTypeNotBefore(dayTypes, today)!!.map {
+        _days.value = eventDao.getAllEventsOfTypeNotBefore(dayTypes, today)?.map {
             Day.newInstance(it)
         }
         eventDao.getLastEvent()?.let {
@@ -95,20 +95,21 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     fun setReminderDaysBefore(daysBefore: Int) {
-        val simpleReminder = _reminder.value
-        simpleReminder!!.daysBefore = daysBefore
-        _reminder.value = simpleReminder
+        _reminder.value?.let {
+            it.daysBefore = daysBefore
+            _reminder.value = it
+        }
     }
 
     fun setReminderTime(hour: Int, minute: Int) {
-        val time = SimpleTime(hour, minute)
-        val simpleReminder = _reminder.value
-        simpleReminder!!.time = time
-        _reminder.value = simpleReminder
+        _reminder.value?.let {
+            it.time = SimpleTime(hour, minute)
+            _reminder.value = it
+        }
     }
 
     val dayDescriptionForDialog: String
-        get() = lastTouchedDay.descriptionForDialog!!
+        get() = lastTouchedDay.descriptionForDialog
 
     fun setAppWidgetInfoDisplayed() {
         AppPreferences.setAppWidgetInfoDisplayed(appContext)
@@ -121,12 +122,16 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     suspend fun addToCalendar(): Boolean {
         val result: Boolean = if (_isActionAddList) {
-            Day.List.addToCalendar(
-                    appContext,
-                    dayTypesToBeAddedToCalendar,
-                    _reminder.value,
-                    timeZoneId,
-                    tillDate.value!!)
+            val tillDateValue = tillDate.value
+            if (tillDateValue == null) {
+                false
+            } else
+                Day.List.addToCalendar(
+                        appContext,
+                        dayTypesToBeAddedToCalendar,
+                        _reminder.value,
+                        timeZoneId,
+                        tillDateValue)
         } else {
             lastTouchedDay.setReminder(_reminder.value)
             lastTouchedDay.addToGoogleCalendar(appContext, timeZoneId)
