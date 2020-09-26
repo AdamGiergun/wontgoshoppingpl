@@ -19,7 +19,7 @@
 
     <PreferenceCategory android:title="@string/default_reminder_settings_preference_category_title">
 
-        <eu.adamgiergun.mylibrary.IntegerDialogPreference
+        <eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
             android:defaultValue="@integer/reminder_days_before_default_value"
             android:dependency="@string/use_google_calendar_preference_key"
             android:inputType="number"

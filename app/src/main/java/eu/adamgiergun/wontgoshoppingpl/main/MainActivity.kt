@@ -50,14 +50,14 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        calStart = Calendar.getInstance();
+        if (savedInstanceState == null) {
+            setLocalizedConst()
+        }
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.vieModel = mMainViewModel
         showWidgetInfoIfNeeded()
         setupBannerAds(binding.adView)
         initializeOrLoadInterstitialAd(applicationContext)
-        if (savedInstanceState == null) {
-            setLocalizedConst()
-        }
 //        addCrashTestButton();
     }
 
