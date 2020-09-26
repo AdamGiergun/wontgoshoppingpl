@@ -128,13 +128,15 @@ class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListe
             initializeOrLoadInterstitialAd(applicationContext)
             null
         } else {
-            if (interstitialAd!!.isLoaded) {
-                interstitialAd
-            } else {
-                if (!interstitialAd!!.isLoading) {
-                    loadInterstitialAd()
+            interstitialAd?.let {
+                if (it.isLoaded) {
+                    interstitialAd
+                } else {
+                    if (!it.isLoading) {
+                        loadInterstitialAd()
+                    }
+                    null
                 }
-                null
             }
         }
     }

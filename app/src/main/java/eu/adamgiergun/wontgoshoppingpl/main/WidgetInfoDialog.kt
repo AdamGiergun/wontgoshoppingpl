@@ -18,7 +18,9 @@ internal class WidgetInfoDialog : MyDialogFragment() {
             val view = requireActivity().layoutInflater.inflate(R.layout.info_about_app_widget, null)
             view.setOnClickListener {
                 mainViewModel.setAppWidgetInfoDisplayed()
-                if (dialog != null) dialog!!.dismiss()
+                dialog?.run {
+                    dismiss()
+                }
             }
             return view
         }

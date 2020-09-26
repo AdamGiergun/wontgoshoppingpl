@@ -47,10 +47,12 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
                 false))
         if (isScreenWideEnough || startFragmentId != SettingsFragment.HEADERS) {
             lastFragmentId = if (startFragmentId == SettingsFragment.LOOK || startFragmentId == SettingsFragment.HEADERS) SettingsFragment.LOOK else startFragmentId
-            fragments.add(SettingsFragment.newInstance(
-                    lastFragmentId!!,
-                    R.id.settings,
-                    !isScreenWideEnough))
+            lastFragmentId?.let {
+                fragments.add(SettingsFragment.newInstance(
+                        it,
+                        R.id.settings,
+                        !isScreenWideEnough))
+            }
         } else {
             lastFragmentId = startFragmentId
         }
@@ -75,7 +77,14 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     }
 
     val isStartedPreferenceNotNotifications: Boolean
-        get() = startedPreference!!.pref.fragment != SettingsFragment.NOTIFICATIONS
+        get() {
+            startedPreference?.let {
+                it.pref.let { preference ->
+                    return preference.fragment != SettingsFragment.NOTIFICATIONS
+                }
+            }
+            return false
+        }
 
     fun geTitle(): CharSequence? {
         return title
