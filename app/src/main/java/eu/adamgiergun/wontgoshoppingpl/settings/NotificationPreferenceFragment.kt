@@ -11,7 +11,7 @@ import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreferenceDialogFra
 import eu.adamgiergun.mykotlinlibrary.IntegerPreferenceDialogFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
 
-class NotificationPreferenceFragment : BasePreferenceFragmentCompat() {
+internal class NotificationPreferenceFragment : BasePreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.pref_notification, rootKey)

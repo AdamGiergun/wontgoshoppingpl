@@ -8,7 +8,7 @@ import eu.adamgiergun.mykotlinlibrary.BasePreferenceFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.main.MainActivity
 
-class LookPreferenceFragment : BasePreferenceFragmentCompat() {
+internal class LookPreferenceFragment : BasePreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.pref_look, rootKey)

@@ -15,9 +15,9 @@ import eu.adamgiergun.mylibrary.NoticeDialogFragment.NoticeDialogListener
 import eu.adamgiergun.mylibrary.NoticeDialogFragment.NoticeDialogViewListener
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
-import eu.adamgiergun.wontgoshoppingpl.settings.StartedPreference.Companion.newInstance
 
 internal class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, NoticeDialogListener, NoticeDialogViewListener {
+
     companion object {
         init {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
@@ -79,8 +79,10 @@ internal class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, pref: Preference): Boolean {
-        mSettingsViewModel.startedPreference = newInstance(caller, pref)
+    override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
+        pref?.let { preference ->
+            caller?.let { caller ->
+                mSettingsViewModel.startedPreference = StartedPreference(caller, preference) } }
         if (mSettingsViewModel.isStartedPreferenceNotNotifications || checkCalendarPermissions()) {
             addStartedFragment()
         }
@@ -89,13 +91,13 @@ internal class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.
 
     private fun addStartedFragment() {
         mSettingsViewModel.startedPreference?.let {
-            mSettingsViewModel.setLastFragmentId(it.pref.fragment)
+            mSettingsViewModel.setLastFragmentId(it.preference.fragment)
             // Instantiate the new Fragment
-            val args = it.pref.extras
+            val args = it.preference.extras
             val fragmentManager = supportFragmentManager
             val fragment = fragmentManager.fragmentFactory.instantiate(
                     classLoader,
-                    it.pref.fragment)
+                    it.preference.fragment)
             fragment.arguments = args
             fragment.setTargetFragment(it.caller, 0)
             // Replace the existing Fragment with the new Fragment
@@ -103,7 +105,7 @@ internal class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.
                     .replace(R.id.settings, fragment)
             if (!mSettingsViewModel.isScreenWideEnough) fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
-            title = it.pref.title
+            title = it.preference.title
             mSettingsViewModel.startedPreference = null
         }
 

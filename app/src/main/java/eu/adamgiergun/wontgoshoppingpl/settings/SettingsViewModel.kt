@@ -41,14 +41,14 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
             startFragmentId = if (isScreenWideEnough) SettingsFragment.LOOK else SettingsFragment.HEADERS
         }
         val fragments = SettingsFragment.List()
-        fragments.add(SettingsFragment.newInstance(
+        fragments.add(SettingsFragment(
                 SettingsFragment.HEADERS,
                 if (isScreenWideEnough) R.id.headers else R.id.settings,
                 false))
         if (isScreenWideEnough || startFragmentId != SettingsFragment.HEADERS) {
             lastFragmentId = if (startFragmentId == SettingsFragment.LOOK || startFragmentId == SettingsFragment.HEADERS) SettingsFragment.LOOK else startFragmentId
             lastFragmentId?.let {
-                fragments.add(SettingsFragment.newInstance(
+                fragments.add(SettingsFragment(
                         it,
                         R.id.settings,
                         !isScreenWideEnough))
@@ -79,7 +79,7 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     val isStartedPreferenceNotNotifications: Boolean
         get() {
             startedPreference?.let {
-                it.pref.let { preference ->
+                it.preference.let { preference ->
                     return preference.fragment != SettingsFragment.NOTIFICATIONS
                 }
             }

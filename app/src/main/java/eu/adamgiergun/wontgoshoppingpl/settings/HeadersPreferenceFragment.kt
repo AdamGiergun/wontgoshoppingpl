@@ -6,7 +6,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
 
-class HeadersPreferenceFragment : PreferenceFragmentCompat() {
+internal class HeadersPreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_headers)
