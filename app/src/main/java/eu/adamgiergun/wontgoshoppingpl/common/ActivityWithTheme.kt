@@ -13,7 +13,7 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.areAllPermi
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPermissions
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPermissionsCode
 
-abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
+internal abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
 
     private val mViewModel by lazy {
         ViewModelProvider(this).get(AppViewModel::class.java)
@@ -26,7 +26,7 @@ abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
         }
     }
 
-    override fun attachBaseContext(newBase: Context) {
+    override fun attachBaseContext(newBase: Context?) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
             super.attachBaseContext(newBase)
             setDefaultLocale(newBase)

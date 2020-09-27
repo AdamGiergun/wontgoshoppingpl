@@ -11,7 +11,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityHelpBinding
 
-class HelpActivity : ActivityWithTheme() {
+internal class HelpActivity : ActivityWithTheme() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityHelpBinding = DataBindingUtil.setContentView(this, R.layout.activity_help)

@@ -2,7 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.common
 
 import java.util.*
 
-val today
+internal val today
     get() =
         StringBuilder().run {
             fun get0ifLessThen10(value: Int): String {

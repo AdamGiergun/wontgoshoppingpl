@@ -17,7 +17,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
 import eu.adamgiergun.wontgoshoppingpl.settings.StartedPreference.Companion.newInstance
 
-class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, NoticeDialogListener, NoticeDialogViewListener {
+internal class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, NoticeDialogListener, NoticeDialogViewListener {
     companion object {
         init {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)

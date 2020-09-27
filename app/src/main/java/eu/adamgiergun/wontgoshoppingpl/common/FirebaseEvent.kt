@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 
-object FirebaseEvent {
+internal object FirebaseEvent {
     private const val FULL_TEXT_TAG = "full_text"
 
     fun logAppTheme(appContext: Context, isLookRich: Boolean) {
