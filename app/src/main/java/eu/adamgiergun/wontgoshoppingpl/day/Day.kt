@@ -16,7 +16,7 @@ import eu.adamgiergun.wontgoshoppingpl.db.Event
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Day private constructor(private val dbId: Int, private val item: String, private val type: Type) : Comparable<Day> {
+internal class Day private constructor(private val dbId: Int, private val item: String, private val type: Type) : Comparable<Day> {
     val name: String
     private val date: SimpleDate
 

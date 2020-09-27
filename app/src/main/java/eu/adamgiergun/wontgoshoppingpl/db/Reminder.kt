@@ -15,8 +15,8 @@ import eu.adamgiergun.wontgoshoppingpl.db.Reminder.Companion.TABLE_NAME
                 parentColumns = [Event.COLUMN_ID])]//,
         //indices = [Index("event_id")]
 )
-data class Reminder(
-        @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID)  val id: Int?,
+internal data class Reminder(
+        @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID) val id: Int?,
         @ColumnInfo(name = COLUMN_EVENT_ID) val eventId: Int,
         val hour: Int,
         val minute: Int,

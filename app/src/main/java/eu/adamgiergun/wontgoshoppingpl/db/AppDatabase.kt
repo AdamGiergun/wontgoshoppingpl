@@ -11,7 +11,7 @@ import eu.adamgiergun.wontgoshoppingpl.day.Day
 import java.util.concurrent.Executors
 
 @Database(entities = [Event::class, Reminder::class], version = 4)
-abstract class AppDatabase : RoomDatabase() {
+internal abstract class AppDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
     abstract fun reminderDao(): ReminderDao
 

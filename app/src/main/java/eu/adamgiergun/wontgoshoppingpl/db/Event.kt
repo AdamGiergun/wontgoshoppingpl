@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
 
 @Entity(tableName = Event.TABLE_NAME)
-data class Event(
+internal data class Event(
         @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID) val id: Int?,
         @ColumnInfo(name = COLUMN_TYPE_ID) val typeId: Int,
         val item: String,

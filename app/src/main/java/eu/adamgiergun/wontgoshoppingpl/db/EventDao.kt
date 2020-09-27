@@ -3,7 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl.db
 import androidx.room.*
 
 @Dao
-interface EventDao {
+internal interface EventDao {
 
     /**
      * gets @param [date] formatted as yyyy_mm_dd

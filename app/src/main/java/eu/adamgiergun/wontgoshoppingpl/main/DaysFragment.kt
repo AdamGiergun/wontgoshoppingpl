@@ -16,7 +16,7 @@ import eu.adamgiergun.wontgoshoppingpl.databinding.FragmentDayListBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import kotlinx.coroutines.launch
 
-class DaysFragment : Fragment() {
+internal class DaysFragment : Fragment() {
     private lateinit var recyclerViewAdapter: DaysRecyclerViewAdapter
     private var listener: OnItemClickListener? = null
 
