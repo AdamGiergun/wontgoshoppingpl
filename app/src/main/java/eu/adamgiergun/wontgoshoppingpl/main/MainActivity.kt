@@ -56,8 +56,10 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.vieModel = mMainViewModel
         showWidgetInfoIfNeeded()
-        setupBannerAds(binding.adView)
-        initializeOrLoadInterstitialAd(applicationContext)
+        lifecycleScope.launchWhenStarted {
+            setupBannerAds(binding.adView)
+            initializeOrLoadInterstitialAd(applicationContext)
+        }
 //        addCrashTestButton();
     }
 
@@ -99,22 +101,18 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
     //region Ads Handling region
     private fun setupBannerAds(mAdView: AdView) {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        lifecycleScope.launch {
-            MobileAds.initialize(this@MainActivity)
-            val adRequest = AdRequest.Builder().build()
-            mAdView.loadAd(adRequest)
-        }
+        MobileAds.initialize(this@MainActivity)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     private fun initializeOrLoadInterstitialAd(context: Context) {
-        lifecycleScope.launch {
-            if (interstitialAd == null) {
-                interstitialAd = InterstitialAd(context).apply {
-                    adUnitId = context.getString(R.string.interstitial_ad_id)
-                }
+        if (interstitialAd == null) {
+            interstitialAd = InterstitialAd(context).apply {
+                adUnitId = context.getString(R.string.interstitial_ad_id)
             }
-            loadInterstitialAd()
         }
+        loadInterstitialAd()
     }
 
     private fun loadInterstitialAd() {
@@ -258,11 +256,9 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
     }
 
     private suspend fun addToCalendar() {
-        lifecycleScope.launch {
-            getInterstitialAd()?.show()
-            val isResultPositive = mMainViewModel.addToCalendar()
-            showInfo(isResultPositive, R.string.info_added_to_calendar, mMainViewModel.error)
-        }
+        getInterstitialAd()?.show()
+        val isResultPositive = mMainViewModel.addToCalendar()
+        showInfo(isResultPositive, R.string.info_added_to_calendar, mMainViewModel.error)
     }
 
     override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {
