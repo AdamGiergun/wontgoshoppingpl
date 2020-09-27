@@ -18,9 +18,9 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
-import eu.adamgiergun.mylibrary.NoticeDialogFragment
-import eu.adamgiergun.mylibrary.NoticeDialogFragment.NoticeDialogListener
-import eu.adamgiergun.mylibrary.NoticeDialogFragment.NoticeDialogViewListener
+import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment
+import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogListener
+import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogViewListener
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst

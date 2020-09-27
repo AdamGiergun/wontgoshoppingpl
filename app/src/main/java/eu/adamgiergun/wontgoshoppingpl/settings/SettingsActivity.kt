@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import eu.adamgiergun.mylibrary.NoticeDialogFragment
-import eu.adamgiergun.mylibrary.NoticeDialogFragment.NoticeDialogListener
-import eu.adamgiergun.mylibrary.NoticeDialogFragment.NoticeDialogViewListener
+import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment
+import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogListener
+import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogViewListener
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
 
@@ -145,13 +145,13 @@ internal class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.
         mSettingsViewModel.startedPreference = null
     }
 
-    override fun onDialogPositiveClick(noticeDialogFragment: NoticeDialogFragment) {}
-    override fun onDialogNegativeClick(noticeDialogFragment: NoticeDialogFragment) {
+    override fun onDialogPositiveClick(dialog: NoticeDialogFragment) {}
+    override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {
         Toast.makeText(applicationContext, R.string.info_cancelled, Toast.LENGTH_SHORT)
                 .show()
     }
 
-    override fun onViewClick(stub: NoticeDialogFragment) {
+    override fun onViewClick(noticeDialogFragment: NoticeDialogFragment) {
         //stub
     }
 

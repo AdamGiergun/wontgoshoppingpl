@@ -7,7 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
-import eu.adamgiergun.mylibrary.permissionsmanagement.PermissionType
+import eu.adamgiergun.mykotlinlibrary.PermissionType
 
 internal open class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun areCalendarPermissionsGranted(): Boolean {
