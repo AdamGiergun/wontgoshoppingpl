@@ -11,20 +11,20 @@ import kotlinx.coroutines.launch
 
 class Widget : AppWidgetProvider() {
 
-    override fun onUpdate(
-            context: Context,
-            appWidgetManager: AppWidgetManager,
-            appWidgetIds: IntArray) {
-        WidgetViewModel.setLocalizedConstants(context.applicationContext)
-        val job = Job()
-        val uiScope = CoroutineScope(Dispatchers.Main + job)
-        uiScope.launch {
-            val remoteViews = newRemoteViews(context)
-            appWidgetIds.forEach { appWidgetId ->
-                appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+    override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
+        context?.let {
+            WidgetViewModel.setLocalizedConstants(it.applicationContext)
+            val job = Job()
+            val uiScope = CoroutineScope(Dispatchers.Main + job)
+            uiScope.launch {
+                val remoteViews = newRemoteViews(context)
+                appWidgetIds?.forEach { appWidgetId ->
+                    appWidgetManager?.updateAppWidget(appWidgetId, remoteViews)
+                }
+                WidgetViewModel.logUpdated(it.applicationContext)
             }
-            WidgetViewModel.logUpdated(context.applicationContext)
         }
+
     }
 
     private suspend fun newRemoteViews(context: Context): RemoteViews {
