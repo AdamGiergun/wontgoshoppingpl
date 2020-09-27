@@ -86,8 +86,7 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
 
     private fun showWidgetInfoIfNeeded() {
         if (!mMainViewModel.wasAppWidgetInfoDisplayed()) {
-            WidgetInfoDialog
-                    .newInstance()
+            WidgetInfoDialog()
                     .show(supportFragmentManager, "")
         }
     }
@@ -216,8 +215,7 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
     }
 
     private fun askForDayTypesAddedToCalendar() {
-        DayTypesAddedToCalendarDialog
-                .newInstance()
+        DayTypesAddedToCalendarDialog()
                 .show(supportFragmentManager, "dialog")
     }
 

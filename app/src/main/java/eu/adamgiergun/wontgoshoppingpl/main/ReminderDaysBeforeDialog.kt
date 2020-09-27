@@ -30,8 +30,8 @@ internal class ReminderDaysBeforeDialog : MyDialogFragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
         outState.putInt(VALUE, picker.value)
+        super.onSaveInstanceState(outState)
     }
 
     private object MyNumberPicker {

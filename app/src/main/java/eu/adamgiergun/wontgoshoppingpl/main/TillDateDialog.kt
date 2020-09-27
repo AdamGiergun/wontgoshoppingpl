@@ -48,18 +48,18 @@ internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
         }
     }
 
-    override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, day: Int) {
-        mainViewModel.setTillDate(year, month + 1, day)
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        mainViewModel.setTillDate(year, month + 1, dayOfMonth)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
         val dialog = dialog as DatePickerDialog?
         dialog?.datePicker?.let { picker ->
             outState.putInt(YEAR, picker.year)
             outState.putInt(MONTH, picker.month)
             outState.putInt(DAY, picker.dayOfMonth)
         }
+        super.onSaveInstanceState(outState)
     }
 
     companion object {

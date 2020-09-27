@@ -3,10 +3,10 @@ package eu.adamgiergun.wontgoshoppingpl.main
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDialog
-import eu.adamgiergun.mylibrary.NoticeDialogFragment
-import eu.adamgiergun.wontgoshoppingpl.R
+import eu.adamgiergun.wontgoshoppingpl.databinding.InfoAboutAppWidgetBinding
 
 internal class WidgetInfoDialog : MyDialogFragment() {
+
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         val builder = getStyledBuilder()
         builder.setView(dialogView)
@@ -15,19 +15,13 @@ internal class WidgetInfoDialog : MyDialogFragment() {
 
     private val dialogView: View
         get() {
-            val view = requireActivity().layoutInflater.inflate(R.layout.info_about_app_widget, null)
-            view.setOnClickListener {
-                mainViewModel.setAppWidgetInfoDisplayed()
-                dialog?.run {
-                    dismiss()
+            return InfoAboutAppWidgetBinding.inflate(requireActivity().layoutInflater).run {
+                root.apply {
+                    setOnClickListener {
+                        mainViewModel.setAppWidgetInfoDisplayed()
+                        dialog?.run { dismiss() }
+                    }
                 }
             }
-            return view
         }
-
-    companion object {
-        internal fun newInstance(): NoticeDialogFragment {
-            return WidgetInfoDialog()
-        }
-    }
 }

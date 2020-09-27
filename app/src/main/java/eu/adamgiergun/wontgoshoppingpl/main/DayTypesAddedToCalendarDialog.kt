@@ -5,7 +5,6 @@ import android.content.DialogInterface.OnMultiChoiceClickListener
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialog
-import eu.adamgiergun.mylibrary.NoticeDialogFragment
 import eu.adamgiergun.wontgoshoppingpl.R
 
 internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
@@ -57,11 +56,5 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
     private fun isAnyValueInBooleanArrayTrue(array: BooleanArray): Boolean {
         array.forEach { if(it) return true }
         return false
-    }
-
-    companion object {
-        internal fun newInstance(): NoticeDialogFragment {
-            return DayTypesAddedToCalendarDialog()
-        }
     }
 }

@@ -36,7 +36,7 @@ internal class ReminderTimeDialog : MyDialogFragment(), OnTimeSetListener {
                 true)
     }
 
-    override fun onTimeSet(timePicker: TimePicker, hour: Int, minute: Int) {
-        mainViewModel.setReminderTime(hour, minute)
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        mainViewModel.setReminderTime(hourOfDay, minute)
     }
 }
