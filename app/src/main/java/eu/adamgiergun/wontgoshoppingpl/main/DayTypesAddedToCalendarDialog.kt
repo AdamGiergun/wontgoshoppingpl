@@ -22,12 +22,8 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
         return getStyledBuilder().run {
             setTitle(R.string.title_choose_events)
             setMultiChoiceItems(items, checkedItems, listener)
-            setPositiveButton(android.R.string.ok) { _, _ ->
-                        mainViewModel.setDayTypesToBeAddedToCalendar(checkedItems)
-                        noticeDialogListener.onDialogPositiveClick(this@DayTypesAddedToCalendarDialog)
-            }
-            setPositiveButton(android.R.string.ok, getPositiveButtonListener(this@DayTypesAddedToCalendarDialog))
-            setNegativeButton(android.R.string.cancel, getNegativeButtonListener(this@DayTypesAddedToCalendarDialog))
+            setPositiveButton(android.R.string.ok) { _, _ -> mainViewModel.askForReminderSettings() }
+            setNegativeButton(android.R.string.cancel) { _, _ -> mainViewModel.showInfoCancelled() }
             create()
         }
     }
@@ -40,8 +36,8 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
         )
 
     private fun getOnMultiChoiceClickListener(checkedItems: BooleanArray): OnMultiChoiceClickListener {
-        return OnMultiChoiceClickListener { _, _, _ ->
-            mainViewModel.setDayTypesToBeAddedToCalendar(checkedItems)
+        return OnMultiChoiceClickListener { _, position: Int, checked: Boolean ->
+            mainViewModel.updateDayTypesToBeAddedToCalendar(position, checked)
             setIsEnabledDialogButtonPositive(dialog, checkedItems)
         }
     }
@@ -54,7 +50,7 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
     }
 
     private fun isAnyValueInBooleanArrayTrue(array: BooleanArray): Boolean {
-        array.forEach { if(it) return true }
+        array.forEach { if (it) return true }
         return false
     }
 }

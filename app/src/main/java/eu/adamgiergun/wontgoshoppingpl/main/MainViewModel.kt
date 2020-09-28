@@ -1,6 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -46,11 +47,13 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private val dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
     private var dayTypesToBeAddedToCalendar: Day.Type.Set
 
-    fun setDayTypesToBeAddedToCalendar(array: BooleanArray) {
-        dayTypesToBeAddedToCalendar = Day.Type.newSet(
-                array[Day.Type.NON_COMMERCE_DAY.code],
-                array[Day.Type.HOLIDAY.code],
-                array[Day.Type.COMMERCE_SUNDAY.code])
+    fun updateDayTypesToBeAddedToCalendar(int: Int, value: Boolean) {
+        Day.Type.getType(int)?.let {
+            if (value)
+                dayTypesToBeAddedToCalendar.add(it)
+            else
+                dayTypesToBeAddedToCalendar.remove(it)
+        }
     }
 
     fun getDayTypesToBeAddedToCalendarAsArray(): BooleanArray {
@@ -63,6 +66,19 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     var lastDateInMillis = 0L
         private set
+
+    private var _askForReminderSettings = MutableLiveData<Boolean>()
+    val askForReminderSettings: LiveData<Boolean>
+        get() = _askForReminderSettings
+
+    fun askForReminderSettings() {
+        _askForReminderSettings.value = true
+    }
+
+    fun showInfoCancelled() {
+        Toast.makeText(appContext, R.string.info_cancelled, Toast.LENGTH_SHORT).show()
+        R.string.info_cancelled
+    }
 
     init {
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed

@@ -60,6 +60,11 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
             setupBannerAds(binding.adView)
             initializeOrLoadInterstitialAd(applicationContext)
         }
+
+        mMainViewModel.askForReminderSettings.observe(this, {
+            if (it) askForReminderSettings()
+        })
+
 //        addCrashTestButton();
     }
 
@@ -239,9 +244,7 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
 
     //region on...ClickRegion
     override fun onDialogPositiveClick(dialog: NoticeDialogFragment) {
-        if (dialog is DayTypesAddedToCalendarDialog) {
-            askForReminderSettings()
-        } else if (dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
+        if (dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
             lifecycleScope.launch {
                 addToCalendar()
             }
@@ -255,7 +258,7 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
     }
 
     override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {
-        if (dialog is DayTypesAddedToCalendarDialog || dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
+        if (dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
             showInfo(R.string.info_cancelled)
         }
     }
