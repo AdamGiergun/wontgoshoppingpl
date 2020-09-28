@@ -155,7 +155,11 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val isFirstRun: Boolean
         get() = AppPreferences.isFirstRun(appContext)
     val mainNavigationId: Int
-        get() = if (isFirstRun) R.navigation.main_navigation_first_run else R.navigation.main_navigation
+        get() = when {
+            isFirstRun -> R.navigation.main_navigation_first_run_widget_info
+            !wasAppWidgetInfoDisplayed() -> R.navigation.main_navigation_widget_info
+            else -> R.navigation.main_navigation
+        }
 
     fun wasAppWidgetInfoDisplayed(): Boolean {
         return AppPreferences.wasAppWidgetInfoDisplayed(appContext)

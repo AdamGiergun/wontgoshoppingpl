@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="vieModel"
+            name="viewModel"
             type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
     </data>
 
@@ -23,18 +23,17 @@
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             app:defaultNavHost="true"
-            app:isLookRich="@{vieModel.isLookRich}"
             app:layout_constraintBottom_toTopOf="@id/adViewLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navGraphId="@{vieModel.mainNavigationId}" />
+            app:navGraphId="@{viewModel.mainNavigationId}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/adViewLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:isLookRich="@{vieModel.isLookRich}"
+            app:isLookRich="@{viewModel.isLookRich}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">

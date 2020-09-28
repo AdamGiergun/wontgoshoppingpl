@@ -21,7 +21,7 @@
     <string name="help_text_4">Lorsque vous ajoutez des événements, vous pouvez modifier temporairement leurs paramètres de rappel. Les valeurs par défaut pour les rappels peuvent être modifiées dans les paramètres.</string>
     <string name="help_text_5">Un jour ajouté au calendrier peut être supprimé en glissant un élément de la liste sur le côté.</string>
     <string name="holidays">L\'jour férié</string>
-    <string name="info_about_app_widget">Vous pouvez ajouter un widget d\'application sur votre écran d\'accueil.\n\n(Touchez pour masquer cette information).</string>
+    <string name="info_about_app_widget">Vous pouvez ajouter un widget d\'application sur votre écran d\'accueil.</string>
     <string name="info_added_to_calendar">Ajouté au calendrier</string>
     <string name="info_deleted">Supprimé</string>
     <string name="pref_header_look">Vue</string>

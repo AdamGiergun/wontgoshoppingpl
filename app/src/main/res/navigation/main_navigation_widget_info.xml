@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/widgetInfoFragment">
+
+    <fragment
+        android:id="@+id/daysFragment"
+        android:name="eu.adamgiergun.wontgoshoppingpl.main.DaysFragment"
+        android:label="DaysFragment" />
+    <fragment
+        android:id="@+id/widgetInfoFragment"
+        android:name="eu.adamgiergun.wontgoshoppingpl.main.WidgetInfoFragment"
+        android:label="WidgetInfoFragment">
+        <action
+            android:id="@+id/action_widgetInfoFragment_to_daysFragment"
+            app:destination="@id/daysFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popUpTo="@id/widgetInfoFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

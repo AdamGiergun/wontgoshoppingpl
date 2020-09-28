@@ -63,7 +63,7 @@
     <string name="summary_delete_events">Pašalina visus įvykius, kuriuos pridėjo ši programa, iš pasirinktų kalendorių</string>
 
     <string name="info_deleted">Ištrinta</string>
-    <string name="info_about_app_widget">Į pagrindinį ekraną galite pridėti programos valdiklį.\n\n(Palieskite, jei norite paslėpti šią informaciją)</string>
+    <string name="info_about_app_widget">Į pagrindinį ekraną galite pridėti programos valdiklį.</string>
     <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Privatumo politika</a></string>
     <string name="summary_use_pl_time_zone_off">Naudokite mano laiko juostą</string>
     <string name="summary_use_pl_time_zone_on">Naudokite lenkų laiko juostą</string>

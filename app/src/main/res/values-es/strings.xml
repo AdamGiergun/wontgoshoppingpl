@@ -20,7 +20,7 @@
     <string name="help_text_4">Al agregar eventos, puede cambiar temporalmente la configuración de los recordatorios para ellos. Los valores predeterminados para los recordatorios se pueden cambiar en la Configuración.</string>
     <string name="help_text_5">Un día agregado al calendario se puede eliminar de él al deslizar un elemento de lista dado al lado.</string>
     <string name="holidays">"La fiesta legal "</string>
-    <string name="info_about_app_widget">Puedes agregar un widget de aplicación a tu pantalla de inicio. \n\n(Toca para ocultar esta información).</string>
+    <string name="info_about_app_widget">"Puedes agregar un widget de aplicación a tu pantalla de inicio. "</string>
     <string name="info_added_to_calendar">Añadido al calendario</string>
     <string name="info_deleted">Eliminado</string>
     <string name="pref_header_look">Vista</string>

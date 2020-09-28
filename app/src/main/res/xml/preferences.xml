@@ -39,7 +39,7 @@
         android:title="@string/google_calendar_preference_title" />
 
     <!--
-        <eu.adamgiergun.mylibrary.calendarmanagement.CalendarsListPreference
+        <eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference
             android:dependency="@string/use_google_calendar_preference_key"
             android:key="@string/default_calendar_preference_key"
             android:title="@string/default_calendar_preference_title"/>

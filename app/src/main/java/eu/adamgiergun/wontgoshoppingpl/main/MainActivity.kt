@@ -54,8 +54,8 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
             setLocalizedConst()
         }
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.vieModel = mMainViewModel
-        showWidgetInfoIfNeeded()
+        binding.viewModel = mMainViewModel
+
         lifecycleScope.launchWhenStarted {
             setupBannerAds(binding.adView)
             initializeOrLoadInterstitialAd(applicationContext)
@@ -83,13 +83,6 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
             LocalizedConst.since = getString(R.string.since)
             LocalizedConst.askForLook = getString(R.string.ask_for_look)
             LocalizedConst.isSet = true
-        }
-    }
-
-    private fun showWidgetInfoIfNeeded() {
-        if (!mMainViewModel.wasAppWidgetInfoDisplayed()) {
-            WidgetInfoDialog()
-                    .show(supportFragmentManager, "")
         }
     }
 
@@ -274,7 +267,14 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
     fun onLookButtonClick(view: View) {
         val isLookRich = view.id == R.id.imageButtonRich
         mMainViewModel.onInitialLookChoice(isLookRich)
-        view.findNavController().navigate(AskForLookDirections.actionAskForLookToDaysFragment())
+        if (isLookRich)
+            recreate()
+        view.findNavController().navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
+    }
+
+    fun onWidgetInfoButtonClick(view: View) {
+        view.findNavController().navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
+        mMainViewModel.setAppWidgetInfoDisplayed()
         invalidateOptionsMenu()
     }
     //endregion

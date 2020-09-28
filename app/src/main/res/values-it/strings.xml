@@ -20,7 +20,7 @@
     <string name="help_text_4">Quando aggiungi eventi, puoi modificare temporaneamente le impostazioni dei promemoria per loro. I valori predefiniti per i promemoria possono essere modificati nelle Impostazioni.</string>
     <string name="help_text_5">Un giorno aggiunto al calendario può essere cancellato facendo scorrere lateralmente un dato elemento della lista.</string>
     <string name="holidays">Il giorno festivo</string>
-    <string name="info_about_app_widget">È possibile aggiungere widget app alla schermata iniziale. \n\n(Tocca per nascondere queste informazioni).</string>
+    <string name="info_about_app_widget">È possibile aggiungere widget app alla schermata iniziale.</string>
     <string name="info_added_to_calendar">Aggiunto al calendario</string>
     <string name="info_deleted">Eliminato</string>
     <string name="pref_header_look">Vista</string>
