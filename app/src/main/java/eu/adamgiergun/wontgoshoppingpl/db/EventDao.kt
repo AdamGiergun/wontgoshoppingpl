@@ -5,6 +5,9 @@ import androidx.room.*
 @Dao
 internal interface EventDao {
 
+//    @Query("SELECT * FROM events")
+//    fun getAllEvents(): LiveData<List<Event>>
+
     /**
      * gets @param [date] formatted as yyyy_mm_dd
      */

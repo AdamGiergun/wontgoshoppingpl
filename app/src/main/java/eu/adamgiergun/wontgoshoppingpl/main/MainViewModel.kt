@@ -91,6 +91,10 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         }
     }
 
+//    private var _eventsChanged = MutableLiveData<Boolean>()
+//    val eventsChanged: LiveData<Boolean>
+//        get() = _eventsChanged
+
     private suspend fun setDaysAndLastDate(application: Application) {
         val dayTypes = dayTypesToBeDisplayed.map {
             it.code.toString()
@@ -100,6 +104,9 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         _days.value = eventDao.getAllEventsOfTypeNotBefore(dayTypes, today)?.map {
             Day.newInstance(it)
         }
+//        eventDao.getAllEventsOfTypeNotBefore(dayTypes, today).observe(this.getApplication(), {
+//            _eventsChanged.value = true
+//        })
         eventDao.getLastEvent()?.let {
             val lastDay = Day.newInstance(it)
             lastDateInMillis = lastDay.dateInMillis

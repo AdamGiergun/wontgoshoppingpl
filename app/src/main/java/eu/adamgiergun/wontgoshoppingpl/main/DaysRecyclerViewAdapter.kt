@@ -56,7 +56,7 @@ internal class DaysRecyclerViewAdapter(
         }
 
         override fun areContentsTheSame(oldItem: Day, newItem: Day): Boolean {
-            return oldItem.hashCode() == newItem.hashCode()
+            return oldItem.hashCode() == newItem.hashCode() && oldItem.calendarEventId == newItem.calendarEventId
         }
     }
 }

@@ -33,7 +33,8 @@ internal class Day private constructor(private val dbId: Int, private val item: 
     private var description: String
     private var isReminderNeeded = false
     private var calendarId: String? = null
-    private var calendarEventId: Long = 0
+    var calendarEventId: Long = 0
+        private set
     private fun newBackgroundResource(): Int {
         return when (type) {
             Type.HOLIDAY -> R.drawable.card_bg_red
