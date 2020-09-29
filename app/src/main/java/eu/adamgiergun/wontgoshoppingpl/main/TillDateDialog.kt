@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.DatePicker
 import eu.adamgiergun.wontgoshoppingpl.R
 
-internal class TillDateDialog : MyDialogFragment(), OnDateSetListener {
+internal class TillDateDialog : MainDialogFragment(), OnDateSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var year = 2100

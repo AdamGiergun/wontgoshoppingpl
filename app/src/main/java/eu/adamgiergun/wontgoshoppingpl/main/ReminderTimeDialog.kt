@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.TimePicker
 import eu.adamgiergun.wontgoshoppingpl.R
 
-internal class ReminderTimeDialog : MyDialogFragment(), OnTimeSetListener {
+internal class ReminderTimeDialog : MainDialogFragment(), OnTimeSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var hour = 0

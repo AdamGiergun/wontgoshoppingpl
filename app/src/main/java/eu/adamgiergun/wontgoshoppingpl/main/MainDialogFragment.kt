@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import eu.adamgiergun.wontgoshoppingpl.R
 import kotlinx.coroutines.launch
 
-internal open class MyDialogFragment : AppCompatDialogFragment() {
+internal open class MainDialogFragment : AppCompatDialogFragment() {
 
     protected fun getStyledBuilder() = if (mainViewModel.isLookRich)
         AlertDialog.Builder(requireContext(), R.style.MyAlertDialogStyle)
@@ -21,7 +21,7 @@ internal open class MyDialogFragment : AppCompatDialogFragment() {
         ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
-    protected fun getOnClickListener(dialog: MyDialogFragment) = View.OnClickListener {
+    protected fun getOnClickListener(dialog: MainDialogFragment) = View.OnClickListener {
         activity?.supportFragmentManager?.let { fragmentManager ->
             dialog.show(fragmentManager, "")
         }

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.wontgoshoppingpl.R
 
-internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
+internal class DayTypesAddedToCalendarDialog : MainDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         val checkedItems = mainViewModel.getDayTypesToBeAddedToCalendarAsArray()

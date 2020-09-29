@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.ReminderSettingsDialogViewBinding
 
-internal class ReminderSettingsDialog : MyDialogFragment() {
+internal class ReminderSettingsDialog : MainDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         val binding = bind()

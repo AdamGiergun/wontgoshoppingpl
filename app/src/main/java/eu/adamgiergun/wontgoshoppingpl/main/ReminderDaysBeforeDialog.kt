@@ -6,7 +6,7 @@ import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.wontgoshoppingpl.R
 
-internal class ReminderDaysBeforeDialog : MyDialogFragment() {
+internal class ReminderDaysBeforeDialog : MainDialogFragment() {
 
     private lateinit var picker : NumberPicker
 
