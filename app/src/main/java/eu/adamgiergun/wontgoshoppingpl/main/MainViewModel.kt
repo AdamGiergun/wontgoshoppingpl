@@ -75,11 +75,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         _askForReminderSettings.value = true
     }
 
-    fun showInfoCancelled() {
-        Toast.makeText(appContext, R.string.info_cancelled, Toast.LENGTH_SHORT).show()
-        R.string.info_cancelled
-    }
-
     init {
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
         setReminderToDefaultValueIfNull()
@@ -188,13 +183,9 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val mainNavigationId: Int
         get() = when {
             isFirstRun -> R.navigation.main_navigation_first_run_widget_info
-            !wasAppWidgetInfoDisplayed() -> R.navigation.main_navigation_widget_info
+            !AppPreferences.wasAppWidgetInfoDisplayed(appContext) -> R.navigation.main_navigation_widget_info
             else -> R.navigation.main_navigation
         }
-
-    fun wasAppWidgetInfoDisplayed(): Boolean {
-        return AppPreferences.wasAppWidgetInfoDisplayed(appContext)
-    }
 
     val isCalendarEnabledAndChosen: Boolean
         get() = AppPreferences.isUseGoogleCalendarSet(appContext) && AppPreferences.isCalendarSet(appContext)
@@ -212,7 +203,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         FirebaseEvent.logCalendarEvent(appContext, _isActionAddList, result)
     }
 
-    val error: Int
+    private val error: Int
         get() = if (_isActionAddList) R.string.error_sth_went_wrong else R.string.error_adding_to_calendar_failed
 
     companion object {

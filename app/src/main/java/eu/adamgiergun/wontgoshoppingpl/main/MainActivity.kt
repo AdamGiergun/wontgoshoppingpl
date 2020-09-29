@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -16,8 +15,6 @@ import androidx.navigation.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment
-import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogViewListener
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
 import eu.adamgiergun.wontgoshoppingpl.common.InterstitialAdContainer
@@ -34,7 +31,7 @@ import java.util.*
     TODO "Info" group in Settings(?)
     TODO move events filtering from settings to app bar(?)
 */
-internal class MainActivity : ActivityWithTheme(), OnItemClickListener, NoticeDialogFragment.NoticeDialogListener, NoticeDialogViewListener {
+internal class MainActivity : ActivityWithTheme(), OnItemClickListener {
 
     private val mMainViewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
@@ -191,35 +188,17 @@ internal class MainActivity : ActivityWithTheme(), OnItemClickListener, NoticeDi
         checkCalendarPermissions()
     }
 
-    //region ShowingInfoRegion
-    private fun showInfo(resultIsPositive: Boolean, positiveInfo: Int, negativeInfo: Int) {
-        val info = if (resultIsPositive) positiveInfo else negativeInfo
-        showInfo(info)
-    }
-
-    private fun showInfo(info: Int) {
-        Toast.makeText(applicationContext, info, Toast.LENGTH_SHORT).show()
-    }
-
-    //endregion
     override fun onCalendarPermissionsGranted() {
         checkCalendarSettings()
     }
 
     //region on...ClickRegion
-    override fun onDialogPositiveClick(dialog: NoticeDialogFragment) {}
-
-    override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {}
-
-    override fun onViewClick(noticeDialogFragment: NoticeDialogFragment) {
-        noticeDialogFragment.show(supportFragmentManager, "")
-    }
-
     fun onLookButtonClick(view: View) {
-        val isLookRich = view.id == R.id.imageButtonRich
-        mMainViewModel.onInitialLookChoice(isLookRich)
-        if (isLookRich)
-            recreate()
+        (view.id == R.id.imageButtonRich).let { isLookRich ->
+            mMainViewModel.onInitialLookChoice(isLookRich)
+            if (isLookRich)
+                recreate()
+        }
         view.findNavController().navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
     }
 

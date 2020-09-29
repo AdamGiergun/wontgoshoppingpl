@@ -2,10 +2,8 @@ package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialog
-import androidx.lifecycle.lifecycleScope
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.ReminderAndDateSettingsDialogViewBinding
-import kotlinx.coroutines.launch
 
 internal class ReminderSettingsAndDateTillDialog : MyDialogFragment() {
 
@@ -14,8 +12,8 @@ internal class ReminderSettingsAndDateTillDialog : MyDialogFragment() {
         return getStyledBuilder().run {
             setTitle(getString(R.string.title_reminder))
             setView(binding.root)
-            setPositiveButton(android.R.string.ok) { _, _ -> lifecycleScope.launch { mainViewModel.addToCalendar() } }
-            setNegativeButton(android.R.string.cancel) { _, _ -> mainViewModel.showInfoCancelled() }
+            setPositiveButton(android.R.string.ok, addToCalendar)
+            setNegativeButton(android.R.string.cancel, showInfoCancelled)
             create()
         }
     }
@@ -26,11 +24,11 @@ internal class ReminderSettingsAndDateTillDialog : MyDialogFragment() {
             lifecycleOwner = this@ReminderSettingsAndDateTillDialog
             viewModel = mainViewModel
             numberOfDaysBeforeView.setOnClickListener(
-                    getViewListener(ReminderDaysBeforeDialog()))
+                    getOnClickListener(ReminderDaysBeforeDialog()))
             timeView.setOnClickListener(
-                    getViewListener(ReminderTimeDialog()))
+                    getOnClickListener(ReminderTimeDialog()))
             tillDateView.setOnClickListener(
-                    getViewListener(TillDateDialog()))
+                    getOnClickListener(TillDateDialog()))
         }
     }
 }
