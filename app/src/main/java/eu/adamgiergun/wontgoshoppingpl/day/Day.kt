@@ -16,40 +16,52 @@ import eu.adamgiergun.wontgoshoppingpl.db.Event
 import java.util.*
 import kotlin.collections.ArrayList
 
-internal class Day private constructor(private val dbId: Int, private val item: String, private val type: Type) : Comparable<Day> {
+internal class Day(private val event: Event) : Comparable<Day> {
+    val date: SimpleDate
+    val time: String
     val name: String
-    private val date: SimpleDate
+    private var calendarId: String?
 
-    val dateInMillis: Long
+    var calendarEventId: Long
+        private set
+
+    init {
+        calendarId = event.calendarId
+        calendarEventId = event.calendarEventId ?: 0
+        val pieces = event.item.split(",".toRegex()).toTypedArray()
+        date = SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YMD.toInt())
+        time = pieces[1]
+        name = pieces[2]
+    }
+
+    val dateInMillis
         get() = date.timeInMillis
 
-    private val time: String
-    val timeDescription: String
+    val timeDescription
+        get() = if (allDay) wholeDay else since + time
+
     private val allDay: Boolean
-    val backgroundColorResource: Int
-    val backgroundResource: Int
-    private var noOfConsecutiveDays = 0
-    private var reminder: SimpleReminder? = null
-    private var description: String
-    private var isReminderNeeded = false
-    private var calendarId: String? = null
-    var calendarEventId: Long = 0
-        private set
-    private fun newBackgroundResource(): Int {
-        return when (type) {
-            Type.HOLIDAY -> R.drawable.card_bg_red
-            Type.NON_COMMERCE_DAY -> R.drawable.card_bg_orange
-            Type.COMMERCE_SUNDAY -> R.drawable.card_bg_green
-        }
+        get() = time == "00:00"
+
+    private val type: Type
+        get() = Type.getType(event.typeId)!!
+
+    val backgroundColorResource = when (type) {
+        Type.HOLIDAY -> R.color.colorHoliday
+        Type.NON_COMMERCE_DAY -> R.color.colorNonCommerceDay
+        Type.COMMERCE_SUNDAY -> R.color.colorCommerceSunday
     }
 
-    private fun newBackgroundColorResource(): Int {
-        return when (type) {
-            Type.HOLIDAY -> R.color.colorHoliday
-            Type.NON_COMMERCE_DAY -> R.color.colorNonCommerceDay
-            Type.COMMERCE_SUNDAY -> R.color.colorCommerceSunday
-        }
+    val backgroundResource = when (type) {
+        Type.HOLIDAY -> R.drawable.card_bg_red
+        Type.NON_COMMERCE_DAY -> R.drawable.card_bg_orange
+        Type.COMMERCE_SUNDAY -> R.drawable.card_bg_green
     }
+
+    private var noOfConsecutiveDays = 0
+    private var reminder: SimpleReminder? = null
+    private var description = name
+    private var isReminderNeeded = true
 
     override fun compareTo(other: Day): Int {
         return date.compareTo(other.date)
@@ -61,10 +73,13 @@ internal class Day private constructor(private val dbId: Int, private val item: 
         if (calendarEvent?.exists(appContext, calendarId) == true) {
             calendarEvent.writeReminders(appContext)
         } else {
-            if (calendarEvent?.exists(appContext) == true) {
-                deleteFromGoogleCalendar(calendarEvent, appContext)
+            if (calendarEvent?.exists(appContext) == true
+                    && calendarEventId != SimpleCalendarEvent.NON_EXISTING.toLong()
+                    && calendarEvent.delete(appContext)) {
+                finishDeleting(appContext)
             }
-            calendarEventId = calendarEvent?.write(appContext) ?: SimpleCalendarEvent.NON_EXISTING.toLong()
+            calendarEventId = calendarEvent?.write(appContext)
+                    ?: SimpleCalendarEvent.NON_EXISTING.toLong()
             updateEventInDb(appContext)
         }
         return calendarEventId > SimpleCalendarEvent.NON_EXISTING
@@ -73,27 +88,21 @@ internal class Day private constructor(private val dbId: Int, private val item: 
     private fun newCalendarEventInstance(appContext: Context, timeZoneId: String): SimpleCalendarEvent? {
         return calendarId?.let {
             SimpleCalendarEvent.Builder(it, date, SimpleTime(time), timeZoneId, allDay)
-                .setCalendarEventId(calendarEventId)
-                .setEndCalendar(endDate, SimpleTime("23:59"))
-                .setReminders(reminders)
-                .setTitle(description + " - " + if (type == Type.COMMERCE_SUNDAY) appContext.getString(R.string.go_shopping) else appContext.getString(R.string.go_shopping_earlier))
-                .build()
+                    .setCalendarEventId(calendarEventId)
+                    .setEndCalendar(endDate, SimpleTime("23:59"))
+                    .setReminders(reminders)
+                    .setTitle(description + " - " + if (type == Type.COMMERCE_SUNDAY) appContext.getString(R.string.go_shopping) else appContext.getString(R.string.go_shopping_earlier))
+                    .build()
         }
     }
 
-    private val endDate: SimpleDate
+    private val endDate
         get() = date.addDays(noOfConsecutiveDays)
 
     private val reminders: SimpleReminder.List
         get() {
             return SimpleReminder.List().apply { add(reminder) }
         }
-
-    private suspend fun deleteFromGoogleCalendar(calendarEvent: SimpleCalendarEvent, appContext: Context) {
-        if (calendarEventId != SimpleCalendarEvent.NON_EXISTING.toLong() && calendarEvent.delete(appContext)) {
-            finishDeleting(appContext)
-        }
-    }
 
     private suspend fun finishDeleting(appContext: Context) {
         Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show()
@@ -104,7 +113,7 @@ internal class Day private constructor(private val dbId: Int, private val item: 
 
     private suspend fun updateEventInDb(appContext: Context) {
         val database = AppDatabase.getInstance(appContext).eventDao()
-        val event = Event(dbId, type.code, item, calendarId, calendarEventId)
+        val event = Event(event.id, event.typeId, event.item, calendarId, calendarEventId)
         database.update(event)
     }
 
@@ -121,12 +130,12 @@ internal class Day private constructor(private val dbId: Int, private val item: 
                """.trimIndent()
 
     val descriptionForDialog: String
-        get() = if (type == Type.HOLIDAY) description else dateAndWeekdayString
+        get() = if (type == Type.HOLIDAY) name else dateAndWeekdayString
 
     val widgetText: CharSequence
         get() = """
                $date
-               PL: $description
+               PL: $name
                """.trimIndent()
 
     val isCommerceSunday: Boolean
@@ -152,10 +161,6 @@ internal class Day private constructor(private val dbId: Int, private val item: 
         return date == otherDay.date.addDays(1)
     }
 
-    private fun setReminderNotNeeded() {
-        isReminderNeeded = false
-    }
-
     enum class Type(val code: Int) {
         NON_COMMERCE_DAY(0), HOLIDAY(1), COMMERCE_SUNDAY(2);
 
@@ -163,15 +168,16 @@ internal class Day private constructor(private val dbId: Int, private val item: 
 
         companion object {
             private val map = values().associateBy(Type::code)
+
             fun getType(type: Int) = map[type]
 
             @JvmStatic
             fun newSet(addNonCommerceDays: Boolean, addHolidays: Boolean, addCommerceSundays: Boolean): Set {
-                val types = Set()
-                if (addNonCommerceDays) types.add(NON_COMMERCE_DAY)
-                if (addHolidays) types.add(HOLIDAY)
-                if (addCommerceSundays) types.add(COMMERCE_SUNDAY)
-                return types
+                return Set().apply {
+                    if (addNonCommerceDays) add(NON_COMMERCE_DAY)
+                    if (addHolidays) add(HOLIDAY)
+                    if (addCommerceSundays) add(COMMERCE_SUNDAY)
+                }
             }
         }
     }
@@ -187,9 +193,9 @@ internal class Day private constructor(private val dbId: Int, private val item: 
                         var previousDay = firstDay
                         nextDay = iterator.next()
                         while (!firstDay.isCommerceSunday && !nextDay.isCommerceSunday && nextDay.isTomorrowOf(previousDay)) {
-                            nextDay.setReminderNotNeeded()
+                            nextDay.isReminderNeeded = false
                             firstDay.incrementNoOfConsecutiveDays()
-                            firstDay.appendToDescription(nextDay.description)
+                            firstDay.appendToDescription(nextDay.name)
                             if (iterator.hasNext()) {
                                 previousDay = nextDay
                                 nextDay = iterator.next()
@@ -213,7 +219,7 @@ internal class Day private constructor(private val dbId: Int, private val item: 
                 }.toList()
                 val database = AppDatabase.getInstance(appContext).eventDao()
                 val list = database.getAllEventsOfTypeNotBefore(dayTypesArray, today)?.map {
-                    newInstance(it)
+                    Day(it)
                 } as ArrayList<Day>
                 val finalList = skipReminderForConsecutiveDays(list)
                 var result = true
@@ -228,49 +234,9 @@ internal class Day private constructor(private val dbId: Int, private val item: 
         }
     }
 
-    //        private void removePastDays() {
-
-    //            Iterator<Day> iterator = this.iterator();
-    //            Calendar yesterday = getYesterday();
-    //            Day day;
-    //            while (iterator.hasNext()) {
-    //                day = iterator.next();
-    //                if (yesterday.compareTo(day.getCalendar()) >= 0) {
-    //                    this.remove(day);
-    //                } else {
-    //                    break;
-    //                }
-    //            }
-    //        }
-
     companion object {
-        fun newInstance(event: Event): Day {
-            val day = Day(event.id!!, event.item, Type.getType(event.typeId)!!)
-            day.calendarId = event.calendarId
-            day.calendarEventId = event.calendarEventId ?: 0
-            day.isReminderNeeded = true
-            day.noOfConsecutiveDays = 0
-            return day
-        }
-
         fun getDayForWidget(event: Event?): Day? {
-            return event?.let { Day(event.id!!, event.item, Type.getType(event.typeId)!!) }
+            return event?.let { Day(it) }
         }
-    }
-
-    init {
-        backgroundResource = newBackgroundResource()
-        backgroundColorResource = newBackgroundColorResource()
-        val pieces = item.split(",".toRegex()).toTypedArray()
-        date = if (pieces[0].startsWith("2019")) {
-            SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YDM.toInt())
-        } else {
-            SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YMD.toInt())
-        }
-        time = pieces[1]
-        name = pieces[2]
-        description = name
-        allDay = time == "00:00"
-        timeDescription = if (allDay) wholeDay else since + time
     }
 }

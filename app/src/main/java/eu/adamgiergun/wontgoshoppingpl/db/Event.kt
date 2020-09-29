@@ -19,12 +19,9 @@ internal data class Event(
     }
 
     override fun hashCode(): Int {
-        val pieces = item.split(",")
-        return if (pieces[0].startsWith("2019")) {
-            SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YDM.toInt()).hashCode()
-        } else {
-            SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YMD.toInt()).hashCode()
-        }
+        val pieces = item.split(",".toRegex()).toTypedArray()
+        val date = SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YMD.toInt())
+        return date.hashCode()
     }
 
     override fun equals(other: Any?): Boolean {

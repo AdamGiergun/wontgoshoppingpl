@@ -97,13 +97,13 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         val eventDao = AppDatabase.getInstance(application).eventDao()
         if (isFirstRun) eventDao.initialize()
         _days.value = eventDao.getAllEventsOfTypeNotBefore(dayTypes, today)?.map {
-            Day.newInstance(it)
+            Day(it)
         }
 //        eventDao.getAllEventsOfTypeNotBefore(dayTypes, today).observe(this.getApplication(), {
 //            _eventsChanged.value = true
 //        })
         eventDao.getLastEvent()?.let {
-            val lastDay = Day.newInstance(it)
+            val lastDay = Day(it)
             lastDateInMillis = lastDay.dateInMillis
         }
     }
