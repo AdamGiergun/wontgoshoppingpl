@@ -17,7 +17,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 108
-        versionName "2.99.11.2"
+        versionName "2.99.11.3"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"

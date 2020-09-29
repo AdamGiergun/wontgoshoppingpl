@@ -12,16 +12,15 @@ internal class DayTypesAddedToCalendarDialog : MyDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
         val checkedItems = mainViewModel.getDayTypesToBeAddedToCalendarAsArray()
         return getAlertDialog(checkedItems).apply {
-            this.show()
+            show()
             setIsEnabledDialogButtonPositive(this, checkedItems)
         }
     }
 
     private fun getAlertDialog(checkedItems: BooleanArray): AlertDialog {
-        val listener = getOnMultiChoiceClickListener(checkedItems)
         return getStyledBuilder().run {
             setTitle(R.string.title_choose_events)
-            setMultiChoiceItems(items, checkedItems, listener)
+            setMultiChoiceItems(items, checkedItems, getOnMultiChoiceClickListener(checkedItems))
             setPositiveButton(android.R.string.ok) { _, _ -> mainViewModel.askForReminderSettings() }
             setNegativeButton(android.R.string.cancel) { _, _ -> mainViewModel.showInfoCancelled() }
             create()
