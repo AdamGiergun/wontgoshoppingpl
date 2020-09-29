@@ -16,13 +16,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment
 import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogListener
 import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogViewListener
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
+import eu.adamgiergun.wontgoshoppingpl.common.InterstitialAdContainer
 import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
@@ -38,8 +38,6 @@ import java.util.*
     TODO move events filtering from settings to app bar(?)
 */
 internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener, NoticeDialogViewListener {
-
-    private var interstitialAd: InterstitialAd? = null
 
     private val mMainViewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
@@ -58,7 +56,7 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
 
         lifecycleScope.launchWhenStarted {
             setupBannerAds(binding.adView)
-            initializeOrLoadInterstitialAd(applicationContext)
+            InterstitialAdContainer.initializeAd(applicationContext)
         }
 
         mMainViewModel.askForReminderSettings.observe(this, {
@@ -103,38 +101,6 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
     }
-
-    private fun initializeOrLoadInterstitialAd(context: Context) {
-        if (interstitialAd == null) {
-            interstitialAd = InterstitialAd(context).apply {
-                adUnitId = context.getString(R.string.interstitial_ad_id)
-            }
-        }
-        loadInterstitialAd()
-    }
-
-    private fun loadInterstitialAd() {
-        val adRequest = AdRequest.Builder().build()
-        interstitialAd?.loadAd(adRequest)
-    }
-
-    private fun getInterstitialAd(): InterstitialAd? {
-        return if (interstitialAd == null) {
-            initializeOrLoadInterstitialAd(applicationContext)
-            null
-        } else {
-            interstitialAd?.let {
-                if (it.isLoaded) {
-                    interstitialAd
-                } else {
-                    if (!it.isLoading) {
-                        loadInterstitialAd()
-                    }
-                    null
-                }
-            }
-        }
-    }
     //endregion
 
     //    private void showStartTime() {
@@ -143,6 +109,7 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
     //        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
     //    }
     //endregion
+
     //region AppMenuHandlingRegion
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val menuLayoutId = if (mMainViewModel.isFirstRun) R.menu.main_activity_actions_first_run else R.menu.main_activity_actions
@@ -200,7 +167,7 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
     }
 
     private fun askForReminderSettings() {
-        mMainViewModel.resetReminderToDefaultValue()
+        mMainViewModel.setReminderToDefaultValueIfNull()
         if (mMainViewModel.isActionAddList) {
             ReminderSettingsAndDateTillDialog()
                     .show(supportFragmentManager, "")
@@ -252,7 +219,7 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
     }
 
     private suspend fun addToCalendar() {
-        getInterstitialAd()?.show()
+        InterstitialAdContainer.getAd(applicationContext)?.show()
         val isResultPositive = mMainViewModel.addToCalendar()
         showInfo(isResultPositive, R.string.info_added_to_calendar, mMainViewModel.error)
     }

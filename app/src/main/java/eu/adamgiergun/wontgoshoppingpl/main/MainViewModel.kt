@@ -82,7 +82,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     init {
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
-        resetReminderToDefaultValue()
+        setReminderToDefaultValueIfNull()
         val todayCal = Calendar.getInstance()
         _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
 
@@ -113,8 +113,9 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         }
     }
 
-    fun resetReminderToDefaultValue() {
-        _reminder.value = reminderPreference
+    fun setReminderToDefaultValueIfNull() {
+        if (_reminder.value == null)
+            _reminder.value = reminderPreference
     }
 
     fun setReminderDaysBefore(daysBefore: Int) {
