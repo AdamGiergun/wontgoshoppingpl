@@ -2,8 +2,10 @@ package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialog
+import androidx.lifecycle.lifecycleScope
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.ReminderSettingsDialogViewBinding
+import kotlinx.coroutines.launch
 
 internal class ReminderSettingsDialog : MyDialogFragment() {
 
@@ -13,8 +15,8 @@ internal class ReminderSettingsDialog : MyDialogFragment() {
         return getStyledBuilder().run {
             setTitle(title)
             setView(binding.root)
-            setPositiveButton(android.R.string.ok, getPositiveButtonListener(this@ReminderSettingsDialog))
-            setNegativeButton(android.R.string.cancel, getNegativeButtonListener(this@ReminderSettingsDialog))
+            setPositiveButton(android.R.string.ok) { _, _ -> lifecycleScope.launch { mainViewModel.addToCalendar() } }
+            setNegativeButton(android.R.string.cancel) { _, _ -> mainViewModel.showInfoCancelled() }
             create()
         }
     }

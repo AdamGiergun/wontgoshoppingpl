@@ -145,6 +145,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     suspend fun addToCalendar(): Boolean {
+        InterstitialAdContainer.getAd(appContext)?.show()
         val result: Boolean = if (_isActionAddList) {
             val tillDateValue = tillDate.value
             if (tillDateValue == null) {
@@ -161,7 +162,13 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
             lastTouchedDay.addToGoogleCalendar(appContext, timeZoneId)
         }
         logCalendarEvent(result)
+        showInfo(result)
         return result
+    }
+
+    private fun showInfo(resultIsPositive: Boolean) {
+        val info = if (resultIsPositive) R.string.info_added_to_calendar else error
+        Toast.makeText(appContext, info, Toast.LENGTH_SHORT).show()
     }
 
     private val timeZoneId: String

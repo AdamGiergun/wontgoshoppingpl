@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
-
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -18,7 +17,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment
-import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogListener
 import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogViewListener
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
@@ -29,7 +27,6 @@ import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
-import kotlinx.coroutines.launch
 import java.util.*
 
 /*
@@ -37,7 +34,7 @@ import java.util.*
     TODO "Info" group in Settings(?)
     TODO move events filtering from settings to app bar(?)
 */
-internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemClickListener, NoticeDialogViewListener {
+internal class MainActivity : ActivityWithTheme(), OnItemClickListener, NoticeDialogFragment.NoticeDialogListener, NoticeDialogViewListener {
 
     private val mMainViewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
@@ -210,25 +207,9 @@ internal class MainActivity : ActivityWithTheme(), NoticeDialogListener, OnItemC
     }
 
     //region on...ClickRegion
-    override fun onDialogPositiveClick(dialog: NoticeDialogFragment) {
-        if (dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
-            lifecycleScope.launch {
-                addToCalendar()
-            }
-        }
-    }
+    override fun onDialogPositiveClick(dialog: NoticeDialogFragment) {}
 
-    private suspend fun addToCalendar() {
-        InterstitialAdContainer.getAd(applicationContext)?.show()
-        val isResultPositive = mMainViewModel.addToCalendar()
-        showInfo(isResultPositive, R.string.info_added_to_calendar, mMainViewModel.error)
-    }
-
-    override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {
-        if (dialog is ReminderSettingsDialog || dialog is ReminderSettingsAndDateTillDialog) {
-            showInfo(R.string.info_cancelled)
-        }
-    }
+    override fun onDialogNegativeClick(dialog: NoticeDialogFragment) {}
 
     override fun onViewClick(noticeDialogFragment: NoticeDialogFragment) {
         noticeDialogFragment.show(supportFragmentManager, "")
