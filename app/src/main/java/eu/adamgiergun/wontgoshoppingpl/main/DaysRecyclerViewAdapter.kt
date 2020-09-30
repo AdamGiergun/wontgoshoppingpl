@@ -9,11 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 
-internal class DaysRecyclerViewAdapter(
-        private val listener: DaysFragment.OnItemClickListener?,
-        private val isLookRich: Boolean,
-        private val density: Float
-)
+internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel)
     : ListAdapter<Day, DaysRecyclerViewAdapter.DayViewHolder>(DayDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
@@ -22,29 +18,27 @@ internal class DaysRecyclerViewAdapter(
 
     override fun onBindViewHolder(holderDay: DayViewHolder, position: Int) {
         val day = getItem(position)
-        holderDay.bind(day, listener, isLookRich, density)
+        holderDay.bind(day, viewModel)
     }
 
     internal class DayViewHolder private constructor(private val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        private lateinit var day: Day
 
-        fun bind(item: Day, listener: DaysFragment.OnItemClickListener?, isLookRich: Boolean, density: Float) {
-            day = item
-            binding.day = item
-            binding.isLookRich = isLookRich
-            binding.density = density
-            binding.clickListener = listener
+        fun bind(day: Day, viewModel: MainViewModel) {
+            binding.day = day
+            binding.viewModel = viewModel
         }
 
         suspend fun deleteFromGoogleCalendar(appContext: Context) {
-            day.deleteFromGoogleCalendar(appContext)
+            binding.day?.deleteFromGoogleCalendar(appContext)
         }
 
         companion object {
             fun from(parent: ViewGroup): DayViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = DayListItemBinding.inflate(layoutInflater, parent, false)
-                return DayViewHolder(binding)
+                return DayViewHolder(
+                        DayListItemBinding.inflate(
+                                LayoutInflater.from(parent.context),
+                                parent,
+                                false))
             }
         }
     }

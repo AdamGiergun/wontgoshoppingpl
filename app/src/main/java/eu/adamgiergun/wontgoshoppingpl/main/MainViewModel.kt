@@ -42,7 +42,16 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val reminder: LiveData<SimpleReminder>
         get() = _reminder
 
-    private lateinit var lastTouchedDay: Day
+    private var _lastTouchedDay = MutableLiveData<Day>()
+    val lastTouchedDay: LiveData<Day>
+        get() = _lastTouchedDay
+
+    fun setLastTouchedDay(day: Day) {
+        _lastTouchedDay.value = day
+        _isActionAddList = false
+    }
+
+    var density: Float = 0F
 
     private val dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
     private var dayTypesToBeAddedToCalendar: Day.Type.Set
@@ -128,15 +137,10 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     val dayDescriptionForDialog: String
-        get() = lastTouchedDay.descriptionForDialog
+        get() = lastTouchedDay.value?.descriptionForDialog ?: ""
 
     fun setAppWidgetInfoDisplayed() {
         AppPreferences.setAppWidgetInfoDisplayed(appContext)
-    }
-
-    fun setLastTouchedDay(day: Day) {
-        lastTouchedDay = day
-        _isActionAddList = false
     }
 
     suspend fun addToCalendar(): Boolean {
@@ -153,8 +157,10 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
                         timeZoneId,
                         tillDateValue)
         } else {
-            lastTouchedDay.setReminder(_reminder.value)
-            lastTouchedDay.addToGoogleCalendar(appContext, timeZoneId)
+            lastTouchedDay.value?.run {
+                setReminder(_reminder.value)
+                addToGoogleCalendar(appContext, timeZoneId)
+            } ?: false
         }
         logCalendarEvent(result)
         showInfo(result)
@@ -205,7 +211,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     private val error: Int
         get() = if (_isActionAddList) R.string.error_sth_went_wrong else R.string.error_adding_to_calendar_failed
-    
+
     companion object {
         const val START_FRAGMENT_ID_TAG = AppViewModel.START_FRAGMENT_ID_TAG
 

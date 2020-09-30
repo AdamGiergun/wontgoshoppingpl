@@ -18,9 +18,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 import eu.adamgiergun.wontgoshoppingpl.common.InterstitialAdContainer
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
-import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
-import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 
 /*
@@ -28,7 +26,7 @@ import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
     TODO "Info" group in Settings(?)
     TODO move events filtering from settings to app bar(?)
 */
-internal class MainActivity : ActivityWithThemeAndPermissions(), OnItemClickListener {
+internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     private val mMainViewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
@@ -36,21 +34,26 @@ internal class MainActivity : ActivityWithThemeAndPermissions(), OnItemClickList
 
     //    private var calStart: Calendar
     //region ActivityLifeCycleRegion
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        calStart = Calendar.getInstance();
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.viewModel = mMainViewModel
+        mMainViewModel.let {
+            binding.viewModel = it
+            it.askForReminderSettings.observe(this, { ask ->
+                if (ask) askForReminderSettings()
+            })
+
+            it.lastTouchedDay.observe(this, {
+                checkCalendarPermissions(checkCalendarSettings)
+            })
+        }
 
         lifecycleScope.launchWhenStarted {
             setupBannerAds(binding.adView)
             InterstitialAdContainer.initializeAd(applicationContext)
         }
-
-        mMainViewModel.askForReminderSettings.observe(this, {
-            if (it) askForReminderSettings()
-        })
-
 //        addCrashTestButton();
     }
 
@@ -151,13 +154,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions(), OnItemClickList
         val intent = Intent(applicationContext, HelpActivity::class.java)
         startActivity(intent)
     }
-
     //endregion
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    override fun onItemClick(day: Day) {
-        mMainViewModel.setLastTouchedDay(day)
-        checkCalendarPermissions(checkCalendarSettings)
-    }
 
     override fun onCalendarPermissionsGranted() {
         checkCalendarSettings()

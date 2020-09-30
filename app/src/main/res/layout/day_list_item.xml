@@ -5,20 +5,12 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
+
+        <variable
             name="day"
             type="eu.adamgiergun.wontgoshoppingpl.day.Day" />
-
-        <variable
-            name="isLookRich"
-            type="Boolean" />
-
-        <variable
-            name="density"
-            type="Float" />
-
-        <variable
-            name="clickListener"
-            type="eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -26,10 +18,10 @@
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.onItemClick(day)}"
+        android:onClick="@{() -> viewModel.setLastTouchedDay(day)}"
         app:day="@{day}"
-        app:density="@{density}"
-        app:isLookRich="@{isLookRich}">
+        app:density="@{viewModel.density}"
+        app:isLookRich="@{viewModel.isLookRich}">
 
         <LinearLayout
             android:id="@+id/LinearLayoutInCardView"
@@ -53,7 +45,7 @@
                 android:layout_weight="@dimen/time_field_weight"
                 android:textAlignment="center"
                 app:isAllDay="@{day.allDay}"
-                app:time="@{day.time}"/>
+                app:time="@{day.time}" />
 
             <TextView
                 style="@style/MyTextViewStyleInList"

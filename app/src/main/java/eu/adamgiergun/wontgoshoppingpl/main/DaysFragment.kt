@@ -1,80 +1,53 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.databinding.FragmentDayListBinding
-import eu.adamgiergun.wontgoshoppingpl.day.Day
 import kotlinx.coroutines.launch
 
 internal class DaysFragment : Fragment() {
-    private lateinit var recyclerViewAdapter: DaysRecyclerViewAdapter
-    private var listener: OnItemClickListener? = null
 
-    private val dayTouchHelperCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return false
-        }
+    private val dayTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            lifecycleScope.launch {
-                val dayViewHolder = viewHolder as DaysRecyclerViewAdapter.DayViewHolder
-                context?.applicationContext?.let {
-                    dayViewHolder.deleteFromGoogleCalendar(it)
-                    recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    lifecycleScope.launch {
+                        (viewHolder as DaysRecyclerViewAdapter.DayViewHolder).let { dayViewHolder ->
+                            context?.let { context ->
+                                dayViewHolder.deleteFromGoogleCalendar(context)
+                                DataBindingUtil.getBinding<FragmentDayListBinding>(this@DaysFragment.requireView())?.let { binding ->
+                                    binding.list.adapter?.notifyItemChanged(dayViewHolder.adapterPosition)
+                                }
+                            }
+                        }
+                    }
                 }
             }
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = FragmentDayListBinding.inflate(inflater)
-        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        recyclerViewAdapter = DaysRecyclerViewAdapter(
-                listener,
-                mainViewModel.isLookRich,
-                requireContext().resources.displayMetrics.density
-                )
-        binding.list.adapter = recyclerViewAdapter
-        attachItemTouchHelper(binding.list)
-
-        mainViewModel.days.observe(viewLifecycleOwner, {
-            it?.let {
-                recyclerViewAdapter.submitList(it)
+        return FragmentDayListBinding.inflate(inflater).let { binding ->
+            ViewModelProvider(requireActivity()).get(MainViewModel::class.java).let { mainViewModel ->
+                mainViewModel.density = requireContext().resources.displayMetrics.density
+                DaysRecyclerViewAdapter(mainViewModel).let { recyclerViewAdapter ->
+                    binding.list.adapter = recyclerViewAdapter
+                    mainViewModel.days.observe(viewLifecycleOwner, { recyclerViewAdapter.submitList(it) })
+                }
+                mainViewModel.logLook()
             }
-        })
-        mainViewModel.logLook()
-        return binding.root
-    }
-
-    private fun attachItemTouchHelper(recyclerView: RecyclerView?) {
-        val dayTouchHelper = ItemTouchHelper(dayTouchHelperCallback)
-        dayTouchHelper.attachToRecyclerView(recyclerView)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = if (context is OnItemClickListener) {
-            context
-        } else {
-            throw RuntimeException(context.toString()
-                    + " must implement onItemClickListener")
+            ItemTouchHelper(dayTouchHelperCallback).attachToRecyclerView(binding.list)
+            binding.root
         }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(day: Day)
     }
 }
