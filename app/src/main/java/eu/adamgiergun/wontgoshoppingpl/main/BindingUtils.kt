@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.os.Build
 import android.view.View
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentContainerView
@@ -42,4 +43,9 @@ internal fun View.setRichBackgroundResource(isLookRich: Boolean) {
 @BindingAdapter("navGraphId")
 internal fun FragmentContainerView.bindNavigation(navGraphId: Int) {
     findNavController().setGraph(navGraphId)
+}
+
+@BindingAdapter("isAllDay", "time")
+internal fun TextView.setTimeDescription(isAllDay: Boolean, time: String) {
+    text = if (isAllDay) this.context.getString(R.string.whole_day) else this.context.getString(R.string.since) + time
 }

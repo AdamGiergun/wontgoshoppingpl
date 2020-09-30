@@ -2,11 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
-    </data>
+    <data/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +18,7 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.askForLookText}"
+                android:text="@string/ask_for_look"
                 android:gravity="center_horizontal" />
         </LinearLayout>
 

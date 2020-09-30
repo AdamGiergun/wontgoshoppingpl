@@ -213,7 +213,4 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
             return SettingsFragment.getStartFragmentId(startFromNotifications)
         }
     }
-
-    val askForLookText
-        get() = LocalizedConst.askForLook
 }

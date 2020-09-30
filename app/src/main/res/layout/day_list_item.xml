@@ -51,8 +51,9 @@
                 style="@style/MyTextViewStyleInList"
                 android:layout_gravity="center"
                 android:layout_weight="@dimen/time_field_weight"
-                android:text="@{day.timeDescription}"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                app:isAllDay="@{day.allDay}"
+                app:time="@{day.time}"/>
 
             <TextView
                 style="@style/MyTextViewStyleInList"

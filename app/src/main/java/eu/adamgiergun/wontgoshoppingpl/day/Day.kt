@@ -8,8 +8,6 @@ import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleReminder
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleTime
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
-import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst.since
-import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst.wholeDay
 import eu.adamgiergun.wontgoshoppingpl.common.today
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
 import eu.adamgiergun.wontgoshoppingpl.db.Event
@@ -17,7 +15,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 internal class Day(private val event: Event) : Comparable<Day> {
-    val date: SimpleDate
+    private val date: SimpleDate
     val time: String
     val name: String
     private var calendarId: String?
@@ -37,10 +35,7 @@ internal class Day(private val event: Event) : Comparable<Day> {
     val dateInMillis
         get() = date.timeInMillis
 
-    val timeDescription
-        get() = if (allDay) wholeDay else since + time
-
-    private val allDay: Boolean
+    val allDay: Boolean
         get() = time == "00:00"
 
     private val type: Type

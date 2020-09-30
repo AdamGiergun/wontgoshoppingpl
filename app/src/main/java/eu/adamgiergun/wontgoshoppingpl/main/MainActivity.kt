@@ -42,9 +42,6 @@ internal class MainActivity : ActivityWithTheme(), OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        calStart = Calendar.getInstance();
-        if (savedInstanceState == null) {
-            setLocalizedConst()
-        }
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = mMainViewModel
 
@@ -73,15 +70,6 @@ internal class MainActivity : ActivityWithTheme(), OnItemClickListener {
 //                    ViewGroup.LayoutParams.MATCH_PARENT,
 //                    ViewGroup.LayoutParams.WRAP_CONTENT));
 //        }
-
-    private fun setLocalizedConst() {
-        if (!LocalizedConst.isSet) {
-            LocalizedConst.wholeDay = getString(R.string.whole_day)
-            LocalizedConst.since = getString(R.string.since)
-            LocalizedConst.askForLook = getString(R.string.ask_for_look)
-            LocalizedConst.isSet = true
-        }
-    }
 
     override fun setDefaultLocale(context: Context?): Context? {
         LocalizedConst.locale = Locale.getDefault()
