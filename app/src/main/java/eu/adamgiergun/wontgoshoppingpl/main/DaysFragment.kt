@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.FragmentDayListBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import kotlinx.coroutines.launch
@@ -37,8 +35,7 @@ internal class DaysFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentDayListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_day_list, container, false)
-        binding.lifecycleOwner = this
+        val binding = FragmentDayListBinding.inflate(inflater)
         val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         recyclerViewAdapter = DaysRecyclerViewAdapter(
                 listener,
@@ -48,8 +45,6 @@ internal class DaysFragment : Fragment() {
         binding.list.adapter = recyclerViewAdapter
         attachItemTouchHelper(binding.list)
 
-
-        //binding.viewModel = mainViewModel
         mainViewModel.days.observe(viewLifecycleOwner, {
             it?.let {
                 recyclerViewAdapter.submitList(it)
@@ -81,11 +76,5 @@ internal class DaysFragment : Fragment() {
 
     interface OnItemClickListener {
         fun onItemClick(day: Day)
-    }
-
-    companion object {
-        fun newInstance(): DaysFragment {
-            return DaysFragment()
-        }
     }
 }
