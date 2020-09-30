@@ -13,10 +13,7 @@ class Widget : AppWidgetProvider() {
 
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
         context?.let {
-            WidgetViewModel.setLocalizedConstants(it.applicationContext)
-            val job = Job()
-            val uiScope = CoroutineScope(Dispatchers.Main + job)
-            uiScope.launch {
+            CoroutineScope(Dispatchers.Main + Job()).launch {
                 val remoteViews = newRemoteViews(context)
                 appWidgetIds?.forEach { appWidgetId ->
                     appWidgetManager?.updateAppWidget(appWidgetId, remoteViews)
@@ -24,7 +21,6 @@ class Widget : AppWidgetProvider() {
                 WidgetViewModel.logUpdated(it.applicationContext)
             }
         }
-
     }
 
     private suspend fun newRemoteViews(context: Context): RemoteViews {

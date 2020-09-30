@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -18,13 +17,11 @@ import com.google.android.gms.ads.MobileAds
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
 import eu.adamgiergun.wontgoshoppingpl.common.InterstitialAdContainer
-import eu.adamgiergun.wontgoshoppingpl.common.LocalizedConst
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 import eu.adamgiergun.wontgoshoppingpl.main.DaysFragment.OnItemClickListener
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
-import java.util.*
 
 /*
     TODO "remove all events from calendar" in Settings
@@ -70,11 +67,6 @@ internal class MainActivity : ActivityWithTheme(), OnItemClickListener {
 //                    ViewGroup.LayoutParams.MATCH_PARENT,
 //                    ViewGroup.LayoutParams.WRAP_CONTENT));
 //        }
-
-    override fun setDefaultLocale(context: Context?): Context? {
-        LocalizedConst.locale = Locale.getDefault()
-        return super.setDefaultLocale(context)
-    }
 
     //region Ads Handling region
     private fun setupBannerAds(mAdView: AdView) {

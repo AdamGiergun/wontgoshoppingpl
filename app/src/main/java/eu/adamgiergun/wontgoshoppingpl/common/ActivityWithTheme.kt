@@ -1,7 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.common
 
-import android.content.Context
-import android.content.res.Configuration
 import android.content.res.Resources.Theme
 import android.os.Build
 import android.widget.Toast
@@ -23,43 +21,6 @@ internal abstract class ActivityWithTheme : AppCompatActivityWithHomeInBar() {
         return super.getTheme().apply {
             val style = if (mViewModel.isLookRich) R.style.AppThemeCustomizationsRich else R.style.AppThemeCustomizationsMini
             applyStyle(style, true)
-        }
-    }
-
-    override fun attachBaseContext(newBase: Context?) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
-            super.attachBaseContext(newBase)
-            setDefaultLocale(newBase)
-        } else {
-            super.attachBaseContext(setDefaultLocale(newBase))
-        }
-    }
-
-    protected open fun setDefaultLocale(context: Context?): Context? {
-        return Configuration().run {
-            setLocale(this)
-            updateConfiguration(context, this)
-        }
-    }
-
-    private fun setLocale(config: Configuration) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            @Suppress("DEPRECATION")
-            config.locale = LocalizedConst.locale
-        } else {
-            config.setLocale(LocalizedConst.locale)
-        }
-    }
-
-    private fun updateConfiguration(context: Context?, config: Configuration): Context? {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
-            @Suppress("DEPRECATION")
-            resources.updateConfiguration(
-                    config,
-                    resources.displayMetrics)
-            null
-        } else {
-            context?.createConfigurationContext(config)
         }
     }
 

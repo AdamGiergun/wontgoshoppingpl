@@ -6,7 +6,6 @@ import android.content.Intent
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
-import eu.adamgiergun.wontgoshoppingpl.common.setLocalizedConst
 import eu.adamgiergun.wontgoshoppingpl.common.today
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
@@ -47,10 +46,6 @@ internal class WidgetViewModel private constructor(val layoutId: Int, val text: 
 
         fun logLastRemoved(appContext: Context) {
             FirebaseEvent.logAppWidgetLastRemoved(appContext)
-        }
-
-        fun setLocalizedConstants(appContext: Context) {
-            setLocalizedConst(appContext)
         }
     }
 }
