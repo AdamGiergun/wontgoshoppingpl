@@ -14,9 +14,9 @@ import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment
 import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogListener
 import eu.adamgiergun.mykotlinlibrary.NoticeDialogFragment.NoticeDialogViewListener
 import eu.adamgiergun.wontgoshoppingpl.R
-import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
+import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 
-internal class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, NoticeDialogListener, NoticeDialogViewListener {
+internal class SettingsActivity : ActivityWithThemeAndPermissions(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, NoticeDialogListener, NoticeDialogViewListener {
 
     companion object {
         init {
@@ -113,7 +113,7 @@ internal class SettingsActivity : ActivityWithTheme(), PreferenceFragmentCompat.
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private fun checkCalendarPermissions(): Boolean {
-        return if (mSettingsViewModel.areCalendarPermissionsGranted()) {
+        return if (areCalendarPermissionsGranted()) {
             true
         } else {
             requestCalendarPermissions()

@@ -15,7 +15,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import eu.adamgiergun.wontgoshoppingpl.R
-import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithTheme
+import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 import eu.adamgiergun.wontgoshoppingpl.common.InterstitialAdContainer
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
@@ -28,7 +28,7 @@ import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
     TODO "Info" group in Settings(?)
     TODO move events filtering from settings to app bar(?)
 */
-internal class MainActivity : ActivityWithTheme(), OnItemClickListener {
+internal class MainActivity : ActivityWithThemeAndPermissions(), OnItemClickListener {
 
     private val mMainViewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
@@ -100,7 +100,7 @@ internal class MainActivity : ActivityWithTheme(), OnItemClickListener {
             }
             R.id.calendar -> {
                 mMainViewModel.setActionAddList()
-                checkCalendarPermissions()
+                checkCalendarPermissions(checkCalendarSettings)
                 true
             }
             R.id.help -> {
@@ -119,16 +119,7 @@ internal class MainActivity : ActivityWithTheme(), OnItemClickListener {
         startActivity(intent)
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private fun checkCalendarPermissions() {
-        if (mMainViewModel.areCalendarPermissionsGranted()) {
-            checkCalendarSettings()
-        } else {
-            requestCalendarPermissions()
-        }
-    }
-
-    private fun checkCalendarSettings() {
+    private val checkCalendarSettings = {
         if (mMainViewModel.isCalendarEnabledAndChosen) {
             if (mMainViewModel.isActionAddList) {
                 askForDayTypesAddedToCalendar()
@@ -165,7 +156,7 @@ internal class MainActivity : ActivityWithTheme(), OnItemClickListener {
     @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onItemClick(day: Day) {
         mMainViewModel.setLastTouchedDay(day)
-        checkCalendarPermissions()
+        checkCalendarPermissions(checkCalendarSettings)
     }
 
     override fun onCalendarPermissionsGranted() {

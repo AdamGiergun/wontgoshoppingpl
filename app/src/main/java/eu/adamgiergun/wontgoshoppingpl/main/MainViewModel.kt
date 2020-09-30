@@ -205,7 +205,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     private val error: Int
         get() = if (_isActionAddList) R.string.error_sth_went_wrong else R.string.error_adding_to_calendar_failed
-
+    
     companion object {
         const val START_FRAGMENT_ID_TAG = AppViewModel.START_FRAGMENT_ID_TAG
 
