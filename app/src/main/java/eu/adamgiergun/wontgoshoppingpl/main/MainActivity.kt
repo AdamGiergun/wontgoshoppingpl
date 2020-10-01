@@ -162,12 +162,12 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     //region on...ClickRegion
     fun onLookButtonClick(view: View) {
+        view.findNavController().navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
         (view.id == R.id.imageButtonRich).let { isLookRich ->
             mMainViewModel.onInitialLookChoice(isLookRich)
             if (isLookRich)
                 recreate()
         }
-        view.findNavController().navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
     }
 
     fun onWidgetInfoButtonClick(view: View) {
