@@ -12,7 +12,7 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     private val notificationsTitle = appContext.getString(R.string.pref_header_notifications)
 
     private var lastIsScreenWideEnough: Boolean
-    private var title: CharSequence? = null
+    private var title = appContext.getString(R.string.title_activity_settings)
     private var lastFragmentId: String? = null
 
     var startedPreference: StartedPreference? = null
@@ -37,37 +37,9 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
         return result
     }
 
-    fun getInitialFragments(newStartFragmentId: String?): SettingsFragment.List {
-        var startFragmentId = newStartFragmentId
-        if (startFragmentId == null) {
-            startFragmentId = if (isScreenWideEnough) SettingsFragment.LOOK else SettingsFragment.HEADERS
-        }
-        val fragments = SettingsFragment.List()
-        fragments.add(SettingsFragment(
-                SettingsFragment.HEADERS,
-                if (isScreenWideEnough) R.id.headers else R.id.settings,
-                false))
-        if (isScreenWideEnough || startFragmentId != SettingsFragment.HEADERS) {
-            lastFragmentId = if (startFragmentId == SettingsFragment.LOOK || startFragmentId == SettingsFragment.HEADERS) SettingsFragment.LOOK else startFragmentId
-            lastFragmentId?.let {
-                fragments.add(SettingsFragment(
-                        it,
-                        R.id.settings,
-                        !isScreenWideEnough))
-            }
-        } else {
-            lastFragmentId = startFragmentId
-        }
-        setTitle()
-        return fragments
-    }
-
     private fun setTitle() {
         title = if (lastFragmentId == SettingsFragment.LOOK) lookTitle else if (lastFragmentId == SettingsFragment.NOTIFICATIONS) notificationsTitle else settingsTitle
     }
-
-    val rotatedFragments: SettingsFragment.List
-        get() = getInitialFragments(lastFragmentId)
 
     fun setLastFragmentId(fragmentId: String?) {
         lastFragmentId = fragmentId
@@ -77,16 +49,6 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     fun setLastFragmentIdHeaders() {
         setLastFragmentId(SettingsFragment.HEADERS)
     }
-
-    val isStartedPreferenceNotNotifications: Boolean
-        get() {
-            startedPreference?.let {
-                it.preference.let { preference ->
-                    return preference.fragment != SettingsFragment.NOTIFICATIONS
-                }
-            }
-            return false
-        }
 
     fun geTitle(): CharSequence? {
         return title

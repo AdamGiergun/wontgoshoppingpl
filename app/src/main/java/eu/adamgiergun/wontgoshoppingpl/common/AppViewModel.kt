@@ -25,9 +25,15 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
     private var _allPermissionsGranted = MutableLiveData<Boolean>()
     val allPermissionsGranted: LiveData<Boolean>
         get() = _allPermissionsGranted
-
     fun setAllPermissionsGranted(value: Boolean) {
         _allPermissionsGranted.value = value
+    }
+
+    private var _askingForPermissionsNeeded = MutableLiveData<Boolean>()
+    val askingForPermissionsNeeded: LiveData<Boolean>
+        get() = _askingForPermissionsNeeded
+    fun askForPermissions() {
+        _askingForPermissionsNeeded.value = true
     }
 
     init {

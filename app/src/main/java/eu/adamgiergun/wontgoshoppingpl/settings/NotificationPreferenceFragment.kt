@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import eu.adamgiergun.mykotlinlibrary.BasePreferenceFragmentCompat
 import eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
@@ -14,7 +15,20 @@ import eu.adamgiergun.wontgoshoppingpl.R
 internal class NotificationPreferenceFragment : BasePreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.pref_notification, rootKey)
+        ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java).let { viewModel ->
+            viewModel.allPermissionsGranted.value.let { allPermissionsGranted ->
+                val prefHierarchy = if (allPermissionsGranted == true) R.xml.pref_notification else R.xml.pref_notification_disabled
+                setPreferencesFromResource(prefHierarchy, rootKey)
+                if (allPermissionsGranted != true) viewModel.askForPermissions()
+            }
+
+            viewModel.allPermissionsGranted.observe(this, { allPermissionsGranted ->
+                setPreferencesFromResource(
+                        if (allPermissionsGranted)
+                            R.xml.pref_notification else R.xml.pref_notification_disabled,
+                        rootKey)
+            })
+        }
         setSummaries()
     }
 

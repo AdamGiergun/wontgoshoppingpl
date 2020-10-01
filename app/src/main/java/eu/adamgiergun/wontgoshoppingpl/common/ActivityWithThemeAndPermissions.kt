@@ -49,7 +49,7 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected fun checkCalendarPermissions(task: () -> Unit) {
         when {
-            areCalendarPermissionsGranted() -> task()
+            mViewModel.allPermissionsGranted.value == true -> task()
             shouldShowRequestPermissionRationale(permission.WRITE_CALENDAR) -> showRationaleAndRequestCalendarPermissions()
             else -> requestCalendarPermissions()
         }

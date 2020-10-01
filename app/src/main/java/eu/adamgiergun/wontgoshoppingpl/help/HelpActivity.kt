@@ -17,7 +17,7 @@ internal class HelpActivity : ActivityWithThemeAndPermissions() {
         super.onCreate(savedInstanceState)
         val binding: ActivityHelpBinding = DataBindingUtil.setContentView(this, R.layout.activity_help)
         binding.linkMovementMethod = LinkMovementMethod.getInstance()
-        setupHomeInBar()
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
