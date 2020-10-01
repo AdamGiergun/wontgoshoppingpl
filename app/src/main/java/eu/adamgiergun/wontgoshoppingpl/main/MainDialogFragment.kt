@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import eu.adamgiergun.wontgoshoppingpl.R
 import kotlinx.coroutines.launch
 
-internal open class MainDialogFragment : AppCompatDialogFragment() {
+internal abstract class MainDialogFragment : AppCompatDialogFragment() {
 
     protected fun getStyledBuilder() = if (mainViewModel.isLookRich)
         AlertDialog.Builder(requireContext(), R.style.MyAlertDialogStyle)

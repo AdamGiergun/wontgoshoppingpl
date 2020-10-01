@@ -25,7 +25,7 @@ internal class SettingsActivity : ActivityWithThemeAndPermissions(), PreferenceF
     }
 
     private val mSettingsViewModel: SettingsViewModel by lazy {
-        ViewModelProvider(this).get(SettingsViewModel::class.java)
+        mViewModel as SettingsViewModel
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

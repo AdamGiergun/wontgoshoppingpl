@@ -29,7 +29,7 @@ import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     private val mMainViewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+        mViewModel as MainViewModel
     }
 
     //    private var calStart: Calendar

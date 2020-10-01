@@ -13,11 +13,20 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.areAllPermissionsGranted
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPermissions
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPermissionsCode
+import eu.adamgiergun.wontgoshoppingpl.help.HelpViewModel
+import eu.adamgiergun.wontgoshoppingpl.main.MainActivity
+import eu.adamgiergun.wontgoshoppingpl.main.MainViewModel
+import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
+import eu.adamgiergun.wontgoshoppingpl.settings.SettingsViewModel
 
 internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithHomeInBar() {
 
-    private val mViewModel by lazy {
-        ViewModelProvider(this).get(AppViewModel::class.java)
+    protected val mViewModel by lazy {
+        when (this) {
+            is MainActivity -> ViewModelProvider(this).get(MainViewModel::class.java)
+            is SettingsActivity -> ViewModelProvider(this).get(SettingsViewModel::class.java)
+            else -> ViewModelProvider(this).get(HelpViewModel::class.java)
+        }
     }
 
     override fun getTheme(): Theme {
@@ -70,9 +79,12 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
         }
     }
 
-    protected open fun onCalendarPermissionsGranted() {}
+    protected open fun onCalendarPermissionsGranted() {
+        mViewModel.setAllPermissionsGranted(true)
+    }
 
     protected open fun onCalendarPermissionNotGranted() {
+        mViewModel.setAllPermissionsGranted(false)
         showRationale()
     }
 }

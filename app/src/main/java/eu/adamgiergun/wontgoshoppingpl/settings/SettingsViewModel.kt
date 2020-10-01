@@ -18,11 +18,13 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     var startedPreference: StartedPreference? = null
     val isScreenWideEnough: Boolean
         get() = isScreenSizeLarge || isOrientationLandscape
+
     private val isScreenSizeLarge: Boolean
         get() {
             val screenSize = appContext.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
             return screenSize >= Configuration.SCREENLAYOUT_SIZE_LARGE
         }
+
     private val isOrientationLandscape: Boolean
         get() {
             val orientation = appContext.resources.configuration.orientation
