@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:cursorVisible="false"
             android:inputType="time"
-            android:text="@{viewModel.reminderTime}"
+            android:text="@{viewModel.reminderTime.toString()}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spacer2" />
         <!--

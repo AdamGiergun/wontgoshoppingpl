@@ -41,7 +41,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private val reminder: SimpleReminder
         get() {
             val daysBefore = reminderDaysBefore.value ?: AppPreferences.getReminderDaysBefore(appContext)
-            val time = SimpleTime(reminderTime.value ?: AppPreferences.getReminderTime(appContext))
+            val time = reminderTime.value ?: SimpleTime(AppPreferences.getReminderTime(appContext))
             return SimpleReminder(SimpleReminder.METHOD_ALERT, time, daysBefore, timeZoneId)
         }
 
@@ -49,8 +49,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val reminderDaysBefore: LiveData<Int>
         get() = _reminderDaysBefore
 
-    private var _reminderTime = MutableLiveData<String>()
-    val reminderTime: LiveData<String>
+    private var _reminderTime = MutableLiveData<SimpleTime>()
+    val reminderTime: LiveData<SimpleTime>
         get() = _reminderTime
 
     private var _lastTouchedDay = MutableLiveData<Day>()
@@ -98,7 +98,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     init {
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
         _reminderDaysBefore.value = AppPreferences.getReminderDaysBefore(appContext)
-        _reminderTime.value = AppPreferences.getReminderTime(appContext)
+        _reminderTime.value = SimpleTime(AppPreferences.getReminderTime(appContext))
         val todayCal = Calendar.getInstance()
         _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
         viewModelScope.launch {
@@ -133,7 +133,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     fun setReminderTime(hour: Int, minute: Int) {
-        _reminderTime.value = SimpleTime(hour, minute).toString()
+        _reminderTime.value = SimpleTime(hour, minute)
     }
 
     val dayDescriptionForDialog: String

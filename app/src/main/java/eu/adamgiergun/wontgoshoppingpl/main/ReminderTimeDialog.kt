@@ -5,7 +5,6 @@ import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import android.widget.TimePicker
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleTime
 import eu.adamgiergun.wontgoshoppingpl.R
 
 internal class ReminderTimeDialog : MainDialogFragment(), OnTimeSetListener {
@@ -14,8 +13,7 @@ internal class ReminderTimeDialog : MainDialogFragment(), OnTimeSetListener {
         var hour = 11
         var minute = 0
         if (savedInstanceState == null) {
-            mainViewModel.reminderTime.value?.run {
-                val time = SimpleTime(this)
+            mainViewModel.reminderTime.value?.let { time ->
                 hour = time.hour
                 minute = time.minute
             }
