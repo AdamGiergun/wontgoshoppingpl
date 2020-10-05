@@ -23,8 +23,10 @@ internal class ReminderDaysBeforeDialog : MainDialogFragment() {
 
     private fun getPicker(savedInstanceState: Bundle?): NumberPicker {
         return if (savedInstanceState == null) {
-            val daysBefore = mainViewModel.reminder.value?.daysBefore ?: 1
-            MyNumberPicker.newInstance(requireContext(), daysBefore)
+            val reminderDaysBefore = mainViewModel.reminderDaysBefore.value
+                    ?: context?.resources?.getInteger(R.integer.reminder_days_before_default_value)
+                    ?: 1
+            MyNumberPicker.newInstance(requireContext(), reminderDaysBefore)
         } else
             MyNumberPicker.newInstance(requireContext(), savedInstanceState.getInt(VALUE))
     }

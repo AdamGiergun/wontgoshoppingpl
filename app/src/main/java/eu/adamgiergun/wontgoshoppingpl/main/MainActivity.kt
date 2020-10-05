@@ -135,7 +135,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     }
 
     private fun askForReminderSettings() {
-        mMainViewModel.setReminderToDefaultValueIfNull()
         if (mMainViewModel.isActionAddList) {
             ReminderSettingsAndDateTillDialog()
                     .show(supportFragmentManager, "")

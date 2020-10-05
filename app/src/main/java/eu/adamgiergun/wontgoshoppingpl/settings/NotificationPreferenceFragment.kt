@@ -6,11 +6,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import eu.adamgiergun.mykotlinlibrary.BasePreferenceFragmentCompat
 import eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
+import eu.adamgiergun.mykotlinlibrary.IntegerPreferenceDialogFragmentCompat
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreference
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreferenceDialogFragmentCompat
-import eu.adamgiergun.mykotlinlibrary.IntegerPreferenceDialogFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
+import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 
 internal class NotificationPreferenceFragment : BasePreferenceFragmentCompat() {
 
@@ -28,14 +29,6 @@ internal class NotificationPreferenceFragment : BasePreferenceFragmentCompat() {
                             R.xml.pref_notification else R.xml.pref_notification_disabled,
                         rootKey)
             })
-        }
-        setSummaries()
-    }
-
-    private fun setSummaries() {
-        val daysBefore = findPreference<IntegerDialogPreference>(getString(R.string.default_reminder_days_before_preference_key))
-        if (daysBefore != null) {
-            daysBefore.summary = daysBefore.toString()
         }
     }
 

@@ -23,7 +23,6 @@
         <eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
             android:defaultValue="@integer/reminder_days_before_default_value"
             android:dependency="@string/use_google_calendar_preference_key"
-            android:inputType="number"
             android:key="@string/default_reminder_days_before_preference_key"
             android:title="@string/default_days_before_event_preference_title"
             app:defValue="@integer/reminder_days_before_default_value"

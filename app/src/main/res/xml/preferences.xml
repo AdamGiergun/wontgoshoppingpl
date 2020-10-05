@@ -1,42 +1,26 @@
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
-        android:key="@string/include_holidays_preference_key"
-        android:summaryOff="@string/summary_show_holidays_off"
-        android:summaryOn="@string/summary_show_holidays_on"
-        android:title="@string/title_show_holidays" />
+        android:key="@string/include_holidays_preference_key" />
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
-        android:key="@string/include_non_commerce_days_preference_key"
-        android:summaryOff="@string/summary_show_non_commerce_days_off"
-        android:summaryOn="@string/summary_show_non_commerce_days_on"
-        android:title="@string/title_show_non_commerce_days" />
+        android:key="@string/include_non_commerce_days_preference_key" />
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
-        android:key="@string/include_commerce_sundays_preference_key"
-        android:summaryOff="@string/summary_show_commerce_sundays_off"
-        android:summaryOn="@string/summary_show_commerce_sundays_on"
-        android:title="@string/title_show_commerce_sundays" />
+        android:key="@string/include_commerce_sundays_preference_key" />
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="false"
-        android:key="@string/app_look_preference_key"
-        android:summaryOff="@string/summary_app_look_mini"
-        android:summaryOn="@string/summary_app_look_rich"
-        android:title="@string/title_app_look" />
+        android:key="@string/app_look_preference_key" />
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="false"
-        android:key="@string/use_google_calendar_preference_key"
-        android:summaryOff="@string/google_calendar_preference_summary_off"
-        android:summaryOn="@string/google_calendar_preference_summary_on"
-        android:title="@string/google_calendar_preference_title" />
+        android:key="@string/use_google_calendar_preference_key" />
 
     <!--
         <eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference
@@ -46,25 +30,13 @@
     -->
     <eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
         android:defaultValue="@integer/reminder_days_before_default_value"
-        android:dependency="@string/use_google_calendar_preference_key"
-        android:inputType="number"
-        android:key="@string/default_reminder_days_before_preference_key"
-        android:title="@string/default_reminder_days_before_preference_title"
-        app:defValue="@integer/reminder_days_before_default_value"
-        app:maxValue="7"
-        app:minValue="0" />
+        android:key="@string/default_reminder_days_before_preference_key" />
 
     <eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreference
         android:defaultValue="@string/default_reminder_time_preference_default_value"
-        android:dependency="@string/use_google_calendar_preference_key"
-        android:key="@string/default_reminder_time_preference_key"
-        android:title="@string/default_reminder_time_preference_title" />
+        android:key="@string/default_reminder_time_preference_key" />
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
-        android:dependency="@string/use_google_calendar_preference_key"
-        android:key="@string/key_use_pl_time_zone"
-        android:summaryOff="@string/summary_use_pl_time_zone_off"
-        android:summaryOn="@string/summary_use_pl_time_zone_on"
-        android:title="@string/title_time_zone" />
+        android:key="@string/key_use_pl_time_zone" />
 </androidx.preference.PreferenceScreen>
