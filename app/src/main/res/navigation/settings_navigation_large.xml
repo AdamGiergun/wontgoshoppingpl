@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/settings_navigation"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settings_navigation_large"
     app:startDestination="@id/lookPreferenceFragment">
 
     <fragment
         android:id="@+id/lookPreferenceFragment"
         android:name="eu.adamgiergun.wontgoshoppingpl.settings.LookPreferenceFragment"
-        android:label="LookPreferenceFragment" >
+        android:label="LookPreferenceFragment">
         <action
             android:id="@+id/action_lookPreferenceFragment_to_notificationPreferenceFragment"
             app:destination="@id/notificationPreferenceFragment"
@@ -16,7 +17,7 @@
     <fragment
         android:id="@+id/notificationPreferenceFragment"
         android:name="eu.adamgiergun.wontgoshoppingpl.settings.NotificationPreferenceFragment"
-        android:label="NotificationPreferenceFragment" >
+        android:label="NotificationPreferenceFragment">
         <action
             android:id="@+id/action_notificationPreferenceFragment_to_lookPreferenceFragment"
             app:destination="@id/lookPreferenceFragment"

@@ -6,10 +6,11 @@
     android:orientation="horizontal">
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/headers"
         android:name="eu.adamgiergun.wontgoshoppingpl.settings.HeadersPreferenceFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/settings_nav_host_fragment"
@@ -18,5 +19,5 @@
         android:layout_height="match_parent"
         android:layout_weight="2"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/settings_navigation" />
+        app:navGraph="@navigation/settings_navigation_large" />
 </LinearLayout>

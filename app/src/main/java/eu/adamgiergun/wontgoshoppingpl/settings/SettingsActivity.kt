@@ -39,7 +39,7 @@ internal class SettingsActivity :
             startFragmentId = intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG)
         } else {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M || Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                //onScreenWideEnoughChanged()
+                onScreenWideEnoughChanged()
             }
         }
         title = mSettingsViewModel.geTitle()
@@ -55,22 +55,29 @@ internal class SettingsActivity :
 //        onScreenWideEnoughChanged()
 //    }
 
-//    private fun onScreenWideEnoughChanged() {
-//        if (mSettingsViewModel.hasScreenWideEnoughChanged()) {
-//            setContentView(getLayout)
-//            //title = mSettingsViewModel.geTitle()
-//        }
-//    }
+    private fun onScreenWideEnoughChanged() {
+        if (mSettingsViewModel.hasScreenWideEnoughChanged()) {
+            setContentView(getLayout)
+            //title = mSettingsViewModel.geTitle()
+        }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
         pref?.let { preference ->
-            if (preference.fragment == LookPreferenceFragment::class.java.name ) {
-                //if (!mSettingsViewModel.isScreenWideEnough) {
-                    caller?.findNavController()?.navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToLookPreferenceFragment())
-                //}
+            val navController = caller?.findNavController()
+            if (preference.fragment == LookPreferenceFragment::class.java.name) {
+                if (mSettingsViewModel.isScreenWideEnough) {
+                    navController?.navigate(NotificationPreferenceFragmentDirections.actionNotificationPreferenceFragmentToLookPreferenceFragment())
+                } else {
+                    navController?.navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToLookPreferenceFragment())
+                }
             } else {
-                caller?.findNavController()?.navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToNotificationPreferenceFragment())
+                if (mSettingsViewModel.isScreenWideEnough) {
+                    navController?.navigate(LookPreferenceFragmentDirections.actionLookPreferenceFragmentToNotificationPreferenceFragment())
+                } else {
+                    navController?.navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToNotificationPreferenceFragment())
+                }
             }
         }
         return true
