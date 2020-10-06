@@ -1,7 +1,10 @@
 package eu.adamgiergun.wontgoshoppingpl.settings
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
@@ -10,6 +13,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
+import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 
 internal class SettingsActivity :
         ActivityWithThemeAndPermissions(),
@@ -59,6 +63,21 @@ internal class SettingsActivity :
         if (mSettingsViewModel.hasScreenWideEnoughChanged()) {
             setContentView(getLayout)
             //title = mSettingsViewModel.geTitle()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.settings_activity_actions, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.help -> {
+                startActivity(Intent(applicationContext, HelpActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

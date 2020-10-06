@@ -17,7 +17,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 110
-        versionName "2.99.16.5"
+        versionName "2.99.16.6"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
