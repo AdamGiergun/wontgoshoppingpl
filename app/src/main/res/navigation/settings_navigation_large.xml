@@ -11,6 +11,8 @@
         <action
             android:id="@+id/action_lookPreferenceFragment_to_notificationPreferenceFragment"
             app:destination="@id/notificationPreferenceFragment"
+            app:enterAnim="@anim/slide_out_up"
+            app:exitAnim="@anim/slide_in_up"
             app:popUpTo="@id/lookPreferenceFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -21,6 +23,8 @@
         <action
             android:id="@+id/action_notificationPreferenceFragment_to_lookPreferenceFragment"
             app:destination="@id/lookPreferenceFragment"
+            app:enterAnim="@anim/slide_in_down"
+            app:exitAnim="@anim/slide_out_down"
             app:popUpTo="@id/notificationPreferenceFragment"
             app:popUpToInclusive="true" />
     </fragment>
