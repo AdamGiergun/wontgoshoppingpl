@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -28,8 +29,6 @@ internal class SettingsActivity :
     private val getLayout: Int
         get() = if (mSettingsViewModel.isScreenWideEnough) R.layout.settings_activity_large else R.layout.settings_activity
 
-    private var startFragmentId: String? = null
-
     private val mSettingsViewModel: SettingsViewModel by lazy {
         mViewModel as SettingsViewModel
     }
@@ -39,9 +38,7 @@ internal class SettingsActivity :
         PreferenceManager.setDefaultValues(applicationContext, R.xml.preferences, false)
         setContentView(getLayout)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        if (savedInstanceState == null) {
-            startFragmentId = intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG)
-        } else {
+        if (savedInstanceState != null) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M || Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 onScreenWideEnoughChanged()
             }
@@ -52,6 +49,19 @@ internal class SettingsActivity :
                 requestCalendarPermissions()
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == SettingsFragment.NOTIFICATIONS) {
+            findNavController(R.id.settings_nav_host_fragment).run {
+                if (mSettingsViewModel.isScreenWideEnough) {
+                    navigate(LookPreferenceFragmentDirections.actionLookPreferenceFragmentToNotificationPreferenceFragment())
+                } else {
+                    navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToNotificationPreferenceFragment())
+                }
+            }
+        }
     }
 
 //    override fun onConfigurationChanged(newConfig: Configuration) {
@@ -101,13 +111,4 @@ internal class SettingsActivity :
         }
         return true
     }
-
-//    override fun onSupportNavigateUp(): Boolean {
-//        if (supportFragmentManager.popBackStackImmediate()) {
-//            mSettingsViewModel.setLastFragmentIdHeaders()
-//            title = mSettingsViewModel.geTitle()
-//            return true
-//        }
-//        return super.onSupportNavigateUp()
-//    }
 }
