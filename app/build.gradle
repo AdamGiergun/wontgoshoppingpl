@@ -16,8 +16,8 @@ android {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 110
-        versionName "2.99.16.8"
+        versionCode 111
+        versionName "2.99.17.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
