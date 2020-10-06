@@ -68,4 +68,5 @@
     <string name="summary_use_pl_time_zone_off">Benutze meine Zeitzone</string>
     <string name="summary_use_pl_time_zone_on">Verwenden Sie die polnische Zeitzone</string>
     <string name="title_time_zone">Zeitzone</string>
+    <string name="set_as_default">als Standard einstellen</string>
 </resources>

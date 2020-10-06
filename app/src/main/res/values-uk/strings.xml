@@ -66,5 +66,6 @@
     <string name="summary_use_pl_time_zone_off">Використовуйте мій часовий пояс</string>
     <string name="summary_use_pl_time_zone_on">Використовуйте польський часовий пояс</string>
     <string name="title_time_zone">Часовий пояс</string>
+    <string name="set_as_default">встановити за замовчуванням</string>
 
 </resources>

@@ -35,6 +35,7 @@
     <string name="comma" translatable="false">,</string>
     <string name="till">of days till</string>
     <string name="dot" translatable="false">.</string>
+    <string name="set_as_default">set as default</string>
     <string name="title_reminder">Reminder</string>
     <string name="title_reminder_of">Reminder of:</string>
     <string name="go_shopping_earlier">go shopping earlier!</string>

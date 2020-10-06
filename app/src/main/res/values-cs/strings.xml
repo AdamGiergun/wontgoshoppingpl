@@ -53,4 +53,5 @@
     <string name="summary_use_pl_time_zone_off">Použít časové pásmo</string>
     <string name="summary_use_pl_time_zone_on">Použijte polské časové pásmo</string>
     <string name="title_time_zone">Časové pásmo</string>
+    <string name="set_as_default">nastavit jako výchozí</string>
 </resources>

@@ -68,4 +68,5 @@
     <string name="summary_use_pl_time_zone_off">Naudokite mano laiko juostą</string>
     <string name="summary_use_pl_time_zone_on">Naudokite lenkų laiko juostą</string>
     <string name="title_time_zone">Laiko zona</string>
+    <string name="set_as_default">nustatyti kaip numatytąjį</string>
 </resources>

@@ -13,8 +13,13 @@ internal class ReminderSettingsDialog : MainDialogFragment() {
         return getStyledBuilder().run {
             setTitle(title)
             setView(binding.root)
-            setPositiveButton(android.R.string.ok, addToCalendar)
+            setPositiveButton(android.R.string.ok) { _, _ ->
+                if (binding.setAsDefaultCheckbox.isChecked)
+                    mainViewModel.setReminderDefaults()
+                addToCalendar()
+            }
             setNegativeButton(android.R.string.cancel, showInfoCancelled)
+            mainViewModel.resetReminder()
             create()
         }
     }

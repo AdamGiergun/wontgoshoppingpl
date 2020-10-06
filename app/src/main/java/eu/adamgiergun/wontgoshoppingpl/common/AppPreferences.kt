@@ -60,10 +60,24 @@ internal object AppPreferences : MyAppPreferences() {
         return getInt(appContext, key, defaultValue)
     }
 
+    fun setReminderDaysBefore(value: Int?, appContext: Context) {
+        value?.let {
+            val key = appContext.getString(R.string.default_reminder_days_before_preference_key)
+            putInt(appContext, key, it)
+        }
+    }
+
     fun getReminderTime(appContext: Context): String {
         val key = appContext.getString(R.string.default_reminder_time_preference_key)
         val defaultValue = appContext.getString(R.string.default_reminder_time_preference_default_value)
         return getString(appContext, key, defaultValue)
+    }
+
+    fun setReminderTime(value: String?, appContext: Context) {
+        value?.let {
+            val key = appContext.getString(R.string.default_reminder_time_preference_key)
+            putString(appContext, key, it)
+        }
     }
 
     fun getDefaultCalendarId(appContext: Context) = MyAppPreferences.getDefaultCalendarId(appContext)

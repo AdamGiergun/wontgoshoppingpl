@@ -97,8 +97,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     init {
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
-        _reminderDaysBefore.value = AppPreferences.getReminderDaysBefore(appContext)
-        _reminderTime.value = SimpleTime(AppPreferences.getReminderTime(appContext))
+        resetReminder()
         val todayCal = Calendar.getInstance()
         _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
         viewModelScope.launch {
@@ -134,6 +133,16 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     fun setReminderTime(hour: Int, minute: Int) {
         _reminderTime.value = SimpleTime(hour, minute)
+    }
+
+    fun resetReminder() {
+        _reminderDaysBefore.value = AppPreferences.getReminderDaysBefore(appContext)
+        _reminderTime.value = SimpleTime(AppPreferences.getReminderTime(appContext))
+    }
+
+    fun setReminderDefaults() {
+        AppPreferences.setReminderDaysBefore(reminderDaysBefore.value, appContext)
+        AppPreferences.setReminderTime(reminderTime.value.toString(), appContext)
     }
 
     val dayDescriptionForDialog: String

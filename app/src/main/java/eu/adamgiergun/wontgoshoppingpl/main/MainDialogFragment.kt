@@ -27,7 +27,7 @@ internal abstract class MainDialogFragment : AppCompatDialogFragment() {
         }
     }
 
-    protected val addToCalendar = DialogInterface.OnClickListener { _, _ -> lifecycleScope.launch { mainViewModel.addToCalendar() } }
+    protected fun addToCalendar() = lifecycleScope.launch { mainViewModel.addToCalendar() }
 
     protected val showInfoCancelled = DialogInterface.OnClickListener { _, _ -> Toast.makeText(context, R.string.info_cancelled, Toast.LENGTH_SHORT).show() }
 }
