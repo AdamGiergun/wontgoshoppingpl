@@ -33,6 +33,8 @@ internal class SettingsActivity :
         mViewModel as SettingsViewModel
     }
 
+    private var navigateToNotifications = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferenceManager.setDefaultValues(applicationContext, R.xml.preferences, true)
@@ -49,11 +51,12 @@ internal class SettingsActivity :
                 requestCalendarPermissions()
             }
         })
+        navigateToNotifications = intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == SettingsFragment.NOTIFICATIONS
     }
 
     override fun onResume() {
         super.onResume()
-        if (intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == SettingsFragment.NOTIFICATIONS) {
+        if (navigateToNotifications) {
             findNavController(R.id.settings_nav_host_fragment).run {
                 if (mSettingsViewModel.isScreenWideEnough) {
                     navigate(LookPreferenceFragmentDirections.actionLookPreferenceFragmentToNotificationPreferenceFragment())
@@ -61,6 +64,7 @@ internal class SettingsActivity :
                     navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToNotificationPreferenceFragment())
                 }
             }
+            navigateToNotifications = false
         }
     }
 
