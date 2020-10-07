@@ -7,11 +7,9 @@ import androidx.preference.Preference
 import eu.adamgiergun.mykotlinlibrary.BasePreferenceFragmentCompat
 import eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
 import eu.adamgiergun.mykotlinlibrary.IntegerPreferenceDialogFragmentCompat
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreference
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreferenceDialogFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
-import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 
 internal class NotificationPreferenceFragment : BasePreferenceFragmentCompat() {
 
@@ -33,15 +31,8 @@ internal class NotificationPreferenceFragment : BasePreferenceFragmentCompat() {
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        sharedPreferences?.let {
-            if (key == getString(R.string.default_calendar_preference_key)) {
-                val preference = findPreference<Preference>(key)
-                if (preference is CalendarsListPreference) {
-                    val calendarId: CharSequence = it.getString(key, "0")!!
-                    val summary = preference.getCalendarName(calendarId)
-                    preference.setSummary(summary)
-                }
-            }
+        if (key == getString(R.string.use_google_calendar_preference_key)) {
+            requireActivity().recreate()
         }
     }
 
@@ -62,17 +53,17 @@ internal class NotificationPreferenceFragment : BasePreferenceFragmentCompat() {
         super.onDisplayPreferenceDialog(preference)
     }
 
-    // TODO ChooseCalendarsForCleaning
-    //        @Override
-    //        public boolean onPreferenceTreeClick(Preference preference) {
-    //            if (preference.getKey().equals(getString(R.string.key_delete_events))) {
-    //                DialogFragment dialogFragment = new ChooseCalendarsForCleaning();
-    //                if (this.getFragmentManager() != null) {
-    //                    dialogFragment.show(this.getFragmentManager(), "test");
-    //                }
-    //                return true;
-    //            } else {
-    //                return super.onPreferenceTreeClick(preference);
-    //            }
-    //        }
+// TODO ChooseCalendarsForCleaning
+//        @Override
+//        public boolean onPreferenceTreeClick(Preference preference) {
+//            if (preference.getKey().equals(getString(R.string.key_delete_events))) {
+//                DialogFragment dialogFragment = new ChooseCalendarsForCleaning();
+//                if (this.getFragmentManager() != null) {
+//                    dialogFragment.show(this.getFragmentManager(), "test");
+//                }
+//                return true;
+//            } else {
+//                return super.onPreferenceTreeClick(preference);
+//            }
+//        }
 }

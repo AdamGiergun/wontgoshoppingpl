@@ -35,7 +35,7 @@ internal class SettingsActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        PreferenceManager.setDefaultValues(applicationContext, R.xml.preferences, false)
+        PreferenceManager.setDefaultValues(applicationContext, R.xml.preferences, true)
         setContentView(getLayout)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         if (savedInstanceState != null) {

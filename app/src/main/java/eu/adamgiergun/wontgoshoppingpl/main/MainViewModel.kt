@@ -148,6 +148,9 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val dayDescriptionForDialog: String
         get() = lastTouchedDay.value?.descriptionForDialog ?: ""
 
+    val wasWidgetInfoDisplayed
+        get() = AppPreferences.wasAppWidgetInfoDisplayed(appContext)
+
     fun setAppWidgetInfoDisplayed() {
         AppPreferences.setAppWidgetInfoDisplayed(appContext)
     }
@@ -190,7 +193,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     //region AppPreferences proxy region
-     val isFirstRun: Boolean
+    private val isFirstRun: Boolean
         get() = AppPreferences.isFirstRun(appContext)
     val mainNavigationId: Int
         get() = when {

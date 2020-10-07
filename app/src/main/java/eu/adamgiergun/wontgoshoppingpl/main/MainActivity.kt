@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.google.android.gms.ads.AdRequest
@@ -89,7 +88,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     //region AppMenuHandlingRegion
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val menuLayoutId = if (mMainViewModel.isFirstRun) R.menu.main_activity_actions_first_run else R.menu.main_activity_actions
+        val menuLayoutId = if (mMainViewModel.wasWidgetInfoDisplayed) R.menu.main_activity_actions else R.menu.main_activity_actions_first_run
         menuInflater.inflate(menuLayoutId, menu)
         return super.onCreateOptionsMenu(menu)
     }

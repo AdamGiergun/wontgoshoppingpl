@@ -22,12 +22,10 @@
         android:defaultValue="false"
         android:key="@string/use_google_calendar_preference_key" />
 
-    <!--
-        <eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference
-            android:dependency="@string/use_google_calendar_preference_key"
-            android:key="@string/default_calendar_preference_key"
-            android:title="@string/default_calendar_preference_title"/>
-    -->
+    <eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference
+        android:defaultValue="@string/id_for_default_calendar_not_set"
+        android:key="@string/default_calendar_preference_key" />
+
     <eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
         android:defaultValue="@integer/reminder_days_before_default_value"
         android:key="@string/default_reminder_days_before_preference_key" />

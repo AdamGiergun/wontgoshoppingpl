@@ -16,7 +16,8 @@
     <eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference
         android:dependency="@string/use_google_calendar_preference_key"
         android:key="@string/default_calendar_preference_key"
-        android:title="@string/default_calendar_preference_title" />
+        android:title="@string/default_calendar_preference_title"
+        app:useSimpleSummaryProvider="true" />
 
     <PreferenceCategory android:title="@string/default_reminder_settings_preference_category_title">
 
