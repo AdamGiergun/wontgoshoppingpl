@@ -1,9 +1,14 @@
 package eu.adamgiergun.wontgoshoppingpl.settings
 
-internal abstract class SettingsFragment {
+import androidx.lifecycle.ViewModelProvider
+import eu.adamgiergun.mykotlinlibrary.BasePreferenceFragmentCompat
 
-    companion object {
-        val LOOK: String = LookPreferenceFragment::class.java.name
-        val NOTIFICATIONS: String = NotificationPreferenceFragment::class.java.name
+internal abstract class SettingsFragment: BasePreferenceFragmentCompat() {
+
+    override fun onResume() {
+        super.onResume()
+        ViewModelProvider(requireActivity())
+                .get(SettingsViewModel::class.java)
+                .setTitle(this::class.java.name)
     }
 }

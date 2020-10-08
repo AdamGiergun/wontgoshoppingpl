@@ -2,10 +2,9 @@ package eu.adamgiergun.wontgoshoppingpl.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import eu.adamgiergun.mykotlinlibrary.BasePreferenceFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
 
-internal class LookPreferenceFragment : BasePreferenceFragmentCompat() {
+internal class LookPreferenceFragment : SettingsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.pref_look, rootKey)

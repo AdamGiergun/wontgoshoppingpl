@@ -4,27 +4,26 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
-import eu.adamgiergun.mykotlinlibrary.BasePreferenceFragmentCompat
 import eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
 import eu.adamgiergun.mykotlinlibrary.IntegerPreferenceDialogFragmentCompat
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreference
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreferenceDialogFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
 
-internal class NotificationPreferenceFragment : BasePreferenceFragmentCompat() {
+internal class NotificationPreferenceFragment : SettingsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java).let { viewModel ->
-            viewModel.allPermissionsGranted.value.let { allPermissionsGranted ->
-                val prefHierarchy = if (allPermissionsGranted == true) R.xml.pref_notification else R.xml.pref_notification_disabled
-                setPreferencesFromResource(prefHierarchy, rootKey)
-                if (allPermissionsGranted != true) viewModel.askForPermissions()
+        ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java).run {
+            if (allPermissionsGranted.value == true) {
+                setPreferencesFromResource(R.xml.pref_notification , rootKey)
+            } else {
+                setPreferencesFromResource(R.xml.pref_notification_disabled, rootKey)
+                askForPermissions()
             }
 
-            viewModel.allPermissionsGranted.observe(this, { allPermissionsGranted ->
+            allPermissionsGranted.observe(this@NotificationPreferenceFragment, { allPermissionsGranted ->
                 setPreferencesFromResource(
-                        if (allPermissionsGranted)
-                            R.xml.pref_notification else R.xml.pref_notification_disabled,
+                        if (allPermissionsGranted) R.xml.pref_notification else R.xml.pref_notification_disabled,
                         rootKey)
             })
         }

@@ -45,13 +45,15 @@ internal class SettingsActivity :
                 onScreenWideEnoughChanged()
             }
         }
-        title = mSettingsViewModel.geTitle()
+        mSettingsViewModel.settingsActivityBarTitle.observe(this, {
+            title = it
+        })
         mSettingsViewModel.askingForPermissionsNeeded.observe(this, {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestCalendarPermissions()
             }
         })
-        navigateToNotifications = intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == SettingsFragment.NOTIFICATIONS
+        navigateToNotifications = intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == NotificationPreferenceFragment::class.java.name
     }
 
     override fun onResume() {

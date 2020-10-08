@@ -2,6 +2,8 @@ package eu.adamgiergun.wontgoshoppingpl.settings
 
 import android.app.Application
 import android.content.res.Configuration
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
 
@@ -9,13 +11,15 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
 
     var intentAlreadyUsed = false
 
+    private var _settingsActivityBarTitle = MutableLiveData<String>()
+    val settingsActivityBarTitle: LiveData<String>
+        get() = _settingsActivityBarTitle
+
     private val settingsTitle = appContext.getString(R.string.title_activity_settings)
     private val lookTitle = appContext.getString(R.string.pref_header_look)
     private val notificationsTitle = appContext.getString(R.string.pref_header_notifications)
 
     private var lastIsScreenWideEnough: Boolean
-    private var title = appContext.getString(R.string.title_activity_settings)
-    private var lastFragmentId: String? = null
 
     val isScreenWideEnough: Boolean
         get() = isScreenSizeLarge || isOrientationLandscape
@@ -38,21 +42,20 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
         return result
     }
 
-    private fun setTitle() {
-        title = if (lastFragmentId == SettingsFragment.LOOK) lookTitle else if (lastFragmentId == SettingsFragment.NOTIFICATIONS) notificationsTitle else settingsTitle
-    }
-
-    fun setLastFragmentId(fragmentId: String?) {
-        lastFragmentId = fragmentId
-        setTitle()
-    }
-
-    fun geTitle(): CharSequence? {
-        return title
+    fun setTitle(fragmentId: String) {
+        when (fragmentId) {
+            HeadersPreferenceFragment::class.java.name ->
+                if (!isScreenWideEnough) _settingsActivityBarTitle.value = settingsTitle
+            LookPreferenceFragment::class.java.name ->
+                _settingsActivityBarTitle.value = "$settingsTitle: $lookTitle"
+            NotificationPreferenceFragment::class.java.name ->
+                _settingsActivityBarTitle.value = "$settingsTitle: $notificationsTitle"
+        }
     }
 
     init {
         lastIsScreenWideEnough = isScreenWideEnough
+        _settingsActivityBarTitle.value = settingsTitle
     }
 
     companion object {

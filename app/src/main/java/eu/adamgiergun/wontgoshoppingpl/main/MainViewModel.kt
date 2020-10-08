@@ -13,8 +13,8 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.*
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
+import eu.adamgiergun.wontgoshoppingpl.settings.NotificationPreferenceFragment
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
-import eu.adamgiergun.wontgoshoppingpl.settings.SettingsFragment
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -225,7 +225,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     fun getSettingsActivityIntentAtNotifications(): Intent {
         return Intent(appContext, SettingsActivity::class.java).apply {
-            putExtra(START_FRAGMENT_ID_TAG, SettingsFragment.NOTIFICATIONS)
+            putExtra(START_FRAGMENT_ID_TAG, NotificationPreferenceFragment::class.java.name)
         }
     }
 }
