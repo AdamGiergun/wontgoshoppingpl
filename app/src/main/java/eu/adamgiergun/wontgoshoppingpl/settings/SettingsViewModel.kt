@@ -17,7 +17,6 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     private var title = appContext.getString(R.string.title_activity_settings)
     private var lastFragmentId: String? = null
 
-    var startedPreference: StartedPreference? = null
     val isScreenWideEnough: Boolean
         get() = isScreenSizeLarge || isOrientationLandscape
 
@@ -46,10 +45,6 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     fun setLastFragmentId(fragmentId: String?) {
         lastFragmentId = fragmentId
         setTitle()
-    }
-
-    fun setLastFragmentIdHeaders() {
-        setLastFragmentId(SettingsFragment.HEADERS)
     }
 
     fun geTitle(): CharSequence? {

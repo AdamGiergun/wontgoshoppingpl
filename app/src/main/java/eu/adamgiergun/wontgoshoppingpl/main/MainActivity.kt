@@ -97,7 +97,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> {
-                startSettingsActivity(false)
+                startActivity(Intent(applicationContext, SettingsActivity::class.java))
                 true
             }
             R.id.calendar -> {
@@ -106,19 +106,11 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 true
             }
             R.id.help -> {
-                startHelpActivity()
+                startActivity(Intent(applicationContext, HelpActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun startSettingsActivity(startFromNotifications: Boolean) {
-        val intent = Intent(applicationContext, SettingsActivity::class.java)
-        intent.putExtra(
-                MainViewModel.START_FRAGMENT_ID_TAG,
-                MainViewModel.getStartFragmentId(startFromNotifications))
-        startActivity(intent)
     }
 
     private val checkCalendarSettings = {
@@ -129,7 +121,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 askForReminderSettings()
             }
         } else {
-            startSettingsActivity(true)
+            startActivity(mMainViewModel.getSettingsActivityIntentAtNotifications())
         }
     }
 
@@ -146,11 +138,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     private fun askForDayTypesAddedToCalendar() {
         DayTypesAddedToCalendarDialog()
                 .show(supportFragmentManager, "dialog")
-    }
-
-    private fun startHelpActivity() {
-        val intent = Intent(applicationContext, HelpActivity::class.java)
-        startActivity(intent)
     }
     //endregion
 

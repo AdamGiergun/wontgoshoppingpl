@@ -1,6 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.app.Application
+import android.content.Intent
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.*
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
+import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsFragment
 import kotlinx.coroutines.launch
 import java.util.*
@@ -221,11 +223,9 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private val error: Int
         get() = if (_isActionAddList) R.string.error_sth_went_wrong else R.string.error_adding_to_calendar_failed
 
-    companion object {
-        const val START_FRAGMENT_ID_TAG = AppViewModel.START_FRAGMENT_ID_TAG
-
-        fun getStartFragmentId(startFromNotifications: Boolean): String {
-            return SettingsFragment.getStartFragmentId(startFromNotifications)
+    fun getSettingsActivityIntentAtNotifications(): Intent {
+        return Intent(appContext, SettingsActivity::class.java).apply {
+            putExtra(START_FRAGMENT_ID_TAG, SettingsFragment.NOTIFICATIONS)
         }
     }
 }
