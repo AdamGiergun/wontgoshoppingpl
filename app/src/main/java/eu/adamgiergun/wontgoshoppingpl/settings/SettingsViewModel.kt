@@ -7,6 +7,8 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
 
 internal class SettingsViewModel(application: Application) : AppViewModel(application) {
 
+    var intentAlreadyUsed = false
+
     private val settingsTitle = appContext.getString(R.string.title_activity_settings)
     private val lookTitle = appContext.getString(R.string.pref_header_look)
     private val notificationsTitle = appContext.getString(R.string.pref_header_notifications)

@@ -56,7 +56,8 @@ internal class SettingsActivity :
 
     override fun onResume() {
         super.onResume()
-        if (navigateToNotifications) {
+        if (navigateToNotifications && !mSettingsViewModel.intentAlreadyUsed) {
+            mSettingsViewModel.intentAlreadyUsed = true
             findNavController(R.id.settings_nav_host_fragment).run {
                 if (mSettingsViewModel.isScreenWideEnough) {
                     navigate(LookPreferenceFragmentDirections.actionLookPreferenceFragmentToNotificationPreferenceFragment())
@@ -64,7 +65,6 @@ internal class SettingsActivity :
                     navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToNotificationPreferenceFragment())
                 }
             }
-            navigateToNotifications = false
         }
     }
 
