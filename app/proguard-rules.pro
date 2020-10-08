@@ -20,7 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepnames class eu.adamgiergun.wontgoshoppingpl.settings.EmptyPreferenceFragment { *; }
--keepnames class eu.adamgiergun.wontgoshoppingpl.settings.HeadersPreferenceFragment { *; }
--keepnames class eu.adamgiergun.wontgoshoppingpl.settings.LookPreferenceFragment { *; }
--keepnames class eu.adamgiergun.wontgoshoppingpl.settings.NotificationPreferenceFragment { *; }
+#-keepnames class eu.adamgiergun.wontgoshoppingpl.settings.HeadersPreferenceFragment { *; }
+#-keepnames class eu.adamgiergun.wontgoshoppingpl.settings.LookPreferenceFragment { *; }
+#-keepnames class eu.adamgiergun.wontgoshoppingpl.settings.NotificationPreferenceFragment { *; }

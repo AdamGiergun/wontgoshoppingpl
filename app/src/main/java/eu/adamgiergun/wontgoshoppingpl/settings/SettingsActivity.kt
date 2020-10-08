@@ -78,7 +78,6 @@ internal class SettingsActivity :
     private fun onScreenWideEnoughChanged() {
         if (mSettingsViewModel.hasScreenWideEnoughChanged()) {
             setContentView(getLayout)
-            //title = mSettingsViewModel.geTitle()
         }
     }
 
