@@ -6,8 +6,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:src="@drawable/ic_launcher"
-        />
+        android:contentDescription="@string/app_name" />
 
-    <include layout="@layout/app_widget_text_view"/>
+    <include layout="@layout/app_widget_text_view" />
 </RelativeLayout>
