@@ -3,6 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl.settings
 import android.content.SharedPreferences
 import android.os.Bundle
 import eu.adamgiergun.wontgoshoppingpl.R
+import eu.adamgiergun.wontgoshoppingpl.common.isLookChanged
 
 internal class LookPreferenceFragment : SettingsFragment() {
 
@@ -14,5 +15,6 @@ internal class LookPreferenceFragment : SettingsFragment() {
         if (key == getString(R.string.app_look_preference_key)) {
             requireActivity().recreate()
         }
+        isLookChanged = true
     }
 }

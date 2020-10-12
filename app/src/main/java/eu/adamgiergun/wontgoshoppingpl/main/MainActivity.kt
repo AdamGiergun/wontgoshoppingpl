@@ -16,6 +16,7 @@ import com.google.android.gms.ads.MobileAds
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 import eu.adamgiergun.wontgoshoppingpl.common.InterstitialAdContainer
+import eu.adamgiergun.wontgoshoppingpl.common.isLookChanged
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
@@ -70,14 +71,12 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 //                    ViewGroup.LayoutParams.WRAP_CONTENT));
 //        }
 
-    //region Ads Handling region
     private fun setupBannerAds(mAdView: AdView) {
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this@MainActivity)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
     }
-    //endregion
 
     //    private void showStartTime() {
     //        val calEnd = Calendar.getInstance()
@@ -85,6 +84,15 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     //        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
     //    }
     //endregion
+
+    override fun onResume() {
+        super.onResume()
+        if (isLookChanged) {
+            isLookChanged = false
+            mMainViewModel.resetDayTypes()
+            recreate()
+        }
+    }
 
     //region AppMenuHandlingRegion
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

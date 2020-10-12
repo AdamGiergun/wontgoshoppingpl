@@ -22,3 +22,5 @@ internal val today
             append(dayOfMonth)
             toString()
         }
+
+internal var isLookChanged = false
