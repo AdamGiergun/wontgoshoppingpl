@@ -11,6 +11,10 @@
         <variable
             name="day"
             type="eu.adamgiergun.wontgoshoppingpl.day.Day" />
+
+        <variable
+            name="position"
+            type="Integer" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -18,7 +22,7 @@
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> viewModel.setLastTouchedDay(day)}"
+        android:onClick="@{() -> viewModel.setLastTouchedItem(day, position, false)}"
         app:day="@{day}"
         app:density="@{viewModel.density}"
         app:isLookRich="@{viewModel.isLookRich}">
@@ -36,7 +40,8 @@
                 android:layout_gravity="start|center_vertical"
                 android:layout_weight="@dimen/date_field_weight"
                 android:text="@{day.dateAndWeekdayString}"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                app:isAddedToCalendar="@{day.isAddedToCalendar}" />
 
             <TextView
                 android:id="@+id/time"

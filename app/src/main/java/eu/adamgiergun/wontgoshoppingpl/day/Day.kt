@@ -32,6 +32,9 @@ internal class Day(private val event: Event) : Comparable<Day> {
         name = pieces[2]
     }
 
+    val isAddedToCalendar
+        get() = (calendarEventId > 0)
+
     val dateInMillis
         get() = date.timeInMillis
 
@@ -209,13 +212,17 @@ internal class Day(private val event: Event) : Comparable<Day> {
                     reminder: SimpleReminder?,
                     timeZoneId: String,
                     till: SimpleDate): Boolean {
+
                 val dayTypesArray = dayTypes.map {
                     it.code.toString()
                 }.toList()
+
                 val database = AppDatabase.getInstance(appContext).eventDao()
+
                 val list = database.getAllEventsOfTypeNotBefore(dayTypesArray, today)?.map {
                     Day(it)
                 } as ArrayList<Day>
+
                 val finalList = skipReminderForConsecutiveDays(list)
                 var result = true
                 for (day in finalList) {

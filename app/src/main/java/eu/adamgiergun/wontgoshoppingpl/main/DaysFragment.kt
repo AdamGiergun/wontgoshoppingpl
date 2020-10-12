@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -27,9 +26,6 @@ internal class DaysFragment : Fragment() {
                         (viewHolder as DaysRecyclerViewAdapter.DayViewHolder).let { dayViewHolder ->
                             context?.let { context ->
                                 dayViewHolder.deleteFromGoogleCalendar(context)
-                                DataBindingUtil.getBinding<FragmentDayListBinding>(this@DaysFragment.requireView())?.let { binding ->
-                                    binding.list.adapter?.notifyItemChanged(dayViewHolder.adapterPosition)
-                                }
                             }
                         }
                     }
@@ -40,11 +36,8 @@ internal class DaysFragment : Fragment() {
         return FragmentDayListBinding.inflate(inflater).let { binding ->
             ViewModelProvider(requireActivity()).get(MainViewModel::class.java).let { mainViewModel ->
                 mainViewModel.density = requireContext().resources.displayMetrics.density
-                DaysRecyclerViewAdapter(mainViewModel).let { recyclerViewAdapter ->
-                    binding.list.adapter = recyclerViewAdapter
-                    mainViewModel.days.observe(viewLifecycleOwner, { recyclerViewAdapter.submitList(it) })
-                }
                 mainViewModel.logLook()
+                binding.list.adapter = DaysRecyclerViewAdapter(mainViewModel, viewLifecycleOwner)
             }
             ItemTouchHelper(dayTouchHelperCallback).attachToRecyclerView(binding.list)
             binding.root

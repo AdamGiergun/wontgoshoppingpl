@@ -3,14 +3,27 @@ package eu.adamgiergun.wontgoshoppingpl.main
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 
-internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel)
+internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel, lifecycleOwner: LifecycleOwner)
     : ListAdapter<Day, DaysRecyclerViewAdapter.DayViewHolder>(DayDiffCallback()) {
+
+    init {
+        viewModel.days.observe(lifecycleOwner, { submitList(it) })
+        viewModel.isDbChanged.observe(lifecycleOwner, {
+            if (viewModel.isActionAddList) {
+                viewModel.resetDayTypes()
+                notifyDataSetChanged()
+            } else {
+                notifyItemChanged(viewModel.lastTouchedPosition)
+            }
+        })
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         return DayViewHolder.from(parent)
@@ -26,10 +39,18 @@ internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel)
         fun bind(day: Day, viewModel: MainViewModel) {
             binding.day = day
             binding.viewModel = viewModel
+            binding.position = adapterPosition
         }
 
         suspend fun deleteFromGoogleCalendar(appContext: Context) {
-            binding.day?.deleteFromGoogleCalendar(appContext)
+            binding.day?.let {day ->
+                day.deleteFromGoogleCalendar(appContext)
+                if (!day.isAddedToCalendar) {
+                    binding.viewModel?.run {
+                        setLastTouchedItem(null, adapterPosition, true)
+                    }
+                }
+            }
         }
 
         companion object {

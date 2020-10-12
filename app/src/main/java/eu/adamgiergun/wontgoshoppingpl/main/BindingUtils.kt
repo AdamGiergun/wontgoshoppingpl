@@ -49,3 +49,11 @@ internal fun FragmentContainerView.bindNavigation(navGraphId: Int) {
 internal fun TextView.setTimeDescription(isAllDay: Boolean, time: String) {
     text = if (isAllDay) this.context.getString(R.string.whole_day) else this.context.getString(R.string.since) + time
 }
+
+@BindingAdapter("isAddedToCalendar")
+internal fun TextView.setAddedToCalendar(isAddedToCalendar: Boolean) {
+    if (isAddedToCalendar)
+        setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_menu_today,0,0,0)
+    else
+        setCompoundDrawablesWithIntrinsicBounds(0,0,0,0)
+}
