@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
-import android.app.Dialog
 import android.content.DialogInterface.OnMultiChoiceClickListener
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -27,7 +26,7 @@ internal class DayTypesAddedToCalendarDialog : MainDialogFragment() {
         }
     }
 
-    private val items: Array<CharSequence>
+    private val items
         get() = arrayOf(
                 getString(R.string.days_of_limited_commerce),
                 getString(R.string.holidays),
@@ -37,18 +36,17 @@ internal class DayTypesAddedToCalendarDialog : MainDialogFragment() {
     private fun getOnMultiChoiceClickListener(checkedItems: BooleanArray): OnMultiChoiceClickListener {
         return OnMultiChoiceClickListener { _, position: Int, checked: Boolean ->
             mainViewModel.updateDayTypesToBeAddedToCalendar(position, checked)
-            setIsEnabledDialogButtonPositive(dialog, checkedItems)
+            setIsEnabledDialogButtonPositive(dialog as AlertDialog, checkedItems)
         }
     }
 
-    private fun setIsEnabledDialogButtonPositive(dialog: Dialog?, checkedItems: BooleanArray) {
-        if (dialog is AlertDialog) {
-            val button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            button.isEnabled = isAnyValueInBooleanArrayTrue(checkedItems)
+    private fun setIsEnabledDialogButtonPositive(alertDialog: AlertDialog, checkedItems: BooleanArray) {
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+            isEnabled = isAnyValueTrue(checkedItems)
         }
     }
 
-    private fun isAnyValueInBooleanArrayTrue(array: BooleanArray): Boolean {
+    private fun isAnyValueTrue(array: BooleanArray): Boolean {
         array.forEach { if (it) return true }
         return false
     }
