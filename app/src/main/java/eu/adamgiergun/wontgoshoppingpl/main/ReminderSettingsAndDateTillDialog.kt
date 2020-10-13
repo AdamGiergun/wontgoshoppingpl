@@ -12,7 +12,7 @@ internal class ReminderSettingsAndDateTillDialog : MainDialogFragment() {
         return getStyledBuilder().run {
             setTitle(getString(R.string.title_reminder))
             setView(binding.root)
-            setPositiveButton(android.R.string.ok) { _, _ -> addToCalendar() }
+            setPositiveButton(android.R.string.ok) { _, _ -> mainViewModel.addToCalendar() }
             setNegativeButton(android.R.string.cancel, showInfoCancelled)
             mainViewModel.resetReminder()
             create()
@@ -24,12 +24,7 @@ internal class ReminderSettingsAndDateTillDialog : MainDialogFragment() {
         return ReminderAndDateSettingsDialogViewBinding.inflate(inflater).apply {
             lifecycleOwner = this@ReminderSettingsAndDateTillDialog
             viewModel = mainViewModel
-            numberOfDaysBeforeView.setOnClickListener(
-                    getOnClickListener(ReminderDaysBeforeDialog()))
-            timeView.setOnClickListener(
-                    getOnClickListener(ReminderTimeDialog()))
-            tillDateView.setOnClickListener(
-                    getOnClickListener(TillDateDialog()))
+            fragmentManager = parentFragmentManager
         }
     }
 }

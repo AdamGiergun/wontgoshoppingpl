@@ -16,7 +16,7 @@ internal class ReminderSettingsDialog : MainDialogFragment() {
             setPositiveButton(android.R.string.ok) { _, _ ->
                 if (binding.setAsDefaultCheckbox.isChecked)
                     mainViewModel.setReminderDefaults()
-                addToCalendar()
+                mainViewModel.addToCalendar()
             }
             setNegativeButton(android.R.string.cancel, showInfoCancelled)
             mainViewModel.resetReminder()
@@ -29,10 +29,7 @@ internal class ReminderSettingsDialog : MainDialogFragment() {
         return ReminderSettingsDialogViewBinding.inflate(inflater).apply {
             lifecycleOwner = this@ReminderSettingsDialog
             viewModel = mainViewModel
-            numberOfDaysBeforeView.setOnClickListener(
-                    getOnClickListener(ReminderDaysBeforeDialog()))
-            timeView.setOnClickListener(
-                    getOnClickListener(ReminderTimeDialog()))
+            fragmentManager = parentFragmentManager
         }
     }
 }

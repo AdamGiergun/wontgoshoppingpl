@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="fragmentManager"
+            type="androidx.fragment.app.FragmentManager" />
+
+        <variable
             name="viewModel"
             type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
     </data>
@@ -42,6 +46,7 @@
             android:cursorVisible="false"
             android:inputType="number"
             android:text="@{String.valueOf(viewModel.reminderDaysBefore)}"
+            app:fragmentManager="@{fragmentManager}"
             app:layout_constraintLeft_toRightOf="@+id/numberOfDaysBeforePrefix"
             app:layout_constraintTop_toBottomOf="@id/spacer1" />
 
@@ -78,6 +83,7 @@
             android:cursorVisible="false"
             android:inputType="time"
             android:text="@{viewModel.reminderTime.toString()}"
+            app:fragmentManager="@{fragmentManager}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spacer2" />
 
@@ -96,15 +102,6 @@
             android:text="@string/set_as_default"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/spacer3" />
-        <!--
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/timeViewSuffix"
-                style="@style/MyTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/comma"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spacer2" />
-        -->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
