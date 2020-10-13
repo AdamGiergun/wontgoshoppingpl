@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.res.Configuration
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
 
 internal class SettingsViewModel(application: Application) : AppViewModel(application) {
@@ -15,12 +14,9 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     val settingsActivityBarTitle: LiveData<String>
         get() = _settingsActivityBarTitle
 
-    private val settingsTitle
-        get() = appContext.getString(R.string.title_activity_settings)
-    private val lookTitle
-        get() = appContext.getString(R.string.pref_header_look)
-    private val notificationsTitle
-        get() = appContext.getString(R.string.pref_header_notifications)
+    fun setActivityBarTitle(title: String) {
+        _settingsActivityBarTitle.value = title
+    }
 
     private var lastIsScreenWideEnough: Boolean
 
@@ -45,20 +41,8 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
         return result
     }
 
-    fun setTitle(fragmentId: String) {
-        when (fragmentId) {
-            HeadersPreferenceFragment::class.java.name ->
-                if (!isScreenWideEnough) _settingsActivityBarTitle.value = settingsTitle
-            LookPreferenceFragment::class.java.name ->
-                _settingsActivityBarTitle.value = "$settingsTitle: $lookTitle"
-            NotificationPreferenceFragment::class.java.name ->
-                _settingsActivityBarTitle.value = "$settingsTitle: $notificationsTitle"
-        }
-    }
-
     init {
         lastIsScreenWideEnough = isScreenWideEnough
-        _settingsActivityBarTitle.value = settingsTitle
     }
 
     companion object {

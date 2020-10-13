@@ -13,14 +13,14 @@ import eu.adamgiergun.mykotlinlibrary.PermissionType
 
 internal abstract class AppViewModel(application: Application) : AndroidViewModel(application) {
 
+    protected val appContext: Context
+        get() = getApplication<Application>().applicationContext
+
     var isLookRich: Boolean
         get() = AppPreferences.isLookRich(appContext)
         protected set(isLookRich) {
             AppPreferences.setLookRich(appContext, isLookRich)
         }
-
-    protected val appContext: Context
-        get() = getApplication<Application>().applicationContext
 
     private var _allPermissionsGranted = MutableLiveData<Boolean>()
     val allPermissionsGranted: LiveData<Boolean>
