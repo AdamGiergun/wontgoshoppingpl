@@ -47,7 +47,7 @@ internal fun FragmentContainerView.bindNavigation(navGraphId: Int) {
 
 @BindingAdapter("isAllDay", "time")
 internal fun TextView.setTimeDescription(isAllDay: Boolean, time: String) {
-    text = if (isAllDay) this.context.getString(R.string.whole_day) else this.context.getString(R.string.since) + time
+    text = if (isAllDay) context.getString(R.string.whole_day) else context.getString(R.string.since) + time
 }
 
 @BindingAdapter("isAddedToCalendar")

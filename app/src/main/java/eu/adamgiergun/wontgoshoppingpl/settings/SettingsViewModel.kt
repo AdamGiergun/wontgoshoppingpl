@@ -15,9 +15,12 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
     val settingsActivityBarTitle: LiveData<String>
         get() = _settingsActivityBarTitle
 
-    private val settingsTitle = appContext.getString(R.string.title_activity_settings)
-    private val lookTitle = appContext.getString(R.string.pref_header_look)
-    private val notificationsTitle = appContext.getString(R.string.pref_header_notifications)
+    private val settingsTitle
+        get() = appContext.getString(R.string.title_activity_settings)
+    private val lookTitle
+        get() = appContext.getString(R.string.pref_header_look)
+    private val notificationsTitle
+        get() = appContext.getString(R.string.pref_header_notifications)
 
     private var lastIsScreenWideEnough: Boolean
 
