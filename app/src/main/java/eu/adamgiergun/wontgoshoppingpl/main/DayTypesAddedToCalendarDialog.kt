@@ -21,7 +21,7 @@ internal class DayTypesAddedToCalendarDialog : MainDialogFragment() {
         return getStyledBuilder().run {
             setTitle(R.string.title_choose_events)
             setMultiChoiceItems(items, checkedItems, getOnMultiChoiceClickListener(checkedItems))
-            setPositiveButton(android.R.string.ok) { _, _ -> mainViewModel.askForReminderSettings() }
+            setPositiveButton(android.R.string.ok) { _, _ -> mainViewModel.askForReminderSettings(true) }
             setNegativeButton(android.R.string.cancel, showInfoCancelled)
             create()
         }

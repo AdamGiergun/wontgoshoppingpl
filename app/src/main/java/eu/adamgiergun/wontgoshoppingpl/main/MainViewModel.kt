@@ -102,8 +102,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val askForReminderSettings: LiveData<Boolean>
         get() = _askForReminderSettings
 
-    fun askForReminderSettings() {
-        _askForReminderSettings.value = true
+    fun askForReminderSettings(value: Boolean) {
+        _askForReminderSettings.value = value
     }
 
     init {

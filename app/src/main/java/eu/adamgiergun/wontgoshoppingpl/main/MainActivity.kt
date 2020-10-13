@@ -135,17 +135,15 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     private fun askForReminderSettings() {
         if (mMainViewModel.isActionAddList) {
-            ReminderSettingsAndDateTillDialog()
-                    .show(supportFragmentManager, "")
+            ReminderSettingsAndDateTillDialog().show(supportFragmentManager, "")
         } else {
-            ReminderSettingsDialog()
-                    .show(supportFragmentManager, "")
+            ReminderSettingsDialog().show(supportFragmentManager, "")
         }
+        mMainViewModel.askForReminderSettings(false)
     }
 
     private fun askForDayTypesAddedToCalendar() {
-        DayTypesAddedToCalendarDialog()
-                .show(supportFragmentManager, "dialog")
+        DayTypesAddedToCalendarDialog().show(supportFragmentManager, "dialog")
     }
     //endregion
 
