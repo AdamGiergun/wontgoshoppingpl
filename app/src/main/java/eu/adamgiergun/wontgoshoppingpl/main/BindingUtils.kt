@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.day.Day
@@ -57,16 +56,4 @@ internal fun TextView.setAddedToCalendar(isAddedToCalendar: Boolean) {
         setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_menu_today, 0, 0, 0)
     else
         setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-}
-
-@BindingAdapter("fragmentManager")
-internal fun TextView.showDialog(fragmentManager: FragmentManager) {
-    setOnClickListener {
-        when (id) {
-            R.id.numberOfDaysBeforeView -> ReminderDaysBeforeDialog()
-            R.id.timeView -> ReminderTimeDialog()
-            else -> TillDateDialog()
-        }.show(fragmentManager, "")
-    }
-
 }

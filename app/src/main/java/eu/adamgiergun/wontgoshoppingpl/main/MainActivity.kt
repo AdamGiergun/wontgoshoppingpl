@@ -156,8 +156,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         view.findNavController().navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
         (view.id == R.id.imageButtonRich).let { isLookRich ->
             mMainViewModel.onInitialLookChoice(isLookRich)
-            if (isLookRich)
-                recreate()
+            if (isLookRich) recreate()
         }
     }
 
@@ -165,6 +164,14 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         view.findNavController().navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
         mMainViewModel.setAppWidgetInfoDisplayed()
         invalidateOptionsMenu()
+    }
+
+    fun showDialog(view: View) {
+        when (view.id) {
+            R.id.numberOfDaysBeforeView -> ReminderDaysBeforeDialog()
+            R.id.timeView -> ReminderTimeDialog()
+            else -> TillDateDialog()
+        }.show(supportFragmentManager, "")
     }
     //endregion
 }

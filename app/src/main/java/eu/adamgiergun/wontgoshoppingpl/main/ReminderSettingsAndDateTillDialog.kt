@@ -24,7 +24,6 @@ internal class ReminderSettingsAndDateTillDialog : MainDialogFragment() {
         return ReminderAndDateSettingsDialogViewBinding.inflate(inflater).apply {
             lifecycleOwner = this@ReminderSettingsAndDateTillDialog
             viewModel = mainViewModel
-            fragmentManager = parentFragmentManager
         }
     }
 }

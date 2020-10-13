@@ -29,7 +29,6 @@ internal class ReminderSettingsDialog : MainDialogFragment() {
         return ReminderSettingsDialogViewBinding.inflate(inflater).apply {
             lifecycleOwner = this@ReminderSettingsDialog
             viewModel = mainViewModel
-            fragmentManager = parentFragmentManager
         }
     }
 }
