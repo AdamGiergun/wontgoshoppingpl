@@ -7,82 +7,83 @@ import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.day.Day.Type.Companion.newSet
 
 internal object AppPreferences : MyAppPreferences() {
-    fun isLookRich(appContext: Context): Boolean {
-        val key = appContext.getString(R.string.app_look_preference_key)
-        return getBoolean(appContext, key, false)
+
+    fun isLookRich(context: Context): Boolean {
+        val key = context.getString(R.string.app_look_preference_key)
+        return getBoolean(context, key, false)
     }
 
-    fun setLookRich(appContext: Context, value: Boolean) {
-        val key = appContext.getString(R.string.app_look_preference_key)
-        putBoolean(appContext, key, value)
+    fun setLookRich(context: Context, value: Boolean) {
+        val key = context.getString(R.string.app_look_preference_key)
+        putBoolean(context, key, value)
     }
 
-    fun newDayTypeSet(appContext: Context): Day.Type.Set {
+    fun newDayTypeSet(context: Context): Day.Type.Set {
         return newSet(
-                showNonCommerceDays(appContext),
-                showHolidays(appContext),
-                showCommerceSundays(appContext))
+                showNonCommerceDays(context),
+                showHolidays(context),
+                showCommerceSundays(context))
     }
 
-    private fun showCommerceSundays(appContext: Context): Boolean {
-        val key = appContext.getString(R.string.include_commerce_sundays_preference_key)
-        return getBoolean(appContext, key, true)
+    private fun showCommerceSundays(context: Context): Boolean {
+        val key = context.getString(R.string.include_commerce_sundays_preference_key)
+        return getBoolean(context, key, true)
     }
 
-    private fun showHolidays(appContext: Context): Boolean {
-        val key = appContext.getString(R.string.include_holidays_preference_key)
-        return getBoolean(appContext, key, true)
+    private fun showHolidays(context: Context): Boolean {
+        val key = context.getString(R.string.include_holidays_preference_key)
+        return getBoolean(context, key, true)
     }
 
-    private fun showNonCommerceDays(appContext: Context): Boolean {
-        val key = appContext.getString(R.string.include_non_commerce_days_preference_key)
-        return getBoolean(appContext, key, true)
+    private fun showNonCommerceDays(context: Context): Boolean {
+        val key = context.getString(R.string.include_non_commerce_days_preference_key)
+        return getBoolean(context, key, true)
     }
 
-    fun wasAppWidgetInfoDisplayed(appContext: Context): Boolean {
-        val key = appContext.getString(R.string.key_app_widget_info_displayed)
-        return getBoolean(appContext, key, false)
+    fun wasAppWidgetInfoDisplayed(context: Context): Boolean {
+        val key = context.getString(R.string.key_app_widget_info_displayed)
+        return getBoolean(context, key, false)
     }
 
-    fun setAppWidgetInfoDisplayed(appContext: Context) {
-        val key = appContext.getString(R.string.key_app_widget_info_displayed)
-        putBoolean(appContext, key, true)
+    fun setAppWidgetInfoDisplayed(context: Context) {
+        val key = context.getString(R.string.key_app_widget_info_displayed)
+        putBoolean(context, key, true)
     }
 
-    fun getUsePolishTimeZone(appContext: Context): Boolean {
-        val key = appContext.getString(R.string.key_use_pl_time_zone)
-        return getBoolean(appContext, key, true)
+    fun getUsePolishTimeZone(context: Context): Boolean {
+        val key = context.getString(R.string.key_use_pl_time_zone)
+        return getBoolean(context, key, true)
     }
 
-    fun getReminderDaysBefore(appContext: Context): Int {
-        val key = appContext.getString(R.string.default_reminder_days_before_preference_key)
-        val defaultValue = appContext.resources.getInteger(R.integer.reminder_days_before_default_value)
-        return getInt(appContext, key, defaultValue)
+    fun getReminderDaysBefore(context: Context): Int {
+        val key = context.getString(R.string.default_reminder_days_before_preference_key)
+        val defaultValue = context.resources.getInteger(R.integer.reminder_days_before_default_value)
+        return getInt(context, key, defaultValue)
     }
 
-    fun setReminderDaysBefore(value: Int?, appContext: Context) {
+    fun setReminderDaysBefore(value: Int?, context: Context) {
         value?.let {
-            val key = appContext.getString(R.string.default_reminder_days_before_preference_key)
-            putInt(appContext, key, it)
+            val key = context.getString(R.string.default_reminder_days_before_preference_key)
+            putInt(context, key, it)
         }
     }
 
-    fun getReminderTime(appContext: Context): String {
-        val key = appContext.getString(R.string.default_reminder_time_preference_key)
-        val defaultValue = appContext.getString(R.string.default_reminder_time_preference_default_value)
-        return getString(appContext, key, defaultValue)
+    fun getReminderTime(context: Context): String {
+        val key = context.getString(R.string.default_reminder_time_preference_key)
+        val defaultValue = context.getString(R.string.default_reminder_time_preference_default_value)
+        return getString(context, key, defaultValue)
     }
 
-    fun setReminderTime(value: String?, appContext: Context) {
+    fun setReminderTime(value: String?, context: Context) {
         value?.let {
-            val key = appContext.getString(R.string.default_reminder_time_preference_key)
-            putString(appContext, key, it)
+            val key = context.getString(R.string.default_reminder_time_preference_key)
+            putString(context, key, it)
         }
     }
 
-    fun getDefaultCalendarId(appContext: Context) = MyAppPreferences.getDefaultCalendarId(appContext)
-    fun isCalendarSet(appContext: Context) = MyAppPreferences.isCalendarSet(appContext)
-    fun isFirstRun(appContext: Context) = MyAppPreferences.isFirstRun(appContext)
-    fun setFirstRun(appContext: Context, value: Boolean) = MyAppPreferences.setFirstRun(appContext, value)
-    fun isUseGoogleCalendarSet(appContext: Context) = MyAppPreferences.isUseGoogleCalendarSet(appContext)
+    fun getDefaultCalendarId(context: Context) = MyAppPreferences.getDefaultCalendarId(context)
+    fun isCalendarSet(context: Context) = MyAppPreferences.isCalendarSet(context)
+    fun isFirstRun(context: Context) = MyAppPreferences.isFirstRun(context)
+    fun setFirstRun(context: Context, value: Boolean) = MyAppPreferences.setFirstRun(context, value)
+    fun isUseGoogleCalendarSet(context: Context) = MyAppPreferences.isUseGoogleCalendarSet(context)
 }

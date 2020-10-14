@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/appwidget_text"
@@ -8,11 +7,11 @@
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
-    android:gravity="center"
     android:layout_margin="8dp"
+    android:gravity="center"
     android:textColor="#ffffff"
-    app:autoSizeTextType="uniform"
-    android:textStyle="bold|italic" />
+    android:textStyle="bold|italic"
+    app:autoSizeTextType="uniform" />
 
     <!--android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"-->

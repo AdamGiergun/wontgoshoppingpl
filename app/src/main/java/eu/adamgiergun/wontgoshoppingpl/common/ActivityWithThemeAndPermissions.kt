@@ -50,7 +50,7 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
     }
 
     private fun showRationale() {
-        Toast.makeText(applicationContext, R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
