@@ -13,7 +13,6 @@ internal object InterstitialAdContainer {
             interstitialAd = InterstitialAd(applicationContext).apply {
                 adUnitId = applicationContext.getString(R.string.interstitial_ad_id)
                 loadAd(AdRequest.Builder().build())
-                interstitialAd = this
             }
     }
 
@@ -24,12 +23,14 @@ internal object InterstitialAdContainer {
                     initializeAd(applicationContext)
                     null
                 }
-                isLoaded -> this
+                isLoaded ->
+                    this
                 !isLoading -> {
                     loadAd(AdRequest.Builder().build())
                     null
                 }
-                else -> null
+                else ->
+                    null
             }
         }
     }

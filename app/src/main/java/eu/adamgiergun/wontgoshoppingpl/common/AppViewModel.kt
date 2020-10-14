@@ -52,7 +52,6 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
     companion object {
         const val START_FRAGMENT_ID_TAG = "start_fragment_id"
 
-        @JvmStatic
         fun areAllPermissionsGranted(grantResults: IntArray): Boolean {
             var result = true
             for (grantResult in grantResults) {
@@ -61,12 +60,10 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
             return result
         }
 
-        @JvmStatic
-        val calendarPermissions: Array<String>
+        val calendarPermissions
             get() = arrayOf(Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR)
 
-        @JvmStatic
-        val calendarPermissionsCode: Int
+        val calendarPermissionsCode
             get() = PermissionType.CALENDAR.code
     }
 }

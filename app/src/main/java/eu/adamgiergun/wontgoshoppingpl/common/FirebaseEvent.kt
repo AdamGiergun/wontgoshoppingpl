@@ -30,14 +30,14 @@ internal object FirebaseEvent {
     }
 
     private fun log(appContext: Context, event: String, fullText: String) {
-        val mFirebaseAnalytics = FirebaseAnalytics.getInstance(appContext)
-        mFirebaseAnalytics.logEvent(event, getFullTextParams(fullText))
+        FirebaseAnalytics.getInstance(appContext)
+                .logEvent(event, getFullTextParams(fullText))
     }
 
     private fun getFullTextParams(fullText: String): Bundle {
-        val params = Bundle()
-        params.putString(FULL_TEXT_TAG, fullText)
-        return params
+        return Bundle().apply {
+            putString(FULL_TEXT_TAG, fullText)
+        }
     }
 
     private object Type {
