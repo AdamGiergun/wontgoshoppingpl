@@ -72,7 +72,7 @@ internal class Day(private val event: Event) : Comparable<Day> {
                 calendarEvent == null -> {
                     updateEventInDb(SimpleCalendarEvent.NON_EXISTING.toLong(), appContext)
                 }
-                calendarEvent.exists(appContext, calendarId) ->  calendarEvent.writeReminders(appContext)
+                calendarEvent.exists(appContext, calendarId) -> calendarEvent.writeReminders(appContext)
                 calendarEvent.exists(appContext) -> {
                     if (calendarEventId != SimpleCalendarEvent.NON_EXISTING.toLong() && calendarEvent.delete(appContext))
                         deleteCalendarInfo(appContext)
@@ -88,12 +88,12 @@ internal class Day(private val event: Event) : Comparable<Day> {
     }
 
     private fun newCalendarEventInstance(appContext: Context, timeZoneId: String): SimpleCalendarEvent? {
-        return calendarId?.let {
-            SimpleCalendarEvent.Builder(it, date, SimpleTime(time), timeZoneId, allDay)
+        return calendarId?.let { calendarId ->
+            SimpleCalendarEvent.Builder(calendarId, date, SimpleTime(time), timeZoneId, allDay)
                     .setCalendarEventId(calendarEventId)
                     .setEndCalendar(endDate, SimpleTime("23:59"))
                     .setReminders(reminders)
-                    .setTitle(description + " - " + if (type == Type.COMMERCE_SUNDAY) appContext.getString(R.string.go_shopping) else appContext.getString(R.string.go_shopping_earlier))
+                    .setTitle("$description - " + appContext.getString( if (type == Type.COMMERCE_SUNDAY) R.string.go_shopping else R.string.go_shopping_earlier))
                     .build()
         }
     }
@@ -174,7 +174,6 @@ internal class Day(private val event: Event) : Comparable<Day> {
 
             fun getType(type: Int) = map[type]
 
-            @JvmStatic
             fun newSet(addNonCommerceDays: Boolean, addHolidays: Boolean, addCommerceSundays: Boolean): Set {
                 return Set().apply {
                     if (addNonCommerceDays) add(NON_COMMERCE_DAY)
@@ -218,14 +217,14 @@ internal class Day(private val event: Event) : Comparable<Day> {
                     timeZoneId: String,
                     till: SimpleDate): Boolean {
 
-                val dayTypesArray = dayTypes.map {
-                    it.code.toString()
+                val dayTypesArray = dayTypes.map { type ->
+                    type.code.toString()
                 }.toList()
 
                 val database = AppDatabase.getInstance(appContext).eventDao()
 
-                val list = database.getAllEventsOfTypeNotBefore(dayTypesArray, today)?.map {
-                    Day(it)
+                val list = database.getAllEventsOfTypeNotBefore(dayTypesArray, today)?.map { event ->
+                    Day(event)
                 } as ArrayList<Day>
 
                 val finalList = skipReminderForConsecutiveDays(list)
