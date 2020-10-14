@@ -139,7 +139,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         } else {
             ReminderSettingsDialog().show(supportFragmentManager, "")
         }
-        mMainViewModel.askForReminderSettings(false)
     }
 
     private fun askForDayTypesAddedToCalendar() {

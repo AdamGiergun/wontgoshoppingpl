@@ -19,4 +19,9 @@ internal abstract class MainDialogFragment : AppCompatDialogFragment() {
     }
 
     protected val showInfoCancelled = DialogInterface.OnClickListener { _, _ -> Toast.makeText(context, R.string.info_cancelled, Toast.LENGTH_SHORT).show() }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        mainViewModel.askForReminderSettings(false)
+    }
 }
