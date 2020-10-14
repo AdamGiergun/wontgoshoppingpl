@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -42,9 +41,9 @@ internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel, lif
             binding.position = adapterPosition
         }
 
-        suspend fun deleteFromGoogleCalendar(appContext: Context) {
+        suspend fun deleteFromGoogleCalendar() {
             binding.day?.let {day ->
-                day.deleteFromGoogleCalendar(appContext)
+                day.deleteFromGoogleCalendar(binding.cardView.context)
                 if (!day.isAddedToCalendar) {
                     binding.viewModel?.run {
                         setLastTouchedItem(null, adapterPosition, true)

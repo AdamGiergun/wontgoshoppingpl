@@ -22,13 +22,7 @@ internal class DaysFragment : Fragment() {
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    lifecycleScope.launch {
-                        (viewHolder as DaysRecyclerViewAdapter.DayViewHolder).let { dayViewHolder ->
-                            context?.let { context ->
-                                dayViewHolder.deleteFromGoogleCalendar(context)
-                            }
-                        }
-                    }
+                    lifecycleScope.launch { (viewHolder as DaysRecyclerViewAdapter.DayViewHolder).deleteFromGoogleCalendar() }
                 }
             }
 

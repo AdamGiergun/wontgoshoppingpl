@@ -115,10 +115,10 @@ internal class Day(private val event: Event) : Comparable<Day> {
         database.update(event)
     }
 
-    suspend fun deleteFromGoogleCalendar(appContext: Context) {
-        if (!SimpleCalendarEvent.exists(appContext, calendarEventId) ||
-                (calendarEventId != SimpleCalendarEvent.NON_EXISTING.toLong() && SimpleCalendarEvent.delete(calendarEventId, appContext, calendarId))) {
-            finishDeleting(appContext)
+    suspend fun deleteFromGoogleCalendar(context: Context) {
+        if (!SimpleCalendarEvent.exists(context, calendarEventId) ||
+                (calendarEventId != SimpleCalendarEvent.NON_EXISTING.toLong() && SimpleCalendarEvent.delete(calendarEventId, context, calendarId))) {
+            finishDeleting(context)
         }
     }
 
