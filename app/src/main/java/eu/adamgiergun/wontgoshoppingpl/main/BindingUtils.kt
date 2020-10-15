@@ -45,8 +45,7 @@ internal fun TextView.setTimeDescription(isAllDay: Boolean, time: String) {
 
 @BindingAdapter("isAddedToCalendar")
 internal fun TextView.setAddedToCalendar(isAddedToCalendar: Boolean) {
-    if (isAddedToCalendar)
-        setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_menu_today, 0, 0, 0)
-    else
-        setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+    val drawable = if (isAddedToCalendar) android.R.drawable.ic_menu_today else 0
+    setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0)
+
 }
