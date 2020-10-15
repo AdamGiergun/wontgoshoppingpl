@@ -24,12 +24,20 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val days: LiveData<List<Day>>
         get() = _days
 
-    var isActionAddList = false
-        private set
+    private var _actions = MutableLiveData<MainActivity.Actions>()
+    val actions: LiveData<MainActivity.Actions>
+        get() = _actions
 
-    fun setActionAddList() {
-        isActionAddList = true
+    fun setActions(actions: MainActivity.Actions) {
+        _actions.value = actions
     }
+
+    fun setActionsNone() {
+        _actions.value = MainActivity.Actions.NONE
+    }
+
+    var lastActionIsAddList = false
+        private set
 
     private val _tillDate = MutableLiveData<SimpleDate>()
     val tillDate: LiveData<SimpleDate>
@@ -55,13 +63,13 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val reminderTime: LiveData<SimpleTime>
         get() = _reminderTime
 
-    private var _lastTouchedDay = MutableLiveData<Day>()
-    val lastTouchedDay: LiveData<Day>
-        get() = _lastTouchedDay
+    private lateinit var lastTouchedDay: Day
 
     fun setLastTouchedItem(day: Day?, position: Int, isDbChanged: Boolean) {
-        day?.let { _lastTouchedDay.value = it }
-        isActionAddList = false
+        day?.let {
+            lastTouchedDay = it
+            _actions.value = MainActivity.Actions.CHECK_PERMISSIONS_DAY
+        }
         lastTouchedPosition = position
         if (isDbChanged) _isDbChanged.value = true
     }
@@ -98,12 +106,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     var lastDateInMillis = 0L
         private set
 
-    private var _askForReminderSettings = MutableLiveData<Boolean>()
-    val askForReminderSettings: LiveData<Boolean>
-        get() = _askForReminderSettings
-
-    fun askForReminderSettings(value: Boolean) {
-        _askForReminderSettings.value = value
+    fun askForReminderSettingsAndDateTill() {
+        _actions.value = MainActivity.Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL
     }
 
     init {
@@ -165,7 +169,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     val dayDescriptionForDialog: String
-        get() = lastTouchedDay.value?.descriptionForDialog ?: ""
+        get() = lastTouchedDay.descriptionForDialog
 
     val wasWidgetInfoDisplayed
         get() = AppPreferences.wasAppWidgetInfoDisplayed(appContext)
@@ -174,11 +178,11 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         AppPreferences.setAppWidgetInfoDisplayed(appContext)
     }
 
-    fun addToCalendar() {
+    fun addToCalendar(isActionAddList: Boolean) {
+        lastActionIsAddList = isActionAddList
         viewModelScope.launch { InterstitialAdContainer.getAd(appContext)?.show() }
         viewModelScope.launch {
             val tillDateValue = tillDate.value
-            val lastTouchedDayValue = lastTouchedDay.value
             when {
                 isActionAddList && tillDateValue == null ->
                     false
@@ -189,13 +193,10 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
                             reminder,
                             timeZoneId,
                             tillDateValue)
-                lastTouchedDayValue != null ->
-                    lastTouchedDayValue.run {
-                        setReminder(reminder)
-                        addToGoogleCalendar(appContext, timeZoneId)
-                    }
-                else ->
-                    false
+                else -> lastTouchedDay.run {
+                    setReminder(reminder)
+                    addToGoogleCalendar(appContext, timeZoneId)
+                }
             }.let { result ->
                 logCalendarEvent(result)
                 showInfo(result)
@@ -207,7 +208,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private fun showInfo(resultIsPositive: Boolean) {
         val info = when {
             resultIsPositive -> R.string.info_added_to_calendar
-            isActionAddList -> R.string.error_sth_went_wrong
+            lastActionIsAddList -> R.string.error_sth_went_wrong
             else -> R.string.error_adding_to_calendar_failed
         }
         Toast.makeText(appContext, info, Toast.LENGTH_SHORT).show()
@@ -244,7 +245,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     }
 
     private fun logCalendarEvent(result: Boolean) {
-        FirebaseEvent.logCalendarEvent(appContext, isActionAddList, result)
+        FirebaseEvent.logCalendarEvent(appContext, lastActionIsAddList, result)
     }
 
     fun getSettingsActivityIntentAtNotifications(): Intent {

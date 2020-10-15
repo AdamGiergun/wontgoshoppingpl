@@ -15,11 +15,13 @@ internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel, lif
     init {
         viewModel.days.observe(lifecycleOwner, { submitList(it) })
         viewModel.isDbChanged.observe(lifecycleOwner, {
-            if (viewModel.isActionAddList) {
-                viewModel.resetDayTypes()
-                notifyDataSetChanged()
-            } else {
-                notifyItemChanged(viewModel.lastTouchedPosition)
+            if (it) {
+                if (viewModel.lastActionIsAddList) {
+                    viewModel.resetDayTypes()
+                    notifyDataSetChanged()
+                } else {
+                    notifyItemChanged(viewModel.lastTouchedPosition)
+                }
             }
         })
     }
@@ -42,7 +44,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel, lif
         }
 
         suspend fun deleteFromGoogleCalendar() {
-            binding.day?.let {day ->
+            binding.day?.let { day ->
                 day.deleteFromGoogleCalendar(binding.cardView.context)
                 if (!day.isAddedToCalendar) {
                     binding.viewModel?.run {

@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.common
 
-import android.Manifest.permission
 import android.content.res.Resources.Theme
 import android.os.Build
 import android.widget.Toast
@@ -35,25 +34,6 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    protected fun checkCalendarPermissions(task: () -> Unit) {
-        when {
-            mViewModel.allPermissionsGranted.value == true -> task()
-            shouldShowRequestPermissionRationale(permission.WRITE_CALENDAR) -> showRationaleAndRequestCalendarPermissions()
-            else -> requestCalendarPermissions()
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    protected fun showRationaleAndRequestCalendarPermissions() {
-        showRationale()
-        requestCalendarPermissions()
-    }
-
-    private fun showRationale() {
-        Toast.makeText(this, R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
     protected fun requestCalendarPermissions() {
         requestPermissions(calendarPermissions, calendarPermissionsCode)
     }
@@ -76,5 +56,9 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
     protected open fun onCalendarPermissionNotGranted() {
         mViewModel.setAllPermissionsGranted(false)
         showRationale()
+    }
+
+    protected fun showRationale() {
+        Toast.makeText(this, R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
     }
 }

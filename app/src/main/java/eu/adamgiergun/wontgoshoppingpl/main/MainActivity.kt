@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
+import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -31,24 +32,41 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     private val mMainViewModel: MainViewModel by lazy {
         mViewModel as MainViewModel
     }
-
     //    private var calStart: Calendar
+
     //region ActivityLifeCycleRegion
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        calStart = Calendar.getInstance();
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mMainViewModel.let {
-            binding.viewModel = it
-            it.askForReminderSettings.observe(this, { ask ->
-                if (ask) askForReminderSettings()
-            })
-
-            it.lastTouchedDay.observe(this, {
-                checkCalendarPermissions(checkCalendarSettings)
-            })
-        }
+        binding.viewModel = mMainViewModel
+        mMainViewModel.actions.observe(this, {
+            @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+            when (it) {
+                Actions.CHECK_PERMISSIONS_DAY -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_DAY)
+                Actions.CHECK_PERMISSIONS_LIST -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_LIST)
+                Actions.CHECK_CALENDAR_SETTINGS_DAY -> checkCalendarSettings(Actions.ASK_FOR_REMINDER_SETTINGS)
+                Actions.CHECK_CALENDAR_SETTINGS_LIST -> checkCalendarSettings(Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR)
+                Actions.ASK_FOR_REMINDER_SETTINGS -> {
+                    ReminderSettingsDialog().show(supportFragmentManager, "")
+                    mMainViewModel.setActions(Actions.NONE)
+                }
+                Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR -> {
+                    askForDayTypesAddedToCalendar()
+                    mMainViewModel.setActions(Actions.NONE)
+                }
+                Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL -> {
+                    ReminderSettingsAndDateTillDialog().show(supportFragmentManager, "")
+                    mMainViewModel.setActions(Actions.NONE)
+                }
+                Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS -> {
+                    startActivity(mMainViewModel.getSettingsActivityIntentAtNotifications())
+                    mMainViewModel.setActions(Actions.NONE)
+                }
+                Actions.NONE -> Unit
+            }
+        })
 
         lifecycleScope.launchWhenStarted {
             setupBannerAds(binding.adView)
@@ -109,8 +127,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 true
             }
             R.id.calendar -> {
-                mMainViewModel.setActionAddList()
-                checkCalendarPermissions(checkCalendarSettings)
+                mMainViewModel.setActions(Actions.CHECK_PERMISSIONS_LIST)
                 true
             }
             R.id.help -> {
@@ -121,24 +138,28 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         }
     }
 
-    private val checkCalendarSettings = {
-        if (mMainViewModel.isCalendarEnabledAndChosen) {
-            if (mMainViewModel.isActionAddList) {
-                askForDayTypesAddedToCalendar()
-            } else {
-                askForReminderSettings()
-            }
-        } else {
-            startActivity(mMainViewModel.getSettingsActivityIntentAtNotifications())
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private fun checkCalendarPermissions(actions: Actions) {
+        when {
+            mViewModel.allPermissionsGranted.value == true -> mMainViewModel.setActions(actions)
+            shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR) -> showRationaleAndRequestCalendarPermissions()
+            else -> requestCalendarPermissions()
         }
     }
 
-    private fun askForReminderSettings() {
-        if (mMainViewModel.isActionAddList) {
-            ReminderSettingsAndDateTillDialog().show(supportFragmentManager, "")
-        } else {
-            ReminderSettingsDialog().show(supportFragmentManager, "")
-        }
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun showRationaleAndRequestCalendarPermissions() {
+        showRationale()
+        requestCalendarPermissions()
+    }
+
+    private fun checkCalendarSettings(actions: Actions) {
+        mMainViewModel.setActions(
+                if (mMainViewModel.isCalendarEnabledAndChosen)
+                    actions
+                else
+                    Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS
+        )
     }
 
     private fun askForDayTypesAddedToCalendar() {
@@ -147,7 +168,18 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     //endregion
 
     override fun onCalendarPermissionsGranted() {
-        checkCalendarSettings()
+        when (mMainViewModel.actions.value) {
+            Actions.CHECK_PERMISSIONS_LIST ->
+                mMainViewModel.setActions(Actions.CHECK_CALENDAR_SETTINGS_LIST)
+            Actions.CHECK_PERMISSIONS_DAY ->
+                mMainViewModel.setActions(Actions.CHECK_CALENDAR_SETTINGS_DAY)
+            else -> Unit
+        }
+    }
+
+    override fun onCalendarPermissionNotGranted() {
+        mMainViewModel.setActions(Actions.NONE)
+        showRationale()
     }
 
     //region on...ClickRegion
@@ -173,4 +205,16 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         }.show(supportFragmentManager, "")
     }
     //endregion
+
+    enum class Actions {
+        CHECK_PERMISSIONS_DAY,
+        CHECK_CALENDAR_SETTINGS_DAY,
+        ASK_FOR_REMINDER_SETTINGS,
+        CHECK_PERMISSIONS_LIST,
+        CHECK_CALENDAR_SETTINGS_LIST,
+        ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR,
+        ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL,
+        START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS,
+        NONE
+    }
 }

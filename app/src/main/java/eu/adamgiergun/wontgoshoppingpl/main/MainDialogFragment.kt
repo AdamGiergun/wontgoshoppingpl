@@ -22,6 +22,6 @@ internal abstract class MainDialogFragment : AppCompatDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        mainViewModel.askForReminderSettings(false)
+        mainViewModel.setActionsNone()
     }
 }
