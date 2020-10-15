@@ -57,10 +57,10 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
             }
         })
 
-        lifecycleScope.launchWhenStarted {
-            binding.adView.loadAd(mMainViewModel.getBannerAd(this@MainActivity))
-            mMainViewModel.initializeInterstitialAd(applicationContext)
-        }
+//        lifecycleScope.launchWhenStarted {
+//            binding.adView.loadAd(mMainViewModel.getBannerAd(this@MainActivity))
+//            mMainViewModel.initializeInterstitialAd(applicationContext)
+//        }
 //        addCrashTestButton();
     }
 

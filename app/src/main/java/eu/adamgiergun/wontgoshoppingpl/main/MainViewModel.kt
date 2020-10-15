@@ -149,7 +149,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     fun addToCalendar(isActionAddList: Boolean) {
         lastActionIsAddList = isActionAddList
-        viewModelScope.launch { AdsContainer.getInterstitialAd(appContext)?.show() }
+        //viewModelScope.launch { AdsContainer.getInterstitialAd(appContext)?.show() }
         viewModelScope.launch {
             val tillDateValue = tillDate.value
             when {
