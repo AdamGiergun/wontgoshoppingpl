@@ -10,7 +10,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 internal abstract class MainDialogFragment : AppCompatDialogFragment() {
 
     protected fun getStyledBuilder() = if (mainViewModel.isLookRich)
-        AlertDialog.Builder(requireContext(), R.style.MyAlertDialogStyle)
+        AlertDialog.Builder(requireContext(), R.style.RichAlertDialogStyle)
     else
         AlertDialog.Builder(requireContext())
 

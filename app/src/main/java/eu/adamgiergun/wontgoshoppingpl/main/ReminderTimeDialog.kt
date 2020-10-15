@@ -22,7 +22,7 @@ internal class ReminderTimeDialog : MainDialogFragment(), OnTimeSetListener {
         return if (mainViewModel.isLookRich)
             TimePickerDialog(
                 context,
-                R.style.MyAlertDialogStyle,
+                R.style.RichAlertDialogStyle,
                 this,
                 hour,
                 minute,

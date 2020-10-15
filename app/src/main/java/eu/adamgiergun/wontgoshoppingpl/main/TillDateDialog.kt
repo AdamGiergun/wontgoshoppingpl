@@ -31,7 +31,7 @@ internal class TillDateDialog : MainDialogFragment(), OnDateSetListener {
         return if (mainViewModel.isLookRich) {
             DatePickerDialog(
                     requireContext(),
-                    R.style.MyAlertDialogStyle,
+                    R.style.RichAlertDialogStyle,
                     this,
                     year,
                     month,

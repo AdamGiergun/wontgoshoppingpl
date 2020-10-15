@@ -46,7 +46,7 @@
         <item name="android:textColor">@color/colorCardText</item>
     </style>
 
-    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="RichAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:colorBackground">@android:color/holo_orange_light</item>
     </style>
 </resources>

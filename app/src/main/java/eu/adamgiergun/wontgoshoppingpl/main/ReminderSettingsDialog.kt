@@ -19,7 +19,7 @@ internal class ReminderSettingsDialog : MainDialogFragment() {
                 mainViewModel.addToCalendar(false)
             }
             setNegativeButton(android.R.string.cancel, showInfoCancelled)
-            mainViewModel.resetReminder()
+            mainViewModel.resetReminderValues()
             create()
         }
     }

@@ -22,51 +22,41 @@ import java.util.*
 
 internal class MainViewModel(application: Application) : AppViewModel(application) {
 
-    private var _days = MutableLiveData<List<Day>>()
+    //region LiveData
+    private val _days = MutableLiveData<List<Day>>()
     val days: LiveData<List<Day>>
         get() = _days
 
-    private var _actions = MutableLiveData<MainActivity.Actions>()
-    val actions: LiveData<MainActivity.Actions>
-        get() = _actions
+    private val _isDbChanged = MutableLiveData<Boolean>()
+    val isDbChanged: LiveData<Boolean>
+        get() = _isDbChanged
 
-    fun setActions(actions: MainActivity.Actions) {
-        _actions.value = actions
-    }
+    private val _reminderDaysBefore = MutableLiveData<Int>()
+    val reminderDaysBefore: LiveData<Int>
+        get() = _reminderDaysBefore
 
-    fun setActionsNone() {
-        _actions.value = MainActivity.Actions.NONE
-    }
-
-    var lastActionIsAddList = false
-        private set
+    private val _reminderTime = MutableLiveData<SimpleTime>()
+    val reminderTime: LiveData<SimpleTime>
+        get() = _reminderTime
 
     private val _tillDate = MutableLiveData<SimpleDate>()
     val tillDate: LiveData<SimpleDate>
         get() = _tillDate
+    //endregion
 
-    fun setTillDate(year: Int, month: Int, day: Int) {
-        _tillDate.value = SimpleDate(year, month, day)
-    }
-
-    private val reminder: SimpleReminder
-        get() {
-            val daysBefore = reminderDaysBefore.value
-                    ?: AppPreferences.getReminderDaysBefore(appContext)
-            val time = reminderTime.value ?: SimpleTime(AppPreferences.getReminderTime(appContext))
-            return SimpleReminder(SimpleReminder.METHOD_ALERT, time, daysBefore, timeZoneId)
-        }
-
-    private var _reminderDaysBefore = MutableLiveData<Int>()
-    val reminderDaysBefore: LiveData<Int>
-        get() = _reminderDaysBefore
-
-    private var _reminderTime = MutableLiveData<SimpleTime>()
-    val reminderTime: LiveData<SimpleTime>
-        get() = _reminderTime
+    //region MainActivity Actions
+    private var _actions = MutableLiveData<MainActivity.Actions>()
+    val actions: LiveData<MainActivity.Actions>
+        get() = _actions
+    fun setActions(actions: MainActivity.Actions) { _actions.value = actions }
+    fun setActionsNone() { _actions.value = MainActivity.Actions.NONE }
+    var lastActionIsAddList = false
+        private set
+    //endregion
 
     private lateinit var lastTouchedDay: Day
-
+    var lastTouchedPosition = -1
+        private set
     fun setLastTouchedItem(day: Day?, position: Int, isDbChanged: Boolean) {
         day?.let {
             lastTouchedDay = it
@@ -76,24 +66,61 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         if (isDbChanged) _isDbChanged.value = true
     }
 
-    private var _isDbChanged = MutableLiveData<Boolean>()
-    val isDbChanged: LiveData<Boolean>
-        get() = _isDbChanged
-
-    var lastTouchedPosition = -1
-        private set
-
     var density: Float = 0F
+    var lastDateInMillis = 0L
+        private set
 
     private lateinit var dayTypesToBeDisplayed: Day.Type.Set
     private lateinit var dayTypesToBeAddedToCalendar: Day.Type.Set
 
-    fun updateDayTypesToBeAddedToCalendar(int: Int, value: Boolean) {
-        Day.Type.getType(int)?.let {
-            if (value)
-                dayTypesToBeAddedToCalendar.add(it)
-            else
-                dayTypesToBeAddedToCalendar.remove(it)
+    val dayDescriptionForDialog: String
+        get() = lastTouchedDay.descriptionForDialog
+
+    val isCalendarEnabledAndChosen: Boolean
+        get() = AppPreferences.isUseGoogleCalendarSet(appContext) && AppPreferences.isCalendarSet(appContext)
+
+    val isLookChanged: Boolean
+        get() {
+            return eu.adamgiergun.wontgoshoppingpl.common.isLookChanged.run {
+                if (this) {
+                    eu.adamgiergun.wontgoshoppingpl.common.isLookChanged = false
+                    resetDayTypes()
+                }
+                this
+            }
+
+        }
+
+    val mainNavigationId: Int
+        get() = when {
+            isFirstRun -> R.navigation.main_navigation_first_run_widget_info
+            !AppPreferences.wasAppWidgetInfoDisplayed(appContext) -> R.navigation.main_navigation_widget_info
+            else -> R.navigation.main_navigation
+        }
+
+    val wasWidgetInfoDisplayed
+        get() = AppPreferences.wasAppWidgetInfoDisplayed(appContext)
+
+    private val isFirstRun: Boolean
+        get() = AppPreferences.isFirstRun(appContext)
+
+    private val reminder: SimpleReminder
+        get() {
+            val daysBefore = reminderDaysBefore.value
+                    ?: AppPreferences.getReminderDaysBefore(appContext)
+            val time = reminderTime.value ?: SimpleTime(AppPreferences.getReminderTime(appContext))
+            return SimpleReminder(SimpleReminder.METHOD_ALERT, time, daysBefore, timeZoneId)
+        }
+
+    private val timeZoneId: String
+        get() = if (AppPreferences.getUsePolishTimeZone(appContext)) "Europe/Warsaw" else TimeZone.getDefault().id
+
+    init {
+        resetReminderValues()
+        val todayCal = Calendar.getInstance()
+        _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
+        viewModelScope.launch {
+            resetDayTypes()
         }
     }
 
@@ -105,79 +132,19 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         )
     }
 
-    var lastDateInMillis = 0L
-        private set
-
-    fun askForReminderSettingsAndDateTill() {
-        _actions.value = MainActivity.Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL
-    }
-
-    init {
-        resetReminder()
-        val todayCal = Calendar.getInstance()
-        _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
-        viewModelScope.launch {
-            resetDayTypes()
-        }
-    }
-
     fun resetDayTypes() {
         dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
         dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
         setDaysAndLastDate()
     }
 
-//    private var _eventsChanged = MutableLiveData<Boolean>()
-//    val eventsChanged: LiveData<Boolean>
-//        get() = _eventsChanged
-
-    private fun setDaysAndLastDate() {
-        val dayTypes = dayTypesToBeDisplayed.map { it.code.toString() }.toList()
-        AppDatabase.getInstance(getApplication()).eventDao().run {
-            viewModelScope.launch {
-                if (isFirstRun) initialize()
-                getAllEventsOfTypeNotBefore(dayTypes, today)?.let { list ->
-                    _days.value = list.map { Day(it) }
-                }
-
-                getLastEvent()?.let {
-                    val lastDay = Day(it)
-                    lastDateInMillis = lastDay.dateInMillis
-                }
-            }
-//        eventDao.getAllEventsOfTypeNotBefore(dayTypes, today).observe(this.getApplication(), {
-//            _eventsChanged.value = true
-//        })
+    fun updateDayTypesToBeAddedToCalendar(int: Int, value: Boolean) {
+        Day.Type.getType(int)?.let {
+            if (value)
+                dayTypesToBeAddedToCalendar.add(it)
+            else
+                dayTypesToBeAddedToCalendar.remove(it)
         }
-
-    }
-
-    fun setReminderDaysBefore(daysBefore: Int) {
-        _reminderDaysBefore.value = daysBefore
-    }
-
-    fun setReminderTime(hour: Int, minute: Int) {
-        _reminderTime.value = SimpleTime(hour, minute)
-    }
-
-    fun resetReminder() {
-        _reminderDaysBefore.value = AppPreferences.getReminderDaysBefore(appContext)
-        _reminderTime.value = SimpleTime(AppPreferences.getReminderTime(appContext))
-    }
-
-    fun setReminderDefaults() {
-        AppPreferences.setReminderDaysBefore(reminderDaysBefore.value, appContext)
-        AppPreferences.setReminderTime(reminderTime.value.toString(), appContext)
-    }
-
-    val dayDescriptionForDialog: String
-        get() = lastTouchedDay.descriptionForDialog
-
-    val wasWidgetInfoDisplayed
-        get() = AppPreferences.wasAppWidgetInfoDisplayed(appContext)
-
-    fun setAppWidgetInfoDisplayed() {
-        AppPreferences.setAppWidgetInfoDisplayed(appContext)
     }
 
     fun addToCalendar(isActionAddList: Boolean) {
@@ -207,6 +174,77 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         }
     }
 
+    fun askForReminderSettingsAndDateTill() {
+        _actions.value = MainActivity.Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL
+    }
+
+    fun getBannerAd(context: Context): AdRequest {
+        return AdsContainer.getBannerAd(context)
+    }
+
+    fun initializeInterstitialAd(applicationContext: Context) {
+        AdsContainer.initializeInterstitialAd(applicationContext)
+    }
+
+    fun getSettingsActivityIntentAtNotifications(): Intent {
+        return Intent(appContext, SettingsActivity::class.java).apply {
+            putExtra(START_FRAGMENT_ID_TAG, NotificationPreferenceFragment::class.java.name)
+        }
+    }
+
+    fun onInitialLookChoice(newIsLookRich: Boolean) {
+        isLookRich = newIsLookRich
+        setNotFirstRun()
+    }
+
+    fun resetReminderValues() {
+        _reminderDaysBefore.value = AppPreferences.getReminderDaysBefore(appContext)
+        _reminderTime.value = SimpleTime(AppPreferences.getReminderTime(appContext))
+    }
+
+    fun setReminderDaysBefore(daysBefore: Int) {
+        _reminderDaysBefore.value = daysBefore
+    }
+
+    fun setReminderTime(hour: Int, minute: Int) {
+        _reminderTime.value = SimpleTime(hour, minute)
+    }
+
+    fun setReminderDefaults() {
+        AppPreferences.setReminderDaysBefore(reminderDaysBefore.value, appContext)
+        AppPreferences.setReminderTime(reminderTime.value.toString(), appContext)
+    }
+
+    fun setAppWidgetInfoDisplayed() {
+        AppPreferences.setAppWidgetInfoDisplayed(appContext)
+    }
+
+    private fun setDaysAndLastDate() {
+        val dayTypes = dayTypesToBeDisplayed.map { it.code.toString() }.toList()
+        AppDatabase.getInstance(getApplication()).eventDao().run {
+            viewModelScope.launch {
+                if (isFirstRun) initialize()
+                getAllEventsOfTypeNotBefore(dayTypes, today)?.let { list ->
+                    _days.value = list.map { Day(it) }
+                }
+
+                getLastEvent()?.let {
+                    val lastDay = Day(it)
+                    lastDateInMillis = lastDay.dateInMillis
+                }
+            }
+        }
+
+    }
+
+    private fun setNotFirstRun() {
+        AppPreferences.setFirstRun(appContext, false)
+    }
+
+    fun setTillDate(year: Int, month: Int, day: Int) {
+        _tillDate.value = SimpleDate(year, month, day)
+    }
+
     private fun showInfo(resultIsPositive: Boolean) {
         val info = when {
             resultIsPositive -> R.string.info_added_to_calendar
@@ -216,44 +254,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         Toast.makeText(appContext, info, Toast.LENGTH_SHORT).show()
     }
 
-    private val timeZoneId: String
-        get() = if (AppPreferences.getUsePolishTimeZone(appContext)) "Europe/Warsaw" else TimeZone.getDefault().id
-
-    fun onInitialLookChoice(newIsLookRich: Boolean) {
-        isLookRich = newIsLookRich
-        setNotFirstRun()
-    }
-
-    val isLookChanged: Boolean
-        get() {
-            return eu.adamgiergun.wontgoshoppingpl.common.isLookChanged.run {
-                if (this) {
-                    eu.adamgiergun.wontgoshoppingpl.common.isLookChanged = false
-                    resetDayTypes()
-                }
-                this
-            }
-
-        }
-
-    //region AppPreferences proxy region
-    private val isFirstRun: Boolean
-        get() = AppPreferences.isFirstRun(appContext)
-    val mainNavigationId: Int
-        get() = when {
-            isFirstRun -> R.navigation.main_navigation_first_run_widget_info
-            !AppPreferences.wasAppWidgetInfoDisplayed(appContext) -> R.navigation.main_navigation_widget_info
-            else -> R.navigation.main_navigation
-        }
-
-    val isCalendarEnabledAndChosen: Boolean
-        get() = AppPreferences.isUseGoogleCalendarSet(appContext) && AppPreferences.isCalendarSet(appContext)
-
-    private fun setNotFirstRun() {
-        AppPreferences.setFirstRun(appContext, false)
-    }
-    //endregion
-
+    //region Firebase log
     fun logLook() {
         FirebaseEvent.logAppTheme(appContext, isLookRich)
     }
@@ -261,18 +262,5 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private fun logCalendarEvent(result: Boolean) {
         FirebaseEvent.logCalendarEvent(appContext, lastActionIsAddList, result)
     }
-
-    fun getSettingsActivityIntentAtNotifications(): Intent {
-        return Intent(appContext, SettingsActivity::class.java).apply {
-            putExtra(START_FRAGMENT_ID_TAG, NotificationPreferenceFragment::class.java.name)
-        }
-    }
-
-    fun initializeInterstitialAd(applicationContext: Context) {
-        AdsContainer.initializeInterstitialAd(applicationContext)
-    }
-
-    fun getBannerAd(context: Context): AdRequest {
-        return AdsContainer.getBannerAd(context)
-    }
+    //endregion
 }
