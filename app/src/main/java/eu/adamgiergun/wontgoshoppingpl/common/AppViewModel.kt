@@ -3,6 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl.common
 import android.Manifest
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
@@ -10,6 +11,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import eu.adamgiergun.mykotlinlibrary.PermissionType
+import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
+import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 
 internal abstract class AppViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -47,6 +50,14 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
 
     private fun isGranted(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(appContext, permission) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun startHelpActivity() {
+        appContext.startActivity(Intent(appContext, HelpActivity::class.java))
+    }
+
+    fun startSettingsActivity() {
+        appContext.startActivity(Intent(appContext, SettingsActivity::class.java))
     }
 
     companion object {

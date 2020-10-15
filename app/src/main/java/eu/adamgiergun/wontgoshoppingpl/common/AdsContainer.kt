@@ -3,12 +3,14 @@ package eu.adamgiergun.wontgoshoppingpl.common
 import android.content.Context
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import eu.adamgiergun.wontgoshoppingpl.R
 
-internal object InterstitialAdContainer {
+internal object AdsContainer {
+    private var initialized = false
     private var interstitialAd: InterstitialAd? = null
 
-    fun initializeAd(applicationContext: Context) {
+    fun initializeInterstitialAd(applicationContext: Context) {
         if (interstitialAd == null)
             interstitialAd = InterstitialAd(applicationContext).apply {
                 adUnitId = applicationContext.getString(R.string.interstitial_ad_id)
@@ -16,11 +18,11 @@ internal object InterstitialAdContainer {
             }
     }
 
-    fun getAd(applicationContext: Context): InterstitialAd? {
+    fun getInterstitialAd(applicationContext: Context): InterstitialAd? {
         return interstitialAd.run {
             when {
                 this == null -> {
-                    initializeAd(applicationContext)
+                    initializeInterstitialAd(applicationContext)
                     null
                 }
                 isLoaded ->
@@ -33,5 +35,13 @@ internal object InterstitialAdContainer {
                     null
             }
         }
+    }
+
+    fun getBannerAd(context: Context): AdRequest {
+        if (!initialized) {
+            MobileAds.initialize(context)
+            initialized = true
+        }
+        return AdRequest.Builder().build()
     }
 }

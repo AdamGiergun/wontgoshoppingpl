@@ -1,11 +1,13 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.ads.AdRequest
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleReminder
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleTime
@@ -180,7 +182,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     fun addToCalendar(isActionAddList: Boolean) {
         lastActionIsAddList = isActionAddList
-        viewModelScope.launch { InterstitialAdContainer.getAd(appContext)?.show() }
+        viewModelScope.launch { AdsContainer.getInterstitialAd(appContext)?.show() }
         viewModelScope.launch {
             val tillDateValue = tillDate.value
             when {
@@ -222,6 +224,18 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         setNotFirstRun()
     }
 
+    val isLookChanged: Boolean
+        get() {
+            return eu.adamgiergun.wontgoshoppingpl.common.isLookChanged.run {
+                if (this) {
+                    eu.adamgiergun.wontgoshoppingpl.common.isLookChanged = false
+                    resetDayTypes()
+                }
+                this
+            }
+
+        }
+
     //region AppPreferences proxy region
     private val isFirstRun: Boolean
         get() = AppPreferences.isFirstRun(appContext)
@@ -252,5 +266,13 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         return Intent(appContext, SettingsActivity::class.java).apply {
             putExtra(START_FRAGMENT_ID_TAG, NotificationPreferenceFragment::class.java.name)
         }
+    }
+
+    fun initializeInterstitialAd(applicationContext: Context) {
+        AdsContainer.initializeInterstitialAd(applicationContext)
+    }
+
+    fun getBannerAd(context: Context): AdRequest {
+        return AdsContainer.getBannerAd(context)
     }
 }

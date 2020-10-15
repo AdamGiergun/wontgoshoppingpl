@@ -1,7 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.main
 
 import android.Manifest
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -11,17 +10,9 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
-import eu.adamgiergun.wontgoshoppingpl.common.InterstitialAdContainer
-import eu.adamgiergun.wontgoshoppingpl.common.isLookChanged
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
-import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
-import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
-
 /*
     TODO "remove all events from calendar" in Settings
     TODO "Info" group in Settings(?)
@@ -29,9 +20,7 @@ import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 */
 internal class MainActivity : ActivityWithThemeAndPermissions() {
 
-    private val mMainViewModel: MainViewModel by lazy {
-        mViewModel as MainViewModel
-    }
+    private val mMainViewModel: MainViewModel by lazy { mViewModel as MainViewModel }
     //    private var calStart: Calendar
 
     //region ActivityLifeCycleRegion
@@ -69,8 +58,8 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         })
 
         lifecycleScope.launchWhenStarted {
-            setupBannerAds(binding.adView)
-            InterstitialAdContainer.initializeAd(applicationContext)
+            binding.adView.loadAd(mMainViewModel.getBannerAd(this@MainActivity))
+            mMainViewModel.initializeInterstitialAd(applicationContext)
         }
 //        addCrashTestButton();
     }
@@ -89,28 +78,17 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 //                    ViewGroup.LayoutParams.WRAP_CONTENT));
 //        }
 
-    private fun setupBannerAds(mAdView: AdView) {
-        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this@MainActivity)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
-    }
-
     //    private void showStartTime() {
     //        val calEnd = Calendar.getInstance()
     //        val timeDifference = String.valueOf(calEnd.getTimeInMillis() - calStart.getTimeInMillis()) + " ms";
     //        Toast.makeText(this, timeDifference, Toast.LENGTH_LONG).show();
     //    }
-    //endregion
 
     override fun onResume() {
         super.onResume()
-        if (isLookChanged) {
-            isLookChanged = false
-            mMainViewModel.resetDayTypes()
-            recreate()
-        }
+        if (mMainViewModel.isLookChanged) recreate()
     }
+    //endregion
 
     //region AppMenuHandlingRegion
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -119,11 +97,10 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> {
-                startActivity(Intent(applicationContext, SettingsActivity::class.java))
+                mMainViewModel.startSettingsActivity()
                 true
             }
             R.id.calendar -> {
@@ -131,7 +108,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 true
             }
             R.id.help -> {
-                startActivity(Intent(applicationContext, HelpActivity::class.java))
+                mMainViewModel.startHelpActivity()
                 true
             }
             else -> super.onOptionsItemSelected(item)
