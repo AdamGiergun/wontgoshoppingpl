@@ -100,7 +100,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> {
-                mMainViewModel.startSettingsActivity()
+                mMainViewModel.startSettingsActivity(this)
                 true
             }
             R.id.calendar -> {
@@ -108,7 +108,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 true
             }
             R.id.help -> {
-                mMainViewModel.startHelpActivity()
+                mMainViewModel.startHelpActivity(this)
                 true
             }
             else -> super.onOptionsItemSelected(item)

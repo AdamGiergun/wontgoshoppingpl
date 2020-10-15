@@ -52,12 +52,12 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
         return ContextCompat.checkSelfPermission(appContext, permission) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun startHelpActivity() {
-        appContext.startActivity(Intent(appContext, HelpActivity::class.java))
+    fun startHelpActivity(context: Context) {
+        context.startActivity(Intent(context, HelpActivity::class.java))
     }
 
-    fun startSettingsActivity() {
-        appContext.startActivity(Intent(appContext, SettingsActivity::class.java))
+    fun startSettingsActivity(context: Context) {
+        context.startActivity(Intent(context, SettingsActivity::class.java))
     }
 
     companion object {
