@@ -89,7 +89,7 @@ internal class SettingsActivity :
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.help -> {
-                mSettingsViewModel.startHelpActivity()
+                mSettingsViewModel.startHelpActivity(this)
                 true
             }
             else -> super.onOptionsItemSelected(item)
