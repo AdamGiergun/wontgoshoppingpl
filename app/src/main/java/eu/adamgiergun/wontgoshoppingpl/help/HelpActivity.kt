@@ -16,7 +16,7 @@ internal class HelpActivity : ActivityWithThemeAndPermissions() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityHelpBinding = DataBindingUtil.setContentView(this, R.layout.activity_help)
-        //binding.linkMovementMethod = LinkMovementMethod.getInstance()
+        binding.linkMovementMethod = LinkMovementMethod.getInstance()
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 

@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.settings
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -14,7 +13,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
-import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 
 internal class SettingsActivity :
         ActivityWithThemeAndPermissions(),
@@ -26,7 +24,7 @@ internal class SettingsActivity :
         }
     }
 
-    private val getLayout: Int
+    private val layout: Int
         get() = if (mSettingsViewModel.isScreenWideEnough) R.layout.settings_activity_large else R.layout.settings_activity
 
     private val mSettingsViewModel: SettingsViewModel by lazy {
@@ -38,7 +36,7 @@ internal class SettingsActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferenceManager.setDefaultValues(applicationContext, R.xml.preferences, true)
-        setContentView(getLayout)
+        setContentView(layout)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         if (savedInstanceState != null) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M || Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -77,7 +75,7 @@ internal class SettingsActivity :
 
     private fun onScreenWideEnoughChanged() {
         if (mSettingsViewModel.hasScreenWideEnoughChanged()) {
-            setContentView(getLayout)
+            setContentView(layout)
         }
     }
 

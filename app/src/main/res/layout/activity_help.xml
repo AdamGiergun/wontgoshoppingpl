@@ -5,9 +5,9 @@
 
     <data>
 
-<!--        <variable-->
-<!--            name="linkMovementMethod"-->
-<!--            type="android.text.method.MovementMethod" />-->
+        <variable
+            name="linkMovementMethod"
+            type="android.text.method.MovementMethod" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -31,8 +31,8 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/spacer0"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-<!--                app:linkMovementMethod="@{linkMovementMethod}" />-->
+                app:layout_constraintTop_toTopOf="parent"
+                app:linkMovementMethod="@{linkMovementMethod}" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/spacer0"
@@ -86,8 +86,8 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/spacer3"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spacer2" />
-<!--                app:linkMovementMethod="@{linkMovementMethod}" />-->
+                app:layout_constraintTop_toBottomOf="@+id/spacer2"
+                app:linkMovementMethod="@{linkMovementMethod}" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/spacer3"
