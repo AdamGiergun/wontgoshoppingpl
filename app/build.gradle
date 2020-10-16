@@ -16,7 +16,7 @@ android {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 118
+        versionCode 119
         versionName "3.0.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
