@@ -49,4 +49,18 @@
     <style name="RichAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:colorBackground">@android:color/holo_orange_light</item>
     </style>
+
+    <style name="ShadowedText" parent="MyTextViewStyleInList">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="AppWidgetText" parent="ShadowedText">
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

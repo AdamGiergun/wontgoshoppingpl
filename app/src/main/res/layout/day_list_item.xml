@@ -36,7 +36,7 @@
 
             <TextView
                 android:id="@+id/date"
-                style="@style/MyTextViewStyleInList"
+                style="@style/ShadowedText"
                 android:layout_gravity="start|center_vertical"
                 android:layout_weight="@dimen/date_field_weight"
                 android:text="@{day.dateAndWeekdayString}"
@@ -45,7 +45,7 @@
 
             <TextView
                 android:id="@+id/time"
-                style="@style/MyTextViewStyleInList"
+                style="@style/ShadowedText"
                 android:layout_gravity="center"
                 android:layout_weight="@dimen/time_field_weight"
                 android:textAlignment="center"
@@ -58,7 +58,7 @@
 
             <TextView
                 android:id="@+id/name"
-                style="@style/MyTextViewStyleInList"
+                style="@style/ShadowedText"
                 android:layout_gravity="center"
                 android:layout_weight="@dimen/name_field_weight"
                 android:text="@{day.name}"

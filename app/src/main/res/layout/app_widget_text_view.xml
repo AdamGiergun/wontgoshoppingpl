@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/appwidget_text"
-    style="@style/TextAppearance.Compat.Notification.Info"
+    style="@style/AppWidgetText"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"

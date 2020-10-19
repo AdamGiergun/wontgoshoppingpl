@@ -17,7 +17,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 120
-        versionName "3.0.1"
+        versionName "3.0.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
