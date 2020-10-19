@@ -61,6 +61,6 @@
     </style>
 
     <style name="AppWidgetText" parent="ShadowedText">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/appwidget_text_size</item>
     </style>
 </resources>
