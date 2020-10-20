@@ -41,6 +41,7 @@ internal class ReminderDaysBeforeDialog : MainDialogFragment() {
             return NumberPicker(context).apply {
                 isSaveFromParentEnabled = false
                 isSaveEnabled = false
+                descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
                 minValue = 0
                 maxValue = 9
                 value = newValue
