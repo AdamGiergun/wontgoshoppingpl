@@ -1,4 +1,5 @@
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="false"
@@ -27,5 +28,13 @@
         android:summaryOff="@string/summary_show_commerce_sundays_off"
         android:summaryOn="@string/summary_show_commerce_sundays_on"
         android:title="@string/title_show_commerce_sundays" />
+
+    <androidx.preference.ListPreference
+        android:defaultValue="14"
+        android:entries="@array/app_widget_text_size_names"
+        android:entryValues="@array/app_widget_text_size_values"
+        android:key="@string/key_app_widget_text_size"
+        android:title="@string/title_app_widget_text_size"
+        app:useSimpleSummaryProvider="true" />
 
 </androidx.preference.PreferenceScreen>

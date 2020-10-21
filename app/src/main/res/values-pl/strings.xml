@@ -67,4 +67,8 @@
     <string name="summary_use_pl_time_zone_on">Użyj polskiej strefy czasowej</string>
     <string name="title_time_zone">Strefa czasowa</string>
     <string name="set_as_default">ustaw jako domyślne</string>
+    <string name="title_app_widget_text_size">Rozmiar tekstu widżetu aplikacji</string>
+    <string name="small">Mały</string>
+    <string name="medium">Średni</string>
+    <string name="large">Duży</string>
 </resources>

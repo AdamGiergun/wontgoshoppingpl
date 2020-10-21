@@ -54,4 +54,8 @@
     <string name="summary_use_pl_time_zone_on">Použite poľské časové pásmo</string>
     <string name="title_time_zone">Časové pásmo</string>
     <string name="set_as_default">nastaviť ako predvolenú</string>
+    <string name="title_app_widget_text_size">Programos valdiklio teksto dydis</string>
+    <string name="small">Malý</string>
+    <string name="medium">Stredná</string>
+    <string name="large">Veľký</string>
 </resources>

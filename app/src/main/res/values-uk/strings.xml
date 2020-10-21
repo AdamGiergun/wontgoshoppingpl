@@ -67,5 +67,9 @@
     <string name="summary_use_pl_time_zone_on">Використовуйте польський часовий пояс</string>
     <string name="title_time_zone">Часовий пояс</string>
     <string name="set_as_default">встановити за замовчуванням</string>
+    <string name="title_app_widget_text_size">Розмір тексту віджета програми</string>
+    <string name="small">Маленький</string>
+    <string name="medium">Середній</string>
+    <string name="large">Великий</string>
 
 </resources>

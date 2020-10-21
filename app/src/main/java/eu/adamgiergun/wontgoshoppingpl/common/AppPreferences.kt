@@ -50,6 +50,11 @@ internal object AppPreferences : MyAppPreferences() {
         putBoolean(context, key, true)
     }
 
+    fun getAppWidgetTextSize(context: Context): String {
+        val key = context.getString(R.string.key_app_widget_text_size)
+        return getString(context, key, "14")
+    }
+
     fun getUsePolishTimeZone(context: Context): Boolean {
         val key = context.getString(R.string.key_use_pl_time_zone)
         return getBoolean(context, key, true)

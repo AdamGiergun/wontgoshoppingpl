@@ -1,24 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY non_commerce_sunday "Non-commerce Sunday">
-    <!ENTITY commerce_sunday "Commerce Sunday">
-    <!ENTITY new_year "New Year\'s Day">
-    <!ENTITY epiphany "Epiphany">
-    <!ENTITY holy_saturday "Holy Saturday">
-    <!ENTITY easter_sunday "Easter Sunday">
-    <!ENTITY easter_monday "Easter Monday">
-    <!ENTITY labour_day "Labour Day">
-    <!ENTITY constitution_day "Constitution Day">
-    <!ENTITY whit_sunday "Whit Sunday">
-    <!ENTITY corpus_christi "Corpus Christi">
-    <!ENTITY assumption "Assumption of&#160;Mary">
-    <!ENTITY all_saints "All Saints\' Day">
-    <!ENTITY independence_day "Independence Day">
-    <!ENTITY day_after_independence_day "day after 100th Independence Day">
-    <!ENTITY christmas_eve "Christmas Eve">
-    <!ENTITY christmas_day "Christmas Day">
-    <!ENTITY second_day_of_christmas "Second Day of&#160;Christmas">
-]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY non_commerce_sunday "Non-commerce Sunday"><!ENTITY commerce_sunday "Commerce Sunday"><!ENTITY new_year "New Year\'s Day"><!ENTITY epiphany "Epiphany"><!ENTITY holy_saturday "Holy Saturday"><!ENTITY easter_sunday "Easter Sunday"><!ENTITY easter_monday "Easter Monday"><!ENTITY labour_day "Labour Day"><!ENTITY constitution_day "Constitution Day"><!ENTITY whit_sunday "Whit Sunday"><!ENTITY corpus_christi "Corpus Christi"><!ENTITY assumption "Assumption of&#160;Mary"><!ENTITY all_saints "All Saints\' Day"><!ENTITY independence_day "Independence Day"><!ENTITY day_after_independence_day "day after 100th Independence Day"><!ENTITY christmas_eve "Christmas Eve"><!ENTITY christmas_day "Christmas Day"><!ENTITY second_day_of_christmas "Second Day of&#160;Christmas">]>
 <resources>
     <string-array name="non_commerce_days_2020">
         <item>2020_01_05,00:00,&non_commerce_sunday;</item>
@@ -307,5 +287,17 @@
         <item>2023_06_25,00:00,&commerce_sunday;</item>
         <item>2023_08_27,00:00,&commerce_sunday;</item>
         <item>2023_12_17,00:00,&commerce_sunday;</item>
+    </string-array>
+
+    <string-array name="app_widget_text_size_names">
+        <item>@string/small</item>
+        <item>@string/medium</item>
+        <item>@string/large</item>
+    </string-array>
+
+    <string-array name="app_widget_text_size_values">
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
     </string-array>
 </resources>

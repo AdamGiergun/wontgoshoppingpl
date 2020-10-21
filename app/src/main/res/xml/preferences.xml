@@ -22,6 +22,10 @@
         android:defaultValue="false"
         android:key="@string/use_google_calendar_preference_key" />
 
+    <androidx.preference.ListPreference
+        android:defaultValue="14"
+        android:key="@string/key_app_widget_text_size" />
+
     <eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference
         android:defaultValue="@string/id_for_default_calendar_not_set"
         android:key="@string/default_calendar_preference_key" />

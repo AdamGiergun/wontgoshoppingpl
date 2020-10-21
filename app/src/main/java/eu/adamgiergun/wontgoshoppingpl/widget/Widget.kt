@@ -30,6 +30,7 @@ class Widget : AppWidgetProvider() {
                 widgetViewModel.layoutId
         ).apply {
             setTextViewText(WidgetViewModel.widgetTextViewId, widgetViewModel.text)
+            setTextViewTextSize(WidgetViewModel.widgetTextViewId, WidgetViewModel.widgetTextSizeUnit, widgetViewModel.textSize)
             setOnClickPendingIntent(WidgetViewModel.widgetTextViewId, widgetViewModel.pendingIntent)
         }
     }
