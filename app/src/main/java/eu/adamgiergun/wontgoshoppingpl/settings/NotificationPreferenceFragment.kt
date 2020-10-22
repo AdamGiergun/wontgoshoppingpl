@@ -18,7 +18,7 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
                 setPreferencesFromResource(R.xml.pref_notification , rootKey)
             } else {
                 setPreferencesFromResource(R.xml.pref_notification_disabled, rootKey)
-                askForPermissions()
+                askingForPermissionsNeeded(true)
             }
 
             allPermissionsGranted.observe(this@NotificationPreferenceFragment, { allPermissionsGranted ->

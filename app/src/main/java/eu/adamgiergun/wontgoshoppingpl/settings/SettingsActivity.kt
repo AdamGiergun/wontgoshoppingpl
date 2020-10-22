@@ -38,7 +38,9 @@ internal class SettingsActivity :
         PreferenceManager.setDefaultValues(applicationContext, R.xml.preferences, true)
         setContentView(layout)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
+            navigateToNotifications = intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == NotificationPreferenceFragment::class.java.name
+        } else {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M || Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 onScreenWideEnoughChanged()
             }
@@ -47,17 +49,19 @@ internal class SettingsActivity :
             title = it
         })
         mSettingsViewModel.askingForPermissionsNeeded.observe(this, {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestCalendarPermissions()
+            if (it) {
+                mSettingsViewModel.askingForPermissionsNeeded(false)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestCalendarPermissions()
+                }
             }
         })
-        navigateToNotifications = intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == NotificationPreferenceFragment::class.java.name
     }
 
     override fun onResume() {
         super.onResume()
-        if (navigateToNotifications && !mSettingsViewModel.intentAlreadyUsed) {
-            mSettingsViewModel.intentAlreadyUsed = true
+        if (navigateToNotifications) {
+            navigateToNotifications = false
             findNavController(R.id.settings_nav_host_fragment).run {
                 if (mSettingsViewModel.isScreenWideEnough) {
                     navigate(LookPreferenceFragmentDirections.actionLookPreferenceFragmentToNotificationPreferenceFragment())

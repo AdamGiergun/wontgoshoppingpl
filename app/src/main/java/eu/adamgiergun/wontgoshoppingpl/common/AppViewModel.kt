@@ -37,8 +37,8 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
     val askingForPermissionsNeeded: LiveData<Boolean>
         get() = _askingForPermissionsNeeded
 
-    fun askForPermissions() {
-        _askingForPermissionsNeeded.value = true
+    fun askingForPermissionsNeeded(value: Boolean) {
+        _askingForPermissionsNeeded.value = value
     }
 
     init {

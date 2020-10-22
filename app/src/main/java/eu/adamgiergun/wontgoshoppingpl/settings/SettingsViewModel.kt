@@ -8,8 +8,6 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
 
 internal class SettingsViewModel(application: Application) : AppViewModel(application) {
 
-    var intentAlreadyUsed = false
-
     private var _settingsActivityBarTitle = MutableLiveData<String>()
     val settingsActivityBarTitle: LiveData<String>
         get() = _settingsActivityBarTitle
