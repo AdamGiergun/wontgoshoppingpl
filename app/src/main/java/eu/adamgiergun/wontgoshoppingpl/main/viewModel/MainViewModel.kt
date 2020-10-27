@@ -32,13 +32,40 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val isDbChanged: LiveData<Boolean>
         get() = _isDbChanged
 
-    private val _reminderDaysBefore = MutableLiveData<Int>()
-    val reminderDaysBefore: LiveData<Int>
-        get() = _reminderDaysBefore
+    private object Reminder {
+        val daysBefore = MutableLiveData<Int>()
+        val time = MutableLiveData<SimpleTime>()
 
-    private val _reminderTime = MutableLiveData<SimpleTime>()
+        fun get(appContext: Context, timeZoneId: String): SimpleReminder {
+            val daysBefore = daysBefore.value
+                    ?: AppPreferences.getReminderDaysBefore(appContext)
+            val time = time.value ?: SimpleTime(AppPreferences.getReminderTime(appContext))
+            return SimpleReminder(SimpleReminder.METHOD_ALERT, time, daysBefore, timeZoneId)
+        }
+    }
+
+    val reminderDaysBefore: LiveData<Int>
+        get() = Reminder.daysBefore
     val reminderTime: LiveData<SimpleTime>
-        get() = _reminderTime
+        get() = Reminder.time
+
+    fun initializeReminder() {
+        Reminder.daysBefore.value = AppPreferences.getReminderDaysBefore(appContext)
+        Reminder.time.value = SimpleTime(AppPreferences.getReminderTime(appContext))
+    }
+
+    fun setReminderDaysBefore(daysBefore: Int) {
+        Reminder.daysBefore.value = daysBefore
+    }
+
+    fun setReminderTime(hour: Int, minute: Int) {
+        Reminder.time.value = SimpleTime(hour, minute)
+    }
+
+    fun saveCurrentReminderAsDefault() {
+        AppPreferences.setReminderDaysBefore(Reminder.daysBefore.value, appContext)
+        AppPreferences.setReminderTime(Reminder.time.value.toString(), appContext)
+    }
 
     private val _tillDate = MutableLiveData<SimpleDate>()
     val tillDate: LiveData<SimpleDate>
@@ -49,8 +76,15 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private var _actions = MutableLiveData<MainActivity.Actions>()
     val actions: LiveData<MainActivity.Actions>
         get() = _actions
-    fun setActions(actions: MainActivity.Actions) { _actions.value = actions }
-    fun setActionsNone() { _actions.value = MainActivity.Actions.NONE }
+
+    fun setActions(actions: MainActivity.Actions) {
+        _actions.value = actions
+    }
+
+    fun setActionsNone() {
+        _actions.value = MainActivity.Actions.NONE
+    }
+
     var lastActionIsAddList = false
         private set
     //endregion
@@ -58,6 +92,7 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private lateinit var lastTouchedDay: Day
     var lastTouchedPosition = -1
         private set
+
     fun setLastTouchedItem(day: Day?, position: Int, isDbChanged: Boolean) {
         day?.let {
             lastTouchedDay = it
@@ -105,19 +140,11 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private val isFirstRun: Boolean
         get() = AppPreferences.isFirstRun(appContext)
 
-    private val reminder: SimpleReminder
-        get() {
-            val daysBefore = reminderDaysBefore.value
-                    ?: AppPreferences.getReminderDaysBefore(appContext)
-            val time = reminderTime.value ?: SimpleTime(AppPreferences.getReminderTime(appContext))
-            return SimpleReminder(SimpleReminder.METHOD_ALERT, time, daysBefore, timeZoneId)
-        }
-
     private val timeZoneId: String
         get() = if (AppPreferences.getUsePolishTimeZone(appContext)) "Europe/Warsaw" else TimeZone.getDefault().id
 
     init {
-        resetReminderValues()
+        initializeReminder()
         val todayCal = Calendar.getInstance()
         _tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
         viewModelScope.launch {
@@ -160,11 +187,11 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
                     Day.List.addToCalendar(
                             appContext,
                             dayTypesToBeAddedToCalendar,
-                            reminder,
+                            Reminder.get(appContext, timeZoneId),
                             timeZoneId,
                             tillDateValue)
                 else -> lastTouchedDay.run {
-                    setReminder(reminder)
+                    setReminder(Reminder.get(appContext, timeZoneId))
                     addToGoogleCalendar(appContext, timeZoneId)
                 }
             }.let { result ->
@@ -196,24 +223,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     fun onInitialLookChoice(newIsLookRich: Boolean) {
         isLookRich = newIsLookRich
         setNotFirstRun()
-    }
-
-    fun resetReminderValues() {
-        _reminderDaysBefore.value = AppPreferences.getReminderDaysBefore(appContext)
-        _reminderTime.value = SimpleTime(AppPreferences.getReminderTime(appContext))
-    }
-
-    fun setReminderDaysBefore(daysBefore: Int) {
-        _reminderDaysBefore.value = daysBefore
-    }
-
-    fun setReminderTime(hour: Int, minute: Int) {
-        _reminderTime.value = SimpleTime(hour, minute)
-    }
-
-    fun setReminderDefaults() {
-        AppPreferences.setReminderDaysBefore(reminderDaysBefore.value, appContext)
-        AppPreferences.setReminderTime(reminderTime.value.toString(), appContext)
     }
 
     fun setAppWidgetInfoDisplayed() {
