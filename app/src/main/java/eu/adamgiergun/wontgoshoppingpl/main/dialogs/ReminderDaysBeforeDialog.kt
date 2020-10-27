@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.wontgoshoppingpl.R
-import eu.adamgiergun.wontgoshoppingpl.main.fragments.MainDialogFragment
 
 internal class ReminderDaysBeforeDialog : MainDialogFragment() {
 
@@ -16,7 +15,7 @@ internal class ReminderDaysBeforeDialog : MainDialogFragment() {
         return getStyledBuilder().run {
             setTitle(R.string.days_before)
             setView(picker)
-            setPositiveButton(android.R.string.ok) { _, _ -> mainViewModel.setReminderDaysBefore(picker.value) }
+            setPositiveButton(android.R.string.ok) { _, _ -> mViewModel.setReminderDaysBefore(picker.value) }
             setNegativeButton(android.R.string.cancel, null)
             create()
         }
@@ -24,7 +23,7 @@ internal class ReminderDaysBeforeDialog : MainDialogFragment() {
 
     private fun getPicker(savedInstanceState: Bundle?): NumberPicker {
         return if (savedInstanceState == null) {
-            val reminderDaysBefore = mainViewModel.reminderDaysBefore.value
+            val reminderDaysBefore = mViewModel.reminderDaysBefore.value
                     ?: context?.resources?.getInteger(R.integer.reminder_days_before_default_value)
                     ?: 1
             MyNumberPicker.newInstance(requireContext(), reminderDaysBefore)

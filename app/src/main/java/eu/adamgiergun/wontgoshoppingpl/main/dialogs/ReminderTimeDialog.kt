@@ -6,7 +6,6 @@ import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import android.widget.TimePicker
 import eu.adamgiergun.wontgoshoppingpl.R
-import eu.adamgiergun.wontgoshoppingpl.main.fragments.MainDialogFragment
 
 internal class ReminderTimeDialog : MainDialogFragment(), OnTimeSetListener {
 
@@ -14,13 +13,13 @@ internal class ReminderTimeDialog : MainDialogFragment(), OnTimeSetListener {
         var hour = 11
         var minute = 0
         if (savedInstanceState == null) {
-            mainViewModel.reminderTime.value?.let { time ->
+            mViewModel.reminderTime.value?.let { time ->
                 hour = time.hour
                 minute = time.minute
             }
         }
 
-        return if (mainViewModel.isLookRich)
+        return if (mViewModel.isLookRich)
             TimePickerDialog(
                 context,
                 R.style.RichAlertDialogStyle,
@@ -38,6 +37,6 @@ internal class ReminderTimeDialog : MainDialogFragment(), OnTimeSetListener {
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        mainViewModel.setReminderTime(hourOfDay, minute)
+        mViewModel.setReminderTime(hourOfDay, minute)
     }
 }

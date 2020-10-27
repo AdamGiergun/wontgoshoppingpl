@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.ReminderAndDateSettingsDialogViewBinding
-import eu.adamgiergun.wontgoshoppingpl.main.fragments.MainDialogFragment
 
 internal class ReminderSettingsAndDateTillDialog : MainDialogFragment() {
 
@@ -13,9 +12,9 @@ internal class ReminderSettingsAndDateTillDialog : MainDialogFragment() {
         return getStyledBuilder().run {
             setTitle(getString(R.string.title_reminder))
             setView(binding.root)
-            setPositiveButton(android.R.string.ok) { _, _ -> mainViewModel.addToCalendar(true) }
+            setPositiveButton(android.R.string.ok) { _, _ -> mViewModel.addToCalendar(true) }
             setNegativeButton(android.R.string.cancel, showInfoCancelled)
-            mainViewModel.initializeReminder()
+            mViewModel.initializeReminder()
             create()
         }
     }
@@ -24,7 +23,7 @@ internal class ReminderSettingsAndDateTillDialog : MainDialogFragment() {
         val inflater = requireActivity().layoutInflater
         return ReminderAndDateSettingsDialogViewBinding.inflate(inflater).apply {
             lifecycleOwner = this@ReminderSettingsAndDateTillDialog
-            viewModel = mainViewModel
+            viewModel = mViewModel
         }
     }
 }

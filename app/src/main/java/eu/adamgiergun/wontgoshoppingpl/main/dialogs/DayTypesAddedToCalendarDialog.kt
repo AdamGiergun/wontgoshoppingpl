@@ -5,12 +5,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.wontgoshoppingpl.R
-import eu.adamgiergun.wontgoshoppingpl.main.fragments.MainDialogFragment
 
 internal class DayTypesAddedToCalendarDialog : MainDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AppCompatDialog {
-        val checkedItems = mainViewModel.getDayTypesToBeAddedToCalendarAsArray()
+        val checkedItems = mViewModel.getDayTypesToBeAddedToCalendarAsArray()
         return getAlertDialog(checkedItems).apply {
             show()
             setIsEnabledDialogButtonPositive(this, checkedItems)
@@ -21,7 +20,7 @@ internal class DayTypesAddedToCalendarDialog : MainDialogFragment() {
         return getStyledBuilder().run {
             setTitle(R.string.title_choose_events)
             setMultiChoiceItems(items, checkedItems, getOnMultiChoiceClickListener(checkedItems))
-            setPositiveButton(android.R.string.ok) { _, _ -> mainViewModel.askForReminderSettingsAndDateTill() }
+            setPositiveButton(android.R.string.ok) { _, _ -> mViewModel.askForReminderSettingsAndDateTill() }
             setNegativeButton(android.R.string.cancel, showInfoCancelled)
             create()
         }
@@ -36,7 +35,7 @@ internal class DayTypesAddedToCalendarDialog : MainDialogFragment() {
 
     private fun getOnMultiChoiceClickListener(checkedItems: BooleanArray): OnMultiChoiceClickListener {
         return OnMultiChoiceClickListener { _, position: Int, checked: Boolean ->
-            mainViewModel.updateDayTypesToBeAddedToCalendar(position, checked)
+            mViewModel.updateDayTypesToBeAddedToCalendar(position, checked)
             setIsEnabledDialogButtonPositive(dialog as AlertDialog, checkedItems)
         }
     }

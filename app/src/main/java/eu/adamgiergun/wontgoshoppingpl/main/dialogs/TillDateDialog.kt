@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
 import eu.adamgiergun.wontgoshoppingpl.R
-import eu.adamgiergun.wontgoshoppingpl.main.fragments.MainDialogFragment
 
 internal class TillDateDialog : MainDialogFragment(), OnDateSetListener {
 
@@ -16,7 +15,7 @@ internal class TillDateDialog : MainDialogFragment(), OnDateSetListener {
         var day = 1
 
         if (savedInstanceState == null) {
-            mainViewModel.tillDate.value?.let { date ->
+            mViewModel.tillDate.value?.let { date ->
                 year = date.year
                 month = date.month - 1
                 day = date.day
@@ -29,7 +28,7 @@ internal class TillDateDialog : MainDialogFragment(), OnDateSetListener {
             }
         }
 
-        return if (mainViewModel.isLookRich) {
+        return if (mViewModel.isLookRich) {
             DatePickerDialog(
                     requireContext(),
                     R.style.RichAlertDialogStyle,
@@ -45,12 +44,12 @@ internal class TillDateDialog : MainDialogFragment(), OnDateSetListener {
                     month,
                     day)
         }.apply {
-            datePicker.maxDate = mainViewModel.lastDateInMillis
+            datePicker.maxDate = mViewModel.lastDateInMillis
         }
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        mainViewModel.setTillDate(year, month + 1, dayOfMonth)
+        mViewModel.setTillDate(year, month + 1, dayOfMonth)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

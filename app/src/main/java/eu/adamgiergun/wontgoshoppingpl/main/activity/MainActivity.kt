@@ -40,7 +40,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 //        calStart = Calendar.getInstance();
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = mMainViewModel
-        mMainViewModel.actions.observe(this, {
+        mMainViewModel.nextAction.observe(this, {
             @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
             when (it) {
                 Actions.CHECK_PERMISSIONS_DAY -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_DAY)
@@ -49,19 +49,19 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 Actions.CHECK_CALENDAR_SETTINGS_LIST -> checkCalendarSettings(Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR)
                 Actions.ASK_FOR_REMINDER_SETTINGS -> {
                     ReminderSettingsDialog().show(supportFragmentManager, "")
-                    mMainViewModel.setActions(Actions.NONE)
+                    mMainViewModel.setNextAction(Actions.NONE)
                 }
                 Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR -> {
                     askForDayTypesAddedToCalendar()
-                    mMainViewModel.setActions(Actions.NONE)
+                    mMainViewModel.setNextAction(Actions.NONE)
                 }
                 Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL -> {
                     ReminderSettingsAndDateTillDialog().show(supportFragmentManager, "")
-                    mMainViewModel.setActions(Actions.NONE)
+                    mMainViewModel.setNextAction(Actions.NONE)
                 }
                 Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS -> {
                     startActivity(mMainViewModel.getSettingsActivityIntentAtNotifications())
-                    mMainViewModel.setActions(Actions.NONE)
+                    mMainViewModel.setNextAction(Actions.NONE)
                 }
                 Actions.NONE -> Unit
             }
@@ -114,7 +114,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 true
             }
             R.id.calendar -> {
-                mMainViewModel.setActions(Actions.CHECK_PERMISSIONS_LIST)
+                mMainViewModel.setNextAction(Actions.CHECK_PERMISSIONS_LIST)
                 true
             }
             R.id.help -> {
@@ -128,7 +128,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private fun checkCalendarPermissions(nextActions: Actions) {
         when {
-            mViewModel.allPermissionsGranted.value == true -> mMainViewModel.setActions(nextActions)
+            mViewModel.allPermissionsGranted.value == true -> mMainViewModel.setNextAction(nextActions)
             shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR) -> showRationaleAndRequestCalendarPermissions()
             else -> requestCalendarPermissions()
         }
@@ -141,7 +141,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     }
 
     private fun checkCalendarSettings(nextActions: Actions) {
-        mMainViewModel.setActions(
+        mMainViewModel.setNextAction(
                 if (mMainViewModel.isCalendarEnabledAndChosen)
                     nextActions
                 else
@@ -155,17 +155,17 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     //endregion
 
     override fun onCalendarPermissionsGranted() {
-        when (mMainViewModel.actions.value) {
+        when (mMainViewModel.nextAction.value) {
             Actions.CHECK_PERMISSIONS_LIST ->
-                mMainViewModel.setActions(Actions.CHECK_CALENDAR_SETTINGS_LIST)
+                mMainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_LIST)
             Actions.CHECK_PERMISSIONS_DAY ->
-                mMainViewModel.setActions(Actions.CHECK_CALENDAR_SETTINGS_DAY)
+                mMainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_DAY)
             else -> Unit
         }
     }
 
     override fun onCalendarPermissionNotGranted() {
-        mMainViewModel.setActions(Actions.NONE)
+        mMainViewModel.setNextAction(Actions.NONE)
         showRationale()
     }
 
