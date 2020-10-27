@@ -10,7 +10,7 @@ import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
 import eu.adamgiergun.wontgoshoppingpl.common.today
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
-import eu.adamgiergun.wontgoshoppingpl.main.MainActivity
+import eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity
 
 internal class WidgetViewModel private constructor(val layoutId: Int, val text: CharSequence, val textSize: Float, val pendingIntent: PendingIntent) {
 

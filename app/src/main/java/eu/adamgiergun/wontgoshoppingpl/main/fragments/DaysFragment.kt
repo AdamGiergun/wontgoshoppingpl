@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl.main
+package eu.adamgiergun.wontgoshoppingpl.main.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.databinding.FragmentDayListBinding
+import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
 import kotlinx.coroutines.launch
 
 internal class DaysFragment : Fragment() {

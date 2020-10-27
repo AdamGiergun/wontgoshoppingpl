@@ -1,10 +1,11 @@
-package eu.adamgiergun.wontgoshoppingpl.main
+package eu.adamgiergun.wontgoshoppingpl.main.dialogs
 
 import android.content.DialogInterface.OnMultiChoiceClickListener
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.wontgoshoppingpl.R
+import eu.adamgiergun.wontgoshoppingpl.main.fragments.MainDialogFragment
 
 internal class DayTypesAddedToCalendarDialog : MainDialogFragment() {
 

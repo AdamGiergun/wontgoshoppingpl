@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl.main
+package eu.adamgiergun.wontgoshoppingpl.main.activity
 
 import android.Manifest
 import android.os.Build
@@ -13,6 +13,16 @@ import androidx.navigation.findNavController
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
+import eu.adamgiergun.wontgoshoppingpl.main.dialogs.DayTypesAddedToCalendarDialog
+import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
+import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderDaysBeforeDialog
+import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsAndDateTillDialog
+import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsDialog
+import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderTimeDialog
+import eu.adamgiergun.wontgoshoppingpl.main.dialogs.TillDateDialog
+import eu.adamgiergun.wontgoshoppingpl.main.fragments.AskForLookFragmentDirections
+import eu.adamgiergun.wontgoshoppingpl.main.fragments.WidgetInfoFragmentDirections
+
 /*
     TODO "remove all events from calendar" in Settings
     TODO "Info" group in Settings(?)
@@ -116,9 +126,9 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private fun checkCalendarPermissions(actions: Actions) {
+    private fun checkCalendarPermissions(nextActions: Actions) {
         when {
-            mViewModel.allPermissionsGranted.value == true -> mMainViewModel.setActions(actions)
+            mViewModel.allPermissionsGranted.value == true -> mMainViewModel.setActions(nextActions)
             shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR) -> showRationaleAndRequestCalendarPermissions()
             else -> requestCalendarPermissions()
         }
@@ -130,10 +140,10 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         requestCalendarPermissions()
     }
 
-    private fun checkCalendarSettings(actions: Actions) {
+    private fun checkCalendarSettings(nextActions: Actions) {
         mMainViewModel.setActions(
                 if (mMainViewModel.isCalendarEnabledAndChosen)
-                    actions
+                    nextActions
                 else
                     Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS
         )

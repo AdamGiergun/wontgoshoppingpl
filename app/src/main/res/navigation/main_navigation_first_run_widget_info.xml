@@ -6,11 +6,11 @@
 
     <fragment
         android:id="@+id/daysFragment"
-        android:name="eu.adamgiergun.wontgoshoppingpl.main.DaysFragment"
+        android:name="eu.adamgiergun.wontgoshoppingpl.main.fragments.DaysFragment"
         android:label="DaysFragment" />
     <fragment
         android:id="@+id/widgetInfoFragment"
-        android:name="eu.adamgiergun.wontgoshoppingpl.main.WidgetInfoFragment"
+        android:name="eu.adamgiergun.wontgoshoppingpl.main.fragments.WidgetInfoFragment"
         android:label="WidgetInfoFragment" >
         <action
             android:id="@+id/action_widgetInfoFragment_to_daysFragment"
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/askForLookFragment"
-        android:name="eu.adamgiergun.wontgoshoppingpl.main.AskForLookFragment"
+        android:name="eu.adamgiergun.wontgoshoppingpl.main.fragments.AskForLookFragment"
         android:label="AskForLookFragment" >
         <action
             android:id="@+id/action_askForLookFragment_to_widgetInfoFragment"

@@ -7,13 +7,13 @@
 
         <variable
             name="viewModel"
-            type="eu.adamgiergun.wontgoshoppingpl.main.MainViewModel" />
+            type="eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="eu.adamgiergun.wontgoshoppingpl.main.MainActivity">
+        tools:context="eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_nav_host_fragment"

@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/daysFragment"
-        android:name="eu.adamgiergun.wontgoshoppingpl.main.DaysFragment"
+        android:name="eu.adamgiergun.wontgoshoppingpl.main.fragments.DaysFragment"
         android:label="DaysFragment" />
 </navigation>

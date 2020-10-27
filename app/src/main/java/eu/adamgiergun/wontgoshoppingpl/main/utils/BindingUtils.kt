@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl.main
+package eu.adamgiergun.wontgoshoppingpl.main.utils
 
 import android.os.Build
 import android.view.View

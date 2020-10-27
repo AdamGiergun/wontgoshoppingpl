@@ -11,6 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:context="eu.adamgiergun.wontgoshoppingpl.main.DaysFragment"
+        tools:context="eu.adamgiergun.wontgoshoppingpl.main.fragments.DaysFragment"
         tools:listitem="@layout/day_list_item" />
 </layout>

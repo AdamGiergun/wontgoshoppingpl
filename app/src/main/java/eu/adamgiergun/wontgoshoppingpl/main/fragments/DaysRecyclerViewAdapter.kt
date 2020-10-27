@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl.main
+package eu.adamgiergun.wontgoshoppingpl.main.fragments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
+import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
 
 internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel, lifecycleOwner: LifecycleOwner)
     : ListAdapter<Day, DaysRecyclerViewAdapter.DayViewHolder>(DayDiffCallback()) {

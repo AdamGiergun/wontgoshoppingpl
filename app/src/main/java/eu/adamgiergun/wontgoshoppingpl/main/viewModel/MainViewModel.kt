@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl.main
+package eu.adamgiergun.wontgoshoppingpl.main.viewModel
 
 import android.app.Application
 import android.content.Context
@@ -15,6 +15,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.*
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
+import eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity
 import eu.adamgiergun.wontgoshoppingpl.settings.NotificationPreferenceFragment
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 import kotlinx.coroutines.launch

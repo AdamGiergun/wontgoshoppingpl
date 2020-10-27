@@ -11,8 +11,8 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.areAllPermi
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPermissions
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPermissionsCode
 import eu.adamgiergun.wontgoshoppingpl.help.HelpViewModel
-import eu.adamgiergun.wontgoshoppingpl.main.MainActivity
-import eu.adamgiergun.wontgoshoppingpl.main.MainViewModel
+import eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity
+import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsViewModel
 

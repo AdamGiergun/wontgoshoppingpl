@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl.main
+package eu.adamgiergun.wontgoshoppingpl.main.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

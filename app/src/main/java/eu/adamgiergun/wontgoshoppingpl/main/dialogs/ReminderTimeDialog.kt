@@ -1,4 +1,4 @@
-package eu.adamgiergun.wontgoshoppingpl.main
+package eu.adamgiergun.wontgoshoppingpl.main.dialogs
 
 import android.app.Dialog
 import android.app.TimePickerDialog
@@ -6,6 +6,7 @@ import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import android.widget.TimePicker
 import eu.adamgiergun.wontgoshoppingpl.R
+import eu.adamgiergun.wontgoshoppingpl.main.fragments.MainDialogFragment
 
 internal class ReminderTimeDialog : MainDialogFragment(), OnTimeSetListener {
 

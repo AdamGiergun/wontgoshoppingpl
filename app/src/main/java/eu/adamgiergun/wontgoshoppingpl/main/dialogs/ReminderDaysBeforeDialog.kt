@@ -1,10 +1,11 @@
-package eu.adamgiergun.wontgoshoppingpl.main
+package eu.adamgiergun.wontgoshoppingpl.main.dialogs
 
 import android.content.Context
 import android.os.Bundle
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.wontgoshoppingpl.R
+import eu.adamgiergun.wontgoshoppingpl.main.fragments.MainDialogFragment
 
 internal class ReminderDaysBeforeDialog : MainDialogFragment() {
 

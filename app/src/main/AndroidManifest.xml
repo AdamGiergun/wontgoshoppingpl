@@ -50,7 +50,7 @@
             android:required="false" />
 
         <activity
-            android:name=".main.MainActivity"
+            android:name=".main.activity.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="sensorPortrait">
             <!--
@@ -66,7 +66,7 @@
             android:name=".settings.SettingsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".main.MainActivity"
+            android:parentActivityName=".main.activity.MainActivity"
             android:screenOrientation="sensorPortrait"
             tools:targetApi="jelly_bean">
             <!--
@@ -78,7 +78,7 @@
             -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.adamgiergun.wontgoshoppingpl.main.MainActivity" />
+                android:value="eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity" />
         </activity>
         <activity
             android:name=".help.HelpActivity"
