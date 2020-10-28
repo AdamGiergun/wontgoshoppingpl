@@ -57,14 +57,13 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
 
     private lateinit var dayTypesToBeDisplayed: Day.Type.Set
 
-    private var dayTypesToBeAddedToCalendar: Day.Type.Set
+    private lateinit var dayTypesToBeAddedToCalendar: Day.Type.Set
 
     init {
-        viewModelScope.launch { resetDayTypes() }
         initializeReminder()
         val todayCal = Calendar.getInstance()
         DialogParameters.tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
-        dayTypesToBeAddedToCalendar = AppPreferences.newDayTypeSet(appContext)
+        viewModelScope.launch { resetDayTypes() }
     }
 
     fun getDayTypesToBeAddedToCalendarAsArray(): BooleanArray {
@@ -173,6 +172,7 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
 
     fun resetDayTypes() {
         dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
+        dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
         setDaysAndLastDate()
     }
 
@@ -180,8 +180,6 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
         val dayTypes = dayTypesToBeDisplayed.map { it.code.toString() }.toList()
         AppDatabase.getInstance(getApplication()).eventDao().run {
             viewModelScope.launch {
-                if (isFirstRun) initialize()
-
                 getAllEventsOfTypeNotBefore(dayTypes, today)?.let { list ->
                     _days.value = list.map { Day(it) }
                 }

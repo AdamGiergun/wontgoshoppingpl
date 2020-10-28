@@ -4,15 +4,26 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.AdRequest
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.*
+import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
 import eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity
 import eu.adamgiergun.wontgoshoppingpl.main.objects.MainActivityActions
 import eu.adamgiergun.wontgoshoppingpl.settings.NotificationPreferenceFragment
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
+import kotlinx.coroutines.launch
 
 internal class MainViewModel(application: Application) : AppViewModel(application) {
+
+    private val isFirstRun: Boolean
+        get() = AppPreferences.isFirstRun(appContext)
+
+    init {
+        if (isFirstRun)
+            viewModelScope.launch { AppDatabase.getInstance(getApplication()).eventDao().initialize() }
+    }
 
     val nextAction: LiveData<MainActivity.Actions>
         get() = MainActivityActions.nextAction
