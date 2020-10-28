@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
-import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
+import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 
-internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel, lifecycleOwner: LifecycleOwner)
+internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewModel, lifecycleOwner: LifecycleOwner)
     : ListAdapter<Day, DaysRecyclerViewAdapter.DayViewHolder>(DayDiffCallback()) {
 
     init {
@@ -38,7 +38,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: MainViewModel, lif
 
     internal class DayViewHolder private constructor(private val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(day: Day, viewModel: MainViewModel) {
+        fun bind(day: Day, viewModel: DaysFragmentViewModel) {
             binding.day = day
             binding.viewModel = viewModel
             binding.position = adapterPosition

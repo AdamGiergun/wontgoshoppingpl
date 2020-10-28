@@ -19,6 +19,9 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
     protected val appContext: Context
         get() = getApplication<Application>().applicationContext
 
+    protected val isFirstRun: Boolean
+        get() = AppPreferences.isFirstRun(appContext)
+
     var isLookRich: Boolean
         get() = AppPreferences.isLookRich(appContext)
         protected set(isLookRich) {

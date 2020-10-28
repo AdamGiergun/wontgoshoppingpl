@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="eu.adamgiergun.wontgoshoppingpl.main.viewModel.DialogsViewModel" />
+            type="eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

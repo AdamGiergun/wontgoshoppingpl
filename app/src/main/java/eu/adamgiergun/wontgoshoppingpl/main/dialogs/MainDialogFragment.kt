@@ -6,7 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.ViewModelProvider
 import eu.adamgiergun.wontgoshoppingpl.R
-import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DialogsViewModel
+import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 
 internal abstract class MainDialogFragment : AppCompatDialogFragment() {
 
@@ -15,8 +15,8 @@ internal abstract class MainDialogFragment : AppCompatDialogFragment() {
     else
         AlertDialog.Builder(requireContext())
 
-    protected val mViewModel: DialogsViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(DialogsViewModel::class.java)
+    protected val mViewModel: DaysFragmentViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(DaysFragmentViewModel::class.java)
     }
 
     protected val showInfoCancelled = DialogInterface.OnClickListener { _, _ -> Toast.makeText(context, R.string.info_cancelled, Toast.LENGTH_SHORT).show() }

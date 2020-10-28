@@ -3,6 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl.main.viewModel
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleTime
@@ -11,7 +12,9 @@ import eu.adamgiergun.wontgoshoppingpl.common.AdsContainer
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
+import eu.adamgiergun.wontgoshoppingpl.common.today
 import eu.adamgiergun.wontgoshoppingpl.day.Day
+import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
 import eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity
 import eu.adamgiergun.wontgoshoppingpl.main.objects.DialogParameters
 import eu.adamgiergun.wontgoshoppingpl.main.objects.IsDbChanged
@@ -20,15 +23,44 @@ import eu.adamgiergun.wontgoshoppingpl.main.objects.MainActivityActions
 import kotlinx.coroutines.launch
 import java.util.*
 
-internal class DialogsViewModel(application: Application) : AppViewModel(application) {
+internal class DaysFragmentViewModel(application: Application) : AppViewModel(application) {
+
+    private val _days = MutableLiveData<List<Day>>()
+    val days: LiveData<List<Day>>
+        get() = _days
+
+    val isDbChanged
+        get() = IsDbChanged.value
+
+    val lastActionIsAddList
+        get() = MainActivityActions.lastActionIsAddList
+
+    val lastTouchedPosition
+        get() = LastTouchedDay.position
+
+    var density: Float = 0F
 
     val tillDate
         get() = DialogParameters.tillDate
+
     val lastDateInMillis
         get() = DialogParameters.lastDateInMillis
+
+    fun areFiltersChanged() {
+            return eu.adamgiergun.wontgoshoppingpl.common.areFiltersChanged.run {
+                if (this) {
+                    resetDayTypes()
+                    eu.adamgiergun.wontgoshoppingpl.common.areFiltersChanged = false
+                }
+            }
+        }
+
+    private lateinit var dayTypesToBeDisplayed: Day.Type.Set
+
     private var dayTypesToBeAddedToCalendar: Day.Type.Set
 
     init {
+        viewModelScope.launch { resetDayTypes() }
         initializeReminder()
         val todayCal = Calendar.getInstance()
         DialogParameters.setTillDate(SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2))
@@ -125,11 +157,49 @@ internal class DialogsViewModel(application: Application) : AppViewModel(applica
         Toast.makeText(appContext, info, Toast.LENGTH_SHORT).show()
     }
 
+    //region Firebase log
     private fun logCalendarEvent(result: Boolean) {
         FirebaseEvent.logCalendarEvent(appContext, MainActivityActions.lastActionIsAddList, result)
     }
 
+    fun logLook() {
+        FirebaseEvent.logAppTheme(appContext, isLookRich)
+    }
+    //endregion
+
     fun setActionNone() {
         MainActivityActions.setNextAction(MainActivity.Actions.NONE)
+    }
+
+    fun resetDayTypes() {
+        dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
+        setDaysAndLastDate()
+    }
+
+    private fun setDaysAndLastDate() {
+        val dayTypes = dayTypesToBeDisplayed.map { it.code.toString() }.toList()
+        AppDatabase.getInstance(getApplication()).eventDao().run {
+            viewModelScope.launch {
+                if (isFirstRun) initialize()
+
+                getAllEventsOfTypeNotBefore(dayTypes, today)?.let { list ->
+                    _days.value = list.map { Day(it) }
+                }
+
+                getLastEvent()?.let {
+                    val lastDay = Day(it)
+                    DialogParameters.lastDateInMillis = lastDay.dateInMillis
+                }
+            }
+        }
+    }
+
+    fun setLastTouchedItem(day: Day?, position: Int, isDbChanged: Boolean) {
+        day?.let {
+            LastTouchedDay.value = it
+            MainActivityActions.setNextAction(MainActivity.Actions.CHECK_PERMISSIONS_DAY)
+        }
+        LastTouchedDay.position = position
+        if (isDbChanged) IsDbChanged.set(true)
     }
 }

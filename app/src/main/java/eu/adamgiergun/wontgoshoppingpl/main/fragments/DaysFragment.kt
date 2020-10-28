@@ -10,10 +10,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.databinding.FragmentDayListBinding
-import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
+import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 import kotlinx.coroutines.launch
 
 internal class DaysFragment : Fragment() {
+
+    private val viewModel
+        get() = ViewModelProvider(requireActivity()).get(DaysFragmentViewModel::class.java)
 
     private val dayTouchHelperCallback: ItemTouchHelper.SimpleCallback =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -29,13 +32,18 @@ internal class DaysFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentDayListBinding.inflate(inflater).let { binding ->
-            ViewModelProvider(requireActivity()).get(MainViewModel::class.java).let { mainViewModel ->
-                mainViewModel.density = requireContext().resources.displayMetrics.density
-                mainViewModel.logLook()
-                binding.list.adapter = DaysRecyclerViewAdapter(mainViewModel, viewLifecycleOwner)
+            viewModel.let {
+                it.density = requireContext().resources.displayMetrics.density
+                it.logLook()
+                binding.list.adapter = DaysRecyclerViewAdapter(it, viewLifecycleOwner)
             }
             ItemTouchHelper(dayTouchHelperCallback).attachToRecyclerView(binding.list)
             binding.root
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.areFiltersChanged()
     }
 }
