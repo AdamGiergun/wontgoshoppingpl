@@ -1,11 +1,13 @@
 package eu.adamgiergun.wontgoshoppingpl.main.viewModel
 
 import android.app.Application
+import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
+import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleReminder
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleTime
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AdsContainer
@@ -16,9 +18,6 @@ import eu.adamgiergun.wontgoshoppingpl.common.today
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
 import eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity
-import eu.adamgiergun.wontgoshoppingpl.main.objects.DialogParameters
-import eu.adamgiergun.wontgoshoppingpl.main.objects.IsDbChanged
-import eu.adamgiergun.wontgoshoppingpl.main.objects.LastTouchedDay
 import eu.adamgiergun.wontgoshoppingpl.main.objects.MainActivityActions
 import kotlinx.coroutines.launch
 import java.util.*
@@ -29,8 +28,9 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
     val days: LiveData<List<Day>>
         get() = _days
 
-    val isDbChanged
-        get() = IsDbChanged.value
+    private val _isDbChanged = MutableLiveData<Boolean>()
+    val isDbChanged: LiveData<Boolean>
+        get() = _isDbChanged
 
     val lastActionIsAddList
         get() = MainActivityActions.lastActionIsAddList
@@ -40,7 +40,7 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
 
     var density: Float = 0F
 
-    val tillDate
+    val tillDate: LiveData<SimpleDate>
         get() = DialogParameters.tillDate
 
     val lastDateInMillis
@@ -63,7 +63,7 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
         viewModelScope.launch { resetDayTypes() }
         initializeReminder()
         val todayCal = Calendar.getInstance()
-        DialogParameters.setTillDate(SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2))
+        DialogParameters.tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
         dayTypesToBeAddedToCalendar = AppPreferences.newDayTypeSet(appContext)
     }
 
@@ -108,7 +108,7 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
     }
 
     fun setTillDate(year: Int, month: Int, day: Int) {
-        DialogParameters.setTillDate(SimpleDate(year, month, day))
+        DialogParameters.tillDate.value = SimpleDate(year, month, day)
     }
 
     fun askForReminderSettingsAndDateTill() {
@@ -140,7 +140,7 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
             }.let { result ->
                 logCalendarEvent(result)
                 showInfo(result)
-                if (result) IsDbChanged.set(true)
+                if (result) _isDbChanged.value = true
             }
         }
     }
@@ -200,6 +200,29 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
             MainActivityActions.setNextAction(MainActivity.Actions.CHECK_PERMISSIONS_DAY)
         }
         LastTouchedDay.position = position
-        if (isDbChanged) IsDbChanged.set(true)
+        if (isDbChanged) _isDbChanged.value = true
+    }
+
+    private object DialogParameters {
+        object Reminder {
+            val daysBefore = MutableLiveData<Int>()
+            val time = MutableLiveData<SimpleTime>()
+
+            fun get(appContext: Context, timeZoneId: String): SimpleReminder {
+                val daysBefore = daysBefore.value
+                        ?: AppPreferences.getReminderDaysBefore(appContext)
+                val time = time.value ?: SimpleTime(AppPreferences.getReminderTime(appContext))
+                return SimpleReminder(SimpleReminder.METHOD_ALERT, time, daysBefore, timeZoneId)
+            }
+        }
+
+        val tillDate = MutableLiveData<SimpleDate>()
+
+        var lastDateInMillis = 0L
+    }
+
+    private object LastTouchedDay {
+        lateinit var value: Day
+        var position = -1
     }
 }
