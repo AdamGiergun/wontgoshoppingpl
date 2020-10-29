@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.main.activity
 
-import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -40,6 +39,21 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 //        calStart = Calendar.getInstance();
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = mMainViewModel
+
+        mMainViewModel.allPermissionsGranted.observe(this, {
+            if (it) {
+                when (mMainViewModel.nextAction.value) {
+                    Actions.CHECK_PERMISSIONS_LIST ->
+                        mMainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_LIST)
+                    Actions.CHECK_PERMISSIONS_DAY ->
+                        mMainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_DAY)
+                    else -> Unit
+                }
+            } else {
+                mMainViewModel.setNextAction(Actions.NONE)
+            }
+        })
+
         mMainViewModel.nextAction.observe(this, {
             @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
             when (it) {
@@ -127,17 +141,8 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private fun checkCalendarPermissions(nextActions: Actions) {
-        when {
-            mViewModel.allPermissionsGranted.value == true -> mMainViewModel.setNextAction(nextActions)
-            shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR) -> showRationaleAndRequestCalendarPermissions()
-            else -> requestCalendarPermissions()
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun showRationaleAndRequestCalendarPermissions() {
-        showRationale()
-        requestCalendarPermissions()
+        if (mViewModel.allPermissionsGranted.value == true) mMainViewModel.setNextAction(nextActions)
+        else requestCalendarPermissions()
     }
 
     private fun checkCalendarSettings(nextActions: Actions) {
@@ -153,21 +158,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         DayTypesAddedToCalendarDialog().show(supportFragmentManager, "dialog")
     }
     //endregion
-
-    override fun onCalendarPermissionsGranted() {
-        when (mMainViewModel.nextAction.value) {
-            Actions.CHECK_PERMISSIONS_LIST ->
-                mMainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_LIST)
-            Actions.CHECK_PERMISSIONS_DAY ->
-                mMainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_DAY)
-            else -> Unit
-        }
-    }
-
-    override fun onCalendarPermissionNotGranted() {
-        mMainViewModel.setNextAction(Actions.NONE)
-        showRationale()
-    }
 
     //region on...ClickRegion
     fun onLookButtonClick(view: View) {

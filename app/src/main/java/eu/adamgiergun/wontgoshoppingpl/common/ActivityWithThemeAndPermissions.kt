@@ -42,23 +42,11 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == calendarPermissionsCode) {
             if (areAllPermissionsGranted(grantResults)) {
-                onCalendarPermissionsGranted()
+                mViewModel.setAllPermissionsGranted(true)
             } else {
-                onCalendarPermissionNotGranted()
+                mViewModel.setAllPermissionsGranted(false)
+                Toast.makeText(this, R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
             }
         }
-    }
-
-    protected open fun onCalendarPermissionsGranted() {
-        mViewModel.setAllPermissionsGranted(true)
-    }
-
-    protected open fun onCalendarPermissionNotGranted() {
-        mViewModel.setAllPermissionsGranted(false)
-        showRationale()
-    }
-
-    protected fun showRationale() {
-        Toast.makeText(this, R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
     }
 }
