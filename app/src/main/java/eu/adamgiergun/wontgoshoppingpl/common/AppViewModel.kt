@@ -64,11 +64,7 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
         const val START_FRAGMENT_ID_TAG = "start_fragment_id"
 
         fun areAllPermissionsGranted(grantResults: IntArray): Boolean {
-            var result = true
-            for (grantResult in grantResults) {
-                result = result && grantResult == PackageManager.PERMISSION_GRANTED
-            }
-            return result
+            return grantResults.map { it == PackageManager.PERMISSION_GRANTED }.minOrNull() == true
         }
 
         val calendarPermissions
