@@ -3,27 +3,14 @@ package eu.adamgiergun.wontgoshoppingpl.common
 import android.content.pm.PackageManager
 import org.hamcrest.Matchers
 import org.junit.Assert
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class AppViewModelTest {
-
-    private lateinit var grantResults: IntArray
-    private var result = false
-
-    abstract inner class SetGrantResults(private val testedGrantResults: IntArray) {
-        @BeforeEach
-        fun setup() {
-            grantResults = testedGrantResults
-        }
-    }
-
-    abstract inner class AreAllPermissionsGranted {
-        @BeforeEach
-        fun getResult() {
-            result = AppViewModel.areAllPermissionsGranted(grantResults)
+    abstract inner class SetGrantResults(private val grantResults: IntArray) {
+        abstract inner class AreAllPermissionsGranted() {
+            val result = AppViewModel.areAllPermissionsGranted(grantResults)
         }
     }
 
