@@ -1,8 +1,7 @@
-package eu.adamgiergun.wontgoshopping
+package eu.adamgiergun.wontgoshoppingpl.common
 
-import android.content.pm.PackageManager.PERMISSION_GRANTED
-import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.areAllPermissionsGranted
-import org.hamcrest.Matchers.`is`
+import android.content.pm.PackageManager
+import org.hamcrest.Matchers
 import org.junit.Assert
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -24,7 +23,7 @@ class AppViewModelTest {
     abstract inner class AreAllPermissionsGranted {
         @BeforeEach
         fun getResult() {
-            result = areAllPermissionsGranted(grantResults)
+            result = AppViewModel.areAllPermissionsGranted(grantResults)
         }
     }
 
@@ -37,35 +36,35 @@ class AppViewModelTest {
             @Test
             @DisplayName("Then result is false")
             fun test() {
-                Assert.assertThat(result, `is`(false))
+                Assert.assertThat(result, Matchers.`is`(false))
             }
         }
     }
 
     @Nested
     @DisplayName("Given all grantResults are PERMISSION_GRANTED")
-    inner class AllGranted : SetGrantResults(intArrayOf(PERMISSION_GRANTED, PERMISSION_GRANTED)) {
+    inner class AllGranted : SetGrantResults(intArrayOf(PackageManager.PERMISSION_GRANTED, PackageManager.PERMISSION_GRANTED)) {
         @Nested
         @DisplayName("When areAllPermissionsGranted(grantResults)")
         inner class TestResultOf: AreAllPermissionsGranted() {
             @Test
             @DisplayName("Then result is true")
             fun test() {
-                Assert.assertThat(result, `is`(true))
+                Assert.assertThat(result, Matchers.`is`(true))
             }
         }
     }
 
     @Nested
     @DisplayName("Given not all grantResults are PERMISSION_GRANTED")
-    inner class NotAllGranted : SetGrantResults(intArrayOf(2, PERMISSION_GRANTED, 1)) {
+    inner class NotAllGranted : SetGrantResults(intArrayOf(2, PackageManager.PERMISSION_GRANTED, 1)) {
         @Nested
         @DisplayName("When areAllPermissionsGranted(grantResults)")
         inner class TestResultOf: AreAllPermissionsGranted() {
             @Test
             @DisplayName("Then result is false")
             fun test() {
-                Assert.assertThat(result, `is`(false))
+                Assert.assertThat(result, Matchers.`is`(false))
             }
         }
     }
@@ -79,7 +78,7 @@ class AppViewModelTest {
             @Test
             @DisplayName("Then result is false")
             fun test() {
-                Assert.assertThat(result, `is`(false))
+                Assert.assertThat(result, Matchers.`is`(false))
             }
         }
     }
