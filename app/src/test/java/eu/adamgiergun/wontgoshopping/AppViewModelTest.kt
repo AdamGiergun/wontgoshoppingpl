@@ -33,7 +33,7 @@ class AppViewModelTest {
     inner class EmptyArray : SetGrantResults(intArrayOf()) {
         @Nested
         @DisplayName("When areAllPermissionsGranted(grantResults)")
-        inner class TestResultOf() : AreAllPermissionsGranted() {
+        inner class TestResultOf: AreAllPermissionsGranted() {
             @Test
             @DisplayName("Then result is false")
             fun test() {
@@ -47,7 +47,7 @@ class AppViewModelTest {
     inner class AllGranted : SetGrantResults(intArrayOf(PERMISSION_GRANTED, PERMISSION_GRANTED)) {
         @Nested
         @DisplayName("When areAllPermissionsGranted(grantResults)")
-        inner class TestResultOf() : AreAllPermissionsGranted() {
+        inner class TestResultOf: AreAllPermissionsGranted() {
             @Test
             @DisplayName("Then result is true")
             fun test() {
@@ -61,7 +61,7 @@ class AppViewModelTest {
     inner class NotAllGranted : SetGrantResults(intArrayOf(2, PERMISSION_GRANTED, 1)) {
         @Nested
         @DisplayName("When areAllPermissionsGranted(grantResults)")
-        inner class TestResultOf() : AreAllPermissionsGranted() {
+        inner class TestResultOf: AreAllPermissionsGranted() {
             @Test
             @DisplayName("Then result is false")
             fun test() {
@@ -75,7 +75,7 @@ class AppViewModelTest {
     inner class AllNotGranted : SetGrantResults(intArrayOf(2, 1, -3, 7)) {
         @Nested
         @DisplayName("When areAllPermissionsGranted(grantResults)")
-        inner class TestResultOf() : AreAllPermissionsGranted() {
+        inner class TestResultOf: AreAllPermissionsGranted() {
             @Test
             @DisplayName("Then result is false")
             fun test() {
