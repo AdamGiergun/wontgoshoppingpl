@@ -53,8 +53,8 @@ internal class TillDateDialog : MainDialogFragment(), OnDateSetListener {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        val dialog = dialog as DatePickerDialog?
-        dialog?.datePicker?.let { picker ->
+        val datePickerDialog = dialog as DatePickerDialog?
+        datePickerDialog?.datePicker?.let { picker ->
             outState.putInt(YEAR, picker.year)
             outState.putInt(MONTH, picker.month)
             outState.putInt(DAY, picker.dayOfMonth)
