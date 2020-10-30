@@ -3,7 +3,8 @@
     <!ENTITY non_commerce_sunday "Non-commerce Sunday">
     <!ENTITY commerce_sunday "Commerce Sunday">
     <!ENTITY new_year "New Year\'s Day">
-    <!ENTITY epiphany "Epiphany"><!ENTITY holy_saturday "Holy Saturday">
+    <!ENTITY epiphany "Epiphany">
+    <!ENTITY holy_saturday "Holy Saturday">
     <!ENTITY easter_sunday "Easter Sunday">
     <!ENTITY easter_monday "Easter Monday">
     <!ENTITY labour_day "Labour Day">
