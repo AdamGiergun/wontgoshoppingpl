@@ -20,12 +20,12 @@ internal class Day(private val event: Event) : Comparable<Day> {
     val name: String
     private var calendarId: String?
 
-    var calendarEventId: Long
+    var calendarEventId: Long?
         private set
 
     init {
         calendarId = event.calendarId
-        calendarEventId = event.calendarEventId ?: 0
+        calendarEventId = event.calendarEventId
         val pieces = event.item.split(",".toRegex()).toTypedArray()
         date = SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YMD.toInt())
         time = pieces[1]
@@ -33,7 +33,7 @@ internal class Day(private val event: Event) : Comparable<Day> {
     }
 
     val isAddedToCalendar
-        get() = (calendarEventId > 0)
+        get() = calendarEventId != null
 
     val dateInMillis
         get() = date.timeInMillis
@@ -70,11 +70,11 @@ internal class Day(private val event: Event) : Comparable<Day> {
         newCalendarEventInstance(appContext, timeZoneId).let { calendarEvent ->
             when {
                 calendarEvent == null -> {
-                    updateEventInDb(SimpleCalendarEvent.NON_EXISTING.toLong(), appContext)
+                    updateEventInDb(null, appContext)
                 }
                 calendarEvent.exists(appContext, calendarId) -> calendarEvent.writeReminders(appContext)
                 calendarEvent.exists(appContext) -> {
-                    if (calendarEventId != SimpleCalendarEvent.NON_EXISTING.toLong() && calendarEvent.delete(appContext))
+                    if (calendarEventId != null && calendarEvent.delete(appContext))
                         deleteCalendarInfo(appContext)
                     calendarId = AppPreferences.getDefaultCalendarId(appContext)
                     updateEventInDb(calendarEvent.write(appContext), appContext)
@@ -84,13 +84,13 @@ internal class Day(private val event: Event) : Comparable<Day> {
                 }
             }
         }
-        return calendarEventId > SimpleCalendarEvent.NON_EXISTING
+        return calendarEventId != null
     }
 
     private fun newCalendarEventInstance(appContext: Context, timeZoneId: String): SimpleCalendarEvent? {
         return calendarId?.let { calendarId ->
             SimpleCalendarEvent.Builder(calendarId, date, SimpleTime(time), timeZoneId, allDay)
-                    .setCalendarEventId(calendarEventId)
+                    .setCalendarEventId(calendarEventId ?: 0)
                     .setEndCalendar(endDate, SimpleTime("23:59"))
                     .setReminders(reminders)
                     .setTitle("$description - " + appContext.getString( if (type == Type.COMMERCE_SUNDAY) R.string.go_shopping else R.string.go_shopping_earlier))
@@ -108,21 +108,21 @@ internal class Day(private val event: Event) : Comparable<Day> {
 
     private suspend fun deleteCalendarInfo(appContext: Context) {
         Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show()
-        updateEventInDb(SimpleCalendarEvent.NON_EXISTING.toLong(), appContext)
+        updateEventInDb(null, appContext)
     }
 
-    private suspend fun updateEventInDb(newCalendarEventId: Long, appContext: Context) {
+    private suspend fun updateEventInDb(newCalendarEventId: Long?, appContext: Context) {
         calendarEventId = newCalendarEventId
-        if (newCalendarEventId == SimpleCalendarEvent.NON_EXISTING.toLong()) calendarId = null
+        if (newCalendarEventId == null) calendarId = null
         val database = AppDatabase.getInstance(appContext).eventDao()
         val event = Event(event.id, event.typeId, event.item, calendarId, calendarEventId)
         database.update(event)
     }
 
     suspend fun deleteFromGoogleCalendar(context: Context) {
-        if (!SimpleCalendarEvent.exists(context, calendarEventId) ||
-                (calendarEventId != SimpleCalendarEvent.NON_EXISTING.toLong() && SimpleCalendarEvent.delete(calendarEventId, context, calendarId))) {
-            deleteCalendarInfo(context)
+        calendarEventId.let {
+            if (it == null || !SimpleCalendarEvent.exists(context, it) || SimpleCalendarEvent.delete(it, context, calendarId))
+                deleteCalendarInfo(context)
         }
     }
 
