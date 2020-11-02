@@ -17,6 +17,7 @@ import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
 import eu.adamgiergun.wontgoshoppingpl.common.today
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
+import eu.adamgiergun.wontgoshoppingpl.db.Event
 import eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity
 import eu.adamgiergun.wontgoshoppingpl.main.objects.MainActivityActions
 import kotlinx.coroutines.launch
@@ -24,9 +25,13 @@ import java.util.*
 
 internal class DaysFragmentViewModel(application: Application) : AppViewModel(application) {
 
-    private val _days = MutableLiveData<List<Day>>()
-    val days: LiveData<List<Day>>
-        get() = _days
+//    private val _days = MutableLiveData<List<Day>>()
+//    val days: LiveData<List<Day>>
+//        get() = _days
+
+    private val _events = MutableLiveData<List<Event>>()
+    val events: LiveData<List<Event>>
+        get() = _events
 
     private val _isDbChanged = MutableLiveData<Boolean>()
     val isDbChanged: LiveData<Boolean>
@@ -181,7 +186,7 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
         AppDatabase.getInstance(getApplication()).eventDao().run {
             viewModelScope.launch {
                 getAllEventsOfTypeNotBefore(dayTypes, today)?.let { list ->
-                    _days.value = list.map { Day(it) }
+                    _events.value = list
                 }
 
                 getLastEvent()?.let {

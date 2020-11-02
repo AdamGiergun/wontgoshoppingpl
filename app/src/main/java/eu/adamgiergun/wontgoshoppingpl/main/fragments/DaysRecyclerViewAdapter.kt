@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
+import eu.adamgiergun.wontgoshoppingpl.db.Event
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 
 internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewModel, lifecycleOwner: LifecycleOwner)
-    : ListAdapter<Day, DaysRecyclerViewAdapter.DayViewHolder>(DayDiffCallback()) {
+    : ListAdapter<Event, DaysRecyclerViewAdapter.DayViewHolder>(EventDiffCallback()) {
 
     init {
-        viewModel.days.observe(lifecycleOwner, { submitList(it) })
+        viewModel.events.observe(lifecycleOwner, { submitList(it) })
         viewModel.isDbChanged.observe(lifecycleOwner, {
             if (it) {
                 if (viewModel.lastActionIsAddList) {
@@ -32,8 +33,8 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
     }
 
     override fun onBindViewHolder(holderDay: DayViewHolder, position: Int) {
-        val day = getItem(position)
-        holderDay.bind(day, viewModel)
+        val event = getItem(position)
+        holderDay.bind(Day(event), viewModel)
     }
 
     internal class DayViewHolder private constructor(private val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -66,13 +67,13 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
         }
     }
 
-    private class DayDiffCallback : DiffUtil.ItemCallback<Day>() {
+    private class EventDiffCallback : DiffUtil.ItemCallback<Event>() {
 
-        override fun areItemsTheSame(oldItem: Day, newItem: Day): Boolean {
+        override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean {
             return oldItem.hashCode() == newItem.hashCode()
         }
 
-        override fun areContentsTheSame(oldItem: Day, newItem: Day): Boolean {
+        override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
             return oldItem.hashCode() == newItem.hashCode() && oldItem.calendarEventId == newItem.calendarEventId
         }
     }
