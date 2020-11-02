@@ -10,8 +10,8 @@ internal data class Event(
         @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID) val id: Int?,
         @ColumnInfo(name = COLUMN_TYPE_ID) val typeId: Int,
         val item: String,
-        @ColumnInfo(name = COLUMN_CALENDAR_ID) val calendarId: String?,
-        @ColumnInfo(name = COLUMN_CALENDAR_EVENT_ID) val calendarEventId: Long?
+        @ColumnInfo(name = COLUMN_CALENDAR_ID) var calendarId: String?,
+        @ColumnInfo(name = COLUMN_CALENDAR_EVENT_ID) var calendarEventId: Long?
 ) : Comparable<Event> {
 
     override fun compareTo(other: Event): Int {

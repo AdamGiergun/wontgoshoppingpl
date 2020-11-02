@@ -69,19 +69,16 @@ internal class Day(private val event: Event) : Comparable<Day> {
         calendarId = AppPreferences.getDefaultCalendarId(appContext)
         newCalendarEventInstance(appContext, timeZoneId).let { calendarEvent ->
             when {
-                calendarEvent == null -> {
-                    updateEventInDb(null, appContext)
-                }
+                calendarEvent == null -> updateEventInDb(null, appContext)
                 calendarEvent.exists(appContext, calendarId) -> calendarEvent.writeReminders(appContext)
                 calendarEvent.exists(appContext) -> {
-                    if (calendarEventId != null && calendarEvent.delete(appContext))
+                    if (calendarEventId != null && calendarEvent.delete(appContext)) {
                         deleteCalendarInfo(appContext)
-                    calendarId = AppPreferences.getDefaultCalendarId(appContext)
+                        calendarId = AppPreferences.getDefaultCalendarId(appContext)
+                    }
                     updateEventInDb(calendarEvent.write(appContext), appContext)
                 }
-                else -> {
-                    updateEventInDb(calendarEvent.write(appContext), appContext)
-                }
+                else -> updateEventInDb(calendarEvent.write(appContext), appContext)
             }
         }
         return calendarEventId != null
@@ -115,7 +112,8 @@ internal class Day(private val event: Event) : Comparable<Day> {
         calendarEventId = newCalendarEventId
         if (newCalendarEventId == null) calendarId = null
         val database = AppDatabase.getInstance(appContext).eventDao()
-        val event = Event(event.id, event.typeId, event.item, calendarId, calendarEventId)
+        event.calendarId = calendarId
+        event.calendarEventId = calendarEventId
         database.update(event)
     }
 
