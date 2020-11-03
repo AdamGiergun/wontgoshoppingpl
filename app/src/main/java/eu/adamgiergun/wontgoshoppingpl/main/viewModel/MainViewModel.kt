@@ -34,16 +34,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val isCalendarEnabledAndChosen: Boolean
         get() = AppPreferences.isUseGoogleCalendarSet(appContext) && AppPreferences.isCalendarSet(appContext)
 
-    val isLookChanged: Boolean
-        get() {
-            return eu.adamgiergun.wontgoshoppingpl.common.isLookChanged.run {
-                if (this) {
-                    eu.adamgiergun.wontgoshoppingpl.common.isLookChanged = false
-                }
-                this
-            }
-        }
-
     val mainNavigationId: Int
         get() = when {
             isFirstRun -> R.navigation.main_navigation_first_run_widget_info
