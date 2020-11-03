@@ -15,7 +15,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
     : ListAdapter<Event, DaysRecyclerViewAdapter.DayViewHolder>(EventDiffCallback()) {
 
     init {
-        viewModel.events.observe(lifecycleOwner, { submitList(it) })
+        submitList(viewModel.events.value)
         viewModel.isDbChanged.observe(lifecycleOwner, {
             if (it) {
                 if (viewModel.lastActionIsAddList) {

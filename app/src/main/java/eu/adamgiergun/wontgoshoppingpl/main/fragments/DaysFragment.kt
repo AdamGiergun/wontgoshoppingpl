@@ -32,10 +32,12 @@ internal class DaysFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentDayListBinding.inflate(inflater).let { binding ->
-            viewModel.let {
-                it.density = requireContext().resources.displayMetrics.density
-                it.logLook()
-                binding.list.adapter = DaysRecyclerViewAdapter(it, viewLifecycleOwner)
+            viewModel.let { mViewModel ->
+                mViewModel.density = requireContext().resources.displayMetrics.density
+                mViewModel.logLook()
+                mViewModel.events.observe(viewLifecycleOwner, {
+                    binding.list.adapter = DaysRecyclerViewAdapter(mViewModel, viewLifecycleOwner )
+                })
             }
             ItemTouchHelper(dayTouchHelperCallback).attachToRecyclerView(binding.list)
             binding.root

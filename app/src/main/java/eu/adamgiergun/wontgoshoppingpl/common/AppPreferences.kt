@@ -18,7 +18,7 @@ internal object AppPreferences : MyAppPreferences() {
         putBoolean(context, key, value)
     }
 
-    fun newDayTypeSet(context: Context): Day.Type.Set {
+    fun storedDayTypeSet(context: Context): Day.Type.Set {
         return newSet(
                 showNonCommerceDays(context),
                 showHolidays(context),
