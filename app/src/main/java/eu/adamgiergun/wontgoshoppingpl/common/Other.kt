@@ -24,5 +24,3 @@ internal val today
         }
 
 internal var isLookChanged = false
-
-internal var areFiltersChanged = false

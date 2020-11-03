@@ -19,7 +19,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
         viewModel.isDbChanged.observe(lifecycleOwner, {
             if (it) {
                 if (viewModel.lastActionIsAddList) {
-                    viewModel.resetDayTypes()
+                    viewModel.updateDisplayedDataSetIfNeeded()
                     notifyDataSetChanged()
                 } else {
                     notifyItemChanged(viewModel.lastTouchedPosition)
@@ -32,9 +32,9 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
         return DayViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holderDay: DayViewHolder, position: Int) {
+    override fun onBindViewHolder(dayViewHolder: DayViewHolder, position: Int) {
         val event = getItem(position)
-        holderDay.bind(Day(event), viewModel)
+        dayViewHolder.bind(Day(event), viewModel)
     }
 
     internal class DayViewHolder private constructor(private val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {

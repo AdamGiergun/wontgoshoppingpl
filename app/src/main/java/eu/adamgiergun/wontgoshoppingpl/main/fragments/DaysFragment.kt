@@ -44,6 +44,6 @@ internal class DaysFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.areFiltersChanged()
+        viewModel.updateDisplayedDataSetIfNeeded()
     }
 }

@@ -25,10 +25,6 @@ import java.util.*
 
 internal class DaysFragmentViewModel(application: Application) : AppViewModel(application) {
 
-//    private val _days = MutableLiveData<List<Day>>()
-//    val days: LiveData<List<Day>>
-//        get() = _days
-
     private val _events = MutableLiveData<List<Event>>()
     val events: LiveData<List<Event>>
         get() = _events
@@ -51,24 +47,14 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
     val lastDateInMillis
         get() = DialogParameters.lastDateInMillis
 
-    fun areFiltersChanged() {
-            return eu.adamgiergun.wontgoshoppingpl.common.areFiltersChanged.run {
-                if (this) {
-                    resetDayTypes()
-                    eu.adamgiergun.wontgoshoppingpl.common.areFiltersChanged = false
-                }
-            }
-        }
-
-    private lateinit var dayTypesToBeDisplayed: Day.Type.Set
-
+    private var dayTypesToBeDisplayed = Day.Type.Set()
     private lateinit var dayTypesToBeAddedToCalendar: Day.Type.Set
 
     init {
         initializeReminder()
         val todayCal = Calendar.getInstance()
         DialogParameters.tillDate.value = SimpleDate.getLastDayOfMonth(todayCal[Calendar.YEAR], todayCal[Calendar.MONTH] + 2)
-        viewModelScope.launch { resetDayTypes() }
+        viewModelScope.launch { updateDisplayedDataSetIfNeeded() }
     }
 
     fun getDayTypesToBeAddedToCalendarAsArray(): BooleanArray {
@@ -175,10 +161,14 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
         MainActivityActions.setNextAction(MainActivity.Actions.NONE)
     }
 
-    fun resetDayTypes() {
-        dayTypesToBeDisplayed = AppPreferences.newDayTypeSet(appContext)
-        dayTypesToBeAddedToCalendar = dayTypesToBeDisplayed
-        setDaysAndLastDate()
+    fun updateDisplayedDataSetIfNeeded() {
+        AppPreferences.storedDayTypeSet(appContext).let { storedDayTypeSet ->
+            if (dayTypesToBeDisplayed != storedDayTypeSet) {
+                dayTypesToBeDisplayed = storedDayTypeSet
+                dayTypesToBeAddedToCalendar = storedDayTypeSet
+                setDaysAndLastDate()
+            }
+        }
     }
 
     private fun setDaysAndLastDate() {
