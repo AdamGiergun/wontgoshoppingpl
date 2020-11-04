@@ -100,19 +100,20 @@ internal class SettingsActivity :
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
-        pref?.let { preference ->
-            val navController = caller?.findNavController()
-            if (preference.fragment == LookPreferenceFragment::class.java.name) {
-                if (mSettingsViewModel.isScreenWideEnough) {
-                    navController?.navigate(NotificationPreferenceFragmentDirections.actionNotificationPreferenceFragmentToLookPreferenceFragment())
+        caller?.findNavController()?.apply {
+            pref?.let { preference ->
+                if (preference.fragment == LookPreferenceFragment::class.java.name) {
+                    if (mSettingsViewModel.isScreenWideEnough) {
+                        navigate(NotificationPreferenceFragmentDirections.actionNotificationPreferenceFragmentToLookPreferenceFragment())
+                    } else {
+                        navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToLookPreferenceFragment())
+                    }
                 } else {
-                    navController?.navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToLookPreferenceFragment())
-                }
-            } else {
-                if (mSettingsViewModel.isScreenWideEnough) {
-                    navController?.navigate(LookPreferenceFragmentDirections.actionLookPreferenceFragmentToNotificationPreferenceFragment())
-                } else {
-                    navController?.navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToNotificationPreferenceFragment())
+                    if (mSettingsViewModel.isScreenWideEnough) {
+                        navigate(LookPreferenceFragmentDirections.actionLookPreferenceFragmentToNotificationPreferenceFragment())
+                    } else {
+                        navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToNotificationPreferenceFragment())
+                    }
                 }
             }
         }
