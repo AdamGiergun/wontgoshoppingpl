@@ -73,7 +73,7 @@ internal class Day(private val event: Event) : Comparable<Day> {
                 calendarEvent.exists(appContext, calendarId) -> calendarEvent.writeReminders(appContext)
                 calendarEvent.exists(appContext) -> {
                     if (calendarEventId != null && calendarEvent.delete(appContext)) {
-                        deleteCalendarInfo(appContext)
+                        deleteCalendarInfo(appContext, false)
                         calendarId = AppPreferences.getDefaultCalendarId(appContext)
                     }
                     updateEventInDb(calendarEvent.write(appContext), appContext)
@@ -103,8 +103,8 @@ internal class Day(private val event: Event) : Comparable<Day> {
             return SimpleReminder.List().apply { add(reminder) }
         }
 
-    private suspend fun deleteCalendarInfo(appContext: Context) {
-        Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show()
+    private suspend fun deleteCalendarInfo(appContext: Context, showInfo: Boolean) {
+        if (showInfo) Toast.makeText(appContext, appContext.getString(R.string.info_deleted), Toast.LENGTH_SHORT).show()
         updateEventInDb(null, appContext)
     }
 
@@ -119,8 +119,10 @@ internal class Day(private val event: Event) : Comparable<Day> {
 
     suspend fun deleteFromGoogleCalendar(context: Context) {
         calendarEventId.let {
-            if (it == null || !SimpleCalendarEvent.exists(context, it) || SimpleCalendarEvent.delete(it, context, calendarId))
-                deleteCalendarInfo(context)
+            if (it == null || !SimpleCalendarEvent.exists(context, it))
+                deleteCalendarInfo(context, false)
+            else
+                deleteCalendarInfo(context, SimpleCalendarEvent.delete(it, context, calendarId))
         }
     }
 
