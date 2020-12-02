@@ -45,6 +45,12 @@
                 android:resource="@xml/app_widget_info" />
         </receiver>
 
+<!--        <receiver android:name="eu.adamgiergun.wontgoshoppingpl.common.InstallBroadcastReceiver" android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.android.vending.INSTALL_REFERRER" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
