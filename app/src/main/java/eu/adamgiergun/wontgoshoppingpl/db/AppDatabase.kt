@@ -10,7 +10,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import java.util.concurrent.Executors
 
-@Database(entities = [Event::class, Reminder::class], version = 4)
+@Database(entities = [Event::class, Reminder::class], version = 5)
 internal abstract class AppDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
     abstract fun reminderDao(): ReminderDao
@@ -26,20 +26,25 @@ internal abstract class AppDatabase : RoomDatabase() {
                 }
             }
 
-            val migration3to4: Migration = object : Migration(3, 4) {
+            val migration3to5: Migration = object : Migration(3, 5) {
                 override fun migrate(database: SupportSQLiteDatabase) {
-                    // Since we didn't alter the table, there's nothing else to do here.
-                    // It's done only for marking migration to Room
+                    update6thDecember2020(database, context)
                 }
             }
 
-            val migration2to4: Migration = object : Migration(2, 4) {
+            val migration4to5: Migration = object : Migration(4, 5) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    update6thDecember2020(database, context)
+                }
+            }
+
+            val migration2to5: Migration = object : Migration(2, 5) {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     addEventsToDb(arrayOf(2021, 2022, 2023), context)
                 }
             }
 
-            val migration1to4: Migration = object : Migration(1, 4) {
+            val migration1to5: Migration = object : Migration(1, 5) {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     addEventsToDb(arrayOf(2020, 2021, 2022, 2023), context)
                 }
@@ -53,14 +58,8 @@ internal abstract class AppDatabase : RoomDatabase() {
                             AppDatabase::class.java,
                             "events.db"
                     )
-                            // Wipes and rebuilds instead of migrating if no Migration object.
-                            // Migration is not part of this lesson. You can learn more about
-                            // migration with Room in this blog post:
-                            // https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
                             .addCallback(rdc)
-                            .addMigrations(migration3to4)
-                            .addMigrations(migration2to4)
-                            .addMigrations(migration1to4)
+                            .addMigrations(migration4to5, migration3to5, migration2to5, migration1to5)
                             .fallbackToDestructiveMigration()
                             .build()
                     INSTANCE = instance
@@ -82,6 +81,31 @@ internal abstract class AppDatabase : RoomDatabase() {
             array.sort()
             Executors.newSingleThreadScheduledExecutor().execute {
                 getInstance(context).eventDao().insertAll(*array)
+            }
+        }
+
+        private fun update6thDecember2020(db: SupportSQLiteDatabase, context: Context) {
+            db.query("SELECT * FROM events WHERE item LIKE '2020_12_06%' ORDER BY item LIMIT 1").use { cursor ->
+                cursor.moveToFirst()
+                val oldEvent = Event(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getLong(4)
+                )
+
+                val arrayId = R.array.commerce_sundays_2020
+                val newEvent = context.resources.getStringArray(arrayId).filter {
+                    it.startsWith("2020_12_06")
+                }.map {
+                    Event(oldEvent.id, getEventTypeId(arrayId), it, null, null)
+                }.first()
+
+                val query = "UPDATE ${Event.TABLE_NAME} " +
+                        "SET ${Event.COLUMN_TYPE_ID} = ${newEvent.typeId}, ${Event.COLUMN_ITEM} = '${newEvent.item}' " +
+                        "WHERE ${Event.COLUMN_ID} = ${newEvent.id} "
+                db.execSQL(query)
             }
         }
 

@@ -62,7 +62,6 @@
         <item>2020_11_15,00:00,&non_commerce_sunday;</item>
         <item>2020_11_22,00:00,&non_commerce_sunday;</item>
         <item>2020_11_29,00:00,&non_commerce_sunday;</item>
-        <item>2020_12_06,00:00,&non_commerce_sunday;</item>
         <item>2020_12_24,13:00,&christmas_eve;</item>
         <item>2020_12_27,00:00,&non_commerce_sunday;</item>
     </string-array>
@@ -89,6 +88,7 @@
         <item>2020_04_26,00:00,&commerce_sunday;</item>
         <item>2020_06_28,00:00,&commerce_sunday;</item>
         <item>2020_08_30,00:00,&commerce_sunday;</item>
+        <item>2020_12_06,00:00,&commerce_sunday;</item>
         <item>2020_12_13,00:00,&commerce_sunday;</item>
         <item>2020_12_20,00:00,&commerce_sunday;</item>
     </string-array>

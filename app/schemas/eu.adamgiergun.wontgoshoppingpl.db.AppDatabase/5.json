@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "b1e708cfd492384ab62cdddaf1061835",
+    "identityHash": "50082edd2b337c88fdfd864a972b62d7",
     "entities": [
       {
         "tableName": "events",
@@ -89,16 +89,7 @@
           ],
           "autoGenerate": true
         },
-        "indices": [
-          {
-            "name": "index_events_reminders_event_id",
-            "unique": false,
-            "columnNames": [
-              "event_id"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_events_reminders_event_id` ON `${TABLE_NAME}` (`event_id`)"
-          }
-        ],
+        "indices": [],
         "foreignKeys": [
           {
             "table": "events",
@@ -117,7 +108,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b1e708cfd492384ab62cdddaf1061835')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '50082edd2b337c88fdfd864a972b62d7')"
     ]
   }
 }
