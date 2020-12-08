@@ -42,7 +42,7 @@ internal class DayTypesAddedToCalendarDialog : MainDialogFragment() {
 
     private fun setIsEnabledDialogButtonPositive(alertDialog: AlertDialog, checkedItems: BooleanArray) {
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-            isEnabled = checkedItems.toList().maxOrNull() == true
+            isEnabled = checkedItems.any { it }
         }
     }
 }
