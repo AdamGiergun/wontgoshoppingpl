@@ -1,9 +1,9 @@
 package eu.adamgiergun.wontgoshoppingpl.main.utils
 
-import android.os.Build
 import android.view.View
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.findNavController
@@ -15,13 +15,7 @@ internal fun CardView.setLook(day: Day, isLookRich: Boolean, density: Float) {
     if (isLookRich) {
         setBackgroundResource(day.backgroundResource)
     } else {
-        val color = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            resources.getColor(day.backgroundColorResource, null)
-        } else {
-            @Suppress("DEPRECATION")
-            resources.getColor(day.backgroundColorResource)
-        }
-        setCardBackgroundColor(color)
+        setCardBackgroundColor(ResourcesCompat.getColor(resources, day.backgroundColorResource, null))
         radius = 8 * density
         cardElevation = 4 * density
     }
