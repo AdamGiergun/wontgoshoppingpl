@@ -7,7 +7,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     buildFeatures {
         dataBinding true
@@ -16,13 +16,13 @@ android {
     defaultConfig {
         applicationId "eu.adamgiergun.wontgoshoppingpl"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 128
         versionName "3.5.3"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        resConfigs "en", "pl", "ru", "de", "uk", "cs", "sk", "be", "lt", "fr", "it", "es"
-        //vectorDrawables.useSupportLibrary = true
+        resConfigs 'en', 'pl', 'ru', 'de', 'uk', 'cs', 'sk', 'be', 'lt', 'fr', 'it', 'es'
+//vectorDrawables.useSupportLibrary = true
 
         resValue "string", "ad_mob_app_id", WGS_AD_MOB_APP_ID
         resValue "string", "main_banner_ad_id", WGS_MAIN_BANNER_AD_ID
