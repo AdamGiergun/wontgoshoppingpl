@@ -1,6 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.widget
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.util.TypedValue.COMPLEX_UNIT_SP
@@ -30,7 +31,7 @@ internal class WidgetViewModel private constructor(val layoutId: Int, val text: 
                 widgetText = it.widgetText
             }
             val intent = Intent(appContext, MainActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(appContext, 0, intent, 0)
+            val pendingIntent = PendingIntent.getActivity(appContext, 0, intent, FLAG_IMMUTABLE)
             return WidgetViewModel(layoutId, widgetText, textSize, pendingIntent)
         }
 
