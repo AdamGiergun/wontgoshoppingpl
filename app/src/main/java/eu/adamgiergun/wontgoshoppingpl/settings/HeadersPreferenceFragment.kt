@@ -12,8 +12,8 @@ internal class HeadersPreferenceFragment : SettingsFragment() {
         addPreferencesFromResource(R.xml.pref_headers)
     }
 
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        preference?.order?.let { highlightLeftTreePreference(it) }
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        highlightLeftTreePreference(preference.order)
         return super.onPreferenceTreeClick(preference)
     }
 

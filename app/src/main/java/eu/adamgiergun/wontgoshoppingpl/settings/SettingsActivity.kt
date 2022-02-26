@@ -15,8 +15,8 @@ import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 
 internal class SettingsActivity :
-        ActivityWithThemeAndPermissions(),
-        PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    ActivityWithThemeAndPermissions(),
+    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     companion object {
         init {
@@ -39,23 +39,24 @@ internal class SettingsActivity :
         setContentView(layout)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         if (savedInstanceState == null) {
-            navigateToNotifications = intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == NotificationPreferenceFragment::class.java.name
+            navigateToNotifications =
+                intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == NotificationPreferenceFragment::class.java.name
         } else {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M || Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 onScreenWideEnoughChanged()
             }
         }
-        mSettingsViewModel.settingsActivityBarTitle.observe(this, {
+        mSettingsViewModel.settingsActivityBarTitle.observe(this) {
             title = it
-        })
-        mSettingsViewModel.askingForPermissionsNeeded.observe(this, {
+        }
+        mSettingsViewModel.askingForPermissionsNeeded.observe(this) {
             if (it) {
                 mSettingsViewModel.askingForPermissionsNeeded(false)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestCalendarPermissions()
                 }
             }
-        })
+        }
     }
 
     override fun onResume() {
@@ -83,7 +84,7 @@ internal class SettingsActivity :
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.settings_activity_actions, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -99,21 +100,22 @@ internal class SettingsActivity :
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
-        caller?.findNavController()?.apply {
-            pref?.let { preference ->
-                if (preference.fragment == LookPreferenceFragment::class.java.name) {
-                    if (mSettingsViewModel.isScreenWideEnough) {
-                        navigate(NotificationPreferenceFragmentDirections.actionNotificationPreferenceFragmentToLookPreferenceFragment())
-                    } else {
-                        navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToLookPreferenceFragment())
-                    }
+    override fun onPreferenceStartFragment(
+        caller: PreferenceFragmentCompat,
+        preference: Preference
+    ): Boolean {
+        caller.findNavController().apply {
+            if (preference.fragment == LookPreferenceFragment::class.java.name) {
+                if (mSettingsViewModel.isScreenWideEnough) {
+                    navigate(NotificationPreferenceFragmentDirections.actionNotificationPreferenceFragmentToLookPreferenceFragment())
                 } else {
-                    if (mSettingsViewModel.isScreenWideEnough) {
-                        navigate(LookPreferenceFragmentDirections.actionLookPreferenceFragmentToNotificationPreferenceFragment())
-                    } else {
-                        navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToNotificationPreferenceFragment())
-                    }
+                    navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToLookPreferenceFragment())
+                }
+            } else {
+                if (mSettingsViewModel.isScreenWideEnough) {
+                    navigate(LookPreferenceFragmentDirections.actionLookPreferenceFragmentToNotificationPreferenceFragment())
+                } else {
+                    navigate(HeadersPreferenceFragmentDirections.actionHeadersPreferenceFragmentToNotificationPreferenceFragment())
                 }
             }
         }

@@ -35,8 +35,8 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
         }
     }
 
-    override fun onDisplayPreferenceDialog(preference: Preference?) {
-        preference?.let {
+    override fun onDisplayPreferenceDialog(preference: Preference) {
+        preference.let {
             val dialogFragment = when (preference) {
                 is IntegerDialogPreference -> IntegerPreferenceDialogFragmentCompat()
                 is TimePreference -> TimePreferenceDialogFragmentCompat()
