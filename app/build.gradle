@@ -132,15 +132,15 @@ dependencies {
     implementation "androidx.sqlite:sqlite-framework:$sqlite_version"
 
     //implementation 'com.google.firebase:firebase-ads:19.4.0'
-    implementation 'com.google.android.gms:play-services-ads:19.6.0'
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
+    implementation 'com.google.android.gms:play-services-ads:19.8.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.2'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.8'
 
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation "com.google.dagger:dagger:2.29.1"
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.dagger:dagger:2.41'
 
-    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
-    implementation 'com.squareup.okio:okio:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'com.squareup.okio:okio:3.0.0'
 
     // Dependencies for local unit tests
     testImplementation "junit:junit:4.13.2"
