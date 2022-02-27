@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 internal class DaysFragment : Fragment() {
 
     private val viewModel
-        get() = ViewModelProvider(requireActivity()).get(DaysFragmentViewModel::class.java)
+        get() = ViewModelProvider(requireActivity())[DaysFragmentViewModel::class.java]
 
     private val dayTouchHelperCallback: ItemTouchHelper.SimpleCallback =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {

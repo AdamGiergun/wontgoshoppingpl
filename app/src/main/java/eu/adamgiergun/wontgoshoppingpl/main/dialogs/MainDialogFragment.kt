@@ -16,7 +16,7 @@ internal abstract class MainDialogFragment : AppCompatDialogFragment() {
         AlertDialog.Builder(requireContext())
 
     protected val mViewModel: DaysFragmentViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(DaysFragmentViewModel::class.java)
+        ViewModelProvider(requireActivity())[DaysFragmentViewModel::class.java]
     }
 
     protected val showInfoCancelled = DialogInterface.OnClickListener { _, _ -> Toast.makeText(context, R.string.info_cancelled, Toast.LENGTH_SHORT).show() }
