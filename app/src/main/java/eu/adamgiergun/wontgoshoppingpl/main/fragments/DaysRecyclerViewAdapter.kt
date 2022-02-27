@@ -16,7 +16,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
 
     init {
         submitList(viewModel.events.value)
-        viewModel.isDbChanged.observe(lifecycleOwner, {
+        viewModel.isDbChanged.observe(lifecycleOwner) {
             if (it) {
                 if (viewModel.lastActionIsAddList) {
                     viewModel.updateDisplayedDataSetIfNeeded()
@@ -25,7 +25,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
                     notifyItemChanged(viewModel.lastTouchedPosition)
                 }
             }
-        })
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
