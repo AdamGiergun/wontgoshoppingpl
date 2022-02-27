@@ -21,8 +21,7 @@ internal abstract class SettingsFragment : BasePreferenceFragmentCompat() {
     }
 
     private val mSettingsViewModel
-        get() = ViewModelProvider(requireActivity())
-                .get(SettingsViewModel::class.java)
+        get() = ViewModelProvider(requireActivity())[SettingsViewModel::class.java]
 
     private val settingsTitle
         get() = getString(R.string.title_activity_settings)
