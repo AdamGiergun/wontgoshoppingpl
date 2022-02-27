@@ -20,9 +20,9 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
 
     protected val mViewModel by lazy {
         when (this) {
-            is MainActivity -> ViewModelProvider(this).get(MainViewModel::class.java)
-            is SettingsActivity -> ViewModelProvider(this).get(SettingsViewModel::class.java)
-            else -> ViewModelProvider(this).get(HelpViewModel::class.java)
+            is MainActivity -> ViewModelProvider(this)[MainViewModel::class.java]
+            is SettingsActivity -> ViewModelProvider(this)[SettingsViewModel::class.java]
+            else -> ViewModelProvider(this)[HelpViewModel::class.java]
         }
     }
 
