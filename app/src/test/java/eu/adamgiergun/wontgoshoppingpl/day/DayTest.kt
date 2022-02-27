@@ -2,8 +2,8 @@ package eu.adamgiergun.wontgoshoppingpl.day
 
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.db.Event
-import org.hamcrest.Matchers.`is`
-import org.junit.Assert
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -29,63 +29,63 @@ internal class DayTest {
             protected var expectedIsCommerceSunday = false
 
             open fun getTime() {
-                Assert.assertThat(day.time, `is`(expectedTime))
+                assertThat(day.time, `is`(expectedTime))
             }
 
             open fun getName() {
-                Assert.assertThat(day.name, `is`(expectedName))
+                assertThat(day.name, `is`(expectedName))
             }
 
             open fun getCalendarEventId() {
-                Assert.assertThat(day.calendarEventId, `is`(expectedCalendarEventId))
+                assertThat(day.calendarEventId, `is`(expectedCalendarEventId))
             }
 
             open fun isAddedToCalendar() {
-                Assert.assertThat(day.isAddedToCalendar, `is`(expectedIsAddedToCalendar))
+                assertThat(day.isAddedToCalendar, `is`(expectedIsAddedToCalendar))
             }
 
             open fun getDateInMillis() {
-                Assert.assertThat(day.dateInMillis, `is`(expectedIsDateInMillis))
+                assertThat(day.dateInMillis, `is`(expectedIsDateInMillis))
             }
 
             open fun getAllDay() {
-                Assert.assertThat(day.allDay, `is`(expectedAllDay))
+                assertThat(day.allDay, `is`(expectedAllDay))
             }
 
             open fun getBackgroundColorResource() {
-                Assert.assertThat(day.backgroundColorResource, `is`(expectedBackgroundColorResource))
+                assertThat(day.backgroundColorResource, `is`(expectedBackgroundColorResource))
             }
 
             open fun getBackgroundResource() {
-                Assert.assertThat(day.backgroundResource, `is`(expectedBackgroundResource))
+                assertThat(day.backgroundResource, `is`(expectedBackgroundResource))
             }
 
             open fun compareToSameDay() {
-                Assert.assertThat(day.compareTo(Day(event)), `is`(0) )
+                assertThat(day.compareTo(Day(event)), `is`(0) )
             }
 
             open fun compareToEarlierDay() {
-                Assert.assertThat(day.compareTo(earlierDay), `is`(1) )
+                assertThat(day.compareTo(earlierDay), `is`(1) )
             }
 
             open fun compareToLaterDay() {
-                Assert.assertThat(day.compareTo(laterDay), `is`(-1) )
+                assertThat(day.compareTo(laterDay), `is`(-1) )
             }
 
             open fun getDateAndWeekdayString() {
-                Assert.assertThat(day.dateAndWeekdayString, `is`(expectedDateAndWeekdayString))
+                assertThat(day.dateAndWeekdayString, `is`(expectedDateAndWeekdayString))
             }
 
             open fun getDescriptionForDialog() {
-                Assert.assertThat(day.descriptionForDialog, `is`(expectedDescriptionForDialog))
+                assertThat(day.descriptionForDialog, `is`(expectedDescriptionForDialog))
             }
 
             open fun getWidgetText() {
-                Assert.assertThat(day.widgetText, `is`(expectedWidgetText))
+                assertThat(day.widgetText, `is`(expectedWidgetText))
             }
 
             open fun isCommerceSunday() {
-                Assert.assertThat(day.isCommerceSunday, `is`(expectedIsCommerceSunday))
+                assertThat(day.isCommerceSunday, `is`(expectedIsCommerceSunday))
             }
         }
     }
