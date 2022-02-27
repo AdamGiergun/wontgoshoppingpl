@@ -1,15 +1,15 @@
 package eu.adamgiergun.wontgoshoppingpl.common
 
 import android.content.pm.PackageManager
-import org.hamcrest.Matchers
-import org.junit.Assert
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class AppViewModelTest {
     abstract inner class SetGrantResults(private val grantResults: IntArray) {
-        abstract inner class AreAllPermissionsGranted() {
+        abstract inner class AreAllPermissionsGranted {
             val result = AppViewModel.areAllPermissionsGranted(grantResults)
         }
     }
@@ -23,7 +23,7 @@ class AppViewModelTest {
             @Test
             @DisplayName("Then result is false")
             fun test() {
-                Assert.assertThat(result, Matchers.`is`(false))
+                assertThat(result, `is`(false))
             }
         }
     }
@@ -37,7 +37,7 @@ class AppViewModelTest {
             @Test
             @DisplayName("Then result is true")
             fun test() {
-                Assert.assertThat(result, Matchers.`is`(true))
+                assertThat(result, `is`(true))
             }
         }
     }
@@ -51,7 +51,7 @@ class AppViewModelTest {
             @Test
             @DisplayName("Then result is false")
             fun test() {
-                Assert.assertThat(result, Matchers.`is`(false))
+                assertThat(result, `is`(false))
             }
         }
     }
@@ -65,7 +65,7 @@ class AppViewModelTest {
             @Test
             @DisplayName("Then result is false")
             fun test() {
-                Assert.assertThat(result, Matchers.`is`(false))
+                assertThat(result, `is`(false))
             }
         }
     }
