@@ -86,8 +86,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
-    implementation 'eu.adamgiergun:mykotlinlibrary:0.1.58@aar'
-    implementation 'eu.adamgiergun:myresources:1.0.17@aar'
+    implementation 'eu.adamgiergun:mykotlinlibrary:0.1.59@aar'
+    implementation 'eu.adamgiergun:myresources:1.0.18@aar'
 
     implementation 'androidx.activity:activity-ktx:1.4.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'

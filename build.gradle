@@ -12,18 +12,18 @@ buildscript {
         sqlite_version = '2.2.0'
     }
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
-        maven {
-            credentials {
-                username GC_USER
-                password GC_USER_PASS
-            }
-            url "https://adam-giergun-maven-repo.appspot.com/"
-        }
+//        maven {
+//            credentials {
+//                username GC_USER
+//                password GC_USER_PASS
+//            }
+//            url "https://adam-giergun-maven-repo.appspot.com/"
+//        }
         //maven { url 'https://maven.fabric.io/public'}
         //maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-        //mavenCentral()
     }
 
     dependencies {
@@ -42,18 +42,18 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
         //maven { url 'https://maven.google.com/' }
         //maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-        maven {
-            credentials {
-                username GC_USER
-                password GC_USER_PASS
-            }
-            url "https://adam-giergun-maven-repo.appspot.com/"
-        }
-        //mavenCentral()
+//        maven {
+//            credentials {
+//                username GC_USER
+//                password GC_USER_PASS
+//            }
+//            url "https://adam-giergun-maven-repo.appspot.com/"
+//        }
     }
 }
 
