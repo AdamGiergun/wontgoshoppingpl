@@ -44,8 +44,8 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val wasWidgetInfoDisplayed
         get() = AppPreferences.wasAppWidgetInfoDisplayed(appContext)
 
-    fun getBannerAd(context: Context): AdRequest {
-        return AdsContainer.getBannerAd(context)
+    fun getAdRequest(context: Context): AdRequest {
+        return AdsContainer.getAdRequest(context)
     }
 
     fun initializeInterstitialAd(applicationContext: Context) {

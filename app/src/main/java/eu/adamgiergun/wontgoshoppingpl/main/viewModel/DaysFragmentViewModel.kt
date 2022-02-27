@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.main.viewModel
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.widget.Toast
@@ -108,9 +109,11 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
     val dayDescriptionForDialog: String
         get() = LastTouchedDay.value.descriptionForDialog
 
-    fun addToCalendar(isActionAddList: Boolean) {
+    fun addToCalendar(isActionAddList: Boolean, activity: Activity) {
         MainActivityActions.lastActionIsAddList = isActionAddList
-        viewModelScope.launch { AdsContainer.getInterstitialAd(appContext)?.show() }
+        viewModelScope.launch {
+            AdsContainer.getInterstitialAd(appContext)?.show(activity)
+        }
         viewModelScope.launch {
             val tillDateValue = DialogParameters.tillDate.value
             when {

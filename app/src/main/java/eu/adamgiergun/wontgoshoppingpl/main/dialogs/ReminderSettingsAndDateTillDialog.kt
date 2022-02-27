@@ -12,7 +12,9 @@ internal class ReminderSettingsAndDateTillDialog : MainDialogFragment() {
         return getStyledBuilder().run {
             setTitle(getString(R.string.title_reminder))
             setView(binding.root)
-            setPositiveButton(android.R.string.ok) { _, _ -> mViewModel.addToCalendar(true) }
+            setPositiveButton(android.R.string.ok) {
+                    _, _ -> mViewModel.addToCalendar(true, requireActivity())
+            }
             setNegativeButton(android.R.string.cancel, showInfoCancelled)
             mViewModel.initializeReminder()
             create()
