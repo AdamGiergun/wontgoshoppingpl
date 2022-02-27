@@ -42,7 +42,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
         fun bind(day: Day, viewModel: DaysFragmentViewModel) {
             binding.day = day
             binding.viewModel = viewModel
-            binding.position = adapterPosition
+            binding.position = bindingAdapterPosition
         }
 
         suspend fun deleteFromGoogleCalendar() {
@@ -50,7 +50,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
                 day.deleteFromGoogleCalendar(binding.cardView.context)
                 if (!day.isAddedToCalendar) {
                     binding.viewModel?.run {
-                        setLastTouchedItem(null, adapterPosition, true)
+                        setLastTouchedItem(null, bindingAdapterPosition, true)
                     }
                 }
             }
