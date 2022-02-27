@@ -40,7 +40,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = mMainViewModel
 
-        mMainViewModel.allPermissionsGranted.observe(this, {
+        mMainViewModel.allPermissionsGranted.observe(this) {
             if (it) {
                 when (mMainViewModel.nextAction.value) {
                     Actions.CHECK_PERMISSIONS_LIST ->
@@ -52,9 +52,9 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
             } else {
                 mMainViewModel.setNextAction(Actions.NONE)
             }
-        })
+        }
 
-        mMainViewModel.nextAction.observe(this, {
+        mMainViewModel.nextAction.observe(this) {
             @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
             when (it) {
                 Actions.CHECK_PERMISSIONS_DAY -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_DAY)
@@ -79,7 +79,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 }
                 Actions.NONE -> Unit
             }
-        })
+        }
 
         lifecycleScope.launchWhenStarted {
             binding.adView.loadAd(mMainViewModel.getAdRequest(this@MainActivity))
