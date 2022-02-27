@@ -13,7 +13,7 @@ import eu.adamgiergun.wontgoshoppingpl.R
 internal class NotificationPreferenceFragment : SettingsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java).run {
+        ViewModelProvider(requireActivity())[SettingsViewModel::class.java].run {
             if (allPermissionsGranted.value == true) {
                 setPreferencesFromResource(R.xml.pref_notification , rootKey)
             } else {
@@ -21,11 +21,12 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
                 askingForPermissionsNeeded(true)
             }
 
-            allPermissionsGranted.observe(this@NotificationPreferenceFragment, { allPermissionsGranted ->
+            allPermissionsGranted.observe(this@NotificationPreferenceFragment) { allPermissionsGranted ->
                 setPreferencesFromResource(
-                        if (allPermissionsGranted) R.xml.pref_notification else R.xml.pref_notification_disabled,
-                        rootKey)
-            })
+                    if (allPermissionsGranted) R.xml.pref_notification else R.xml.pref_notification_disabled,
+                    rootKey
+                )
+            }
         }
     }
 
