@@ -15,7 +15,7 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         ViewModelProvider(requireActivity())[SettingsViewModel::class.java].run {
             if (allPermissionsGranted.value == true) {
-                setPreferencesFromResource(R.xml.pref_notification , rootKey)
+                setPreferencesFromResource(R.xml.pref_notification, rootKey)
             } else {
                 setPreferencesFromResource(R.xml.pref_notification_disabled, rootKey)
                 askingForPermissionsNeeded(true)
@@ -45,6 +45,8 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
             }
             dialogFragment?.let {
                 it.arguments = Bundle(1).apply { putString("key", preference.key) }
+                @Suppress("DEPRECATION")
+                // No replacement yet
                 it.setTargetFragment(this, 0)
                 it.show(parentFragmentManager, preference.javaClass.name)
                 return
