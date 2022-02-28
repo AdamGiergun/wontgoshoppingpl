@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/summary_app_look_mini"
             android:onClick="onLookButtonClick"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/look_mini" />
@@ -39,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/summary_app_look_rich"
             android:onClick="onLookButtonClick"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/look_rich" />
