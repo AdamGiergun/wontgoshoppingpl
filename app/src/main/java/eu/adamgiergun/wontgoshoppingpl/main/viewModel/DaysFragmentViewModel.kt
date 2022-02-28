@@ -30,6 +30,14 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
     val events: LiveData<List<Event>>
         get() = _events
 
+    private val _idOfDialogToShow = MutableLiveData<Int>()
+    val idOfDialogToShow: LiveData<Int>
+        get() = _idOfDialogToShow
+
+    fun setIdOfDialogToShow(id: Int) {
+        _idOfDialogToShow.value = id
+    }
+
     private val _isDbChanged = MutableLiveData<Boolean>()
     val isDbChanged: LiveData<Boolean>
         get() = _isDbChanged

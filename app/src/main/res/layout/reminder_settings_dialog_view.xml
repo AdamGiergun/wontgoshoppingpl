@@ -41,7 +41,7 @@
             android:layout_height="0dp"
             android:cursorVisible="false"
             android:inputType="number"
-            android:onClick="showDialog"
+            android:onClick="@{(view) -> viewModel.setIdOfDialogToShow(view.id)}"
             android:text="@{String.valueOf(viewModel.reminderDaysBefore)}"
             app:layout_constraintLeft_toRightOf="@+id/numberOfDaysBeforePrefix"
             app:layout_constraintTop_toBottomOf="@id/spacer1" />
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:cursorVisible="false"
             android:inputType="time"
-            android:onClick="showDialog"
+            android:onClick="@{(view) -> viewModel.setIdOfDialogToShow(view.id)}"
             android:text="@{viewModel.reminderTime.toString()}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spacer2" />

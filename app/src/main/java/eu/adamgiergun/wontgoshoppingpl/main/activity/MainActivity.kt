@@ -15,11 +15,8 @@ import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.DayTypesAddedToCalendarDialog
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
-import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderDaysBeforeDialog
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsAndDateTillDialog
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsDialog
-import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderTimeDialog
-import eu.adamgiergun.wontgoshoppingpl.main.dialogs.TillDateDialog
 import eu.adamgiergun.wontgoshoppingpl.main.fragments.AskForLookFragmentDirections
 import eu.adamgiergun.wontgoshoppingpl.main.fragments.WidgetInfoFragmentDirections
 
@@ -177,14 +174,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
             .navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
         mainViewModel.setAppWidgetInfoDisplayed()
         invalidateOptionsMenu()
-    }
-
-    fun showDialog(view: View) {
-        when (view.id) {
-            R.id.numberOfDaysBeforeView -> ReminderDaysBeforeDialog()
-            R.id.timeView -> ReminderTimeDialog()
-            else -> TillDateDialog()
-        }.show(supportFragmentManager, "")
     }
     //endregion
 
