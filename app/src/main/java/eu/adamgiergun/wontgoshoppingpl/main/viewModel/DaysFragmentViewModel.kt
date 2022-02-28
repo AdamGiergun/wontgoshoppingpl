@@ -178,6 +178,9 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
                 dayTypesToBeDisplayed = storedDayTypeSet
                 dayTypesToBeAddedToCalendar = storedDayTypeSet
                 setDaysAndLastDate()
+            } else if (isDbChanged.value == true) {
+                setDaysAndLastDate()
+                _isDbChanged.value = false
             }
         }
     }
