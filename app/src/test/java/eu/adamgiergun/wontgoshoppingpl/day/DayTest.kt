@@ -15,7 +15,7 @@ internal class DayTest {
             private val day = Day(event)
             protected lateinit var expectedTime: String
             protected lateinit var expectedName: String
-            protected var expectedCalendarEventId = 0L
+            protected var expectedCalendarEventId: Long? = null
             protected var expectedIsAddedToCalendar = false
             protected var expectedIsDateInMillis = 0L
             protected var expectedAllDay = false
@@ -61,15 +61,15 @@ internal class DayTest {
             }
 
             open fun compareToSameDay() {
-                assertThat(day.compareTo(Day(event)), `is`(0) )
+                assertThat(day.compareTo(Day(event)), `is`(0))
             }
 
             open fun compareToEarlierDay() {
-                assertThat(day.compareTo(earlierDay), `is`(1) )
+                assertThat(day.compareTo(earlierDay), `is`(1))
             }
 
             open fun compareToLaterDay() {
-                assertThat(day.compareTo(laterDay), `is`(-1) )
+                assertThat(day.compareTo(laterDay), `is`(-1))
             }
 
             open fun getDateAndWeekdayString() {
@@ -92,7 +92,15 @@ internal class DayTest {
 
     @Nested
     @DisplayName("Given Event of day type NON_COMMERCE_DAY, item 2020_01_05,00:00,Non-commerce Sunday, calendarId and calendarEventId nulls")
-    inner class SetEvent20200105 : SetEvent(Event(0, Day.Type.NON_COMMERCE_DAY.code, "2020_01_05,00:00,Non-commerce Sunday", null, null)) {
+    inner class SetEvent20200105 : SetEvent(
+        Event(
+            0,
+            Day.Type.NON_COMMERCE_DAY.code,
+            "2020_01_05,00:00,Non-commerce Sunday",
+            null,
+            null
+        )
+    ) {
         @Nested
         @DisplayName("When Day(event)")
         inner class TestDay : GetDay() {
@@ -111,9 +119,9 @@ internal class DayTest {
             }
 
             @Test
-            @DisplayName("Then calendarEventId is zero")
+            @DisplayName("Then calendarEventId is null")
             override fun getCalendarEventId() {
-                expectedCalendarEventId = 0L
+                expectedCalendarEventId = null
                 super.getCalendarEventId()
             }
 
@@ -161,35 +169,51 @@ internal class DayTest {
             @Test
             @DisplayName("Then day with earlier date is lesser")
             override fun compareToEarlierDay() {
-                earlierDay = Day(Event(0, Day.Type.NON_COMMERCE_DAY.code, "2019_12_31,00:00,Non-commerce Sunday", null, null))
+                earlierDay = Day(
+                    Event(
+                        0,
+                        Day.Type.NON_COMMERCE_DAY.code,
+                        "2019_12_31,00:00,Non-commerce Sunday",
+                        null,
+                        null
+                    )
+                )
                 super.compareToEarlierDay()
             }
 
             @Test
             @DisplayName("Then day with later date is bigger")
             override fun compareToLaterDay() {
-                laterDay = Day(Event(0, Day.Type.NON_COMMERCE_DAY.code, "2020_01_06,00:00,Non-commerce Sunday", null, null))
+                laterDay = Day(
+                    Event(
+                        0,
+                        Day.Type.NON_COMMERCE_DAY.code,
+                        "2020_01_06,00:00,Non-commerce Sunday",
+                        null,
+                        null
+                    )
+                )
                 super.compareToLaterDay()
             }
 
             @Test
-            @DisplayName("Then dateAndWeekdayString is 2020-01-05\nniedziela")
+            @DisplayName("Then dateAndWeekdayString is 5 sty 2020\nniedziela")
             override fun getDateAndWeekdayString() {
-                expectedDateAndWeekdayString = "2020-01-05\nniedziela"
+                expectedDateAndWeekdayString = "5 sty 2020\nniedziela"
                 super.getDateAndWeekdayString()
             }
 
             @Test
-            @DisplayName("Then descriptionForDialog is 2020-01-05\nniedziela")
+            @DisplayName("Then descriptionForDialog is 5 sty 2020\nniedziela")
             override fun getDescriptionForDialog() {
-                expectedDescriptionForDialog = "2020-01-05\nniedziela"
+                expectedDescriptionForDialog = "5 sty 2020\nniedziela"
                 super.getDescriptionForDialog()
             }
 
             @Test
-            @DisplayName("Then widgetText is 2020-01-05\nPL: Non-commerce Sunday")
+            @DisplayName("Then widgetText is 5 sty 2020\nPL: Non-commerce Sunday")
             override fun getWidgetText() {
-                expectedWidgetText = "2020-01-05\nPL: Non-commerce Sunday"
+                expectedWidgetText = "5 sty 2020\nPL: Non-commerce Sunday"
                 super.getWidgetText()
             }
 
@@ -204,7 +228,15 @@ internal class DayTest {
 
     @Nested
     @DisplayName("Given Event of day type NON_COMMERCE_DAY, 2020_04_11,13:00,Holy Saturday, calendarId is calendar and calendarEventId is 123")
-    inner class SetEvent20200411 : SetEvent(Event(0, Day.Type.NON_COMMERCE_DAY.code, "2020_04_11,13:00,Holy Saturday,", "calendar", 123)) {
+    inner class SetEvent20200411 : SetEvent(
+        Event(
+            0,
+            Day.Type.NON_COMMERCE_DAY.code,
+            "2020_04_11,13:00,Holy Saturday,",
+            "calendar",
+            123
+        )
+    ) {
         @Nested
         @DisplayName("When Day(event)")
         inner class TestDay : GetDay() {
@@ -271,23 +303,23 @@ internal class DayTest {
             }
 
             @Test
-            @DisplayName("Then dateAndWeekdayString is 2020-04-11\nsobota")
+            @DisplayName("Then dateAndWeekdayString is 11 kwi 2020\nsobota")
             override fun getDateAndWeekdayString() {
-                expectedDateAndWeekdayString = "2020-04-11\nsobota"
+                expectedDateAndWeekdayString = "11 kwi 2020\nsobota"
                 super.getDateAndWeekdayString()
             }
 
             @Test
-            @DisplayName("Then descriptionForDialog is 2020-04-11\nsobota")
+            @DisplayName("Then descriptionForDialog is 11 kwi 2020\nsobota")
             override fun getDescriptionForDialog() {
-                expectedDescriptionForDialog = "2020-04-11\nsobota"
+                expectedDescriptionForDialog = "11 kwi 2020\nsobota"
                 super.getDescriptionForDialog()
             }
 
             @Test
-            @DisplayName("Then widgetText is 2020-04-11\nPL: Holy Saturday")
+            @DisplayName("Then widgetText is 11 kwi 2020\nPL: Holy Saturday")
             override fun getWidgetText() {
-                expectedWidgetText = "2020-04-11\nPL: Holy Saturday"
+                expectedWidgetText = "11 kwi 2020\nPL: Holy Saturday"
                 super.getWidgetText()
             }
 
