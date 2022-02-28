@@ -8,6 +8,7 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
@@ -30,6 +31,7 @@ import eu.adamgiergun.wontgoshoppingpl.main.fragments.WidgetInfoFragmentDirectio
 internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     private val mainViewModel: MainViewModel by lazy { mViewModel as MainViewModel }
+    private var navController: NavController? = null
     //    private var calStart: Calendar
 
     //region ActivityLifeCycleRegion
@@ -37,7 +39,8 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        calStart = Calendar.getInstance();
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val binding: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = mainViewModel
 
         mainViewModel.allPermissionsGranted.observe(this) {
@@ -51,6 +54,13 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 }
             } else {
                 mainViewModel.setNextAction(Actions.NONE)
+            }
+        }
+
+        mainViewModel.isInitialLookChosen.observe(this) {
+            if (it) {
+                navController?.navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
+                if (mainViewModel.isLookRich) recreate()
             }
         }
 
@@ -111,12 +121,14 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     override fun onResume() {
         super.onResume()
         if (mainViewModel.isLookChanged) recreate()
+        if (navController == null) navController = findNavController(R.id.main_nav_host_fragment)
     }
     //endregion
 
     //region AppMenuHandlingRegion
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val menuLayoutId = if (mainViewModel.wasWidgetInfoDisplayed) R.menu.main_activity_actions else R.menu.main_activity_actions_first_run
+        val menuLayoutId =
+            if (mainViewModel.wasWidgetInfoDisplayed) R.menu.main_activity_actions else R.menu.main_activity_actions_first_run
         menuInflater.inflate(menuLayoutId, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -147,10 +159,10 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     private fun checkCalendarSettings(nextActions: Actions) {
         mainViewModel.setNextAction(
-                if (mainViewModel.isCalendarEnabledAndChosen)
-                    nextActions
-                else
-                    Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS
+            if (mainViewModel.isCalendarEnabledAndChosen)
+                nextActions
+            else
+                Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS
         )
     }
 
@@ -160,16 +172,9 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     //endregion
 
     //region on...ClickRegion
-    fun onLookButtonClick(view: View) {
-        view.findNavController().navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
-        (view.id == R.id.imageButtonRich).let { isLookRich ->
-            mainViewModel.onInitialLookChoice(isLookRich)
-            if (isLookRich) recreate()
-        }
-    }
-
     fun onWidgetInfoButtonClick(view: View) {
-        view.findNavController().navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
+        view.findNavController()
+            .navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
         mainViewModel.setAppWidgetInfoDisplayed()
         invalidateOptionsMenu()
     }

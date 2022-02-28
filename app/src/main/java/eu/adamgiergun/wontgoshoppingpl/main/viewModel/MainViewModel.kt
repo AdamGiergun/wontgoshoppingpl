@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.AdRequest
 import eu.adamgiergun.wontgoshoppingpl.R
@@ -16,6 +17,10 @@ import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 import kotlinx.coroutines.launch
 
 internal class MainViewModel(application: Application) : AppViewModel(application) {
+
+    private val _isInitialLookChosen = MutableLiveData<Boolean>()
+    val isInitialLookChosen : LiveData<Boolean>
+        get() = _isInitialLookChosen
 
     private val isFirstRun: Boolean
         get() = AppPreferences.isFirstRun(appContext)
@@ -58,9 +63,11 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         }
     }
 
-    fun onInitialLookChoice(newIsLookRich: Boolean) {
-        isLookRich = newIsLookRich
+    fun onInitialLookChoice(lookButtonId: Int) {
+        isLookRich = (lookButtonId == R.id.imageButtonRich)
+        _isInitialLookChosen.value = true
         setNotFirstRun()
+        _isInitialLookChosen.value = false
     }
 
     fun setAppWidgetInfoDisplayed() {
