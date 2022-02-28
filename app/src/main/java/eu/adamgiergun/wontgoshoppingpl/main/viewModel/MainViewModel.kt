@@ -3,6 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl.main.viewModel
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -21,6 +22,14 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     private val _isInitialLookChosen = MutableLiveData<Boolean>()
     val isInitialLookChosen : LiveData<Boolean>
         get() = _isInitialLookChosen
+
+    private val _isWidgetInfoButtonClicked = MutableLiveData<Boolean>()
+    val isWidgetInfoButtonClicked : LiveData<Boolean>
+        get() = _isWidgetInfoButtonClicked
+
+    fun onWidgetInfoButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
+        _isWidgetInfoButtonClicked.value = true
+    }
 
     private val isFirstRun: Boolean
         get() = AppPreferences.isFirstRun(appContext)

@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -38,61 +37,69 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 //        calStart = Calendar.getInstance();
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.viewModel = mainViewModel
+        mainViewModel.apply {
+            binding.viewModel = this
 
-        mainViewModel.allPermissionsGranted.observe(this) {
-            if (it) {
-                when (mainViewModel.nextAction.value) {
-                    Actions.CHECK_PERMISSIONS_LIST ->
-                        mainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_LIST)
-                    Actions.CHECK_PERMISSIONS_DAY ->
-                        mainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_DAY)
-                    else -> Unit
+            allPermissionsGranted.observe(this@MainActivity) {
+                if (it) {
+                    when (nextAction.value) {
+                        Actions.CHECK_PERMISSIONS_LIST ->
+                            setNextAction(Actions.CHECK_CALENDAR_SETTINGS_LIST)
+                        Actions.CHECK_PERMISSIONS_DAY ->
+                            setNextAction(Actions.CHECK_CALENDAR_SETTINGS_DAY)
+                        else -> Unit
+                    }
+                } else {
+                    setNextAction(Actions.NONE)
                 }
-            } else {
-                mainViewModel.setNextAction(Actions.NONE)
             }
-        }
 
-        mainViewModel.isInitialLookChosen.observe(this) {
-            if (it) {
-                navController?.navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
-                if (mainViewModel.isLookRich) recreate()
+            isInitialLookChosen.observe(this@MainActivity) {
+                if (it) {
+                    navController?.navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
+                    if (isLookRich) recreate()
+                }
             }
-        }
 
-        mainViewModel.nextAction.observe(this) {
-            @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
-            when (it) {
-                Actions.CHECK_PERMISSIONS_DAY -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_DAY)
-                Actions.CHECK_PERMISSIONS_LIST -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_LIST)
-                Actions.CHECK_CALENDAR_SETTINGS_DAY -> checkCalendarSettings(Actions.ASK_FOR_REMINDER_SETTINGS)
-                Actions.CHECK_CALENDAR_SETTINGS_LIST -> checkCalendarSettings(Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR)
-                Actions.ASK_FOR_REMINDER_SETTINGS -> {
-                    ReminderSettingsDialog().show(supportFragmentManager, "")
-                    mainViewModel.setNextAction(Actions.NONE)
-                }
-                Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR -> {
-                    askForDayTypesAddedToCalendar()
-                    mainViewModel.setNextAction(Actions.NONE)
-                }
-                Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL -> {
-                    ReminderSettingsAndDateTillDialog().show(supportFragmentManager, "")
-                    mainViewModel.setNextAction(Actions.NONE)
-                }
-                Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS -> {
-                    startActivity(mainViewModel.getSettingsActivityIntentAtNotifications())
-                    mainViewModel.setNextAction(Actions.NONE)
-                }
-                Actions.NONE -> Unit
+            isWidgetInfoButtonClicked.observe(this@MainActivity) {
+                navController?.navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
+                setAppWidgetInfoDisplayed()
+                invalidateOptionsMenu()
             }
-        }
 
-        lifecycleScope.launchWhenStarted {
-            binding.adView.loadAd(mainViewModel.getAdRequest(this@MainActivity))
-            mainViewModel.initializeInterstitialAd(applicationContext)
-        }
+            nextAction.observe(this@MainActivity) {
+                @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+                when (it) {
+                    Actions.CHECK_PERMISSIONS_DAY -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_DAY)
+                    Actions.CHECK_PERMISSIONS_LIST -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_LIST)
+                    Actions.CHECK_CALENDAR_SETTINGS_DAY -> checkCalendarSettings(Actions.ASK_FOR_REMINDER_SETTINGS)
+                    Actions.CHECK_CALENDAR_SETTINGS_LIST -> checkCalendarSettings(Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR)
+                    Actions.ASK_FOR_REMINDER_SETTINGS -> {
+                        ReminderSettingsDialog().show(supportFragmentManager, "")
+                        setNextAction(Actions.NONE)
+                    }
+                    Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR -> {
+                        askForDayTypesAddedToCalendar()
+                        setNextAction(Actions.NONE)
+                    }
+                    Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL -> {
+                        ReminderSettingsAndDateTillDialog().show(supportFragmentManager, "")
+                        setNextAction(Actions.NONE)
+                    }
+                    Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS -> {
+                        startActivity(getSettingsActivityIntentAtNotifications())
+                        setNextAction(Actions.NONE)
+                    }
+                    Actions.NONE -> Unit
+                }
+            }
+
+            lifecycleScope.launchWhenStarted {
+                binding.adView.loadAd(getAdRequest(this@MainActivity))
+                initializeInterstitialAd(applicationContext)
+            }
 //        addCrashTestButton();
+        }
     }
 
 //        private void addCrashTestButton() {
@@ -165,15 +172,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     private fun askForDayTypesAddedToCalendar() {
         DayTypesAddedToCalendarDialog().show(supportFragmentManager, "dialog")
-    }
-    //endregion
-
-    //region on...ClickRegion
-    fun onWidgetInfoButtonClick(view: View) {
-        view.findNavController()
-            .navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
-        mainViewModel.setAppWidgetInfoDisplayed()
-        invalidateOptionsMenu()
     }
     //endregion
 
