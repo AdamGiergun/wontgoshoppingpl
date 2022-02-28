@@ -29,7 +29,7 @@ import eu.adamgiergun.wontgoshoppingpl.main.fragments.WidgetInfoFragmentDirectio
 */
 internal class MainActivity : ActivityWithThemeAndPermissions() {
 
-    private val mMainViewModel: MainViewModel by lazy { mViewModel as MainViewModel }
+    private val mainViewModel: MainViewModel by lazy { mViewModel as MainViewModel }
     //    private var calStart: Calendar
 
     //region ActivityLifeCycleRegion
@@ -38,23 +38,23 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         super.onCreate(savedInstanceState)
 //        calStart = Calendar.getInstance();
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.viewModel = mMainViewModel
+        binding.viewModel = mainViewModel
 
-        mMainViewModel.allPermissionsGranted.observe(this) {
+        mainViewModel.allPermissionsGranted.observe(this) {
             if (it) {
-                when (mMainViewModel.nextAction.value) {
+                when (mainViewModel.nextAction.value) {
                     Actions.CHECK_PERMISSIONS_LIST ->
-                        mMainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_LIST)
+                        mainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_LIST)
                     Actions.CHECK_PERMISSIONS_DAY ->
-                        mMainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_DAY)
+                        mainViewModel.setNextAction(Actions.CHECK_CALENDAR_SETTINGS_DAY)
                     else -> Unit
                 }
             } else {
-                mMainViewModel.setNextAction(Actions.NONE)
+                mainViewModel.setNextAction(Actions.NONE)
             }
         }
 
-        mMainViewModel.nextAction.observe(this) {
+        mainViewModel.nextAction.observe(this) {
             @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
             when (it) {
                 Actions.CHECK_PERMISSIONS_DAY -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_DAY)
@@ -63,27 +63,27 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 Actions.CHECK_CALENDAR_SETTINGS_LIST -> checkCalendarSettings(Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR)
                 Actions.ASK_FOR_REMINDER_SETTINGS -> {
                     ReminderSettingsDialog().show(supportFragmentManager, "")
-                    mMainViewModel.setNextAction(Actions.NONE)
+                    mainViewModel.setNextAction(Actions.NONE)
                 }
                 Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR -> {
                     askForDayTypesAddedToCalendar()
-                    mMainViewModel.setNextAction(Actions.NONE)
+                    mainViewModel.setNextAction(Actions.NONE)
                 }
                 Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL -> {
                     ReminderSettingsAndDateTillDialog().show(supportFragmentManager, "")
-                    mMainViewModel.setNextAction(Actions.NONE)
+                    mainViewModel.setNextAction(Actions.NONE)
                 }
                 Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS -> {
-                    startActivity(mMainViewModel.getSettingsActivityIntentAtNotifications())
-                    mMainViewModel.setNextAction(Actions.NONE)
+                    startActivity(mainViewModel.getSettingsActivityIntentAtNotifications())
+                    mainViewModel.setNextAction(Actions.NONE)
                 }
                 Actions.NONE -> Unit
             }
         }
 
         lifecycleScope.launchWhenStarted {
-            binding.adView.loadAd(mMainViewModel.getAdRequest(this@MainActivity))
-            mMainViewModel.initializeInterstitialAd(applicationContext)
+            binding.adView.loadAd(mainViewModel.getAdRequest(this@MainActivity))
+            mainViewModel.initializeInterstitialAd(applicationContext)
         }
 //        addCrashTestButton();
     }
@@ -110,13 +110,13 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     override fun onResume() {
         super.onResume()
-        if (mMainViewModel.isLookChanged) recreate()
+        if (mainViewModel.isLookChanged) recreate()
     }
     //endregion
 
     //region AppMenuHandlingRegion
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val menuLayoutId = if (mMainViewModel.wasWidgetInfoDisplayed) R.menu.main_activity_actions else R.menu.main_activity_actions_first_run
+        val menuLayoutId = if (mainViewModel.wasWidgetInfoDisplayed) R.menu.main_activity_actions else R.menu.main_activity_actions_first_run
         menuInflater.inflate(menuLayoutId, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -124,15 +124,15 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> {
-                mMainViewModel.startSettingsActivity(this)
+                mainViewModel.startSettingsActivity(this)
                 true
             }
             R.id.calendar -> {
-                mMainViewModel.setNextAction(Actions.CHECK_PERMISSIONS_LIST)
+                mainViewModel.setNextAction(Actions.CHECK_PERMISSIONS_LIST)
                 true
             }
             R.id.help -> {
-                mMainViewModel.startHelpActivity(this)
+                mainViewModel.startHelpActivity(this)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -141,13 +141,13 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private fun checkCalendarPermissions(nextActions: Actions) {
-        if (mViewModel.allPermissionsGranted.value == true) mMainViewModel.setNextAction(nextActions)
+        if (mViewModel.allPermissionsGranted.value == true) mainViewModel.setNextAction(nextActions)
         else requestCalendarPermissions()
     }
 
     private fun checkCalendarSettings(nextActions: Actions) {
-        mMainViewModel.setNextAction(
-                if (mMainViewModel.isCalendarEnabledAndChosen)
+        mainViewModel.setNextAction(
+                if (mainViewModel.isCalendarEnabledAndChosen)
                     nextActions
                 else
                     Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS
@@ -163,14 +163,14 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     fun onLookButtonClick(view: View) {
         view.findNavController().navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
         (view.id == R.id.imageButtonRich).let { isLookRich ->
-            mMainViewModel.onInitialLookChoice(isLookRich)
+            mainViewModel.onInitialLookChoice(isLookRich)
             if (isLookRich) recreate()
         }
     }
 
     fun onWidgetInfoButtonClick(view: View) {
         view.findNavController().navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
-        mMainViewModel.setAppWidgetInfoDisplayed()
+        mainViewModel.setAppWidgetInfoDisplayed()
         invalidateOptionsMenu()
     }
 
