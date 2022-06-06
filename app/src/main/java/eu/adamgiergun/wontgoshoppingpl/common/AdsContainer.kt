@@ -43,7 +43,7 @@ internal object AdsContainer {
                 Log.d(TAG, "InterstitialAd was dismissed.")
             }
 
-            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+            override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                 Log.d(TAG, "InterstitialAd failed to show.")
             }
 

@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.main.fragments
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -11,6 +12,7 @@ import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.Event
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 
+@SuppressLint("NotifyDataSetChanged")
 internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewModel, lifecycleOwner: LifecycleOwner)
     : ListAdapter<Event, DaysRecyclerViewAdapter.DayViewHolder>(EventDiffCallback()) {
 
