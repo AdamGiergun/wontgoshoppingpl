@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.settings
 
 import android.app.Application
 import android.content.res.Configuration
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel
@@ -45,5 +46,14 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
 
     companion object {
         const val START_FRAGMENT_ID_TAG = AppViewModel.START_FRAGMENT_ID_TAG
+    }
+
+    fun onDestroy() {
+        Log.d("SettingsViewModel","onDestroy")
+    }
+
+    override fun onCleared() {
+        Log.d("SettingsViewModel","onCleared")
+        super.onCleared()
     }
 }

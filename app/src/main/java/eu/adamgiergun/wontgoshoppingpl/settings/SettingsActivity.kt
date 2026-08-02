@@ -121,4 +121,9 @@ internal class SettingsActivity :
         }
         return true
     }
+
+    override fun onDestroy() {
+        mSettingsViewModel.onDestroy()
+        super.onDestroy()
+    }
 }
