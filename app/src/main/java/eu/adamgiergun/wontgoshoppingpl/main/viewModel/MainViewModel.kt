@@ -7,7 +7,6 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.ads.AdRequest
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.*
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
@@ -29,6 +28,15 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     fun onWidgetInfoButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
         _isWidgetInfoButtonClicked.value = true
+    }
+
+    /**
+     * Zdarzenie jednorazowe: bez wyzerowania LiveData poda tę samą wartość ponownie
+     * przy odtworzeniu aktywności (np. po obrocie), a nawigacja z widgetInfoFragment
+     * nie istnieje już z bieżącego miejsca w grafie.
+     */
+    fun onWidgetInfoNavigationDone() {
+        _isWidgetInfoButtonClicked.value = false
     }
 
     private val isFirstRun: Boolean
@@ -57,14 +65,6 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
 
     val wasWidgetInfoDisplayed
         get() = AppPreferences.wasAppWidgetInfoDisplayed(appContext)
-
-    fun getAdRequest(context: Context): AdRequest {
-        return AdsContainer.getAdRequest(context)
-    }
-
-    fun initializeInterstitialAd(applicationContext: Context) {
-        AdsContainer.initializeInterstitialAd(applicationContext)
-    }
 
     fun getSettingsActivityIntentAtNotifications(): Intent {
         return Intent(appContext, SettingsActivity::class.java).apply {

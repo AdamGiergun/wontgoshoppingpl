@@ -28,9 +28,9 @@ android {
     defaultConfig {
         applicationId = "eu.adamgiergun.wontgoshoppingpl"
         minSdk = 24
-        targetSdk = 32
-        versionCode = 131
-        versionName = "3.7.1"
+        targetSdk = 37
+        versionCode = 132
+        versionName = "3.8.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resValue(
@@ -150,6 +150,7 @@ dependencies {
     implementation(libs.androidx.sqlite.framework)
 
     implementation(libs.play.services.ads)
+    implementation(libs.user.messaging.platform)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)

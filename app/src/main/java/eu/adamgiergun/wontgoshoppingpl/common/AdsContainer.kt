@@ -1,65 +1,140 @@
 package eu.adamgiergun.wontgoshoppingpl.common
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
-import com.google.android.gms.ads.*
+import android.view.ViewGroup
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
 import eu.adamgiergun.wontgoshoppingpl.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
 
 internal object AdsContainer {
-    private const val TAG = "WGS_InterstitialAd"
+    private const val TAG = "WGS_Ads"
+
+    @Volatile
     private var initialized = false
     private var interstitialAd: InterstitialAd? = null
 
-    fun initializeInterstitialAd(applicationContext: Context) {
-        if (interstitialAd == null) {
-            val adRequest = AdRequest.Builder().build()
-            InterstitialAd.load(
-                applicationContext,
-                applicationContext.getString(R.string.interstitial_ad_id),
-                adRequest,
-                object : InterstitialAdLoadCallback() {
-                    override fun onAdFailedToLoad(adError: LoadAdError) {
-                        Log.d(TAG, adError.message)
-                        interstitialAd = null
+    /**
+     * Zgoda UMP musi zostać zebrana zanim wystartuje MobileAds. Formularz pokazuje
+     * się tylko tam, gdzie wymaga tego prawo (EOG/UK) i tylko dopóki użytkownik nie
+     * podejmie decyzji. Błędy nie blokują aplikacji — reklamy po prostu się nie
+     * pojawią, dopóki `canRequestAds()` nie zwróci true.
+     */
+    private suspend fun requestConsentIfNeeded(activity: Activity): Boolean =
+        suspendCancellableCoroutine { continuation ->
+            val consentInformation = UserMessagingPlatform.getConsentInformation(activity)
+            consentInformation.requestConsentInfoUpdate(
+                activity,
+                ConsentRequestParameters.Builder().build(),
+                {
+                    UserMessagingPlatform.loadAndShowConsentFormIfRequired(activity) { formError ->
+                        formError?.let { Log.w(TAG, "UMP form: ${it.message}") }
+                        if (continuation.isActive) continuation.resume(consentInformation.canRequestAds())
                     }
-
-                    override fun onAdLoaded(ad: InterstitialAd) {
-                        Log.d(TAG, "InterstitialAd was loaded")
-                        interstitialAd = ad
-                    }
+                },
+                { requestError ->
+                    Log.w(TAG, "UMP update: ${requestError.message}")
+                    if (continuation.isActive) continuation.resume(consentInformation.canRequestAds())
                 }
             )
         }
+
+    private suspend fun initializeMobileAds(applicationContext: Context) {
+        if (initialized) return
+        initialized = true
+        // MobileAds.initialize wykonuje I/O dyskowe i sieciowe — nie na głównym wątku.
+        withContext(Dispatchers.IO) {
+            suspendCancellableCoroutine { continuation ->
+                MobileAds.initialize(applicationContext) {
+                    if (continuation.isActive) continuation.resume(Unit)
+                }
+            }
+        }
+    }
+
+    /**
+     * Pełna ścieżka startowa reklam: zgoda -> inicjalizacja SDK -> baner -> interstitial.
+     * Zwraca utworzony baner (do zwolnienia w onDestroy) albo null, gdy użytkownik
+     * nie wyraził zgody i reklam nie wolno pobierać.
+     */
+    suspend fun start(activity: Activity, adViewContainer: ViewGroup): AdView? {
+        if (!requestConsentIfNeeded(activity)) return null
+        initializeMobileAds(activity.applicationContext)
+        return createBannerAdView(activity).also {
+            adViewContainer.addView(it)
+            initializeInterstitialAd(activity.applicationContext)
+        }
+    }
+
+    /**
+     * Baner adaptacyjny zamiast wycofanego SMART_BANNER — wysokość dobierana do
+     * szerokości okna, więc działa też po obrocie i na dużych ekranach.
+     */
+    private fun createBannerAdView(activity: Activity): AdView {
+        val displayMetrics = activity.resources.displayMetrics
+        val adWidthDp = (displayMetrics.widthPixels / displayMetrics.density).toInt()
+        return AdView(activity).apply {
+            adUnitId = activity.getString(R.string.main_banner_ad_id)
+            setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidthDp))
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            loadAd(AdRequest.Builder().build())
+        }
+    }
+
+    fun initializeInterstitialAd(applicationContext: Context) {
+        if (!initialized || interstitialAd != null) return
+        InterstitialAd.load(
+            applicationContext,
+            applicationContext.getString(R.string.interstitial_ad_id),
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d(TAG, adError.message)
+                    interstitialAd = null
+                }
+
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    Log.d(TAG, "InterstitialAd was loaded")
+                    interstitialAd = ad.apply { fullScreenContentCallback = contentCallback }
+                }
+            }
+        )
     }
 
     fun getInterstitialAd(applicationContext: Context): InterstitialAd? {
-        if (interstitialAd == null) {
-            initializeInterstitialAd(applicationContext)
-        }
-        interstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-                Log.d(TAG, "InterstitialAd was dismissed.")
-            }
-
-            override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                Log.d(TAG, "InterstitialAd failed to show.")
-            }
-
-            override fun onAdShowedFullScreenContent() {
-                Log.d(TAG, "InterstitialAd showed fullscreen content.")
-                interstitialAd = null
-            }
-        }
+        if (interstitialAd == null) initializeInterstitialAd(applicationContext)
         return interstitialAd
     }
 
-    fun getAdRequest(context: Context): AdRequest {
-        if (!initialized) {
-            MobileAds.initialize(context)
-            initialized = true
+    private val contentCallback = object : FullScreenContentCallback() {
+        override fun onAdDismissedFullScreenContent() {
+            Log.d(TAG, "InterstitialAd was dismissed.")
         }
-        return AdRequest.Builder().build()
+
+        override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+            Log.d(TAG, "InterstitialAd failed to show.")
+        }
+
+        override fun onAdShowedFullScreenContent() {
+            Log.d(TAG, "InterstitialAd showed fullscreen content.")
+            interstitialAd = null
+        }
     }
 }

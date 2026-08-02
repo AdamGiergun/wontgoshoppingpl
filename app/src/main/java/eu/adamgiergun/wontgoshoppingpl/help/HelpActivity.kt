@@ -12,6 +12,7 @@ internal class HelpActivity : ActivityWithThemeAndPermissions() {
         super.onCreate(savedInstanceState)
         val binding = ActivityHelpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applySystemBarInsets(binding.root)
         LinkMovementMethod.getInstance().let { linkMovementMethod ->
             binding.privacyPolicyLink.movementMethod = linkMovementMethod
             binding.helpTextView3.movementMethod = linkMovementMethod

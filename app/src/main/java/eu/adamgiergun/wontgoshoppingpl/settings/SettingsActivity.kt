@@ -1,10 +1,8 @@
 package eu.adamgiergun.wontgoshoppingpl.settings
 
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -37,14 +35,13 @@ internal class SettingsActivity :
         super.onCreate(savedInstanceState)
         PreferenceManager.setDefaultValues(applicationContext, R.xml.preferences, true)
         setContentView(layout)
+        applySystemBarInsets(findViewById(android.R.id.content))
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         if (savedInstanceState == null) {
             navigateToNotifications =
                 intent.getStringExtra(SettingsViewModel.START_FRAGMENT_ID_TAG) == NotificationPreferenceFragment::class.java.name
         } else {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M || Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                onScreenWideEnoughChanged()
-            }
+            onScreenWideEnoughChanged()
         }
         mSettingsViewModel.settingsActivityBarTitle.observe(this) {
             title = it
@@ -52,9 +49,7 @@ internal class SettingsActivity :
         mSettingsViewModel.askingForPermissionsNeeded.observe(this) {
             if (it) {
                 mSettingsViewModel.askingForPermissionsNeeded(false)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestCalendarPermissions()
-                }
+                requestCalendarPermissions()
             }
         }
     }
@@ -99,7 +94,6 @@ internal class SettingsActivity :
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onPreferenceStartFragment(
         caller: PreferenceFragmentCompat,
         preference: Preference

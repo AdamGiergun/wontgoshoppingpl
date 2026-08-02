@@ -45,8 +45,10 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
             }
             dialogFragment?.let {
                 it.arguments = Bundle(1).apply { putString("key", preference.key) }
+                // setTargetFragment jest przestarzałe, ale androidx.preference 1.2.1
+                // wciąż go wymaga: PreferenceDialogFragmentCompat.onCreate woła
+                // getTargetFragment() i rzuca wyjątkiem, jeśli nie jest ustawiony.
                 @Suppress("DEPRECATION")
-                // No replacement yet
                 it.setTargetFragment(this, 0)
                 it.show(parentFragmentManager, preference.javaClass.name)
                 return

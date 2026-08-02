@@ -1,18 +1,16 @@
 package eu.adamgiergun.wontgoshoppingpl.main.activity
 
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.gms.ads.AdView
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
+import eu.adamgiergun.wontgoshoppingpl.common.AdsContainer
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.DayTypesAddedToCalendarDialog
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
@@ -32,15 +30,16 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     private val mainViewModel: MainViewModel by lazy { mViewModel as MainViewModel }
     private var navController: NavController? = null
+    private var bannerAdView: AdView? = null
     //    private var calStart: Calendar
 
     //region ActivityLifeCycleRegion
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        calStart = Calendar.getInstance();
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applySystemBarInsets(binding.root)
         mainViewModel.apply {
             binding.adViewLayout.setRichBackgroundResource(isLookRich)
             navController = (supportFragmentManager
@@ -70,9 +69,11 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
             }
 
             isWidgetInfoButtonClicked.observe(this@MainActivity) {
+                if (!it) return@observe
                 navController?.navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
                 setAppWidgetInfoDisplayed()
                 invalidateOptionsMenu()
+                onWidgetInfoNavigationDone()
             }
 
             nextAction.observe(this@MainActivity) {
@@ -103,10 +104,7 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
             }
 
             lifecycleScope.launch {
-                lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    binding.adView.loadAd(getAdRequest(this@MainActivity))
-                    initializeInterstitialAd(applicationContext)
-                }
+                bannerAdView = AdsContainer.start(this@MainActivity, binding.adViewLayout)
             }
 //        addCrashTestButton();
         }
@@ -134,8 +132,22 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
     override fun onResume() {
         super.onResume()
+        bannerAdView?.resume()
         if (mainViewModel.isLookChanged) recreate()
         if (navController == null) navController = findNavController(R.id.main_nav_host_fragment)
+    }
+
+    override fun onPause() {
+        bannerAdView?.pause()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        // Baner jest tworzony w kodzie przy każdym odtworzeniu aktywności (obrót),
+        // więc trzeba go jawnie zwolnić.
+        bannerAdView?.destroy()
+        bannerAdView = null
+        super.onDestroy()
     }
     //endregion
 
@@ -165,7 +177,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private fun checkCalendarPermissions(nextActions: Actions) {
         if (mViewModel.allPermissionsGranted.value == true) mainViewModel.setNextAction(nextActions)
         else requestCalendarPermissions()

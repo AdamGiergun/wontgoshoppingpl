@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
-import android.os.Build.VERSION.SDK_INT
 import android.util.TypedValue.COMPLEX_UNIT_SP
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
@@ -38,12 +37,7 @@ internal class WidgetViewModel private constructor(
                 widgetText = it.widgetText
             }
             val intent = Intent(appContext, MainActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(
-                appContext,
-                0,
-                intent,
-                if (SDK_INT < 23) 0 else FLAG_IMMUTABLE
-            )
+            val pendingIntent = PendingIntent.getActivity(appContext, 0, intent, FLAG_IMMUTABLE)
             return WidgetViewModel(layoutId, widgetText, textSize, pendingIntent)
         }
 

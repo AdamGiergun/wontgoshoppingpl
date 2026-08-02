@@ -11,6 +11,7 @@
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -54,15 +55,16 @@
         <!--            </intent-filter>-->
         <!--        </receiver>-->
 
+        <!--
+            Bez android:screenOrientation i bez orientation|screenSize w configChanges:
+            Android 17 (targetSdk 37) i tak ignoruje blokadę orientacji na ekranach
+            sw > 600dp, a przeładowanie aktywności jest potrzebne, żeby wskoczyły
+            warianty zasobów navigation-land / navigation-large / layout-square.
+        -->
         <activity
             android:name=".main.activity.MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
-            <!--
-            <activity android:name=".main.Activity">
-            -->
+            android:configChanges="keyboardHidden"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -71,12 +73,9 @@
 
         <activity
             android:name=".settings.SettingsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:configChanges="keyboardHidden"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".main.activity.MainActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            tools:targetApi="jelly_bean">
+            android:parentActivityName=".main.activity.MainActivity">
             <!--
                     <activity
             android:name=".settings.SActivity"

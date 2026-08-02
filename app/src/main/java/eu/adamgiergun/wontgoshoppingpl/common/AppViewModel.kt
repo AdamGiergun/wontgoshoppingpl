@@ -5,12 +5,10 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import eu.adamgiergun.mykotlinlibrary.PermissionType
 import eu.adamgiergun.wontgoshoppingpl.help.HelpActivity
 import eu.adamgiergun.wontgoshoppingpl.settings.SettingsActivity
 
@@ -52,8 +50,7 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
 
     init {
         _allPermissionsGranted.value =
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-                        || isGranted(Manifest.permission.READ_CALENDAR)
+                isGranted(Manifest.permission.READ_CALENDAR)
                         && isGranted(Manifest.permission.WRITE_CALENDAR)
         isLastLookRich = isLookRich
     }
@@ -73,14 +70,12 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
     companion object {
         const val START_FRAGMENT_ID_TAG = "start_fragment_id"
 
-        fun areAllPermissionsGranted(grantResults: IntArray): Boolean {
-            return grantResults.map { it == PackageManager.PERMISSION_GRANTED }.minOrNull() == true
+        /** Pusta mapa oznacza, że system anulował prośbę — traktujemy jak odmowę. */
+        fun areAllPermissionsGranted(grantResults: Map<String, Boolean>): Boolean {
+            return grantResults.isNotEmpty() && grantResults.values.all { it }
         }
 
         val calendarPermissions
             get() = arrayOf(Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR)
-
-        val calendarPermissionsCode
-            get() = PermissionType.CALENDAR.code
     }
 }
