@@ -45,7 +45,7 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
                 mViewModel.setAllPermissionsGranted(true)
             } else {
                 mViewModel.setAllPermissionsGranted(false)
-                Toast.makeText(this, R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, eu.adamgiergun.myresources.R.string.info_explain_calendar_permission, Toast.LENGTH_LONG).show()
             }
         }
     }

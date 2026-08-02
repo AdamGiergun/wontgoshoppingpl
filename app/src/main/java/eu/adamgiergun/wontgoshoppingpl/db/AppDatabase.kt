@@ -8,7 +8,9 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.day.Day
-import java.util.concurrent.Executors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Database(entities = [Event::class, Reminder::class], version = 5)
 internal abstract class AppDatabase : RoomDatabase() {
@@ -27,25 +29,25 @@ internal abstract class AppDatabase : RoomDatabase() {
             }
 
             val migration3to5: Migration = object : Migration(3, 5) {
-                override fun migrate(database: SupportSQLiteDatabase) {
-                    update6thDecember2020(database, context)
+                override fun migrate(db: SupportSQLiteDatabase) {
+                    update6thDecember2020(db, context)
                 }
             }
 
             val migration4to5: Migration = object : Migration(4, 5) {
-                override fun migrate(database: SupportSQLiteDatabase) {
-                    update6thDecember2020(database, context)
+                override fun migrate(db: SupportSQLiteDatabase) {
+                    update6thDecember2020(db, context)
                 }
             }
 
             val migration2to5: Migration = object : Migration(2, 5) {
-                override fun migrate(database: SupportSQLiteDatabase) {
+                override fun migrate(db: SupportSQLiteDatabase) {
                     addEventsToDb(arrayOf(2021, 2022, 2023), context)
                 }
             }
 
             val migration1to5: Migration = object : Migration(1, 5) {
-                override fun migrate(database: SupportSQLiteDatabase) {
+                override fun migrate(db: SupportSQLiteDatabase) {
                     addEventsToDb(arrayOf(2020, 2021, 2022, 2023), context)
                 }
             }
@@ -60,7 +62,7 @@ internal abstract class AppDatabase : RoomDatabase() {
                     )
                             .addCallback(rdc)
                             .addMigrations(migration4to5, migration3to5, migration2to5, migration1to5)
-                            .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration(dropAllTables = true)
                             .build()
                     INSTANCE = instance
                 }
@@ -79,7 +81,9 @@ internal abstract class AppDatabase : RoomDatabase() {
                 }
             }
             array.sort()
-            Executors.newSingleThreadScheduledExecutor().execute {
+            // Celowo asynchronicznie: wołane z Callback.onCreate i z migracji, czyli w trakcie
+            // budowania instancji — wstawianie musi poczekać, aż `build()` zwróci sterowanie.
+            CoroutineScope(Dispatchers.IO).launch {
                 getInstance(context).eventDao().insertAll(*array)
             }
         }

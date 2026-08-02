@@ -61,27 +61,27 @@ internal object AppPreferences : MyAppPreferences() {
     }
 
     fun getReminderDaysBefore(context: Context): Int {
-        val key = context.getString(R.string.default_reminder_days_before_preference_key)
+        val key = context.getString(eu.adamgiergun.myresources.R.string.default_reminder_days_before_preference_key)
         val defaultValue = context.resources.getInteger(R.integer.reminder_days_before_default_value)
         return getInt(context, key, defaultValue)
     }
 
     fun setReminderDaysBefore(value: Int?, context: Context) {
         value?.let {
-            val key = context.getString(R.string.default_reminder_days_before_preference_key)
+            val key = context.getString(eu.adamgiergun.myresources.R.string.default_reminder_days_before_preference_key)
             putInt(context, key, it)
         }
     }
 
     fun getReminderTime(context: Context): String {
-        val key = context.getString(R.string.default_reminder_time_preference_key)
-        val defaultValue = context.getString(R.string.default_reminder_time_preference_default_value)
+        val key = context.getString(eu.adamgiergun.myresources.R.string.default_reminder_time_preference_key)
+        val defaultValue = context.getString(eu.adamgiergun.myresources.R.string.default_reminder_time_preference_default_value)
         return getString(context, key, defaultValue)
     }
 
     fun setReminderTime(value: String?, context: Context) {
         value?.let {
-            val key = context.getString(R.string.default_reminder_time_preference_key)
+            val key = context.getString(eu.adamgiergun.myresources.R.string.default_reminder_time_preference_key)
             putString(context, key, it)
         }
     }

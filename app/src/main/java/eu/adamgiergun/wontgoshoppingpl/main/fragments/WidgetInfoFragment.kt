@@ -15,7 +15,7 @@ internal class WidgetInfoFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return WidgetInfoFragmentBinding.inflate(inflater).run {
-            mainViewModel = model
+            floatingActionButton.setOnClickListener { model.onWidgetInfoButtonClick(it) }
             root
         }
     }

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
-        android:name="eu.adamgiergun.wontgoshoppingpl.DayFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:context="eu.adamgiergun.wontgoshoppingpl.main.fragments.DaysFragment"
-        tools:listitem="@layout/day_list_item" />
-</layout>
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list"
+    android:name="eu.adamgiergun.wontgoshoppingpl.DayFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    tools:context="eu.adamgiergun.wontgoshoppingpl.main.fragments.DaysFragment"
+    tools:listitem="@layout/day_list_item" />

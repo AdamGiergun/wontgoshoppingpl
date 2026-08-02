@@ -31,7 +31,7 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == getString(R.string.use_google_calendar_preference_key)) {
+        if (key == getString(eu.adamgiergun.myresources.R.string.use_google_calendar_preference_key)) {
             requireActivity().recreate()
         }
     }

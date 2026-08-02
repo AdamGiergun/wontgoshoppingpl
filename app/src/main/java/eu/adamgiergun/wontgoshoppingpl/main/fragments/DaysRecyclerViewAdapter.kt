@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.Event
+import eu.adamgiergun.wontgoshoppingpl.main.utils.setAddedToCalendar
+import eu.adamgiergun.wontgoshoppingpl.main.utils.setLook
+import eu.adamgiergun.wontgoshoppingpl.main.utils.setTimeDescription
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 
 @SuppressLint("NotifyDataSetChanged")
@@ -41,19 +44,28 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
 
     internal class DayViewHolder private constructor(private val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        private var day: Day? = null
+        private var viewModel: DaysFragmentViewModel? = null
+
         fun bind(day: Day, viewModel: DaysFragmentViewModel) {
-            binding.day = day
-            binding.viewModel = viewModel
-            binding.position = bindingAdapterPosition
+            this.day = day
+            this.viewModel = viewModel
+            val position = bindingAdapterPosition
+            binding.run {
+                cardView.setLook(day, viewModel.isLookRich, viewModel.density)
+                cardView.setOnClickListener { viewModel.setLastTouchedItem(day, position, false) }
+                date.text = day.dateAndWeekdayString
+                date.setAddedToCalendar(day.isAddedToCalendar)
+                time.setTimeDescription(day.allDay, day.time)
+                name.text = day.name
+            }
         }
 
         suspend fun deleteFromGoogleCalendar() {
-            binding.day?.let { day ->
+            day?.let { day ->
                 day.deleteFromGoogleCalendar(binding.cardView.context)
                 if (!day.isAddedToCalendar) {
-                    binding.viewModel?.run {
-                        setLastTouchedItem(null, bindingAdapterPosition, true)
-                    }
+                    viewModel?.setLastTouchedItem(null, bindingAdapterPosition, true)
                 }
             }
         }

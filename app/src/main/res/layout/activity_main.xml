@@ -1,55 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel" />
-    </data>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/main_nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/adViewLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity">
+        android:id="@+id/adViewLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/main_nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@id/adViewLayout"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navGraphId="@{viewModel.mainNavigationId}" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/adViewLayout"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:isLookRich="@{viewModel.isLookRich}"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/main_banner_ad_id"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-
-            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/adView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                ads:adSize="SMART_BANNER"
-                ads:adUnitId="@string/main_banner_ad_id"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+            app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

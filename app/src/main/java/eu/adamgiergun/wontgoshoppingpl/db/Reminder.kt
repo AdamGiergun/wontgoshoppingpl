@@ -1,7 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.db
 
 import androidx.room.*
-import androidx.room.ForeignKey.NO_ACTION
+import androidx.room.ForeignKey.Companion.NO_ACTION
 import eu.adamgiergun.wontgoshoppingpl.db.Reminder.Companion.COLUMN_EVENT_ID
 import eu.adamgiergun.wontgoshoppingpl.db.Reminder.Companion.TABLE_NAME
 

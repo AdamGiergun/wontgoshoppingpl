@@ -1,25 +1,31 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# Reguły R8 dla wontgoshoppingpl.
 #
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Klasy wymienione niżej są tworzone refleksyjnie po nazwie — z zasobów XML albo
+# przez FragmentManager — więc R8 nie widzi do nich żadnej referencji w kodzie.
+# Bez tych reguł release wywala się przy wejściu w Ustawienia.
+#
+# Atrybuty SourceFile/LineNumberTable ustawia już proguard-android-optimize.txt.
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Fragmenty preferencji wskazywane przez android:fragment w res/xml/pref_headers.xml
+# oraz instancjonowane w SettingsActivity.onPreferenceStartFragment.
+-keep class eu.adamgiergun.wontgoshoppingpl.settings.HeadersPreferenceFragment { <init>(...); }
+-keep class eu.adamgiergun.wontgoshoppingpl.settings.LookPreferenceFragment { <init>(...); }
+-keep class eu.adamgiergun.wontgoshoppingpl.settings.NotificationPreferenceFragment { <init>(...); }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Własne widżety Preference rozwijane z res/xml/pref_*.xml — inflater woła
+# konstruktor (Context, AttributeSet).
+-keep class eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference { <init>(...); }
+-keep class eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference { <init>(...); }
+-keep class eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreference { <init>(...); }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Dialogi towarzyszące powyższym preferencjom są odtwarzane przez FragmentManager
+# po zmianie konfiguracji.
+-keep class eu.adamgiergun.mykotlinlibrary.IntegerPreferenceDialogFragmentCompat { <init>(...); }
+-keep class eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreferenceDialogFragmentCompat { <init>(...); }
 
-#-keepnames class eu.adamgiergun.wontgoshoppingpl.settings.HeadersPreferenceFragment { *; }
-#-keepnames class eu.adamgiergun.wontgoshoppingpl.settings.LookPreferenceFragment { *; }
-#-keepnames class eu.adamgiergun.wontgoshoppingpl.settings.NotificationPreferenceFragment { *; }
+# Widget aplikacji deklarowany w manifeście.
+-keep class eu.adamgiergun.wontgoshoppingpl.widget.Widget { <init>(...); }
+
+# Encje Room mapowane po nazwach pól.
+-keep class eu.adamgiergun.wontgoshoppingpl.db.Event { *; }
+-keep class eu.adamgiergun.wontgoshoppingpl.db.Reminder { *; }

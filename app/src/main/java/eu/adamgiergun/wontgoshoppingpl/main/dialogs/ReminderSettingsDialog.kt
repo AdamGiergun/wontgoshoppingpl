@@ -1,6 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.main.dialogs
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatDialog
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.ReminderSettingsDialogViewBinding
@@ -27,8 +28,15 @@ internal class ReminderSettingsDialog : MainDialogFragment() {
     private fun bind(): ReminderSettingsDialogViewBinding {
         val inflater = requireActivity().layoutInflater
         return ReminderSettingsDialogViewBinding.inflate(inflater).apply {
-            lifecycleOwner = this@ReminderSettingsDialog
-            viewModel = mViewModel
+            val showDialogOnClick = View.OnClickListener { mViewModel.setIdOfDialogToShow(it.id) }
+            numberOfDaysBeforeView.setOnClickListener(showDialogOnClick)
+            timeView.setOnClickListener(showDialogOnClick)
+            mViewModel.reminderDaysBefore.observe(this@ReminderSettingsDialog) {
+                numberOfDaysBeforeView.text = it.toString()
+            }
+            mViewModel.reminderTime.observe(this@ReminderSettingsDialog) {
+                timeView.text = it.toString()
+            }
         }
     }
 }

@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
-import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
@@ -18,6 +20,8 @@ import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsAndDateTillD
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsDialog
 import eu.adamgiergun.wontgoshoppingpl.main.fragments.AskForLookFragmentDirections
 import eu.adamgiergun.wontgoshoppingpl.main.fragments.WidgetInfoFragmentDirections
+import eu.adamgiergun.wontgoshoppingpl.main.utils.setRichBackgroundResource
+import kotlinx.coroutines.launch
 
 /*
     TODO "remove all events from calendar" in Settings
@@ -35,10 +39,14 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        calStart = Calendar.getInstance();
-        val binding: ActivityMainBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mainViewModel.apply {
-            binding.viewModel = this
+            binding.adViewLayout.setRichBackgroundResource(isLookRich)
+            navController = (supportFragmentManager
+                .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment)
+                .navController
+                .also { it.setGraph(mainNavigationId) }
 
             allPermissionsGranted.observe(this@MainActivity) {
                 if (it) {
@@ -94,9 +102,11 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 }
             }
 
-            lifecycleScope.launchWhenStarted {
-                binding.adView.loadAd(getAdRequest(this@MainActivity))
-                initializeInterstitialAd(applicationContext)
+            lifecycleScope.launch {
+                lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    binding.adView.loadAd(getAdRequest(this@MainActivity))
+                    initializeInterstitialAd(applicationContext)
+                }
             }
 //        addCrashTestButton();
         }

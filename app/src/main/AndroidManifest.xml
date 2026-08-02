@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="eu.adamgiergun.wontgoshoppingpl">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -54,10 +53,6 @@
         <!--                <action android:name="com.android.vending.INSTALL_REFERRER" />-->
         <!--            </intent-filter>-->
         <!--        </receiver>-->
-
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
 
         <activity
             android:name=".main.activity.MainActivity"

@@ -1,103 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/reminder_settings_dv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/reminder_view_padding"
+    android:paddingLeft="@dimen/reminder_view_padding"
+    android:paddingEnd="@dimen/reminder_view_padding"
+    android:paddingRight="@dimen/reminder_view_padding">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/reminder_settings_dv"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/spacer1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/reminder_view_padding"
-        android:paddingLeft="@dimen/reminder_view_padding"
-        android:paddingEnd="@dimen/reminder_view_padding"
-        android:paddingRight="@dimen/reminder_view_padding">
+        android:layout_height="@dimen/reminder_dialog_spacing"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spacer1"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/reminder_dialog_spacing"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/numberOfDaysBeforePrefix"
+        style="@style/MyTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="@string/remind_me"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spacer1" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/numberOfDaysBeforePrefix"
-            style="@style/MyTextViewStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:text="@string/remind_me"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spacer1" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/numberOfDaysBeforeView"
+        style="@style/MyEditTextStyle"
+        android:layout_width="30dp"
+        android:layout_height="0dp"
+        android:cursorVisible="false"
+        android:inputType="number"
+        app:layout_constraintLeft_toRightOf="@+id/numberOfDaysBeforePrefix"
+        app:layout_constraintTop_toBottomOf="@id/spacer1" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/numberOfDaysBeforeView"
-            style="@style/MyEditTextStyle"
-            android:layout_width="30dp"
-            android:layout_height="0dp"
-            android:cursorVisible="false"
-            android:inputType="number"
-            android:onClick="@{(view) -> viewModel.setIdOfDialogToShow(view.id)}"
-            android:text="@{String.valueOf(viewModel.reminderDaysBefore)}"
-            app:layout_constraintLeft_toRightOf="@+id/numberOfDaysBeforePrefix"
-            app:layout_constraintTop_toBottomOf="@id/spacer1" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/numberOfDaysBeforeSuffix"
+        style="@style/MyTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/days"
+        app:layout_constraintLeft_toRightOf="@+id/numberOfDaysBeforeView"
+        app:layout_constraintTop_toBottomOf="@id/spacer1" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/numberOfDaysBeforeSuffix"
-            style="@style/MyTextViewStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/days"
-            app:layout_constraintLeft_toRightOf="@+id/numberOfDaysBeforeView"
-            app:layout_constraintTop_toBottomOf="@id/spacer1" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/spacer2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/reminder_dialog_spacing"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/numberOfDaysBeforeSuffix" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spacer2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/reminder_dialog_spacing"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/numberOfDaysBeforeSuffix" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/timeViewPrefix"
+        style="@style/MyTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/before_comma_at"
+        app:layout_constraintRight_toLeftOf="@id/timeView"
+        app:layout_constraintTop_toBottomOf="@id/spacer2" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/timeViewPrefix"
-            style="@style/MyTextViewStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/before_comma_at"
-            app:layout_constraintRight_toLeftOf="@id/timeView"
-            app:layout_constraintTop_toBottomOf="@id/spacer2" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/timeView"
+        style="@style/MyEditTextStyle"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:cursorVisible="false"
+        android:inputType="time"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spacer2" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/timeView"
-            style="@style/MyEditTextStyle"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:cursorVisible="false"
-            android:inputType="time"
-            android:onClick="@{(view) -> viewModel.setIdOfDialogToShow(view.id)}"
-            android:text="@{viewModel.reminderTime.toString()}"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spacer2" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/spacer3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/reminder_dialog_spacing"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeView" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spacer3"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/reminder_dialog_spacing"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timeView" />
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/setAsDefaultCheckbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/set_as_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spacer3" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/setAsDefaultCheckbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="@string/set_as_default"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spacer3" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,8 +14,10 @@ internal class AskForLookFragment : Fragment() {
     private val model: MainViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return  AskForLookFragmentBinding.inflate(inflater).run {
-            mainViewModel = model
+        return AskForLookFragmentBinding.inflate(inflater).run {
+            val onLookChosen = View.OnClickListener { model.onInitialLookChoice(it.id) }
+            imageButtonMini.setOnClickListener(onLookChosen)
+            imageButtonRich.setOnClickListener(onLookChosen)
             root
         }
     }
