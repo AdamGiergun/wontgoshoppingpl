@@ -83,13 +83,15 @@ internal object AdsContainer {
     /**
      * Baner adaptacyjny zamiast wycofanego SMART_BANNER — wysokość dobierana do
      * szerokości okna, więc działa też po obrocie i na dużych ekranach.
+     * Wariant "large" jest następcą zwykłego banera zakotwiczonego, który
+     * (razem z odmianami portrait/landscape) jest w SDK 25 oznaczony jako przestarzały.
      */
     private fun createBannerAdView(activity: Activity): AdView {
         val displayMetrics = activity.resources.displayMetrics
         val adWidthDp = (displayMetrics.widthPixels / displayMetrics.density).toInt()
         return AdView(activity).apply {
             adUnitId = activity.getString(R.string.main_banner_ad_id)
-            setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidthDp))
+            setAdSize(AdSize.getLargeAnchoredAdaptiveBannerAdSize(activity, adWidthDp))
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT

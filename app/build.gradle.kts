@@ -10,8 +10,14 @@ plugins {
     alias(libs.plugins.mannodermaus.junit5)
 }
 
-// Sekrety trzymane w ~/.gradle/gradle.properties. Gdy ich brak (czysta maszyna,
-// CI), build debug nadal działa — na oficjalnych testowych identyfikatorach AdMob.
+// Oficjalne testowe identyfikatory AdMob — zawsze w buildzie debug i jako zapas,
+// gdy sekretów brak (czysta maszyna, CI). Nigdy nie wolno odpytywać produkcyjnych
+// jednostek z urządzenia deweloperskiego: Google liczy to jako invalid traffic.
+val testAdMobAppId = "ca-app-pub-3940256099942544~3347511713"
+val testBannerAdId = "ca-app-pub-3940256099942544/6300978111"
+val testInterstitialAdId = "ca-app-pub-3940256099942544/1033173712"
+
+// Sekrety trzymane w ~/.gradle/gradle.properties, poza repozytorium.
 fun secret(name: String, fallback: String): String =
     providers.gradleProperty(name).getOrElse(fallback)
 
@@ -32,19 +38,6 @@ android {
         versionCode = 132
         versionName = "3.8.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        resValue(
-            "string", "ad_mob_app_id",
-            secret("WGS_AD_MOB_APP_ID", "ca-app-pub-3940256099942544~3347511713")
-        )
-        resValue(
-            "string", "main_banner_ad_id",
-            secret("WGS_MAIN_BANNER_AD_ID", "ca-app-pub-3940256099942544/6300978111")
-        )
-        resValue(
-            "string", "interstitial_ad_id",
-            secret("WGS_INTERSTITIAL_AD_ID", "ca-app-pub-3940256099942544/1033173712")
-        )
     }
 
     if (keystoreFile != null) {
@@ -68,6 +61,9 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.findByName("release")
+            resValue("string", "ad_mob_app_id", secret("WGS_AD_MOB_APP_ID", testAdMobAppId))
+            resValue("string", "main_banner_ad_id", secret("WGS_MAIN_BANNER_AD_ID", testBannerAdId))
+            resValue("string", "interstitial_ad_id", secret("WGS_INTERSTITIAL_AD_ID", testInterstitialAdId))
             resValue("bool", "GOOGLE_ANALYTICS_ADID_ENABLED", "true")
             resValue("bool", "FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED", "false")
             resValue("bool", "FIREBASE_ANALYTICS_COLLECTION_ENABLED", "true")
@@ -77,6 +73,9 @@ android {
             configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
                 mappingFileUploadEnabled = false
             }
+            resValue("string", "ad_mob_app_id", testAdMobAppId)
+            resValue("string", "main_banner_ad_id", testBannerAdId)
+            resValue("string", "interstitial_ad_id", testInterstitialAdId)
             resValue("bool", "GOOGLE_ANALYTICS_ADID_ENABLED", "false")
             resValue("bool", "FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED", "true")
             resValue("bool", "FIREBASE_ANALYTICS_COLLECTION_ENABLED", "false")
