@@ -14,7 +14,7 @@ import eu.adamgiergun.wontgoshoppingpl.db.Event
 import java.util.*
 import kotlin.collections.ArrayList
 
-internal class Day(private val event: Event) : Comparable<Day> {
+internal class Day(private val event: Event, context: Context) : Comparable<Day> {
     private val date: SimpleDate
     val time: String
     val name: String
@@ -29,7 +29,7 @@ internal class Day(private val event: Event) : Comparable<Day> {
         val pieces = event.item.split(",".toRegex()).toTypedArray()
         date = SimpleDate.newInstance(pieces[0], SimpleDate.ORDER_YMD.toInt())
         time = pieces[1]
-        name = pieces[2]
+        name = DayNames.resolve(context, pieces[2])
     }
 
     val isAddedToCalendar
@@ -224,7 +224,7 @@ internal class Day(private val event: Event) : Comparable<Day> {
                 val database = AppDatabase.getInstance(appContext).eventDao()
 
                 val list = database.getAllEventsOfTypeNotBefore(dayTypesArray, today)?.map { event ->
-                    Day(event)
+                    Day(event, appContext)
                 } as ArrayList<Day>
 
                 val finalList = skipReminderForConsecutiveDays(list)
@@ -241,8 +241,8 @@ internal class Day(private val event: Event) : Comparable<Day> {
     }
 
     companion object {
-        fun getDayForWidget(event: Event?): Day? {
-            return event?.let { Day(it) }
+        fun getDayForWidget(event: Event?, appContext: Context): Day? {
+            return event?.let { Day(it, appContext) }
         }
     }
 }

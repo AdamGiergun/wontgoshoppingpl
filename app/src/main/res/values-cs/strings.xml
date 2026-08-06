@@ -58,4 +58,24 @@
     <string name="small">Malý</string>
     <string name="medium">Střední</string>
     <string name="large">Velký</string>
+
+    <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_non_commerce_sunday">Neobchodovatelné v neděli</string>
+    <string name="day_name_commerce_sunday">Obchodování v neděli</string>
+    <string name="day_name_new_year">Nový rok</string>
+    <string name="day_name_epiphany">Tři králové</string>
+    <string name="day_name_holy_saturday">Svatá sobota</string>
+    <string name="day_name_easter_sunday">Velikonoční neděle</string>
+    <string name="day_name_easter_monday">Velikonoční pondělí</string>
+    <string name="day_name_labour_day">Den práce</string>
+    <string name="day_name_constitution_day">Den konstituce 3.&#160;května</string>
+    <string name="day_name_whit_sunday">Svatodušní neděle</string>
+    <string name="day_name_corpus_christi">Tělo Kristovo</string>
+    <string name="day_name_assumption">Nanebevzetí Panny Marie</string>
+    <string name="day_name_all_saints">Všech svatých den</string>
+    <string name="day_name_independence_day">Den Nezávislosti</string>
+    <string name="day_name_day_after_independence_day">den po 100. dni nezávislosti</string>
+    <string name="day_name_christmas_eve">Štědrý večer</string>
+    <string name="day_name_christmas_day">Vánoční den</string>
+    <string name="day_name_second_day_of_christmas">Druhý den vánočních svátků</string>
 </resources>

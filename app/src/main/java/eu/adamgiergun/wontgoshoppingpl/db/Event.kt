@@ -2,10 +2,15 @@ package eu.adamgiergun.wontgoshoppingpl.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
 
-@Entity(tableName = Event.TABLE_NAME)
+// Indeks na `item` obsługuje zarówno zapytania zakresowe (`item >= :date`), jak
+// i wyszukiwanie po dacie przy odświeżaniu danych. Celowo nieunikalny: baza
+// użytkownika pochodzi z wielu starych wersji i nie ma gwarancji, że nie ma
+// w niej duplikatów, a CREATE UNIQUE INDEX wywróciłby wtedy migrację.
+@Entity(tableName = Event.TABLE_NAME, indices = [Index(value = [Event.COLUMN_ITEM])])
 internal data class Event(
         @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID) val id: Int?,
         @ColumnInfo(name = COLUMN_TYPE_ID) val typeId: Int,

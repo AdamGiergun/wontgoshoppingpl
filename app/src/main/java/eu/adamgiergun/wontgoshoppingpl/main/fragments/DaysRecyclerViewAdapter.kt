@@ -39,7 +39,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
 
     override fun onBindViewHolder(dayViewHolder: DayViewHolder, position: Int) {
         val event = getItem(position)
-        dayViewHolder.bind(Day(event), viewModel)
+        dayViewHolder.bind(Day(event, dayViewHolder.itemView.context), viewModel)
     }
 
     internal class DayViewHolder private constructor(private val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {

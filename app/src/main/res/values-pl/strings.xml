@@ -71,4 +71,24 @@
     <string name="small">Mały</string>
     <string name="medium">Średni</string>
     <string name="large">Duży</string>
+
+    <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_non_commerce_sunday">Niedziela niehandlowa</string>
+    <string name="day_name_commerce_sunday">Niedziela handlowa</string>
+    <string name="day_name_new_year">Nowy Rok</string>
+    <string name="day_name_epiphany">Święto Trzech Króli</string>
+    <string name="day_name_holy_saturday">Wielka Sobota</string>
+    <string name="day_name_easter_sunday">Niedziela Wielkanocna</string>
+    <string name="day_name_easter_monday">Poniedziałek Wielkanocny</string>
+    <string name="day_name_labour_day">Święto Pracy</string>
+    <string name="day_name_constitution_day">Święto Konstytucji 3&#160;Maja</string>
+    <string name="day_name_whit_sunday">Zielone Świątki</string>
+    <string name="day_name_corpus_christi">Boże Ciało</string>
+    <string name="day_name_assumption">Wniebowzięcie Najświętszej Maryi&#160;Panny</string>
+    <string name="day_name_all_saints">Wszystkich Świętych</string>
+    <string name="day_name_independence_day">Święto Niepodległości</string>
+    <string name="day_name_day_after_independence_day">dzień po Święcie Stulecia Niepodległości</string>
+    <string name="day_name_christmas_eve">Wigilia</string>
+    <string name="day_name_christmas_day">Boże Narodzenie</string>
+    <string name="day_name_second_day_of_christmas">Boże Narodzenie (2&#160;dzień)</string>
 </resources>

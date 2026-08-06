@@ -73,4 +73,24 @@
     <string name="small">Mažas</string>
     <string name="medium">Vidutinis</string>
     <string name="large">Didelis</string>
+
+    <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_non_commerce_sunday">Ne prekybos sekmadienis</string>
+    <string name="day_name_commerce_sunday">Prekybos sekmadienis</string>
+    <string name="day_name_new_year">Naujųjų metų diena</string>
+    <string name="day_name_epiphany">Epiphany</string>
+    <string name="day_name_holy_saturday">Šventasis šeštadienis</string>
+    <string name="day_name_easter_sunday">Velykų sekmadienis</string>
+    <string name="day_name_easter_monday">Velykų pirmadienis</string>
+    <string name="day_name_labour_day">Darbo diena</string>
+    <string name="day_name_constitution_day">Konstitucijos diena</string>
+    <string name="day_name_whit_sunday">Sekminių sekmadienis</string>
+    <string name="day_name_corpus_christi">Corpus Christi</string>
+    <string name="day_name_assumption">Marijos prisiėmimas</string>
+    <string name="day_name_all_saints">Visų šventųjų diena</string>
+    <string name="day_name_independence_day">Nepriklausomybės diena</string>
+    <string name="day_name_day_after_independence_day">diena po 100-osios nepriklausomybės dienos</string>
+    <string name="day_name_christmas_eve">Kalėdų vakaras</string>
+    <string name="day_name_christmas_day">Kalėdų diena</string>
+    <string name="day_name_second_day_of_christmas">Antroji Kalėdų diena</string>
 </resources>

@@ -59,4 +59,24 @@
     <string name="small">Petit</string>
     <string name="medium">Moyen</string>
     <string name="large">Grand</string>
+
+    <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_non_commerce_sunday">Dimanche sans commerce</string>
+    <string name="day_name_commerce_sunday">Dimanche du commerce</string>
+    <string name="day_name_new_year">Jour de l\’année</string>
+    <string name="day_name_epiphany">Epiphanie</string>
+    <string name="day_name_holy_saturday">Samedi Saint</string>
+    <string name="day_name_easter_sunday">Dimanche de Pâques</string>
+    <string name="day_name_easter_monday">lundi de Pâques</string>
+    <string name="day_name_labour_day">Fête du travail</string>
+    <string name="day_name_constitution_day">Jour de la Constitution</string>
+    <string name="day_name_whit_sunday">Le dimanche de la Pentecôte</string>
+    <string name="day_name_corpus_christi">La Fête-Dieu</string>
+    <string name="day_name_assumption">Assomption de Marie</string>
+    <string name="day_name_all_saints">Le jour de la Toussaint</string>
+    <string name="day_name_independence_day">Le jour de l\'indépendance</string>
+    <string name="day_name_day_after_independence_day">jour après le centième jour de l\'indépendance</string>
+    <string name="day_name_christmas_eve">Veille de Noël</string>
+    <string name="day_name_christmas_day">Noël</string>
+    <string name="day_name_second_day_of_christmas">Deuxième jour de Noël</string>
 </resources>

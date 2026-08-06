@@ -11,6 +11,7 @@ import com.google.android.gms.ads.AdView
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 import eu.adamgiergun.wontgoshoppingpl.common.AdsContainer
+import eu.adamgiergun.wontgoshoppingpl.common.DaysRepository
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.DayTypesAddedToCalendarDialog
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
@@ -105,6 +106,10 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
 
             lifecycleScope.launch {
                 bannerAdView = AdsContainer.start(this@MainActivity, binding.adViewLayout)
+            }
+
+            lifecycleScope.launch {
+                DaysRepository.refresh(applicationContext)
             }
 //        addCrashTestButton();
         }

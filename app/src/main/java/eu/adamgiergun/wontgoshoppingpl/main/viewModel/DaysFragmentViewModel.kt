@@ -194,7 +194,7 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
                 }
 
                 getLastEvent()?.let {
-                    val lastDay = Day(it)
+                    val lastDay = Day(it, getApplication())
                     DialogParameters.lastDateInMillis = lastDay.dateInMillis
                 }
             }

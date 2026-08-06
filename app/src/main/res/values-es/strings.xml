@@ -58,4 +58,24 @@
     <string name="small">Pequeño</string>
     <string name="medium">Medio</string>
     <string name="large">Grande</string>
+
+    <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_non_commerce_sunday">Domingo sin comercio</string>
+    <string name="day_name_commerce_sunday">Domingo de comercio</string>
+    <string name="day_name_new_year">Día de Año Nuevo</string>
+    <string name="day_name_epiphany">Epifanía</string>
+    <string name="day_name_holy_saturday">Sábado Santo</string>
+    <string name="day_name_easter_sunday">Domingo de Pascua</string>
+    <string name="day_name_easter_monday">Lunes de Pascua</string>
+    <string name="day_name_labour_day">Día del Trabajo</string>
+    <string name="day_name_constitution_day">Día de la Constitución</string>
+    <string name="day_name_whit_sunday">Domingo de Pentecostés</string>
+    <string name="day_name_corpus_christi">Corpus Christi</string>
+    <string name="day_name_assumption">Asunción de María</string>
+    <string name="day_name_all_saints">Día de Todos los Santos</string>
+    <string name="day_name_independence_day">Día de la Independencia</string>
+    <string name="day_name_day_after_independence_day">día después del 100 \° Día de la Independencia</string>
+    <string name="day_name_christmas_eve">Nochebuena</string>
+    <string name="day_name_christmas_day">Navidad</string>
+    <string name="day_name_second_day_of_christmas">Segundo día de Navidad</string>
 </resources>

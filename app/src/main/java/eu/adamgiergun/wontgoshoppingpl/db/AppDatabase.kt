@@ -1,6 +1,8 @@
 package eu.adamgiergun.wontgoshoppingpl.db
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -12,7 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Event::class, Reminder::class], version = 5)
+@Database(entities = [Event::class, Reminder::class], version = 6)
 internal abstract class AppDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
     abstract fun reminderDao(): ReminderDao
@@ -24,7 +26,20 @@ internal abstract class AppDatabase : RoomDatabase() {
         fun getInstance(context: Context): AppDatabase {
             val rdc: Callback = object : Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
-                    addEventsToDb(arrayOf(2020, 2021, 2022, 2023), context)
+                    // Świeża instalacja dostaje wyłącznie dane bieżące. Lat historycznych
+                    // nie ma po co wstawiać: zapytania filtrują `item >= dziś`, więc i tak
+                    // nigdy się nie pokażą.
+                    seedFromResources(db, context)
+                }
+            }
+
+            val migration5to6: Migration = object : Migration(5, 6) {
+                override fun migrate(db: SupportSQLiteDatabase) {
+                    db.execSQL(
+                        "CREATE INDEX IF NOT EXISTS index_${Event.TABLE_NAME}_${Event.COLUMN_ITEM} " +
+                                "ON ${Event.TABLE_NAME} (${Event.COLUMN_ITEM})"
+                    )
+                    seedFromResources(db, context)
                 }
             }
 
@@ -61,7 +76,10 @@ internal abstract class AppDatabase : RoomDatabase() {
                             "events.db"
                     )
                             .addCallback(rdc)
-                            .addMigrations(migration4to5, migration3to5, migration2to5, migration1to5)
+                            .addMigrations(
+                                migration5to6,
+                                migration4to5, migration3to5, migration2to5, migration1to5
+                            )
                             .fallbackToDestructiveMigration(dropAllTables = true)
                             .build()
                     INSTANCE = instance
@@ -70,6 +88,47 @@ internal abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * Wstawia dane wbudowane w aplikację. To tylko punkt startowy — właściwym
+         * źródłem są dane zdalne, patrz [eu.adamgiergun.wontgoshoppingpl.common.DaysRepository].
+         *
+         * Świadomie synchronicznie, na bazie przekazanej przez Room, a nie przez DAO
+         * w osobnej korutynie jak [addEventsToDb]: tamten wariant kończył się pustą
+         * listą przy pierwszym uruchomieniu po aktualizacji, bo ekran zdążył odpytać
+         * bazę, zanim wstawianie się wykonało. Tutaj wszystko dzieje się w transakcji
+         * migracji, więc po jej zakończeniu dane po prostu są.
+         */
+        private fun seedFromResources(db: SupportSQLiteDatabase, context: Context) {
+            val events = DaysPayload.fromResources(context)
+            if (events.isEmpty()) return
+
+            // Dni już obecne w bazie zostają nietknięte: [Reminder] trzyma klucz obcy
+            // do [Event.id], więc podmiana wiersza zerwałaby przypomnienia użytkownika
+            // i powiązania z wydarzeniami w kalendarzu Google.
+            val knownDates = mutableSetOf<String>()
+            db.query("SELECT ${Event.COLUMN_ITEM} FROM ${Event.TABLE_NAME}").use { cursor ->
+                while (cursor.moveToNext()) {
+                    knownDates.add(cursor.getString(0).substringBefore(','))
+                }
+            }
+
+            for (event in events) {
+                if (!knownDates.add(event.item.substringBefore(','))) continue
+                db.insert(
+                    Event.TABLE_NAME,
+                    SQLiteDatabase.CONFLICT_IGNORE,
+                    ContentValues().apply {
+                        put(Event.COLUMN_TYPE_ID, event.typeId)
+                        put(Event.COLUMN_ITEM, event.item)
+                    }
+                )
+            }
+        }
+
+        /**
+         * Wstawia lata 2020-2023 z tablic w zasobach. Używane wyłącznie przez migracje
+         * ze starych wersji bazy — nowe dane idą przez [seedFromResources].
+         */
         private fun addEventsToDb(years: Array<Int>, context: Context) {
             var array = emptyArray<Event>()
             for (year in years) {

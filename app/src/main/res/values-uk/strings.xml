@@ -72,4 +72,24 @@
     <string name="medium">Середній</string>
     <string name="large">Великий</string>
 
+
+    <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_non_commerce_sunday">Воскресіння без торгівлі</string>
+    <string name="day_name_commerce_sunday">Торгові неділя</string>
+    <string name="day_name_new_year">Новий рік</string>
+    <string name="day_name_epiphany">Богоявлення</string>
+    <string name="day_name_holy_saturday">субота свята</string>
+    <string name="day_name_easter_sunday">Великдень</string>
+    <string name="day_name_easter_monday">Світлий понеділок</string>
+    <string name="day_name_labour_day">День Праці</string>
+    <string name="day_name_constitution_day">День Конституції 3&#160;травня</string>
+    <string name="day_name_whit_sunday">День Святої Трійці</string>
+    <string name="day_name_corpus_christi">Свято Тіла і Крові Христових</string>
+    <string name="day_name_assumption">Успіння Пресвятої Богородиці</string>
+    <string name="day_name_all_saints">День всіх святих</string>
+    <string name="day_name_independence_day">День незалежності</string>
+    <string name="day_name_day_after_independence_day">Наступний день після Дня незалежності</string>
+    <string name="day_name_christmas_eve">Святвечір</string>
+    <string name="day_name_christmas_day">Різдво Христове</string>
+    <string name="day_name_second_day_of_christmas">другий день Різдва Христового</string>
 </resources>

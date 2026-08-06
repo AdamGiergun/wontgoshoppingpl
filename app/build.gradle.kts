@@ -86,6 +86,9 @@ android {
     buildFeatures {
         viewBinding = true
         resValues = true
+        // Potrzebne dla BuildConfig.DEBUG w DaysRepository — w buildzie debug
+        // Remote Config pobiera dane bez throttlingu, żeby dało się je testować.
+        buildConfig = true
     }
 
     compileOptions {
@@ -153,6 +156,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.config)
 
     implementation(libs.google.material)
 

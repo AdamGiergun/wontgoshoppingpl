@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.day
 
+import android.content.Context
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.db.Event
 import org.hamcrest.CoreMatchers.`is`
@@ -7,12 +8,20 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.mock
 
 internal class DayTest {
 
+    /**
+     * Testowe wpisy trzymają w trzecim polu gotową nazwę, a nie klucz — tak jak
+     * wiersze zapisane przed wersją 6 bazy. [DayNames] zwraca wtedy tekst bez
+     * zmian i nie sięga do zasobów, więc atrapa konteksu nigdy nie jest wołana.
+     */
+    private val context: Context = mock(Context::class.java)
+
     abstract inner class SetEvent(protected val event: Event) {
         abstract inner class GetDay {
-            private val day = Day(event)
+            private val day = Day(event, context)
             protected lateinit var expectedTime: String
             protected lateinit var expectedName: String
             protected var expectedCalendarEventId: Long? = null
@@ -61,7 +70,7 @@ internal class DayTest {
             }
 
             open fun compareToSameDay() {
-                assertThat(day.compareTo(Day(event)), `is`(0))
+                assertThat(day.compareTo(Day(event, context)), `is`(0))
             }
 
             open fun compareToEarlierDay() {
@@ -176,7 +185,8 @@ internal class DayTest {
                         "2019_12_31,00:00,Non-commerce Sunday",
                         null,
                         null
-                    )
+                    ),
+                    context
                 )
                 super.compareToEarlierDay()
             }
@@ -191,7 +201,8 @@ internal class DayTest {
                         "2020_01_06,00:00,Non-commerce Sunday",
                         null,
                         null
-                    )
+                    ),
+                    context
                 )
                 super.compareToLaterDay()
             }

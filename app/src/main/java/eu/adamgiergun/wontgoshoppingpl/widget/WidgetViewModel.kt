@@ -43,7 +43,7 @@ internal class WidgetViewModel private constructor(
 
         private suspend fun getNearestDay(appContext: Context): Day? {
             val database = AppDatabase.getInstance(appContext).eventDao()
-            return Day.getDayForWidget(database.getFirstEventNotBefore(today))
+            return Day.getDayForWidget(database.getFirstEventNotBefore(today), appContext)
         }
 
         fun logUpdated(appContext: Context) {

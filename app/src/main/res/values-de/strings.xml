@@ -73,4 +73,24 @@
     <string name="small">Klein</string>
     <string name="medium">Mittel</string>
     <string name="large">Groß</string>
+
+    <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_non_commerce_sunday">Kein Handel Sonntag</string>
+    <string name="day_name_commerce_sunday">Handel Sonntag</string>
+    <string name="day_name_new_year">Neujahr</string>
+    <string name="day_name_epiphany">Heilige drei Könige</string>
+    <string name="day_name_holy_saturday">Heiliger Samstag</string>
+    <string name="day_name_easter_sunday">Ostersonntag</string>
+    <string name="day_name_easter_monday">Ostermontag</string>
+    <string name="day_name_labour_day">Maifeiertag</string>
+    <string name="day_name_constitution_day">Tag der Verfassung am&#160;3.&#160;Mai</string>
+    <string name="day_name_whit_sunday">Pfingstsonntag</string>
+    <string name="day_name_corpus_christi">Fronleichnam</string>
+    <string name="day_name_assumption">Mariä Himmelfahrt</string>
+    <string name="day_name_all_saints">Allerheiligen</string>
+    <string name="day_name_independence_day">Tag der Unabhängigkeit</string>
+    <string name="day_name_day_after_independence_day">dzień po Święcie Stulecia Niepodległości</string>
+    <string name="day_name_christmas_eve">Heiligabend</string>
+    <string name="day_name_christmas_day">1. Weihnachtstag</string>
+    <string name="day_name_second_day_of_christmas">2. Weihnachtstag</string>
 </resources>
