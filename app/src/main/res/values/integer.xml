@@ -2,4 +2,10 @@
 <resources>
     <integer name="reminder_days_before_default_value">1</integer>
     <integer name="app_widget_update_period_millis">21600000</integer>
+
+    <!-- Liczba kolumn listy dni. Próg 840dp nie jest okrągłą liczbą z sufitu:
+         przy dwóch kolumnach węższych niż ~420dp nazwa dnia („Non-commerce
+         Sunday") przestaje mieścić się w jednej linii i układ traci na tym
+         więcej, niż zyskuje na liczbie widocznych wierszy. -->
+    <integer name="list_span_count">1</integer>
 </resources>

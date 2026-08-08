@@ -88,7 +88,12 @@ internal object AdsContainer {
      */
     private fun createBannerAdView(activity: Activity): AdView {
         val displayMetrics = activity.resources.displayMetrics
-        val adWidthDp = (displayMetrics.widthPixels / displayMetrics.density).toInt()
+        // Ramka banera jest w layoucie ograniczona do szerokości treści, żeby na
+        // tablecie nie ciągnęła się przez cały ekran. Rozmiar trzeba liczyć z tej
+        // samej wartości — inaczej prosilibyśmy o baner szerszy niż miejsce,
+        // w które trafi, i SDK dobrałby wysokość do szerokości, której nie ma.
+        val maxWidthPx = activity.resources.getDimensionPixelSize(R.dimen.content_max_width)
+        val adWidthDp = (minOf(displayMetrics.widthPixels, maxWidthPx) / displayMetrics.density).toInt()
         return AdView(activity).apply {
             adUnitId = activity.getString(R.string.main_banner_ad_id)
             setAdSize(AdSize.getLargeAnchoredAdaptiveBannerAdSize(activity, adWidthDp))

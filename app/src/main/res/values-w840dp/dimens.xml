@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dwie kolumny potrzebują dwa razy więcej miejsca niż jedna, ale nie tyle,
+         ile ma tablet w poziomie — przy 1280dp kolumny rozjechałyby się z powrotem. -->
+    <dimen name="content_max_width">1040dp</dimen>
+</resources>

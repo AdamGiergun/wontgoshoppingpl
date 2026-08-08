@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Telefon w poziomie (914dp) i tablet w poziomie (1280dp). Tablet w pionie
+         ma 800dp i zostaje przy jednej kolumnie. -->
+    <integer name="list_span_count">2</integer>
+</resources>
