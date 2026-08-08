@@ -1,16 +1,14 @@
 package eu.adamgiergun.wontgoshoppingpl.settings
 
-import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.widget.TimePicker
 import androidx.preference.DialogPreference
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleTime
 
 @Suppress("unused")
-class TimePreference : DialogPreference, OnTimeSetListener {
+class TimePreference : DialogPreference {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -33,7 +31,7 @@ class TimePreference : DialogPreference, OnTimeSetListener {
         if (defaultValue is String) persistString(defaultValue)
     }
 
-    override fun onTimeSet(timePicker: TimePicker, hour: Int, minute: Int) {
+    fun setTime(hour: Int, minute: Int) {
         with(SimpleTime(hour, minute).toString()) {
             persistString(this)
             notifyChanged()

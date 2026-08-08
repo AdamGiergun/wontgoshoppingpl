@@ -4,10 +4,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import eu.adamgiergun.wontgoshoppingpl.settings.IntegerDialogPreference
 import eu.adamgiergun.wontgoshoppingpl.settings.IntegerPreferenceDialogFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.settings.TimePreference
-import eu.adamgiergun.wontgoshoppingpl.settings.TimePreferenceDialogFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
 
 internal class NotificationPreferenceFragment : SettingsFragment() {
@@ -47,9 +48,16 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
         preference.let {
+            // TimePreference pokazuje MaterialTimePicker, a nie własny
+            // PreferenceDialogFragmentCompat: platformowy TimePickerDialog brał
+            // wygląd z motywu systemu i po przejściu na Material 3 odstawał od
+            // reszty aplikacji tak samo jak selektory na ekranie głównym.
+            if (preference is TimePreference) {
+                pokazSelektorGodziny(preference)
+                return
+            }
             val dialogFragment = when (preference) {
                 is IntegerDialogPreference -> IntegerPreferenceDialogFragmentCompat()
-                is TimePreference -> TimePreferenceDialogFragmentCompat()
                 else -> null
             }
             dialogFragment?.let {
@@ -64,6 +72,46 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
             }
         }
         super.onDisplayPreferenceDialog(preference)
+    }
+
+    private fun pokazSelektorGodziny(preference: TimePreference) {
+        val czas = preference.time
+        MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(czas.hour)
+            .setMinute(czas.minute)
+            .setTitleText(preference.dialogTitle ?: preference.title)
+            .build()
+            .also { selektor ->
+                polacz(selektor, preference)
+                selektor.show(parentFragmentManager, TAG_SELEKTORA_GODZINY)
+            }
+    }
+
+    /**
+     * Po obrocie ekranu menedżer fragmentów odtwarza selektor bez nasłuchów —
+     * tak samo jak na ekranie głównym, patrz ReminderTimeDialog.
+     */
+    private fun podepnijSelektorGodzinyPonownie() {
+        val selektor = parentFragmentManager
+            .findFragmentByTag(TAG_SELEKTORA_GODZINY) as? MaterialTimePicker ?: return
+        (findPreference<TimePreference>(getString(R.string.default_reminder_time_preference_key)))
+            ?.let { polacz(selektor, it) }
+    }
+
+    private fun polacz(selektor: MaterialTimePicker, preference: TimePreference) {
+        selektor.addOnPositiveButtonClickListener {
+            preference.setTime(selektor.hour, selektor.minute)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        podepnijSelektorGodzinyPonownie()
+    }
+
+    private companion object {
+        const val TAG_SELEKTORA_GODZINY = "default_reminder_time_picker"
     }
 
 // TODO ChooseCalendarsForCleaning

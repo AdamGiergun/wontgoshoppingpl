@@ -18,7 +18,13 @@ class IntegerPreferenceDialogFragmentCompat : PreferenceDialogFragmentCompat() {
                         integerDialogPreference,
                         value,
                         minValue,
-                        maxValue)
+                        maxValue).apply {
+                    // Okno dialogu i tak ma szerokość minimalną z motywu, więc bez
+                    // tytułu zostawał szeroki pas pustki nad jednym wąskim
+                    // pokrętłem. PreferenceDialogFragmentCompat ustawia tytuł sam,
+                    // ale tu onCreateDialog jest nadpisane w całości.
+                    setTitle(integerDialogPreference.dialogTitle ?: integerDialogPreference.title)
+                }
             }
         }
     }

@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<NumberPicker xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/numberPicker"
-    android:layout_width="wrap_content"
+<!--
+    Pokrętło w ramce, a nie jako korzeń widoku. Jako korzeń dostawało od
+    AlertDialogu pełną szerokość okna i jego kreski podziału ciągnęły się przez
+    cały dialog, przez co wyglądał jak tabela, a nie jak wybór jednej liczby.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal" />
-<!-- android:dialogMode="true" -->
+    android:paddingTop="@dimen/spacing_s"
+    android:paddingBottom="@dimen/spacing_s">
+
+    <NumberPicker
+        android:id="@+id/numberPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+</FrameLayout>
