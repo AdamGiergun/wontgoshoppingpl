@@ -16,6 +16,17 @@ internal class SettingsViewModel(application: Application) : AppViewModel(applic
         _settingsActivityBarTitle.value = title
     }
 
+    /**
+     * Który dział ustawień jest wybrany w panelu lewym. Trzymany w ViewModelu,
+     * bo fragment nagłówków przeżywa obrót ekranu w postaci nowej instancji.
+     */
+    var selectedHeader: Int = 0
+        private set
+
+    fun setSelectedHeader(order: Int) {
+        selectedHeader = order
+    }
+
     private var lastIsScreenWideEnough: Boolean
 
     val isScreenWideEnough: Boolean

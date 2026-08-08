@@ -9,7 +9,8 @@
         android:key="@string/use_google_calendar_preference_key"
         android:summaryOff="@string/google_calendar_preference_summary_off"
         android:summaryOn="@string/google_calendar_preference_summary_on"
-        android:title="@string/google_calendar_preference_title" />
+        android:title="@string/google_calendar_preference_title"
+        app:iconSpaceReserved="false" />
 
     <!-- NOTE: Listed below preferences will be enabled only when the checkbox above is checked.
         android:defaultValue="@string/calendar_not_set"-->
@@ -18,9 +19,11 @@
         android:enabled="false"
         android:key="@string/default_calendar_preference_key"
         android:title="@string/default_calendar_preference_title"
-        app:useSimpleSummaryProvider="true" />
+        app:useSimpleSummaryProvider="true"
+        app:iconSpaceReserved="false" />
 
-    <PreferenceCategory android:title="@string/default_reminder_settings_preference_category_title">
+    <PreferenceCategory android:title="@string/default_reminder_settings_preference_category_title"
+        app:iconSpaceReserved="false">
 
         <eu.adamgiergun.wontgoshoppingpl.settings.IntegerDialogPreference
             android:defaultValue="@integer/reminder_days_before_default_value"
@@ -31,14 +34,16 @@
             android:title="@string/default_days_before_event_preference_title"
             app:defValue="@integer/reminder_days_before_default_value"
             app:maxValue="7"
-            app:minValue="0" />
+            app:minValue="0"
+            app:iconSpaceReserved="false" />
 
         <eu.adamgiergun.wontgoshoppingpl.settings.TimePreference
             android:defaultValue="@string/default_reminder_time_preference_default_value"
             android:dependency="@string/use_google_calendar_preference_key"
             android:enabled="false"
             android:key="@string/default_reminder_time_preference_key"
-            android:title="@string/default_time_preference_title" />
+            android:title="@string/default_time_preference_title"
+            app:iconSpaceReserved="false" />
         <!--
                 <androidx.preference.SwitchPreferenceCompat
                     android:defaultValue="true"
@@ -46,7 +51,8 @@
                     android:key="@string/key_use_pl_time_zone"
                     android:summaryOff="@string/summary_use_pl_time_zone_off"
                     android:summaryOn="@string/summary_use_pl_time_zone_on"
-                    android:title="@string/title_time_zone" />
+                    android:title="@string/title_time_zone"
+                    app:iconSpaceReserved="false" />
         -->
     </PreferenceCategory>
 
@@ -55,6 +61,7 @@
             android:dependency="@string/use_google_calendar_preference_key"
             android:key="@string/key_delete_events"
             android:title="@string/title_delete_events"
-            android:summary="@string/summary_delete_events" />
+            android:summary="@string/summary_delete_events"
+            app:iconSpaceReserved="false" />
     -->
 </androidx.preference.PreferenceScreen>

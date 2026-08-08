@@ -6,28 +6,32 @@
         android:key="@string/list_density_preference_key"
         android:summaryOff="@string/summary_list_density_standard"
         android:summaryOn="@string/summary_list_density_compact"
-        android:title="@string/title_list_density" />
+        android:title="@string/title_list_density"
+        app:iconSpaceReserved="false" />
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
         android:key="@string/include_holidays_preference_key"
         android:summaryOff="@string/summary_show_holidays_off"
         android:summaryOn="@string/summary_show_holidays_on"
-        android:title="@string/title_show_holidays" />
+        android:title="@string/title_show_holidays"
+        app:iconSpaceReserved="false" />
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
         android:key="@string/include_non_commerce_days_preference_key"
         android:summaryOff="@string/summary_show_non_commerce_days_off"
         android:summaryOn="@string/summary_show_non_commerce_days_on"
-        android:title="@string/title_show_non_commerce_days" />
+        android:title="@string/title_show_non_commerce_days"
+        app:iconSpaceReserved="false" />
 
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
         android:key="@string/include_commerce_sundays_preference_key"
         android:summaryOff="@string/summary_show_commerce_sundays_off"
         android:summaryOn="@string/summary_show_commerce_sundays_on"
-        android:title="@string/title_show_commerce_sundays" />
+        android:title="@string/title_show_commerce_sundays"
+        app:iconSpaceReserved="false" />
 
     <androidx.preference.ListPreference
         android:defaultValue="14"
@@ -35,6 +39,7 @@
         android:entryValues="@array/app_widget_text_size_values"
         android:key="@string/key_app_widget_text_size"
         android:title="@string/title_app_widget_text_size"
-        app:useSimpleSummaryProvider="true" />
+        app:useSimpleSummaryProvider="true"
+        app:iconSpaceReserved="false" />
 
 </androidx.preference.PreferenceScreen>

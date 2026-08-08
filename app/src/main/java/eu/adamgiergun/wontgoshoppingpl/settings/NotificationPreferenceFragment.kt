@@ -14,20 +14,29 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         ViewModelProvider(requireActivity())[SettingsViewModel::class.java].run {
-            if (allPermissionsGranted.value == true) {
-                setPreferencesFromResource(R.xml.pref_notification, rootKey)
-            } else {
-                setPreferencesFromResource(R.xml.pref_notification_disabled, rootKey)
-                askingForPermissionsNeeded(true)
-            }
+            // Ekran trzeba ustawić od razu — bez niego PreferenceFragmentCompat
+            // nie ma czego pokazać, a obserwator nie wystartuje, dopóki
+            // allPermissionsGranted nie ma wartości.
+            var poprzednieUprawnienia = allPermissionsGranted.value == true
+            ustawEkran(poprzednieUprawnienia, rootKey)
+            if (!poprzednieUprawnienia) askingForPermissionsNeeded(true)
 
-            allPermissionsGranted.observe(this@NotificationPreferenceFragment) { allPermissionsGranted ->
-                setPreferencesFromResource(
-                    if (allPermissionsGranted) R.xml.pref_notification else R.xml.pref_notification_disabled,
-                    rootKey
-                )
+            allPermissionsGranted.observe(this@NotificationPreferenceFragment) { uprawnienia ->
+                // Obserwator emituje bieżącą wartość natychmiast po podpięciu,
+                // więc bez tego warunku ekran ładował się dwa razy z rzędu.
+                if (uprawnienia == poprzednieUprawnienia) return@observe
+                poprzednieUprawnienia = uprawnienia
+                ustawEkran(uprawnienia, rootKey)
+                if (!uprawnienia) askingForPermissionsNeeded(true)
             }
         }
+    }
+
+    private fun ustawEkran(uprawnieniaPrzyznane: Boolean, rootKey: String?) {
+        setPreferencesFromResource(
+            if (uprawnieniaPrzyznane) R.xml.pref_notification else R.xml.pref_notification_disabled,
+            rootKey
+        )
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {

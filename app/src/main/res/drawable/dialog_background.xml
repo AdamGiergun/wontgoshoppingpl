@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Tło okna dialogów preferencji. PreferenceDialogFragmentCompat buduje okno
+    przez AlertDialog.Builder z appcompat, a nie przez MaterialAlertDialogBuilder,
+    więc nie dostaje kształtu Material 3 z samego motywu — trzeba mu go podać
+    jako windowBackground.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/md_surface" />
+    <corners android:radius="28dp" />
+</shape>

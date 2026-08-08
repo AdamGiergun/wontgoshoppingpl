@@ -38,6 +38,15 @@
         <!-- Wariant Material 3 zamiast PreferenceThemeOverlay.v14.Material,
              który jest przestarzałym aliasem sprzed Material Design 2. -->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+
+        <!-- Dialogi preferencji budowane są przez appcompat, nie przez
+             MaterialAlertDialogBuilder, więc bez tego zostają kanciaste i białe
+             obok zaokrąglonych dialogów reszty aplikacji. -->
+        <item name="alertDialogTheme">@style/PreferenceAlertDialog</item>
+    </style>
+
+    <style name="PreferenceAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:windowBackground">@drawable/dialog_background</item>
     </style>
 
 </resources>
