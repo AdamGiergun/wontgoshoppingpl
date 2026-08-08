@@ -9,9 +9,6 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        // mykotlinlibrary / myresources — publikowane lokalnie z projektu
-        // ~/AndroidStudioProjects/mylibraries (`:<modul>:publishToMavenLocal`)
-        mavenLocal()
         google()
         mavenCentral()
     }

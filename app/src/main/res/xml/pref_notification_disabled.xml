@@ -13,7 +13,7 @@
 
     <!-- NOTE: Listed below preferences will be enabled only when the checkbox above is checked.
         android:defaultValue="@string/calendar_not_set"-->
-    <eu.adamgiergun.mykotlinlibrary.calendarmanagement.CalendarsListPreference
+    <eu.adamgiergun.wontgoshoppingpl.settings.CalendarsListPreference
         android:dependency="@string/use_google_calendar_preference_key"
         android:enabled="false"
         android:key="@string/default_calendar_preference_key"
@@ -22,7 +22,7 @@
 
     <PreferenceCategory android:title="@string/default_reminder_settings_preference_category_title">
 
-        <eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
+        <eu.adamgiergun.wontgoshoppingpl.settings.IntegerDialogPreference
             android:defaultValue="@integer/reminder_days_before_default_value"
             android:dependency="@string/use_google_calendar_preference_key"
             android:enabled="false"
@@ -33,7 +33,7 @@
             app:maxValue="7"
             app:minValue="0" />
 
-        <eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreference
+        <eu.adamgiergun.wontgoshoppingpl.settings.TimePreference
             android:defaultValue="@string/default_reminder_time_preference_default_value"
             android:dependency="@string/use_google_calendar_preference_key"
             android:enabled="false"

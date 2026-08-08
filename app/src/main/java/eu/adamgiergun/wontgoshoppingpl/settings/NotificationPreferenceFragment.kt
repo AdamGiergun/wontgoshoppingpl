@@ -4,10 +4,10 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
-import eu.adamgiergun.mykotlinlibrary.IntegerDialogPreference
-import eu.adamgiergun.mykotlinlibrary.IntegerPreferenceDialogFragmentCompat
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreference
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.TimePreferenceDialogFragmentCompat
+import eu.adamgiergun.wontgoshoppingpl.settings.IntegerDialogPreference
+import eu.adamgiergun.wontgoshoppingpl.settings.IntegerPreferenceDialogFragmentCompat
+import eu.adamgiergun.wontgoshoppingpl.settings.TimePreference
+import eu.adamgiergun.wontgoshoppingpl.settings.TimePreferenceDialogFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
 
 internal class NotificationPreferenceFragment : SettingsFragment() {
@@ -31,7 +31,7 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == getString(eu.adamgiergun.myresources.R.string.use_google_calendar_preference_key)) {
+        if (key == getString(eu.adamgiergun.wontgoshoppingpl.R.string.use_google_calendar_preference_key)) {
             requireActivity().recreate()
         }
     }

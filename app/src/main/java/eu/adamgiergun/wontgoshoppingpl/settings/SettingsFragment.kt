@@ -1,7 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.settings
 
 import androidx.lifecycle.ViewModelProvider
-import eu.adamgiergun.mykotlinlibrary.BasePreferenceFragmentCompat
+import eu.adamgiergun.wontgoshoppingpl.settings.BasePreferenceFragmentCompat
 import eu.adamgiergun.wontgoshoppingpl.R
 
 internal abstract class SettingsFragment : BasePreferenceFragmentCompat() {

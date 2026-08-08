@@ -78,4 +78,17 @@
     <string name="day_name_christmas_eve">Nochebuena</string>
     <string name="day_name_christmas_day">Navidad</string>
     <string name="day_name_second_day_of_christmas">Segundo día de Navidad</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available">No hay calendarios disponibles</string>
+    <string name="calendar_not_set">Calendario no establecido</string>
+    <string name="info_explain_calendar_permission">El permiso \'Calendario\' se debe otorgar a esta aplicación para poder agregar eventos y recordatorios al calendario.</string>
+    <string name="google_calendar_preference_title">Calendario de Google</string>
+    <string name="google_calendar_preference_summary_on">Adición de eventos a Google Calendar habilitado</string>
+    <string name="google_calendar_preference_summary_off">Agregando eventos al calendario de Google deshabilitado</string>
+    <string name="default_calendar_preference_title">Calendario predeterminado</string>
+    <string name="info_cancelled">Cancelado</string>
+    <string name="default_time_preference_title">Tiempo</string>
+    <string name="default_days_before_event_preference_title">Número de días antes del evento</string>
+    <string name="default_reminder_settings_preference_category_title">Configuraciones de recordatorio por defecto</string>
 </resources>

@@ -2,10 +2,10 @@ package eu.adamgiergun.wontgoshoppingpl.day
 
 import android.content.Context
 import android.widget.Toast
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleCalendarEvent
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleReminder
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleTime
+import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleCalendarEvent
+import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleDate
+import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleReminder
+import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleTime
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.today

@@ -78,4 +78,17 @@
     <string name="day_name_christmas_eve">Vigilia di Natale</string>
     <string name="day_name_christmas_day">Natale</string>
     <string name="day_name_second_day_of_christmas">Secondo giorno di Natale</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available">Nessun calendario disponibile</string>
+    <string name="calendar_not_set">Calendario non impostato</string>
+    <string name="info_explain_calendar_permission">L\'autorizzazione \"Calendario\" dovrebbe essere concessa a questa app per poter aggiungere eventi e promemoria al calendario.</string>
+    <string name="google_calendar_preference_title">Google Calendar</string>
+    <string name="google_calendar_preference_summary_on">Aggiunta di eventi a Google Calendar abilitato</string>
+    <string name="google_calendar_preference_summary_off">Aggiunta di eventi a Google Calendar disabilitata</string>
+    <string name="default_calendar_preference_title">Calendario predefinito</string>
+    <string name="info_cancelled">Annullato</string>
+    <string name="default_time_preference_title">Tempo</string>
+    <string name="default_days_before_event_preference_title">Numero di giorni prima dell\'evento</string>
+    <string name="default_reminder_settings_preference_category_title">Impostazioni di promemoria predefinite</string>
 </resources>

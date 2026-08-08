@@ -95,4 +95,17 @@
     <string name="day_name_christmas_eve">Куццю</string>
     <string name="day_name_christmas_day">Нараджэнне Хрыстова</string>
     <string name="day_name_second_day_of_christmas">другі дзень Раства Хрыстова</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available">Няма календары даступныя</string>
+    <string name="calendar_not_set">Каляндар не ўстаноўлены</string>
+    <string name="info_explain_calendar_permission">Дазвол \"Каляндар\" павінен быць прадастаўлены гэта дадатак, каб мець магчымасць дадаваць падзеі і нагадванні календара.</string>
+    <string name="google_calendar_preference_title">Каляндар Google</string>
+    <string name="google_calendar_preference_summary_on">Даданне падзей у Календары Google дазволіла</string>
+    <string name="google_calendar_preference_summary_off">Даданне падзей у Календары Google адключаная</string>
+    <string name="default_calendar_preference_title">каляндар па змаўчанні</string>
+    <string name="info_cancelled">Адмененае</string>
+    <string name="default_time_preference_title">Час</string>
+    <string name="default_days_before_event_preference_title">Колькасць дзён да падзеі</string>
+    <string name="default_reminder_settings_preference_category_title">Налады па змаўчанні напамінку</string>
 </resources>

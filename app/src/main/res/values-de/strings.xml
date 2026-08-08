@@ -93,4 +93,18 @@
     <string name="day_name_christmas_eve">Heiligabend</string>
     <string name="day_name_christmas_day">1. Weihnachtstag</string>
     <string name="day_name_second_day_of_christmas">2. Weihnachtstag</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available">Keine Kalender verfügbar</string>
+    <string name="calendar_not_set">Kalender nicht eingestellt</string>
+    <string name="info_explain_calendar_permission">Diese App muss über die Berechtigung "Kalender" verfügen,
+        um Ereignisse und Erinnerungen zum Kalender hinzufügen zu können.</string>
+    <string name="google_calendar_preference_title">Google Kalender</string>
+    <string name="google_calendar_preference_summary_on">Hinzufügen von Ereignissen zu Google Kalender aktiviert</string>
+    <string name="google_calendar_preference_summary_off">Hinzufügen von Ereignissen zu Google Kalender deaktiviert</string>
+    <string name="default_calendar_preference_title">Standardkalender</string>
+    <string name="info_cancelled">Abgebrochen</string>
+    <string name="default_time_preference_title">Zeit</string>
+    <string name="default_days_before_event_preference_title">Anzahl der Tage vor dem Ereignis</string>
+    <string name="default_reminder_settings_preference_category_title">Standard-Erinnerungseinstellungen</string>
 </resources>

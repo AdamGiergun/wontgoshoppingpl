@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
-import eu.adamgiergun.mykotlinlibrary.AppCompatActivityWithHomeInBar
+import eu.adamgiergun.wontgoshoppingpl.common.AppCompatActivityWithHomeInBar
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.areAllPermissionsGranted
 import eu.adamgiergun.wontgoshoppingpl.common.AppViewModel.Companion.calendarPermissions
@@ -39,7 +39,7 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
                 mViewModel.setAllPermissionsGranted(false)
                 Toast.makeText(
                     this,
-                    eu.adamgiergun.myresources.R.string.info_explain_calendar_permission,
+                    eu.adamgiergun.wontgoshoppingpl.R.string.info_explain_calendar_permission,
                     Toast.LENGTH_LONG
                 ).show()
             }

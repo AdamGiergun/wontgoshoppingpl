@@ -93,4 +93,17 @@
     <string name="day_name_christmas_eve">Kalėdų vakaras</string>
     <string name="day_name_christmas_day">Kalėdų diena</string>
     <string name="day_name_second_day_of_christmas">Antroji Kalėdų diena</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available"> Nėra kalendorių </string>
+    <string name="calendar_not_set"> Kalendorius nenustatytas </string>
+    <string name="info_explain_calendar_permission"> „Kalendoriaus“ leidimas šiai programai turėtų būti suteiktas, kad būtų galima įtraukti įvykius ir priminimus į kalendorių. </string>
+    <string name="google_calendar_preference_title"> „Google“ kalendorius </string>
+    <string name="google_calendar_preference_summary_on"> Įtraukti įvykius į „Google“ kalendorių įgalinta </string>
+    <string name="google_calendar_preference_summary_off"> Įvykių įtraukimas į „Google“ kalendorių išjungtas </string>
+    <string name="default_calendar_preference_title"> Numatytasis kalendorius </string>
+    <string name="info_cancelled"> Atšaukta </string>
+    <string name="default_time_preference_title">Laikas</string>
+    <string name="default_days_before_event_preference_title">Prieš dienų skaičių</string>
+    <string name="default_reminder_settings_preference_category_title">Numatytieji priminimo nustatymai</string>
 </resources>

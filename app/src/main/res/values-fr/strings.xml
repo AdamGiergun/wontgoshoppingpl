@@ -79,4 +79,17 @@
     <string name="day_name_christmas_eve">Veille de Noël</string>
     <string name="day_name_christmas_day">Noël</string>
     <string name="day_name_second_day_of_christmas">Deuxième jour de Noël</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available">Aucun calendrier disponible</string>
+    <string name="calendar_not_set">Calendrier non défini</string>
+    <string name="info_explain_calendar_permission">L\'autorisation \"Calendrier\" doit être accordée à cette application pour pouvoir ajouter des événements et des rappels au calendrier.</string>
+    <string name="google_calendar_preference_title">Google Agenda</string>
+    <string name="google_calendar_preference_summary_on">Ajout d\'événements à Google Agenda activé</string>
+    <string name="google_calendar_preference_summary_off">L\'ajout d\'événements à Google Agenda est désactivé</string>
+    <string name="default_calendar_preference_title">Calendrier par défaut</string>
+    <string name="info_cancelled">Annulé</string>
+    <string name="default_time_preference_title">Temps</string>
+    <string name="default_days_before_event_preference_title">Nombre de jours avant l\'événement</string>
+    <string name="default_reminder_settings_preference_category_title">Paramètres de rappel par défaut</string>
 </resources>

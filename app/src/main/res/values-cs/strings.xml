@@ -78,4 +78,17 @@
     <string name="day_name_christmas_eve">Štědrý večer</string>
     <string name="day_name_christmas_day">Vánoční den</string>
     <string name="day_name_second_day_of_christmas">Druhý den vánočních svátků</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available">K dispozici nejsou žádné kalendáře</string>
+    <string name="calendar_not_set">Kalendář není nastaven</string>
+    <string name="info_explain_calendar_permission">K této aplikaci by měla být udělena oprávnění \"Kalendář\", aby bylo možné přidávat události a připomenutí do kalendáře.</string>
+    <string name="google_calendar_preference_title">Kalendář Google</string>
+    <string name="google_calendar_preference_summary_on">Přidání událostí do Kalendáře Google povoleno</string>
+    <string name="google_calendar_preference_summary_off">Přidání událostí do Kalendáře Google je zakázáno</string>
+    <string name="default_calendar_preference_title">Výchozí kalendář</string>
+    <string name="info_cancelled">Zrušeno</string>
+    <string name="default_time_preference_title">Čas</string>
+    <string name="default_days_before_event_preference_title">Počet dnů před událostí</string>
+    <string name="default_reminder_settings_preference_category_title">Výchozí nastavení připomenutí</string>
 </resources>

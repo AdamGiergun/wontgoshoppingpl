@@ -31,10 +31,6 @@ sqlite = "2.7.0"
 testExtJunit = "1.3.0"
 testRunner = "1.7.0"
 
-# Biblioteki prywatne — publikowane z ~/AndroidStudioProjects/mylibraries
-# przez `./gradlew :<modul>:publishToMavenLocal`
-myKotlinLibrary = "0.1.60"
-myResources = "1.0.19"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
@@ -74,8 +70,6 @@ google-material = { module = "com.google.android.material:material", version.ref
 play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 user-messaging-platform = { module = "com.google.android.ump:user-messaging-platform", version.ref = "userMessagingPlatform" }
 
-my-kotlin-library = { module = "eu.adamgiergun:mykotlinlibrary", version.ref = "myKotlinLibrary" }
-my-resources = { module = "eu.adamgiergun:myresources", version.ref = "myResources" }
 
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }

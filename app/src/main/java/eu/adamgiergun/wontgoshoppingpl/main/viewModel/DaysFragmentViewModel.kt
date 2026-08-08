@@ -7,9 +7,9 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleReminder
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleTime
+import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleDate
+import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleReminder
+import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleTime
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AdsContainer
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences

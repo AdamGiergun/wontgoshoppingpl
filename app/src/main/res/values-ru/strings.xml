@@ -91,4 +91,17 @@
     <string name="day_name_christmas_eve">Соче́льник</string>
     <string name="day_name_christmas_day">Рождество́ Христово</string>
     <string name="day_name_second_day_of_christmas">второй день Рождества Христово</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available">Нет доступных календарей</string>
+    <string name="calendar_not_set">Календарь не установлен</string>
+    <string name="info_explain_calendar_permission">Этому приложению должно быть предоставлено разрешение «Календарь», чтобы можно было добавлять события и напоминания в календарь.</string>
+    <string name="google_calendar_preference_title">Календарь Google</string>
+    <string name="google_calendar_preference_summary_on">Добавление событий в Календарь Google включено</string>
+    <string name="google_calendar_preference_summary_off">Добавление событий в Календарь Google отключено</string>
+    <string name="default_calendar_preference_title">Календарь по умолчанию</string>
+    <string name="info_cancelled">Отменен</string>
+    <string name="default_time_preference_title">Время</string>
+    <string name="default_days_before_event_preference_title">Количество дней до события</string>
+    <string name="default_reminder_settings_preference_category_title">Настройки напоминания по умолчанию</string>
 </resources>

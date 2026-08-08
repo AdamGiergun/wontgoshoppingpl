@@ -126,8 +126,6 @@ room {
 dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
-    implementation(libs.my.kotlin.library)
-    implementation(libs.my.resources)
 
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)

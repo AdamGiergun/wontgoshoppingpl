@@ -92,4 +92,17 @@
     <string name="day_name_christmas_eve">Святвечір</string>
     <string name="day_name_christmas_day">Різдво Христове</string>
     <string name="day_name_second_day_of_christmas">другий день Різдва Христового</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available">Немає доступних календарів</string>
+    <string name="calendar_not_set">Календар не встановлено</string>
+    <string name="info_explain_calendar_permission">Цьому додатком має бути надано дозвіл «Календар», щоб можна було додавати події та нагадування в календар.</string>
+    <string name="google_calendar_preference_title">Календар Google</string>
+    <string name="google_calendar_preference_summary_on">Додавання подій до Календаря Google включено</string>
+    <string name="google_calendar_preference_summary_off">Додавання подій до Календаря Google відключено</string>
+    <string name="default_calendar_preference_title">Календар за замовчуванням</string>
+    <string name="info_cancelled">Скасовано</string>
+    <string name="default_time_preference_title">Час</string>
+    <string name="default_days_before_event_preference_title">Кількість днів до події</string>
+    <string name="default_reminder_settings_preference_category_title">Налаштування нагадування за умовчанням</string>
 </resources>

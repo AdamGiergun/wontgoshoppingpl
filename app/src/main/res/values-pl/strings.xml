@@ -91,4 +91,17 @@
     <string name="day_name_christmas_eve">Wigilia</string>
     <string name="day_name_christmas_day">Boże Narodzenie</string>
     <string name="day_name_second_day_of_christmas">Boże Narodzenie (2&#160;dzień)</string>
+
+    <!-- Przeniesione z biblioteki myresources -->
+    <string name="no_calendars_available">Brak dostępnych kalendarzy</string>
+    <string name="calendar_not_set">Nie wybrano kalendarza</string>
+    <string name="info_explain_calendar_permission">Należy nadać aplikacji uprawnienie "Kalendarz", by móc dodawać zdarzenia i przypomnienia do kalendarza.</string>
+    <string name="google_calendar_preference_title">Kalendarz Google</string>
+    <string name="google_calendar_preference_summary_on">Dodawanie zdarzeń do Kalendarza Google włączone</string>
+    <string name="google_calendar_preference_summary_off">Dodawanie zdarzeń do Kalendarza Google wyłączone</string>
+    <string name="default_calendar_preference_title">Domyślny Kalendarz</string>
+    <string name="info_cancelled">Anulowano</string>
+    <string name="default_time_preference_title">Pora</string>
+    <string name="default_days_before_event_preference_title">Liczba dni przed wydarzeniem</string>
+    <string name="default_reminder_settings_preference_category_title">Domyślne ustawienia przypomnienia</string>
 </resources>

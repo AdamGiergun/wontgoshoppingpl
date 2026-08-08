@@ -103,4 +103,29 @@
     <string name="day_name_christmas_eve">Christmas Eve</string>
     <string name="day_name_christmas_day">Christmas Day</string>
     <string name="day_name_second_day_of_christmas">Second Day of&#160;Christmas</string>
+
+    <!-- Przeniesione z biblioteki myresources przy jej wchłanianiu.
+         Wartości kluczy SharedPreferences (translatable="false") muszą
+         pozostać niezmienione — zależą od nich dane na urządzeniach. -->
+    <string name="use_google_calendar_preference_key" translatable="false">use_calendar</string>
+    <string name="default_calendar_preference_key" translatable="false">default_calendar</string>
+    <string name="id_for_default_calendar_not_set" translatable="false">-1</string>
+    <string name="id_for_no_calendars_available" translatable="false">-2</string>
+    <string name="no_calendars_available">No calendars available</string>
+    <string name="calendar_not_set">Calendar not set</string>
+    <string name="info_explain_calendar_permission">\'Calendar\' permission should be granted to this app to be able to add events and reminders to calendar.</string>
+    <string name="google_calendar_preference_title">Google Calendar</string>
+    <string name="google_calendar_preference_summary_on">Adding events to Google Calendar enabled</string>
+    <string name="google_calendar_preference_summary_off">Adding events to Google Calendar disabled</string>
+    <string name="default_calendar_preference_title">Default calendar</string>
+    <string name="default_reminder_time_preference_key" translatable="false">default_time_for_reminder</string>
+    <string name="default_reminder_time_preference_default_value" translatable="false">10:00</string>
+    <string name="default_reminder_days_before_preference_key" translatable="false">Default_number_of_days_before_event_for_reminder</string>
+    <string name="use_localized_digits_key" translatable="false">use_localized_digits</string>
+    <string name="info_cancelled">Cancelled</string>
+    <string name="default_value_for_time_preference" translatable="false">12:00</string>
+    <string name="first_run_preference_key" translatable="false">first_run</string>
+    <string name="default_time_preference_title">Time</string>
+    <string name="default_days_before_event_preference_title">Number of days before event</string>
+    <string name="default_reminder_settings_preference_category_title">Default reminder settings</string>
 </resources>

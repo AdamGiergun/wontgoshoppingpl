@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import eu.adamgiergun.mykotlinlibrary.calendarmanagement.SimpleDate
+import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleDate
 
 // Indeks na `item` obsługuje zarówno zapytania zakresowe (`item >= :date`), jak
 // i wyszukiwanie po dacie przy odświeżaniu danych. Celowo nieunikalny: baza
