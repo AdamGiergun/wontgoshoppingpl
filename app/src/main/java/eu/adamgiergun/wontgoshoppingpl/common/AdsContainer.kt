@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.common
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.ViewGroup
 import com.google.android.gms.ads.AdError
@@ -83,8 +84,15 @@ internal object AdsContainer {
     /**
      * Baner adaptacyjny zamiast wycofanego SMART_BANNER — wysokość dobierana do
      * szerokości okna, więc działa też po obrocie i na dużych ekranach.
+     *
      * Wariant "large" jest następcą zwykłego banera zakotwiczonego, który
-     * (razem z odmianami portrait/landscape) jest w SDK 25 oznaczony jako przestarzały.
+     * (razem z odmianami portrait/landscape) jest w SDK 25 przestarzały.
+     *
+     * Slot ma rozmiar, o który poprosiliśmy; kreację dobiera serwer i bywa
+     * mniejsza, a różnicę SDK zamalowuje. Zmiana wariantu tego nie usuwa —
+     * sprawdzone: przy zwykłym czerń przenosi się z góry i dołu na boki, bo
+     * kreacje testowe mają sztywne rozmiary IAB (320x50, 468x60, 728x90)
+     * i nie skalują się do slotu. Reklamy produkcyjne slot wypełniają.
      */
     private fun createBannerAdView(activity: Activity): AdView {
         val displayMetrics = activity.resources.displayMetrics
@@ -98,6 +106,10 @@ internal object AdsContainer {
         return AdView(activity).apply {
             adUnitId = activity.getString(R.string.main_banner_ad_id)
             setAdSize(AdSize.getLargeAnchoredAdaptiveBannerAdSize(activity, adWidthDp))
+            // Slot ma rozmiar, o który poprosiliśmy, a kreacja bywa mniejsza —
+            // reszta slotu to tło AdView, domyślnie czarne. Przezroczyste pokazuje
+            // w tym miejscu tło aplikacji zamiast czarnej ramki wokół reklamy.
+            setBackgroundColor(Color.TRANSPARENT)
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT

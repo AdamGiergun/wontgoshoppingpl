@@ -16,6 +16,7 @@ import eu.adamgiergun.wontgoshoppingpl.databinding.FragmentDayListBinding
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderDaysBeforeDialog
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderTimeDialog
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.TillDateDialog
+import eu.adamgiergun.wontgoshoppingpl.main.utils.ColumnSnapHelper
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 import kotlinx.coroutines.launch
 
@@ -114,6 +115,9 @@ internal class DaysFragment : Fragment() {
         }
         ItemTouchHelper(dayTouchHelperCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN))
             .attachToRecyclerView(lista)
+        // Bez tego przewijanie w bok zatrzymuje się na uciętych kolumnach po obu
+        // stronach ekranu.
+        ColumnSnapHelper().attachToRecyclerView(lista)
         // Nie doOnLayout: baner wczytuje się później i skraca listę, a wtedy liczba
         // wierszy policzona przy pierwszym układzie jest już nieaktualna i wiersze
         // ściskają się poniżej wysokości, jaką miały dostać.
