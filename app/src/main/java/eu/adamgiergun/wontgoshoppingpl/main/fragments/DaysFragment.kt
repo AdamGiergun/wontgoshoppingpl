@@ -47,9 +47,16 @@ internal class DaysFragment : Fragment() {
             viewModel.apply {
                 density = requireContext().resources.displayMetrics.density
                 logLook()
-                events.observe(viewLifecycleOwner) {
-                    binding.list.adapter = DaysRecyclerViewAdapter(this, viewLifecycleOwner)
-                }
+
+                // Adapter powstaje raz na cykl życia widoku, a kolejne dane wchodzą
+                // przez submitList. Wcześniej był tworzony przy KAŻDEJ emisji events,
+                // a że jego init rejestruje obserwatora isDbChanged, każda emisja
+                // zostawiała kolejnego, nieusuwalnego obserwatora. Przy okazji
+                // DiffUtil nigdy nie działał: świeży adapter porównywał z pustą listą,
+                // więc każde odświeżenie przebudowywało całą listę.
+                val adapter = DaysRecyclerViewAdapter(this, viewLifecycleOwner)
+                binding.list.adapter = adapter
+                events.observe(viewLifecycleOwner) { adapter.submitList(it) }
                 idOfDialogToShow.observe(viewLifecycleOwner) { id ->
                     when (id) {
                         R.id.numberOfDaysBeforeView -> ReminderDaysBeforeDialog()

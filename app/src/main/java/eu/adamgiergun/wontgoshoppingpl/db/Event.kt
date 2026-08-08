@@ -29,8 +29,12 @@ internal data class Event(
         return date.hashCode()
     }
 
+    // Tożsamość wpisu wyznacza sama data — tak samo jak hashCode i compareTo,
+    // bo w jednym dniu jest najwyżej jedno wydarzenie. Sprawdzenie typu jest
+    // konieczne: bez niego `other.hashCode()` rozwiązywało się do rozszerzenia
+    // `Any?.hashCode()` i kolizja z obiektem dowolnej klasy dawała `true`.
     override fun equals(other: Any?): Boolean {
-        return hashCode() == other.hashCode()
+        return other is Event && hashCode() == other.hashCode()
     }
 
     companion object {

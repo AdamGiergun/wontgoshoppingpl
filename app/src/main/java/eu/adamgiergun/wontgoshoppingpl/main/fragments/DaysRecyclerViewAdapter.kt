@@ -1,6 +1,5 @@
 package eu.adamgiergun.wontgoshoppingpl.main.fragments
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -15,17 +14,18 @@ import eu.adamgiergun.wontgoshoppingpl.main.utils.setLook
 import eu.adamgiergun.wontgoshoppingpl.main.utils.setTimeDescription
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 
-@SuppressLint("NotifyDataSetChanged")
 internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewModel, lifecycleOwner: LifecycleOwner)
     : ListAdapter<Event, DaysRecyclerViewAdapter.DayViewHolder>(EventDiffCallback()) {
 
     init {
-        submitList(viewModel.events.value)
+        // Bez submitList w tym miejscu — listę dostarcza fragment, obserwując events.
         viewModel.isDbChanged.observe(lifecycleOwner) {
             if (it) {
                 if (viewModel.lastActionIsAddList) {
+                    // Odświeżenie danych kończy się emisją events, a ta wywołuje
+                    // submitList. notifyDataSetChanged byłoby tu nie tylko zbędne,
+                    // ale i szkodliwe — rozjeżdża się z asynchronicznym DiffUtil.
                     viewModel.updateDisplayedDataSetIfNeeded()
-                    notifyDataSetChanged()
                 } else {
                     notifyItemChanged(viewModel.lastTouchedPosition)
                 }
