@@ -1,3 +1,5 @@
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -60,6 +62,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Jawnie i z rzutowaniem na ExtensionAware — patrz komentarz przy buildzie debug.
+            (this as ExtensionAware).configure<CrashlyticsExtension> {
+                mappingFileUploadEnabled = true
+            }
             signingConfig = signingConfigs.findByName("release")
             resValue("string", "ad_mob_app_id", secret("WGS_AD_MOB_APP_ID", testAdMobAppId))
             resValue("string", "main_banner_ad_id", secret("WGS_MAIN_BANNER_AD_ID", testBannerAdId))
@@ -70,7 +76,11 @@ android {
             resValue("bool", "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED", "true")
         }
         debug {
-            configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
+            // Rzutowanie na ExtensionAware jest konieczne: bez niego `configure` wiąże się
+            // z rozszerzeniem projektu, a nie tego typu builda, i ustawienie wycieka na
+            // wszystkie warianty. Objawia się to zerowym mapping_file_id w buildzie
+            // release, czyli nieczytelnymi stack trace'ami z produkcji.
+            (this as ExtensionAware).configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = false
             }
             resValue("string", "ad_mob_app_id", testAdMobAppId)
