@@ -20,6 +20,12 @@
          zależnie od tego, czy dzień miesiąca ma jedną cyfrę czy dwie. -->
     <dimen name="day_date_column_min">112dp</dimen>
 
+    <!-- Przy wężu wysokość wiersza wynika z podziału wysokości listy, a nie
+         z treści. Te wartości mówią, poniżej czego wiersz nie ma sensu — liczba
+         wierszy to wysokość listy podzielona przez nie. -->
+    <dimen name="day_row_min_height">68dp</dimen>
+    <dimen name="day_row_min_height_compact">56dp</dimen>
+
     <!-- Baner ma własny limit, węższy niż treść. Rozciągnięty na całą szerokość
          ekranu w poziomie przestaje wyglądać jak reklama, a zaczyna jak pasek
          systemowy — i to on, a nie lista, rzuca się w oczy jako pierwszy. -->

@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.main.fragments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -16,6 +17,13 @@ import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 
 internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewModel, lifecycleOwner: LifecycleOwner)
     : ListAdapter<Event, DaysRecyclerViewAdapter.DayViewHolder>(EventDiffCallback()) {
+
+    /**
+     * Przy przewijaniu w pionie karta zajmuje całą szerokość listy. Przy wężu
+     * przewijanym w bok szerokość jest osią przewijania, więc MATCH_PARENT dałby
+     * jedną kolumnę na ekran — fragment podaje tu wyliczoną szerokość kolumny.
+     */
+    var szerokoscKolumny: Int = ViewGroup.LayoutParams.MATCH_PARENT
 
     init {
         // Bez submitList w tym miejscu — listę dostarcza fragment, obserwując events.
@@ -39,7 +47,7 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
 
     override fun onBindViewHolder(dayViewHolder: DayViewHolder, position: Int) {
         val event = getItem(position)
-        dayViewHolder.bind(Day(event, dayViewHolder.itemView.context), viewModel)
+        dayViewHolder.bind(Day(event, dayViewHolder.itemView.context), viewModel, szerokoscKolumny)
     }
 
     internal class DayViewHolder private constructor(private val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -47,12 +55,23 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
         private var day: Day? = null
         private var viewModel: DaysFragmentViewModel? = null
 
-        fun bind(day: Day, viewModel: DaysFragmentViewModel) {
+        fun bind(day: Day, viewModel: DaysFragmentViewModel, szerokoscKolumny: Int) {
             this.day = day
             this.viewModel = viewModel
             val position = bindingAdapterPosition
             binding.run {
-                val kolorTresci = cardView.applyDayLook(day, viewModel.isListCompact)
+                // Przy wężu wysokość komórki narzuca menedżer układu, więc duże
+                // wypełnienie pionowe nie podnosi wiersza, tylko wypycha z niego
+                // tekst. Gęstość steruje wtedy liczbą wierszy, nie wypełnieniem.
+                val waz = szerokoscKolumny != ViewGroup.LayoutParams.MATCH_PARENT
+                cardView.updateLayoutParams {
+                    width = szerokoscKolumny
+                    // Bez MATCH_PARENT karta zostaje przy swojej wysokości treści,
+                    // a komórka jest wyższa — między wierszami robią się przepaści.
+                    height = if (waz) ViewGroup.LayoutParams.MATCH_PARENT
+                    else ViewGroup.LayoutParams.WRAP_CONTENT
+                }
+                val kolorTresci = cardView.applyDayLook(day, viewModel.isListCompact || waz)
                 cardView.setOnClickListener { viewModel.setLastTouchedItem(day, position, false) }
                 date.text = day.dateAndWeekdayString
                 date.setTextColor(kolorTresci)
