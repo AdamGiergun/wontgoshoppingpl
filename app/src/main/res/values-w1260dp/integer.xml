@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ta sama reguła co przy progu 840dp: kolumna poniżej ~420dp przestaje
+         mieścić nazwę dnia w jednej linii. 1260 to po prostu trzy takie kolumny. -->
+    <integer name="list_span_count">3</integer>
+</resources>
