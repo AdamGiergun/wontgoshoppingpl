@@ -19,7 +19,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/numberOfDaysBeforePrefix"
-        style="@style/MyTextViewStyle"
+        style="@style/DialogLabel"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="@string/remind_me"
@@ -28,7 +28,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/numberOfDaysBeforeView"
-        style="@style/MyEditTextStyle"
+        style="@style/DialogEditableField"
         android:layout_width="30dp"
         android:layout_height="0dp"
         android:cursorVisible="false"
@@ -38,7 +38,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/numberOfDaysBeforeSuffix"
-        style="@style/MyTextViewStyle"
+        style="@style/DialogLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/days"
@@ -54,7 +54,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timeViewPrefix"
-        style="@style/MyTextViewStyle"
+        style="@style/DialogLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/before_comma_at"
@@ -63,7 +63,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timeView"
-        style="@style/MyEditTextStyle"
+        style="@style/DialogEditableField"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:cursorVisible="false"

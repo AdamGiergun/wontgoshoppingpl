@@ -1,8 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.common
 
-import android.content.res.Resources.Theme
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -52,31 +50,22 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
         enableEdgeToEdge()
     }
 
-    override fun getTheme(): Theme {
-        return super.getTheme().apply {
-            val style = if (mViewModel.isLookRich) R.style.AppThemeCustomizationsRich else R.style.AppThemeCustomizationsMini
-            applyStyle(style, true)
-        }
-    }
-
     /**
-     * Odsuwa treść od pasków systemowych i wcięcia ekranu. W trybie edge-to-edge
-     * ActionBarOverlayLayout przestaje przesuwać treść w dół, więc do górnego insetu
-     * trzeba doliczyć wysokość paska akcji — inaczej pierwszy widok chowa się pod nim.
+     * Odsuwa treść od pasków systemowych i wcięcia ekranu.
+     *
+     * Górnego insetu nie trzeba niczym uzupełniać: ActionBarOverlayLayout
+     * przekazuje w dół inset powiększony o wysokość paska akcji. Wcześniej
+     * dokładaliśmy tu jeszcze actionBarSize i pasek zostawiał pod sobą pustą
+     * wstęgę wysokości całego paska.
      */
     protected fun applySystemBarInsets(view: View) {
-        val actionBarHeight = TypedValue().let { typedValue ->
-            if (theme.resolveAttribute(androidx.appcompat.R.attr.actionBarSize, typedValue, true))
-                TypedValue.complexToDimensionPixelSize(typedValue.data, resources.displayMetrics)
-            else 0
-        }
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
             val insets = windowInsets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
             )
             v.updatePadding(
                 left = insets.left,
-                top = insets.top + actionBarHeight,
+                top = insets.top,
                 right = insets.right,
                 bottom = insets.bottom
             )

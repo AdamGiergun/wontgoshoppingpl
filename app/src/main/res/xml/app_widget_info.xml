@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    previewLayout pokazuje w wyborniku widżetów prawdziwy układ zamiast zrzutu
+    z 2020 roku; previewImage zostaje dla Androida 11 i starszych.
+-->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/app_widget_no_shopping"
     android:initialLayout="@layout/app_widget_no_shopping"
     android:minWidth="110dp"
     android:minHeight="40dp"
     android:previewImage="@drawable/app_widget_preview"
+    android:previewLayout="@layout/app_widget_no_shopping"
     android:resizeMode="none"
     android:updatePeriodMillis="@integer/app_widget_update_period_millis"
     android:widgetCategory="home_screen" />

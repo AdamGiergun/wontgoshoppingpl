@@ -32,7 +32,6 @@
         android:clickable="true"
         android:contentDescription="@android:string/ok"
         android:focusable="true"
-        app:backgroundTint="@color/colorCommerceSunday"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"

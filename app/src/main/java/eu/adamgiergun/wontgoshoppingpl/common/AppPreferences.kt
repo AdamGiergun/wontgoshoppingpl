@@ -8,14 +8,15 @@ import eu.adamgiergun.wontgoshoppingpl.day.Day.Type.Companion.newSet
 
 internal object AppPreferences : MyAppPreferences() {
 
-    fun isLookRich(context: Context): Boolean {
-        val key = context.getString(R.string.app_look_preference_key)
+    /**
+     * Zwarta lista mieści więcej wierszy na ekranie kosztem oddechu między nimi.
+     * Zastąpiła dawny wybór „rich/mini", który różnił kart gradientem od płaskiego
+     * koloru — przy trybie ciemnym oznaczałby cztery kombinacje do zaprojektowania,
+     * a nie wnosił nic poza dekoracją.
+     */
+    fun isListCompact(context: Context): Boolean {
+        val key = context.getString(R.string.list_density_preference_key)
         return getBoolean(context, key, false)
-    }
-
-    fun setLookRich(context: Context, value: Boolean) {
-        val key = context.getString(R.string.app_look_preference_key)
-        putBoolean(context, key, value)
     }
 
     fun storedDayTypeSet(context: Context): Day.Type.Set {

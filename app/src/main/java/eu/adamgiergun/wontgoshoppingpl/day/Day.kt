@@ -44,16 +44,20 @@ internal class Day(private val event: Event, context: Context) : Comparable<Day>
     private val type: Type
         get() = Type.getType(event.typeId)!!
 
-    val backgroundColorResource = when (type) {
-        Type.HOLIDAY -> R.color.colorHoliday
-        Type.NON_COMMERCE_DAY -> R.color.colorNonCommerceDay
-        Type.COMMERCE_SUNDAY -> R.color.colorCommerceSunday
+    // Kolor jest tu nośnikiem informacji, nie dekoracją: czerwony to święto,
+    // pomarańczowy dzień bez handlu, zielony niedziela handlowa. Dlatego pozostaje
+    // stały niezależnie od motywu systemu, a za czytelność odpowiada para
+    // container / onContainer, osobna dla trybu jasnego i ciemnego.
+    val containerColorResource = when (type) {
+        Type.HOLIDAY -> R.color.day_holiday_container
+        Type.NON_COMMERCE_DAY -> R.color.day_non_commerce_container
+        Type.COMMERCE_SUNDAY -> R.color.day_commerce_container
     }
 
-    val backgroundResource = when (type) {
-        Type.HOLIDAY -> R.drawable.card_bg_red
-        Type.NON_COMMERCE_DAY -> R.drawable.card_bg_orange
-        Type.COMMERCE_SUNDAY -> R.drawable.card_bg_green
+    val onContainerColorResource = when (type) {
+        Type.HOLIDAY -> R.color.day_on_holiday_container
+        Type.NON_COMMERCE_DAY -> R.color.day_on_non_commerce_container
+        Type.COMMERCE_SUNDAY -> R.color.day_on_commerce_container
     }
 
     private var noOfConsecutiveDays = 0

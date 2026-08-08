@@ -36,11 +36,7 @@
     <string name="go_shopping_earlier">zrób zakupy wcześniej!</string>
     <string name="go_shopping">zrób zakupy!</string>
 
-    <string name="title_app_look">Wygląd aplikacji</string>
-    <string name="summary_app_look_mini">Mini</string>
-    <string name="summary_app_look_rich">Bogaty</string>
 
-    <string name="ask_for_look">\nWybierz wygląd aplikacji.\nMożesz zmienić go później w Ustawieniach.\n</string>
 
     <string name="pref_header_look">Wygląd</string>
     <string name="pref_header_notifications">Powiadomienia</string>
@@ -104,4 +100,7 @@
     <string name="default_time_preference_title">Pora</string>
     <string name="default_days_before_event_preference_title">Liczba dni przed wydarzeniem</string>
     <string name="default_reminder_settings_preference_category_title">Domyślne ustawienia przypomnienia</string>
+    <string name="title_list_density">Gęstość listy</string>
+    <string name="summary_list_density_compact">Kompaktowa</string>
+    <string name="summary_list_density_standard">Standardowa</string>
 </resources>

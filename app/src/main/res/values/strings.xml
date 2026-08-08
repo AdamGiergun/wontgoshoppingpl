@@ -41,12 +41,8 @@
     <string name="go_shopping_earlier">go shopping earlier!</string>
     <string name="go_shopping">go shopping!</string>
 
-    <string name="app_look_preference_key" translatable="false">app_look</string>
-    <string name="title_app_look">App look</string>
-    <string name="summary_app_look_mini">Mini</string>
-    <string name="summary_app_look_rich">Rich</string>
+    <string name="list_density_preference_key" translatable="false">list_density</string>
 
-    <string name="ask_for_look">"\nChoose your preferred look. \nYou may change it later in Settings. "</string>
 
     <string name="pref_header_look">Look</string>
     <string name="pref_header_notifications">Notifications</string>
@@ -128,4 +124,7 @@
     <string name="default_time_preference_title">Time</string>
     <string name="default_days_before_event_preference_title">Number of days before event</string>
     <string name="default_reminder_settings_preference_category_title">Default reminder settings</string>
+    <string name="title_list_density">List density</string>
+    <string name="summary_list_density_compact">Compact</string>
+    <string name="summary_list_density_standard">Standard</string>
 </resources>

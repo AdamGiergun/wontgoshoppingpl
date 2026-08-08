@@ -1,15 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryMini">#3F51B5</color>
-    <color name="colorPrimaryDarkMini">#303F9F</color>
-    <color name="colorPrimaryRich">@android:color/holo_orange_light</color>
-    <color name="colorPrimaryDarkRich">@android:color/holo_orange_dark</color>
 
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorCardText">#FFFFFF</color>
-    <color name="colorEditableField">#BEBEBE</color>
+    <!-- ============ Paleta Material 3, wariant jasny ============
+         Własna, nie dynamiczna. Sensem aplikacji jest odczytanie koloru dnia
+         jednym spojrzeniem, a paleta pobrana z tapety użytkownika weszłaby
+         w konflikt z kolorami niosącymi znaczenie. -->
 
-    <color name="colorHoliday">#FF0000</color>
-    <color name="colorNonCommerceDay">#FF1493</color>
-    <color name="colorCommerceSunday">@android:color/holo_green_dark</color>
+    <color name="md_primary">#405AA9</color>
+    <color name="md_on_primary">#FFFFFF</color>
+    <color name="md_primary_container">#DBE1FF</color>
+    <color name="md_on_primary_container">#00174B</color>
+
+    <color name="md_secondary">#585E71</color>
+    <color name="md_on_secondary">#FFFFFF</color>
+    <color name="md_secondary_container">#DDE1F9</color>
+    <color name="md_on_secondary_container">#151B2C</color>
+
+    <color name="md_background">#FEFBFF</color>
+    <color name="md_on_background">#1B1B1F</color>
+    <color name="md_surface">#FEFBFF</color>
+    <color name="md_on_surface">#1B1B1F</color>
+    <color name="md_surface_variant">#E2E1EC</color>
+    <color name="md_on_surface_variant">#45464F</color>
+    <color name="md_outline">#767680</color>
+
+    <color name="md_error">#BA1A1A</color>
+    <color name="md_on_error">#FFFFFF</color>
+
+    <!-- ============ Kolory znaczące dni ============
+         Nasycone na tyle, żeby lista dawała się czytać rzutem oka, ale
+         z kontrastem tekstu spełniającym wymogi dostępności — bez cienia
+         pod literami, którym poprzednia wersja ratowała czytelność. -->
+
+    <color name="day_holiday_container">#FFB4AB</color>
+    <color name="day_on_holiday_container">#410002</color>
+
+    <color name="day_non_commerce_container">#FFC98F</color>
+    <color name="day_on_non_commerce_container">#2B1700</color>
+
+    <color name="day_commerce_container">#7EDC96</color>
+    <color name="day_on_commerce_container">#00210E</color>
+
+
+    <!-- Widget: RemoteViews nie widzi atrybutów motywu, kolory wprost -->
+    <color name="widget_text">#FFFFFFFF</color>
+    <color name="widget_text_shadow">#B3000000</color>
+
 </resources>

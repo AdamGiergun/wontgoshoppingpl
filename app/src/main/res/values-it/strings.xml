@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Nessun acquisto in PL</string>
-    <string name="ask_for_look">Scegli il tuo look preferito. Puoi cambiarlo più tardi in Impostazioni.</string>
     <string name="before_comma_at">prima, a</string>
     <string name="commerce_sundays">Domenica di commercio</string>
     <string name="day_of_limited_commerce">Giorno di restrizioni commerciali</string>
@@ -28,8 +27,6 @@
     <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl"> Norme sulla privacy </a></string>
     <string name="remind_me">Ricordami</string>
     <string name="since">Da\n</string>
-    <string name="summary_app_look_mini">Mini</string>
-    <string name="summary_app_look_rich">Ricco</string>
     <string name="summary_delete_events">Rimuove tutti gli eventi aggiunti da questa app dai calendari scelti</string>
     <string name="summary_show_commerce_sundays_off">Non mostrare domeniche commerciali sulla lista</string>
     <string name="summary_show_commerce_sundays_on">Mostra domeniche commerciali sulla lista</string>
@@ -41,7 +38,6 @@
     <string name="title_activity_help">Aiuto</string>
     <string name="title_activity_settings">Impostazioni</string>
     <string name="title_add_to_calendar">Aggiungi al calendario</string>
-    <string name="title_app_look">App vista</string>
     <string name="title_choose_events">Eventi da aggiungere al calendario</string>
     <string name="title_delete_events">Elimina promemoria</string>
     <string name="title_reminder">Promemoria</string>
@@ -91,4 +87,7 @@
     <string name="default_time_preference_title">Tempo</string>
     <string name="default_days_before_event_preference_title">Numero di giorni prima dell\'evento</string>
     <string name="default_reminder_settings_preference_category_title">Impostazioni di promemoria predefinite</string>
+    <string name="title_list_density">Densità dell\'elenco</string>
+    <string name="summary_list_density_compact">Compatta</string>
+    <string name="summary_list_density_standard">Standard</string>
 </resources>

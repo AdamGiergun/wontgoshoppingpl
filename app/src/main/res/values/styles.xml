@@ -1,74 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-    </style>
+    <!--
+        Style widżetów. Motyw aplikacji przeniósł się do themes.xml — wcześniej
+        wszystko mieszkało tutaj, a style widoków dziedziczyły po MOTYWIE
+        (`parent="AppTheme"`), co działało przez przypadek: style i motywy dzielą
+        przestrzeń nazw atrybutów, ale to nie jest ta sama rzecz.
+    -->
 
-    <style name="AppThemeCustomizationsMini" parent="AppTheme">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryMini</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkMini</item>
-    </style>
-
-    <style name="AppThemeCustomizationsRich" parent="AppTheme">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryRich</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkRich</item>
-    </style>
-
-    <style name="MyCardViewStyle" parent="AppTheme">
-        <item name="contentPaddingBottom">0dp</item>
-        <item name="contentPaddingTop">0dp</item>
-        <item name="contentPaddingLeft">2dp</item>
-        <item name="contentPaddingRight">2dp</item>
-        <item name="cardUseCompatPadding">true</item>
+    <style name="DayCard" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">@dimen/day_card_corner</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardUseCompatPadding">false</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
-    <style name="MyTextViewStyle" parent="AppTheme">
-        <item name="android:layout_margin">@dimen/text_margin</item>
-        <item name="android:textAppearance">?attr/textAppearanceLargePopupMenu</item>
+    <!--
+        Skala typograficzna Material 3 zamiast dawnych
+        ?attr/textAppearanceLargePopupMenu i ?attr/textAppearanceListItem,
+        czyli krojów przeznaczonych dla menu podręcznego i pozycji listy
+        systemowej. Hierarchia niesie teraz informację: nazwa dnia jest
+        najważniejsza, data ją poprzedza, godzina jest etykietą.
+    -->
+
+    <style name="DayRowName" parent="TextAppearance.Material3.TitleMedium" />
+
+    <style name="DayRowDate" parent="TextAppearance.Material3.BodyMedium" />
+
+    <style name="DayRowTime" parent="TextAppearance.Material3.LabelMedium" />
+
+    <style name="DialogLabel" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:layout_margin">@dimen/spacing_xs</item>
     </style>
 
-    <style name="MyEditTextStyle" parent="MyTextViewStyle">
+    <style name="DialogEditableField" parent="DialogLabel">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textAlignment">gravity</item>
-        <item name="android:background">@color/colorEditableField</item>
+        <item name="android:background">?attr/colorSurfaceVariant</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:padding">@dimen/spacing_xs</item>
     </style>
 
-    <style name="MyTextViewStyleInList" parent="MyTextViewStyle">
-        <item name="android:layout_margin">@dimen/text_margin</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">?attr/textAppearanceListItem</item>
-        <item name="android:textColor">@color/colorCardText</item>
-    </style>
-
-    <style name="RichAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:colorBackground">@android:color/holo_orange_light</item>
-    </style>
-
-    <style name="ShadowedText" parent="MyTextViewStyleInList">
-        <item name="android:paddingLeft">2dp</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="android:textColor">#ffffffff</item>
-        <item name="android:shadowColor">#000000</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
-    </style>
-
+    <!--
+        Widget stoi na RemoteViews, więc nie widzi motywu aplikacji ani atrybutów
+        typu ?attr/colorOnSurface — kolory muszą być podane wprost. Wariant ciemny
+        siedzi w values-night/colors.xml.
+    -->
     <style name="AppWidgetText">
         <item name="android:paddingLeft">2dp</item>
         <item name="android:paddingBottom">2dp</item>
-        <item name="android:textColor">#ffffffff</item>
-        <item name="android:shadowColor">#000000</item>
+        <item name="android:textColor">@color/widget_text</item>
+        <item name="android:shadowColor">@color/widget_text_shadow</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowRadius">2</item>
         <item name="android:textSize">@dimen/appwidget_text_size</item>
     </style>
+
 </resources>

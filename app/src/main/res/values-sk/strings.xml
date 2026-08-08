@@ -31,10 +31,6 @@
     <string name="title_reminder_of">Pripomienka:</string>
     <string name="go_shopping_earlier">ísť nakupovať skôr!</string>
     <string name="go_shopping">ísť nakupovať!</string>
-    <string name="title_app_look">Zobrazenie aplikácie</string>
-    <string name="summary_app_look_mini">Mini</string>
-    <string name="summary_app_look_rich">Bohatý</string>
-    <string name="ask_for_look">\nVyberte preferovaný vzhľad.\nNeskôr ho môžete zmeniť v časti Nastavenia.\n</string>
     <string name="pref_header_look">Vzhľad</string>
     <string name="pref_header_notifications">Oznámenia</string>
     <string name="commerce_sundays">Obchod nedeľa</string>
@@ -91,4 +87,7 @@
     <string name="default_time_preference_title">Čas</string>
     <string name="default_days_before_event_preference_title">Počet dní pred udalosťou</string>
     <string name="default_reminder_settings_preference_category_title">Predvolené nastavenia pripomienok</string>
+    <string name="title_list_density">Hustota zoznamu</string>
+    <string name="summary_list_density_compact">Kompaktné</string>
+    <string name="summary_list_density_standard">Štandardné</string>
 </resources>

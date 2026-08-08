@@ -36,11 +36,7 @@
     <string name="go_shopping_earlier">ісці па крамах раней!</string>
     <string name="go_shopping">ісці па крамах!</string>
 
-    <string name="title_app_look">Выгляд</string>
-    <string name="summary_app_look_mini">Міні</string>
-    <string name="summary_app_look_rich">Багаты</string>
 
-    <string name="ask_for_look">\nВыберите пераважны выгляд.\nВы можаце змяніць яго пазней у наладах.\n</string>
 
     <string name="pref_header_look">Выгляд</string>
     <string name="pref_header_notifications">Апавяшчэнні</string>
@@ -108,4 +104,7 @@
     <string name="default_time_preference_title">Час</string>
     <string name="default_days_before_event_preference_title">Колькасць дзён да падзеі</string>
     <string name="default_reminder_settings_preference_category_title">Налады па змаўчанні напамінку</string>
+    <string name="title_list_density">Шчыльнасць спісу</string>
+    <string name="summary_list_density_compact">Кампактная</string>
+    <string name="summary_list_density_standard">Стандартная</string>
 </resources>

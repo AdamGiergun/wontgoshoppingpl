@@ -17,9 +17,7 @@ import eu.adamgiergun.wontgoshoppingpl.main.dialogs.DayTypesAddedToCalendarDialo
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsAndDateTillDialog
 import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsDialog
-import eu.adamgiergun.wontgoshoppingpl.main.fragments.AskForLookFragmentDirections
 import eu.adamgiergun.wontgoshoppingpl.main.fragments.WidgetInfoFragmentDirections
-import eu.adamgiergun.wontgoshoppingpl.main.utils.setRichBackgroundResource
 import kotlinx.coroutines.launch
 
 /*
@@ -42,7 +40,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         setContentView(binding.root)
         applySystemBarInsets(binding.root)
         mainViewModel.apply {
-            binding.adViewLayout.setRichBackgroundResource(isLookRich)
             navController = (supportFragmentManager
                 .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment)
                 .navController
@@ -62,17 +59,13 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                 }
             }
 
-            isInitialLookChosen.observe(this@MainActivity) {
-                if (it) {
-                    navController?.navigate(AskForLookFragmentDirections.actionAskForLookFragmentToWidgetInfoFragment())
-                    if (isLookRich) recreate()
-                }
-            }
-
             isWidgetInfoButtonClicked.observe(this@MainActivity) {
                 if (!it) return@observe
                 navController?.navigate(WidgetInfoFragmentDirections.actionWidgetInfoFragmentToDaysFragment())
                 setAppWidgetInfoDisplayed()
+                // Odnotowanie pierwszego uruchomienia przeniosło się tutaj z ekranu
+                // wyboru wyglądu, który już nie istnieje.
+                onFirstRunDone()
                 invalidateOptionsMenu()
                 onWidgetInfoNavigationDone()
             }
@@ -138,7 +131,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
     override fun onResume() {
         super.onResume()
         bannerAdView?.resume()
-        if (mainViewModel.isLookChanged) recreate()
         if (navController == null) navController = findNavController(R.id.main_nav_host_fragment)
     }
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pas d\'achats en PL</string>
-    <string name="ask_for_look">Choisissez votre look préféré. Vous pourrez le changer plus tard dans les paramètres.</string>
     <string name="before_comma_at">avant, à</string>
     <string name="commerce_sundays">Les dimanches du commerce</string>
     <string name="day_of_limited_commerce">Jour de restrictions commerciales</string>
@@ -29,8 +28,6 @@
     <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl"> Règles de confidentialité </a></string>
     <string name="remind_me">Rappelle moi</string>
     <string name="since">Depuis\n</string>
-    <string name="summary_app_look_mini">Mini</string>
-    <string name="summary_app_look_rich">Riches</string>
     <string name="summary_delete_events">Supprime tous les événements ajoutés par cette application des calendriers choisis</string>
     <string name="summary_show_commerce_sundays_off">Ne pas afficher les dimanches de commerce sur la liste</string>
     <string name="summary_show_commerce_sundays_on">Afficher les dimanches de commerce sur la liste</string>
@@ -42,7 +39,6 @@
     <string name="title_activity_help">Aidez-moi</string>
     <string name="title_activity_settings">Réglages</string>
     <string name="title_add_to_calendar">Ajouter au calendrier</string>
-    <string name="title_app_look">Vue de l\'application</string>
     <string name="title_choose_events">Événements à ajouter au calendrier</string>
     <string name="title_delete_events">Supprimer des rappels</string>
     <string name="title_reminder">Rappel</string>
@@ -92,4 +88,7 @@
     <string name="default_time_preference_title">Temps</string>
     <string name="default_days_before_event_preference_title">Nombre de jours avant l\'événement</string>
     <string name="default_reminder_settings_preference_category_title">Paramètres de rappel par défaut</string>
+    <string name="title_list_density">Densité de la liste</string>
+    <string name="summary_list_density_compact">Compacte</string>
+    <string name="summary_list_density_standard">Standard</string>
 </resources>

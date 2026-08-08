@@ -28,8 +28,8 @@ internal class DayTest {
             protected var expectedIsAddedToCalendar = false
             protected var expectedIsDateInMillis = 0L
             protected var expectedAllDay = false
-            protected var expectedBackgroundColorResource = 0
-            protected var expectedBackgroundResource = 0
+            protected var expectedContainerColorResource = 0
+            protected var expectedOnContainerColorResource = 0
             protected lateinit var earlierDay: Day
             protected lateinit var laterDay: Day
             protected lateinit var expectedDateAndWeekdayString: String
@@ -61,12 +61,12 @@ internal class DayTest {
                 assertThat(day.allDay, `is`(expectedAllDay))
             }
 
-            open fun getBackgroundColorResource() {
-                assertThat(day.backgroundColorResource, `is`(expectedBackgroundColorResource))
+            open fun getContainerColorResource() {
+                assertThat(day.containerColorResource, `is`(expectedContainerColorResource))
             }
 
-            open fun getBackgroundResource() {
-                assertThat(day.backgroundResource, `is`(expectedBackgroundResource))
+            open fun getOnContainerColorResource() {
+                assertThat(day.onContainerColorResource, `is`(expectedOnContainerColorResource))
             }
 
             open fun compareToSameDay() {
@@ -156,17 +156,17 @@ internal class DayTest {
             }
 
             @Test
-            @DisplayName("Then backgroundColorResource is colorNonCommerceDay")
-            override fun getBackgroundColorResource() {
-                expectedBackgroundColorResource = R.color.colorNonCommerceDay
-                super.getBackgroundColorResource()
+            @DisplayName("Then containerColorResource is day_non_commerce_container")
+            override fun getContainerColorResource() {
+                expectedContainerColorResource = R.color.day_non_commerce_container
+                super.getContainerColorResource()
             }
 
             @Test
-            @DisplayName("Then backgroundResource is card_bg_orange drawable")
-            override fun getBackgroundResource() {
-                expectedBackgroundResource = R.drawable.card_bg_orange
-                super.getBackgroundResource()
+            @DisplayName("Then onContainerColorResource is day_on_non_commerce_container")
+            override fun getOnContainerColorResource() {
+                expectedOnContainerColorResource = R.color.day_on_non_commerce_container
+                super.getOnContainerColorResource()
             }
 
             @Test
@@ -294,17 +294,17 @@ internal class DayTest {
             }
 
             @Test
-            @DisplayName("Then backgroundColorResource is colorNonCommerceDay")
-            override fun getBackgroundColorResource() {
-                expectedBackgroundColorResource = R.color.colorNonCommerceDay
-                super.getBackgroundColorResource()
+            @DisplayName("Then containerColorResource is day_non_commerce_container")
+            override fun getContainerColorResource() {
+                expectedContainerColorResource = R.color.day_non_commerce_container
+                super.getContainerColorResource()
             }
 
             @Test
-            @DisplayName("Then backgroundResource is card_bg_orange drawable")
-            override fun getBackgroundResource() {
-                expectedBackgroundResource = R.drawable.card_bg_orange
-                super.getBackgroundResource()
+            @DisplayName("Then onContainerColorResource is day_on_non_commerce_container")
+            override fun getOnContainerColorResource() {
+                expectedOnContainerColorResource = R.color.day_on_non_commerce_container
+                super.getOnContainerColorResource()
             }
 
             @Test

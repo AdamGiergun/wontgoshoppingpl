@@ -7,9 +7,13 @@ import com.google.firebase.analytics.FirebaseAnalytics
 internal object FirebaseEvent {
     private const val FULL_TEXT_TAG = "full_text"
 
-    fun logAppTheme(appContext: Context, isLookRich: Boolean) {
-        val fullText = if (isLookRich) Look.RICH else Look.MINI
-        log(appContext, Type.APP_THEME, fullText)
+    /**
+     * Zastąpiło logAppTheme. Wyboru „rich"/„mini" już nie ma — zamiast dwóch
+     * wyglądów jest gęstość listy, i to ją warto mierzyć.
+     */
+    fun logListDensity(appContext: Context, isCompact: Boolean) {
+        val fullText = if (isCompact) Density.COMPACT else Density.COMFORTABLE
+        log(appContext, Type.LIST_DENSITY, fullText)
     }
 
     fun logCalendarEvent(appContext: Context, listAdded: Boolean, result: Boolean) {
@@ -41,14 +45,14 @@ internal object FirebaseEvent {
     }
 
     private object Type {
-        const val APP_THEME = "app_theme"
+        const val LIST_DENSITY = "list_density"
         const val CALENDAR_EVENT = "calendar_event"
         const val APP_WIDGET = "app_widget"
     }
 
-    private object Look {
-        const val RICH = "look_rich"
-        const val MINI = "look_mini"
+    private object Density {
+        const val COMPACT = "compact"
+        const val COMFORTABLE = "comfortable"
     }
 
     private object CalendarEvent {

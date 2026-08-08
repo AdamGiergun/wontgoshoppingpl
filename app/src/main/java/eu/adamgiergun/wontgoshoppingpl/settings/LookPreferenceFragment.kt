@@ -10,7 +10,10 @@ internal class LookPreferenceFragment : SettingsFragment() {
         setPreferencesFromResource(R.xml.pref_look, rootKey)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == getString(R.string.app_look_preference_key)) { requireActivity().recreate() }
-    }
+    /**
+     * Gęstość listy nie wymaga już przeładowania ekranu — dawny wybór „rich"
+     * podmieniał motyw aktywności, więc trzeba było ją odtwarzać. Teraz zmianę
+     * podchwytuje lista przy powrocie do niej.
+     */
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) = Unit
 }

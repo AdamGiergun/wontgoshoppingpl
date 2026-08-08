@@ -2,7 +2,6 @@
 <resources>
     <dimen name="date_field_weight">1</dimen>
     <dimen name="time_field_weight">1</dimen>
-    <dimen name="separator_field_weight">0</dimen>
     <dimen name="name_field_weight">3</dimen>
     <dimen name="appwidget_text_size">14sp</dimen>
 </resources>

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Graf pierwszego uruchomienia: ekran informacji o widżecie, a po nim lista.
+    Identyfikator musi być inny niż w main_navigation.xml — dwa grafy o tym samym
+    android:id sprawiają, że Safe Args generuje klasy kierunków tylko dla jednego
+    z nich, a odwołanie do drugiego przestaje się kompilować.
+-->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_navigation"
+    android:id="@+id/main_navigation_widget_info"
     app:startDestination="@id/widgetInfoFragment">
 
     <fragment

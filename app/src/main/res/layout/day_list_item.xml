@@ -1,40 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    Wiersz listy dni. Struktura wag zostaje do Etapu 3, który zastąpi ją
+    układem ConstraintLayout — tutaj zmienia się warstwa wizualna: karta
+    Material 3 zamiast gołego CardView, kolory z ról motywu zamiast białego
+    tekstu z cieniem, hierarchia typograficzna zamiast jednego rozmiaru.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
-    style="@style/MyCardViewStyle"
+    style="@style/DayCard"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/spacing_s"
+    android:layout_marginVertical="@dimen/day_row_spacing">
 
     <LinearLayout
         android:id="@+id/LinearLayoutInCardView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/date"
-            style="@style/ShadowedText"
-            android:layout_gravity="start|center_vertical"
+            style="@style/DayRowDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="@dimen/date_field_weight"
+            android:drawablePadding="@dimen/spacing_xs"
             android:textAlignment="textStart" />
 
         <TextView
             android:id="@+id/time"
-            style="@style/ShadowedText"
-            android:layout_gravity="center"
+            style="@style/DayRowTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="@dimen/time_field_weight"
             android:textAlignment="center" />
 
         <TextView
-            style="@style/MyTextViewStyleInList"
-            android:layout_weight="@dimen/separator_field_weight" />
-
-        <TextView
             android:id="@+id/name"
-            style="@style/ShadowedText"
-            android:layout_gravity="center"
+            style="@style/DayRowName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="@dimen/name_field_weight"
-            android:textAlignment="center" />
+            android:textAlignment="textEnd" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

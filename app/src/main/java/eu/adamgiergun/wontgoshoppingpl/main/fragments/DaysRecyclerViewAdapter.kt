@@ -10,7 +10,7 @@ import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.Event
 import eu.adamgiergun.wontgoshoppingpl.main.utils.setAddedToCalendar
-import eu.adamgiergun.wontgoshoppingpl.main.utils.setLook
+import eu.adamgiergun.wontgoshoppingpl.main.utils.applyDayLook
 import eu.adamgiergun.wontgoshoppingpl.main.utils.setTimeDescription
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 
@@ -52,12 +52,15 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
             this.viewModel = viewModel
             val position = bindingAdapterPosition
             binding.run {
-                cardView.setLook(day, viewModel.isLookRich, viewModel.density)
+                val kolorTresci = cardView.applyDayLook(day, viewModel.isListCompact)
                 cardView.setOnClickListener { viewModel.setLastTouchedItem(day, position, false) }
                 date.text = day.dateAndWeekdayString
-                date.setAddedToCalendar(day.isAddedToCalendar)
+                date.setTextColor(kolorTresci)
+                date.setAddedToCalendar(day.isAddedToCalendar, kolorTresci)
                 time.setTimeDescription(day.allDay, day.time)
+                time.setTextColor(kolorTresci)
                 name.text = day.name
+                name.setTextColor(kolorTresci)
             }
         }
 

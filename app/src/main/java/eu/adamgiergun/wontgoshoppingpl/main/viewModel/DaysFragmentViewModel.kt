@@ -48,7 +48,6 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
     val lastTouchedPosition
         get() = LastTouchedDay.position
 
-    var density: Float = 0F
 
     val tillDate: LiveData<SimpleDate>
         get() = DialogParameters.tillDate
@@ -163,8 +162,8 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
         FirebaseEvent.logCalendarEvent(appContext, MainActivityActions.lastActionIsAddList, result)
     }
 
-    fun logLook() {
-        FirebaseEvent.logAppTheme(appContext, isLookRich)
+    fun logListDensity() {
+        FirebaseEvent.logListDensity(appContext, isListCompact)
     }
     //endregion
 

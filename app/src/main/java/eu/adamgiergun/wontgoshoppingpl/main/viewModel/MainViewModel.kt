@@ -18,10 +18,6 @@ import kotlinx.coroutines.launch
 
 internal class MainViewModel(application: Application) : AppViewModel(application) {
 
-    private val _isInitialLookChosen = MutableLiveData<Boolean>()
-    val isInitialLookChosen : LiveData<Boolean>
-        get() = _isInitialLookChosen
-
     private val _isWidgetInfoButtonClicked = MutableLiveData<Boolean>()
     val isWidgetInfoButtonClicked : LiveData<Boolean>
         get() = _isWidgetInfoButtonClicked
@@ -56,12 +52,14 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     val isCalendarEnabledAndChosen: Boolean
         get() = AppPreferences.isUseGoogleCalendarSet(appContext) && AppPreferences.isCalendarSet(appContext)
 
+    // Pierwsze uruchomienie i „widget jeszcze nieopisany" prowadzą dziś do tego
+    // samego miejsca — ekran wyboru wyglądu, który je rozdzielał, zniknął razem
+    // z parą rich/mini.
     val mainNavigationId: Int
-        get() = when {
-            isFirstRun -> R.navigation.main_navigation_first_run_widget_info
-            !AppPreferences.wasAppWidgetInfoDisplayed(appContext) -> R.navigation.main_navigation_widget_info
-            else -> R.navigation.main_navigation
-        }
+        get() = if (isFirstRun || !AppPreferences.wasAppWidgetInfoDisplayed(appContext))
+            R.navigation.main_navigation_widget_info
+        else
+            R.navigation.main_navigation
 
     val wasWidgetInfoDisplayed
         get() = AppPreferences.wasAppWidgetInfoDisplayed(appContext)
@@ -72,11 +70,12 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
         }
     }
 
-    fun onInitialLookChoice(lookButtonId: Int) {
-        isLookRich = (lookButtonId == R.id.imageButtonRich)
-        _isInitialLookChosen.value = true
+    /**
+     * Pierwsze uruchomienie nie pyta już o wygląd — została jedna, spójna szata
+     * graficzna z trybem jasnym i ciemnym. Zostaje samo odnotowanie faktu.
+     */
+    fun onFirstRunDone() {
         setNotFirstRun()
-        _isInitialLookChosen.value = false
     }
 
     fun setAppWidgetInfoDisplayed() {

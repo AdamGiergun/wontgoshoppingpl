@@ -17,20 +17,8 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
     protected val appContext: Context
         get() = getApplication<Application>().applicationContext
 
-    var isLookRich: Boolean
-        get() = AppPreferences.isLookRich(appContext)
-        protected set(isLookRich) {
-            AppPreferences.setLookRich(appContext, isLookRich)
-        }
-    private var isLastLookRich = false
-    val isLookChanged: Boolean
-        get() {
-            isLookRich.let {
-                val result = it != isLastLookRich
-                isLastLookRich = it
-                return result
-            }
-        }
+    val isListCompact: Boolean
+        get() = AppPreferences.isListCompact(appContext)
 
     private var _allPermissionsGranted = MutableLiveData<Boolean>()
     val allPermissionsGranted: LiveData<Boolean>
@@ -52,7 +40,6 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
         _allPermissionsGranted.value =
                 isGranted(Manifest.permission.READ_CALENDAR)
                         && isGranted(Manifest.permission.WRITE_CALENDAR)
-        isLastLookRich = isLookRich
     }
 
     private fun isGranted(permission: String): Boolean {

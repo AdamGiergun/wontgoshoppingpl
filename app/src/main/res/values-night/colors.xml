@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ============ Paleta Material 3, wariant ciemny ============
+         Katalog values-night istniał w projekcie od 2020 roku i był pusty —
+         aplikacja nie miała trybu ciemnego w ogóle. -->
+
+    <color name="md_primary">#B5C4FF</color>
+    <color name="md_on_primary">#062978</color>
+    <color name="md_primary_container">#274190</color>
+    <color name="md_on_primary_container">#DBE1FF</color>
+
+    <color name="md_secondary">#C1C5DD</color>
+    <color name="md_on_secondary">#2A3042</color>
+    <color name="md_secondary_container">#414659</color>
+    <color name="md_on_secondary_container">#DDE1F9</color>
+
+    <color name="md_background">#1B1B1F</color>
+    <color name="md_on_background">#E4E1E6</color>
+    <color name="md_surface">#1B1B1F</color>
+    <color name="md_on_surface">#E4E1E6</color>
+    <color name="md_surface_variant">#45464F</color>
+    <color name="md_on_surface_variant">#C6C5D0</color>
+    <color name="md_outline">#90909A</color>
+
+    <color name="md_error">#FFB4AB</color>
+    <color name="md_on_error">#690005</color>
+
+    <!-- Kolory znaczące pozostają rozpoznawalne — czerwony, pomarańczowy,
+         zielony — ale przyciemnione, żeby nie raziły na ciemnym tle. Tekst
+         robi się jasny, więc para container/onContainer odwraca role. -->
+
+    <color name="day_holiday_container">#8C1D18</color>
+    <color name="day_on_holiday_container">#FFDAD6</color>
+
+    <color name="day_non_commerce_container">#7A4A12</color>
+    <color name="day_on_non_commerce_container">#FFDDB6</color>
+
+    <color name="day_commerce_container">#155D33</color>
+    <color name="day_on_commerce_container">#A7F2BE</color>
+
+
+    <!-- Widget: RemoteViews nie widzi atrybutów motywu, kolory wprost -->
+    <color name="widget_text">#FFFFFFFF</color>
+    <color name="widget_text_shadow">#CC000000</color>
+
+</resources>

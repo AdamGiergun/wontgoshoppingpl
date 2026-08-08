@@ -3,7 +3,6 @@ package eu.adamgiergun.wontgoshoppingpl.settings
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -15,12 +14,6 @@ import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 internal class SettingsActivity :
     ActivityWithThemeAndPermissions(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
-
-    companion object {
-        init {
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-        }
-    }
 
     private val layout: Int
         get() = if (mSettingsViewModel.isScreenWideEnough) R.layout.settings_activity_large else R.layout.settings_activity
