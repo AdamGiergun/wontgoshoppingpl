@@ -73,19 +73,31 @@ def build(year):
     holiday_dates = {d for d, _ in holidays(year)}
     e = easter(year)
 
+    holy_saturday = e - dt.timedelta(days=1)
+    christmas_eve = dt.date(year, 12, 24)
+    # Wigilia bywa niedzielą (np. 2028) — wtedy nie wolno jej wypisać także jako
+    # zwykłej niedzieli niehandlowej, bo ta sama data trafiłaby do danych dwa razy
+    # i przy imporcie jeden wpis nadpisałby drugi.
+    named = {holy_saturday, christmas_eve}
+
     non_commerce = [
         (s, "non_commerce_sunday", "00:00")
         for s in sundays(year)
-        if s not in commerce and s not in holiday_dates
+        if s not in commerce and s not in holiday_dates and s not in named
     ]
     # Wielka Sobota: ustawa dopuszcza handel do 14:00, ale podajemy 13:00 celowo.
     # 14:00 to godzina wyjścia pracowników, nie zamknięcia sklepu dla klientów —
     # sklepy zamykają kasy wcześniej, żeby zdążyć z operacjami zamknięcia dnia.
     # Lepiej, żeby klient przyszedł za wcześnie niż pocałował klamkę.
-    non_commerce.append((e - dt.timedelta(days=1), "holy_saturday", "13:00"))
+    non_commerce.append((holy_saturday, "holy_saturday", "13:00"))
     # Od 1.02.2025 Wigilia jest wolna od handlu przez całą dobę (wcześniej do 14:00).
-    non_commerce.append((dt.date(year, 12, 24), "christmas_eve", "00:00"))
+    non_commerce.append((christmas_eve, "christmas_eve", "00:00"))
     non_commerce.sort()
+
+    wszystkie = [d for d, _, _ in non_commerce] + sorted(commerce) + sorted(holiday_dates)
+    duplikaty = {d for d in wszystkie if wszystkie.count(d) > 1}
+    if duplikaty:
+        raise AssertionError(f"{year}: data powtórzona w danych: {sorted(duplikaty)}")
 
     return {
         "nonCommerceDays": [
