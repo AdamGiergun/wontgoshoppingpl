@@ -20,6 +20,11 @@
          zależnie od tego, czy dzień miesiąca ma jedną cyfrę czy dwie. -->
     <dimen name="day_date_column_min">112dp</dimen>
 
+    <!-- Baner ma własny limit, węższy niż treść. Rozciągnięty na całą szerokość
+         ekranu w poziomie przestaje wyglądać jak reklama, a zaczyna jak pasek
+         systemowy — i to on, a nie lista, rzuca się w oczy jako pierwszy. -->
+    <dimen name="ad_max_width">480dp</dimen>
+
     <!-- Maksymalna szerokość treści. Powyżej niej wiersz przestaje rosnąć
          i zostaje wyśrodkowany; na telefonie ograniczenie nigdy nie działa. -->
     <dimen name="content_max_width">720dp</dimen>

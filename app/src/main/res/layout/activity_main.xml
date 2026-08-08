@@ -24,8 +24,9 @@
         wymaga rozmiaru liczonego z szerokości okna, a AdView rozwijany z XML
         wymusza statyczny atrybut ads:adSize już przy inflacji.
 
-        Szerokość ograniczona tak samo jak lista — na tablecie baner ciągnący się
-        przez 2560 px wyglądał jak pasek narzędzi, a nie jak reklama.
+        Szerokość ograniczona osobnym limitem, węższym niż treść: baner ciągnący
+        się przez całą szerokość ekranu w poziomie wygląda jak pasek narzędzi,
+        a nie jak reklama.
     -->
     <FrameLayout
         android:id="@+id/adViewLayout"
@@ -34,6 +35,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_max="@dimen/content_max_width" />
+        app:layout_constraintWidth_max="@dimen/ad_max_width" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

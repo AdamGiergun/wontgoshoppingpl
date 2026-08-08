@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tablet w poziomie ma dość miejsca na format 728x90, który jest wart
+         więcej niż 468x60. Telefon w poziomie (914dp) tu nie wchodzi i zostaje
+         przy węższym banerze. -->
+    <dimen name="ad_max_width">728dp</dimen>
+</resources>
