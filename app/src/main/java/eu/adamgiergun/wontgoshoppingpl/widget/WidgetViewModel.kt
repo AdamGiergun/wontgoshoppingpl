@@ -21,7 +21,10 @@ internal class WidgetViewModel private constructor(
 ) {
 
     internal companion object {
-        const val widgetTextViewId = R.id.appwidget_text
+        // Celowo `val`, nie `const val`: identyfikator zasobu nie jest stałą kompilacji
+        // przy nietranzytywnych klasach R w AGP 9, a próba jego zwinięcia wywraca
+        // ewaluator stałych Kotlina (AssertionError w buildzie przyrostowym).
+        val widgetTextViewId = R.id.appwidget_text
         const val widgetTextSizeUnit = COMPLEX_UNIT_SP
 
         suspend fun newInstance(appContext: Context): WidgetViewModel {
