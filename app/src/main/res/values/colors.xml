@@ -32,7 +32,10 @@
          z kontrastem tekstu spełniającym wymogi dostępności — bez cienia
          pod literami, którym poprzednia wersja ratowała czytelność. -->
 
-    <color name="day_holiday_container">#FFB4AB</color>
+    <!-- Święta wyraźnie czerwone, nie łososiowe — inaczej z odległości ręki
+         zlewają się z pomarańczem dni objętych zakazem handlu.
+         Kontrast tekstu 7,5:1, czyli z zapasem ponad wymagane 4,5:1. -->
+    <color name="day_holiday_container">#FF8A80</color>
     <color name="day_on_holiday_container">#410002</color>
 
     <color name="day_non_commerce_container">#FFC98F</color>
