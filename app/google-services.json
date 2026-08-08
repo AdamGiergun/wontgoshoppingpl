@@ -3,7 +3,7 @@
     "project_number": "567777493634",
     "firebase_url": "https://wontgoshoppingpl.firebaseio.com",
     "project_id": "wontgoshoppingpl",
-    "storage_bucket": "wontgoshoppingpl.appspot.com"
+    "storage_bucket": "wontgoshoppingpl.firebasestorage.app"
   },
   "client": [
     {
@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "567777493634-f4pm9inquuj8ihs2n64sd5mgm96g0374.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "eu.adamgiergun.wontgoshoppingpl",
-            "certificate_hash": "41f0544820a1f714dfd13ae60e16c7c2141a927e"
-          }
-        },
-        {
           "client_id": "567777493634-egeu9njtjhlb3g075v013fpb6e8tkkjb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "eu.adamgiergun.wontgoshoppingpl",
             "certificate_hash": "62fe99de1fb230a716c5315ba2ecc7db2e177b5d"
+          }
+        },
+        {
+          "client_id": "567777493634-f4pm9inquuj8ihs2n64sd5mgm96g0374.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eu.adamgiergun.wontgoshoppingpl",
+            "certificate_hash": "41f0544820a1f714dfd13ae60e16c7c2141a927e"
           }
         },
         {
