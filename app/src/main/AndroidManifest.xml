@@ -58,8 +58,8 @@
         <!--
             Bez android:screenOrientation i bez orientation|screenSize w configChanges:
             Android 17 (targetSdk 37) i tak ignoruje blokadę orientacji na ekranach
-            sw > 600dp, a przeładowanie aktywności jest potrzebne, żeby wskoczyły
-            warianty zasobów navigation-land / navigation-large / layout-square.
+            sw > 600dp, a przeładowanie aktywności przy obrocie pozwala systemowi
+            dobrać właściwe warianty zasobów.
         -->
         <activity
             android:name=".main.activity.MainActivity"
