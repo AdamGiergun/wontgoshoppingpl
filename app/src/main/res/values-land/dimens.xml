@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="date_field_weight">1</dimen>
-    <dimen name="time_field_weight">1</dimen>
-    <dimen name="name_field_weight">3</dimen>
-    <dimen name="appwidget_text_size">14sp</dimen>
-</resources>

@@ -4,8 +4,8 @@
     <string name="day_of_limited_commerce">Dzień ograniczeń w handlu</string>
     <string name="days_of_limited_commerce">Dni ograniczeń w handlu</string>
     <string name="holidays">Święta</string>
-    <string name="whole_day">Cały\ndzień</string>
-    <string name="since">Od\n</string>
+    <string name="whole_day">Cały dzień</string>
+    <string name="since">"Od "</string>
     <string name="title_choose_events">Zdarzenia dodawane do kalendarza</string>
     <string name="info_added_to_calendar">Dodano do kalendarza</string>
     <string name="error_adding_to_calendar_failed">Błąd\nNie dodano do kalendarza</string>

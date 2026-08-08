@@ -3,11 +3,10 @@
 
     <!-- Skala odstępów. Wcześniej dimens.xml zawierał głównie wagi layoutu
          i jeden text_margin, więc każdy margines w każdym layoucie był
-         ustalany osobno i niespójnie. -->
+         ustalany osobno i niespójnie. Kolejne stopnie (16, 24 dp) dojdą,
+         kiedy będzie ich użytkownik — lint słusznie zgłasza martwe zasoby. -->
     <dimen name="spacing_xs">4dp</dimen>
     <dimen name="spacing_s">8dp</dimen>
-    <dimen name="spacing_m">16dp</dimen>
-    <dimen name="spacing_l">24dp</dimen>
 
     <!-- Wiersz listy dni -->
     <dimen name="day_card_corner">12dp</dimen>
@@ -16,11 +15,14 @@
     <dimen name="day_row_padding_vertical_compact">6dp</dimen>
     <dimen name="day_row_spacing">6dp</dimen>
 
-    <!-- Wagi kolumn wiersza. Etap 3 zastąpi je układem ConstraintLayout —
-         na razie zostają, bo day_list_item.xml wciąż jest LinearLayoutem. -->
-    <dimen name="date_field_weight">13</dimen>
-    <dimen name="time_field_weight">6</dimen>
-    <dimen name="name_field_weight">13</dimen>
+    <!-- Kolumna daty rośnie z treścią, ale nie schodzi poniżej tej szerokości.
+         Bez tego godzina przeskakiwała w bok o kilka pikseli między wierszami,
+         zależnie od tego, czy dzień miesiąca ma jedną cyfrę czy dwie. -->
+    <dimen name="day_date_column_min">112dp</dimen>
+
+    <!-- Maksymalna szerokość treści. Powyżej niej wiersz przestaje rosnąć
+         i zostaje wyśrodkowany; na telefonie ograniczenie nigdy nie działa. -->
+    <dimen name="content_max_width">720dp</dimen>
 
     <dimen name="reminder_view_padding">16dp</dimen>
     <dimen name="reminder_dialog_spacing">12dp</dimen>

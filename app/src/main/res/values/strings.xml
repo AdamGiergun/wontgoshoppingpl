@@ -3,8 +3,8 @@
     <string name="day_of_limited_commerce">Day of trade restrictions</string>
     <string name="days_of_limited_commerce">Days of trade restrictions</string>
     <string name="holidays">Public holidays</string>
-    <string name="whole_day">Whole\nday</string>
-    <string name="since">"Since\n"</string>
+    <string name="whole_day">Whole day</string>
+    <string name="since">"Since "</string>
     <string name="title_choose_events">Events to be added to calendar</string>
     <string name="info_added_to_calendar">Added to calendar</string>
     <string name="error_adding_to_calendar_failed">Error\nNot added to calendar</string>

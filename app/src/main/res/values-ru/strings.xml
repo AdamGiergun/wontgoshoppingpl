@@ -4,8 +4,8 @@
     <string name="day_of_limited_commerce">День торговых ограничений</string>
     <string name="days_of_limited_commerce">Дни торговых ограничений</string>
     <string name="holidays">Праздники</string>
-    <string name="whole_day">Весь\nдень</string>
-    <string name="since">С\n</string>
+    <string name="whole_day">Весь день</string>
+    <string name="since">"С "</string>
     <string name="title_choose_events">События, которые нужно добавить в календарь</string>
     <string name="info_added_to_calendar">Добавлено в календарь</string>
     <string name="error_adding_to_calendar_failed">Ошибка\nНе добавлена в календарь.</string>

@@ -4,8 +4,8 @@
     <string name="day_of_limited_commerce">Prekybos apribojimų diena</string>
     <string name="days_of_limited_commerce">Prekybos apribojimų dienos</string>
     <string name="holidays">Šventės</string>
-    <string name="whole_day">Visa\ndiena</string>
-    <string name="since">Nuo\n</string>
+    <string name="whole_day">Visa diena</string>
+    <string name="since">"Nuo "</string>
     <string name="title_choose_events">Renginiai, kurie bus įtraukti į kalendorių</string>
     <string name="info_added_to_calendar">Įtraukta į kalendorių</string>
     <string name="error_adding_to_calendar_failed">Klaida\nNepridėta prie kalendoriaus</string>

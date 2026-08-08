@@ -4,8 +4,8 @@
     <string name="day_of_limited_commerce">Дзень гандлёвых абмежаванняў</string>
     <string name="days_of_limited_commerce">Дні гандлёвых абмежаванняў</string>
     <string name="holidays">Святы</string>
-    <string name="whole_day">Увесь\nдень</string>
-    <string name="since">З\n</string>
+    <string name="whole_day">Увесь день</string>
+    <string name="since">"З "</string>
     <string name="title_choose_events">Падзеі, якія трэба дадаць у каляндар</string>
     <string name="info_added_to_calendar">Паведамленні ў каляндар</string>
     <string name="error_adding_to_calendar_failed">Памылка\nне дададзеная ў каляндар.</string>

@@ -4,8 +4,8 @@
     <string name="day_of_limited_commerce">Tag der Handelsbeschränkungen</string>
     <string name="days_of_limited_commerce">Tage der Handelsbeschränkungen</string>
     <string name="holidays">Feiertage</string>
-    <string name="whole_day">Ganzer\nTag</string>
-    <string name="since">Seit\n</string>
+    <string name="whole_day">Ganzer Tag</string>
+    <string name="since">"Seit "</string>
     <string name="title_choose_events">Ereignisse, die dem Kalender hinzugefügt werden sollen</string>
     <string name="info_added_to_calendar">Zum Kalender hinzugefügt</string>
     <string name="error_adding_to_calendar_failed">Fehler\nNicht zum Kalender hinzugefügt</string>

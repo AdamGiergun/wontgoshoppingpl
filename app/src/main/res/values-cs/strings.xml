@@ -4,8 +4,8 @@
     <string name="day_of_limited_commerce">Den obchodních omezení</string>
     <string name="days_of_limited_commerce">Dny omezení obchodu</string>
     <string name="holidays">Prázdniny</string>
-    <string name="whole_day">Celý\nden</string>
-    <string name="since">Od\n</string>
+    <string name="whole_day">Celý den</string>
+    <string name="since">"Od "</string>
     <string name="title_choose_events">Události, které se mají přidat do kalendáře</string>
     <string name="info_added_to_calendar">Přidáno do kalendáře</string>
     <string name="error_adding_to_calendar_failed">Chyba\nDo kalendáře nebylo přidáno</string>

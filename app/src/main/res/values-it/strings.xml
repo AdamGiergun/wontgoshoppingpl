@@ -26,7 +26,7 @@
     <string name="pref_header_notifications">Notifiche</string>
     <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl"> Norme sulla privacy </a></string>
     <string name="remind_me">Ricordami</string>
-    <string name="since">Da\n</string>
+    <string name="since">"Da "</string>
     <string name="summary_delete_events">Rimuove tutti gli eventi aggiunti da questa app dai calendari scelti</string>
     <string name="summary_show_commerce_sundays_off">Non mostrare domeniche commerciali sulla lista</string>
     <string name="summary_show_commerce_sundays_on">Mostra domeniche commerciali sulla lista</string>
@@ -45,7 +45,7 @@
     <string name="title_show_commerce_sundays">Mostra domeniche commerciali</string>
     <string name="title_show_holidays">Mostra vacanze</string>
     <string name="title_show_non_commerce_days">Mostra giorni non commerciali</string>
-    <string name="whole_day">Giorno\nintero</string>
+    <string name="whole_day">Giorno intero</string>
     <string name="summary_use_pl_time_zone_off">Usa il mio fuso orario</string>
     <string name="summary_use_pl_time_zone_on">Usa il fuso orario polacco</string>
     <string name="title_time_zone">Fuso orario</string>
