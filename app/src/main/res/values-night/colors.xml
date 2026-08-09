@@ -26,18 +26,21 @@
     <color name="md_error">#FFB4AB</color>
     <color name="md_on_error">#690005</color>
 
-    <!-- Kolory znaczące pozostają rozpoznawalne — czerwony, pomarańczowy,
-         zielony — ale przyciemnione, żeby nie raziły na ciemnym tle. Tekst
-         robi się jasny, więc para container/onContainer odwraca role. -->
+    <!-- Te same trzy pigmenty co w wariancie jasnym — glina, ochra, mech —
+         tylko wzięte z ciemnego końca skali: jasność 30 zamiast 60-78,
+         nasycenie 20 zamiast 26-38. Tekst robi się jasny, więc para
+         container/onContainer odwraca role, ale barwa zostaje ta sama,
+         żeby dzień rozpoznawało się tak samo w obu trybach.
+         Kontrast tekstu 6,4-6,5:1. -->
 
-    <color name="day_holiday_container">#8C1D18</color>
-    <color name="day_on_holiday_container">#FFDAD6</color>
+    <color name="day_holiday_container">#643C36</color>
+    <color name="day_on_holiday_container">#F7CEC7</color>
 
-    <color name="day_non_commerce_container">#7A4A12</color>
-    <color name="day_on_non_commerce_container">#FFDDB6</color>
+    <color name="day_non_commerce_container">#5B412B</color>
+    <color name="day_on_non_commerce_container">#EED2BC</color>
 
-    <color name="day_commerce_container">#155D33</color>
-    <color name="day_on_commerce_container">#A7F2BE</color>
+    <color name="day_commerce_container">#3A4C2F</color>
+    <color name="day_on_commerce_container">#CBDCC0</color>
 
 
     <!-- Widget: RemoteViews nie widzi atrybutów motywu, kolory wprost -->

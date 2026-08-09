@@ -28,21 +28,35 @@
     <color name="md_on_error">#FFFFFF</color>
 
     <!-- ============ Kolory znaczące dni ============
-         Nasycone na tyle, żeby lista dawała się czytać rzutem oka, ale
-         z kontrastem tekstu spełniającym wymogi dostępności — bez cienia
-         pod literami, którym poprzednia wersja ratowała czytelność. -->
 
-    <!-- Święta wyraźnie czerwone, nie łososiowe — inaczej z odległości ręki
-         zlewają się z pomarańczem dni objętych zakazem handlu.
-         Kontrast tekstu 7,5:1, czyli z zapasem ponad wymagane 4,5:1. -->
-    <color name="day_holiday_container">#FF8A80</color>
-    <color name="day_on_holiday_container">#410002</color>
+         Rejestr pigmentów: glina, ochra, mech. Poprzednie wartości
+         (#FF8A80, #FFC98F, #7EDC96) były pastelami z palety akcentów
+         Material 2 — jasność 70-85, nasycenie 38-50, do tego układ barw
+         czerwony-pomarańczowy-zielony. Pastel plus sygnalizacja świetlna
+         daje wrażenie plastikowej zabawki, i to nie było wrażenie samego
+         nasycenia: samo jego obniżenie dawało te same barwy, tylko wyblakłe.
 
-    <color name="day_non_commerce_container">#FFC98F</color>
-    <color name="day_on_non_commerce_container">#2B1700</color>
+         Zmieniły to dwa przesunięcia. Jasność zeszła do 60-78, czyli tam,
+         gdzie leżą prawdziwe pigmenty — materiał ma ciężar, cukierek nie.
+         Barwy odsunęły się od podstawowych: zieleń ze 149° na 132°, z mięty
+         w mech; czerwień z 30° na 34°, z łososia w glinę.
 
-    <color name="day_commerce_container">#7EDC96</color>
-    <color name="day_on_commerce_container">#00210E</color>
+         Rozróżnialność wyszła przy okazji lepsza niż wcześniej. Kontrast
+         jasności par sąsiednich: święto/bez handlu 1,75 (było 1,52),
+         święto/handlowa 1,30 (1,37), bez handlu/handlowa 1,35 (1,11).
+
+         Tekst jest w tej samej barwie co tło, tylko mocno przyciemniony —
+         nie czarny. Stąd wrażenie jednego pigmentu w dwóch stężeniach.
+         Kontrast 5,9-7,1:1, z zapasem ponad wymagane 4,5:1. -->
+
+    <color name="day_holiday_container">#CE7A6D</color>
+    <color name="day_on_holiday_container">#230D06</color>
+
+    <color name="day_non_commerce_container">#E8B78F</color>
+    <color name="day_on_non_commerce_container">#422E1D</color>
+
+    <color name="day_commerce_container">#93AE82</color>
+    <color name="day_on_commerce_container">#131F07</color>
 
 
     <!-- Widget: RemoteViews nie widzi atrybutów motywu, kolory wprost -->
