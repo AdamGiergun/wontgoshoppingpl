@@ -8,9 +8,19 @@
         przestrzeń nazw atrybutów, ale to nie jest ta sama rzecz.
     -->
 
-    <style name="DayCard" parent="Widget.Material3.CardView.Filled">
+    <!--
+        Karta wyniesiona zamiast płaskiej. Material 3 wyraża głębię cieniem
+        i tonem powierzchni, a nie fazowaną krawędzią — dawny wygląd „rich"
+        z gradientami i obramowaniem 3D wyleciał w Etapie 2 właśnie dlatego,
+        że taka fazka postarza interfejs bardziej niż cokolwiek innego.
+
+        Tło nadaje kod (kolor typu dnia), więc wariant Elevated wnosi tu wyłącznie
+        cień. W trybie ciemnym cień jest z natury ledwie widoczny i tak ma być:
+        na ciemnym tle rolę odklejenia przejmuje jaśniejszy ton powierzchni.
+    -->
+    <style name="DayCard" parent="Widget.Material3.CardView.Elevated">
         <item name="cardCornerRadius">@dimen/day_card_corner</item>
-        <item name="cardElevation">0dp</item>
+        <item name="cardElevation">@dimen/day_card_elevation</item>
         <item name="cardUseCompatPadding">false</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>

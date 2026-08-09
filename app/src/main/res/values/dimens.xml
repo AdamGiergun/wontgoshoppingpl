@@ -10,6 +10,8 @@
 
     <!-- Wiersz listy dni -->
     <dimen name="day_card_corner">12dp</dimen>
+    <!-- Cień musi zmieścić się w marginesie karty, inaczej lista go przycina. -->
+    <dimen name="day_card_elevation">3dp</dimen>
     <dimen name="day_row_padding_horizontal">12dp</dimen>
     <dimen name="day_row_padding_vertical">14dp</dimen>
     <dimen name="day_row_padding_vertical_compact">6dp</dimen>
