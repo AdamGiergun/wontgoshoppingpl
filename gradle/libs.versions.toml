@@ -25,6 +25,7 @@ playServicesAds = "25.4.0"
 userMessagingPlatform = "4.0.0"
 preference = "1.2.1"
 recyclerview = "1.4.0"
+robolectric = "4.16.1"
 room = "2.8.4"
 savedstate = "1.5.0"
 sqlite = "2.7.0"
@@ -78,6 +79,7 @@ junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", vers
 junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit5" }
 hamcrest-all = { module = "org.hamcrest:hamcrest", version.ref = "hamcrest" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "testRunner" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "testExtJunit" }

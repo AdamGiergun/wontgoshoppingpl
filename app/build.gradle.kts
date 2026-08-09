@@ -169,6 +169,11 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
     testRuntimeOnly(libs.junit.vintage.engine)
     testImplementation(libs.mockito.core)
+    // Robolectric tylko dla testów, które naprawdę potrzebują Androida:
+    // org.json (parser payloadu), android.util.Log i zasoby aplikacji.
+    // W zwykłym teście JVM te klasy pochodzą z atrapy android.jar i każde
+    // wywołanie rzuca „not mocked". Reszta testów zostaje na czystym JVM.
+    testImplementation(libs.robolectric)
 
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
