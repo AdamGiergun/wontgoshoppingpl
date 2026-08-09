@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.CalendarContract
+import androidx.annotation.VisibleForTesting
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,8 +46,48 @@ class SimpleCalendarEvent private constructor(builder: Builder) {
         return eventID
     }
 
+    /**
+     * Strefa zapisywana z wydarzeniem.
+     *
+     * Dni bez handlu są **datami, nie momentami** — „niedziela niehandlowa"
+     * dotyczy całej doby w Polsce, a nie punktu na osi czasu. Dostawca kalendarza
+     * zapisuje taką datę jako północ UTC i wymaga wtedy `EVENT_TIMEZONE` równego
+     * `"UTC"`; dopiero ta para sprawia, że wydarzenie wypada na tym samym dniu
+     * kalendarza u każdego, niezależnie od strefy jego telefonu. Zakotwiczenie
+     * startu w północy warszawskiej pokazałoby niedzielę niehandlową w sobotę
+     * każdemu na zachód od UTC.
+     *
+     * Wydarzenia z godziną to co innego — tam moment ma znaczenie („sklepy
+     * zamykają się o 13:00 w Wielką Sobotę") i strefą jest Polska, razem
+     * z obowiązującą tego dnia zmianą czasu.
+     */
+    private val contentValuesTimeZoneId
+        get() = if (allDay) TIMEZONE_UTC else eventTimeZoneId
+
+    /**
+     * Koniec wydarzenia całodobowego to północ dnia **następnego** po ostatnim
+     * dniu ciągu, bo kontrakt wymaga czasu trwania będącego wielokrotnością doby.
+     * Budowniczy dostaje z [eu.adamgiergun.wontgoshoppingpl.day.Day] godzinę
+     * 23:59 ostatniego dnia — czytelną dla człowieka, ale dającą dobę bez minuty.
+     */
+    private val dtEnd: Long
+        get() = if (!allDay) endCalendar.timeInMillis
+        else (endCalendar.clone() as Calendar).apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            add(Calendar.DAY_OF_MONTH, 1)
+            time
+        }.timeInMillis
+
     //contentValues.put(CalendarContract.Events.HAS_ALARM, true);
-    private val contentValues: ContentValues
+    // Widoczne w module, żeby dało się sprawdzić testem, co naprawdę trafia do
+    // dostawcy kalendarza. Wcześniej testy sięgały tylko do kalendarzy startu
+    // i końca, więc sprzeczność między DTSTART w UTC a strefą „Europe/Warsaw"
+    // w sąsiednim polu przechodziła niezauważona.
+    @VisibleForTesting
+    internal val contentValues: ContentValues
         get() {
             return ContentValues().apply {
                 put(CalendarContract.Events.CALENDAR_ID, calendarID)
@@ -57,10 +98,10 @@ class SimpleCalendarEvent private constructor(builder: Builder) {
                 put(CalendarContract.Events.AVAILABILITY, availability)
                 if (allDay) put(CalendarContract.Events.ALL_DAY, 1)
                 put(CalendarContract.Events.DTSTART, startCalendar.timeInMillis)
-                put(CalendarContract.Events.DTEND, endCalendar.timeInMillis)
-                put(CalendarContract.Events.EVENT_END_TIMEZONE, eventTimeZoneId)
+                put(CalendarContract.Events.DTEND, dtEnd)
+                put(CalendarContract.Events.EVENT_END_TIMEZONE, contentValuesTimeZoneId)
                 put(CalendarContract.Events.STATUS, CalendarContract.Events.STATUS_CONFIRMED)
-                put(CalendarContract.Events.EVENT_TIMEZONE, eventTimeZoneId)
+                put(CalendarContract.Events.EVENT_TIMEZONE, contentValuesTimeZoneId)
                 put(CalendarContract.Events.HAS_ATTENDEE_DATA, true)
                 //contentValues.put(CalendarContract.Events.HAS_ALARM, true);
                 repetition?.let {
@@ -297,6 +338,14 @@ class SimpleCalendarEvent private constructor(builder: Builder) {
 
     companion object {
         const val NON_EXISTING = 0
+
+        /**
+         * Wartość wymagana przez dostawcę kalendarza dla wydarzeń całodobowych.
+         * Odpowiednik `android.text.format.Time.TIMEZONE_UTC`, wycofanego razem
+         * z całą klasą `Time` w API 22.
+         */
+        const val TIMEZONE_UTC = "UTC"
+
         private val eventsUri = Uri.parse("content://com.android.calendar/events")
 
         val clearedCalendarInstance: Calendar
