@@ -175,15 +175,52 @@ class SimpleCalendarEvent private constructor(builder: Builder) {
         return endCalendar.clone() as Calendar
     }
 
-    class Reminder(eventStartCalendar: Calendar, simpleReminder: SimpleReminder) {
+    /**
+     * Przypomnienie zapisywane jako liczba minut przed startem wydarzenia.
+     *
+     * Pora przypomnienia jest preferencją użytkownika o **jego własnym poranku**,
+     * więc godzina liczy się w strefie urządzenia, a nie w strefie wydarzenia.
+     * Dla wydarzenia całodobowego to rozróżnienie decyduje o wszystkim: jego
+     * kalendarz startowy stoi w UTC, więc ustawienie na nim `HOUR_OF_DAY = 10`
+     * dawało 10:00 **UTC**, czyli alarm o 12:00 czasu polskiego latem i 11:00
+     * zimą. Zmierzone na urządzeniu: przy „1 dzień wcześniej, o 10:00" do bazy
+     * szło `minutes = 840` zamiast 960.
+     */
+    class Reminder(
+        eventStartCalendar: Calendar,
+        simpleReminder: SimpleReminder,
+        reminderTimeZone: TimeZone = TimeZone.getDefault(),
+    ) {
         private val method: Int = simpleReminder.method // use constants from CalendarContract.Reminders //TODO use something else (enum?)
-        private val numberOfMinutesBeforeEvent: Long
 
-        private fun getReminderCalendar(calendar: Calendar, numberOfDaysBefore: Int, time: SimpleTime): Calendar {
-            return (calendar.clone() as Calendar).apply {
+        @VisibleForTesting
+        internal val numberOfMinutesBeforeEvent: Long
+
+        /**
+         * Dzień przypomnienia bierze się z **daty** wydarzenia, a godzina
+         * z zegara strefy [reminderTimeZone]. Stąd dwa kalendarze zamiast
+         * jednego: pierwszy tylko po to, żeby odczytać rok, miesiąc i dzień
+         * w takiej strefie, w jakiej wydarzenie zostało zbudowane.
+         */
+        private fun getReminderCalendar(
+            calendar: Calendar,
+            numberOfDaysBefore: Int,
+            time: SimpleTime,
+            zone: TimeZone,
+        ): Calendar {
+            val eventDay = (calendar.clone() as Calendar).apply {
                 add(Calendar.DAY_OF_YEAR, -1 * numberOfDaysBefore)
-                this[Calendar.HOUR_OF_DAY] = time.hour
-                this[Calendar.MINUTE] = time.minute
+                this.time
+            }
+            return Calendar.getInstance(zone).apply {
+                clear()
+                set(
+                    eventDay[Calendar.YEAR],
+                    eventDay[Calendar.MONTH],
+                    eventDay[Calendar.DAY_OF_MONTH],
+                    time.hour,
+                    time.minute
+                )
                 this.time
             }
         }
@@ -208,7 +245,9 @@ class SimpleCalendarEvent private constructor(builder: Builder) {
         class List : ArrayList<Reminder?>()
 
         init {
-            val reminderCalendar = getReminderCalendar(eventStartCalendar, simpleReminder.daysBefore, simpleReminder.time)
+            val reminderCalendar = getReminderCalendar(
+                eventStartCalendar, simpleReminder.daysBefore, simpleReminder.time, reminderTimeZone
+            )
             numberOfMinutesBeforeEvent = getDifferenceInMinutes(reminderCalendar, eventStartCalendar)
         }
     }
