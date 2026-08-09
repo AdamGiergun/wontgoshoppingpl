@@ -27,20 +27,29 @@
     <color name="md_on_error">#690005</color>
 
     <!-- Te same trzy pigmenty co w wariancie jasnym — glina, ochra, mech —
-         tylko wzięte z ciemnego końca skali: jasność 30 zamiast 60-78,
-         nasycenie 20 zamiast 26-38. Tekst robi się jasny, więc para
-         container/onContainer odwraca role, ale barwa zostaje ta sama,
-         żeby dzień rozpoznawało się tak samo w obu trybach.
-         Kontrast tekstu 6,4-6,5:1. -->
+         wzięte z ciemnego końca skali. Tekst robi się jasny, więc para
+         container/onContainer odwraca role, ale barwa zostaje ta sama, żeby
+         dzień rozpoznawało się tak samo w obu trybach.
 
-    <color name="day_holiday_container">#643C36</color>
-    <color name="day_on_holiday_container">#F7CEC7</color>
+         KLUCZOWE: rozrzut jasności musi być zachowany. Pierwsza wersja dawała
+         wszystkim trzem tę samą jasność 30 i to samo nasycenie 20, przez co
+         różniła je wyłącznie barwa — a ciemne, mało nasycone brązy różnią się
+         barwą ledwie zauważalnie. Kontrast par wynosił wtedy 1,00-1,01:1,
+         czyli zero. Teraz jasności 24 / 42 / 34 odwzorowują porządek z trybu
+         jasnego (święto najciemniejsze, dzień bez handlu najjaśniejszy),
+         a nasycenie idzie w górę do 30-34, bo na ciemnym tle jest na nie
+         miejsce. Kontrast par 1,91 / 1,42 / 1,34 — lepiej niż w trybie jasnym.
 
-    <color name="day_non_commerce_container">#5B412B</color>
-    <color name="day_on_non_commerce_container">#EED2BC</color>
+         Kontrast tekstu 5,9-7,2:1. -->
 
-    <color name="day_commerce_container">#3A4C2F</color>
-    <color name="day_on_commerce_container">#CBDCC0</color>
+    <color name="day_holiday_container">#64251E</color>
+    <color name="day_on_holiday_container">#E8C4BE</color>
+
+    <color name="day_non_commerce_container">#825B31</color>
+    <color name="day_on_non_commerce_container">#FFFCF8</color>
+
+    <color name="day_commerce_container">#305932</color>
+    <color name="day_on_commerce_container">#E1F6E0</color>
 
 
     <!-- Widget: RemoteViews nie widzi atrybutów motywu, kolory wprost -->
