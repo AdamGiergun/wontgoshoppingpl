@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.day
 
 import android.content.Context
 import android.widget.Toast
+import androidx.annotation.VisibleForTesting
 import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleCalendarEvent
 import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleDate
 import eu.adamgiergun.wontgoshoppingpl.calendar.SimpleReminder
@@ -60,10 +61,22 @@ internal class Day(private val event: Event, context: Context) : Comparable<Day>
         Type.COMMERCE_SUNDAY -> R.color.day_on_commerce_container
     }
 
-    private var noOfConsecutiveDays = 0
+    // Trzy pola poniżej wypełnia [List.skipReminderForConsecutiveDays] i tylko
+    // ona. Są widoczne w module, żeby dało się tę regułę przetestować — jej
+    // jedyne wyjście produkcyjne prowadzi przez bazę i Kalendarz Google.
+    @VisibleForTesting
+    internal var noOfConsecutiveDays = 0
+        private set
+
     private var reminder: SimpleReminder? = null
-    private var description = name
-    private var isReminderNeeded = true
+
+    @VisibleForTesting
+    internal var description = name
+        private set
+
+    @VisibleForTesting
+    internal var isReminderNeeded = true
+        private set
 
     override fun compareTo(other: Day): Int {
         return date.compareTo(other.date)
@@ -190,7 +203,19 @@ internal class Day(private val event: Event, context: Context) : Comparable<Day>
 
     class List : ArrayList<Day>() {
         companion object {
-            private fun skipReminderForConsecutiveDays(list: ArrayList<Day>): ArrayList<Day> {
+            /**
+             * Ciąg następujących po sobie dni bez handlu ma dostać **jedno**
+             * wydarzenie w kalendarzu i jedno przypomnienie, a nie osobne dla
+             * każdego dnia. Pierwszy dzień ciągu zbiera nazwy pozostałych do
+             * swojego opisu i zapamiętuje długość ciągu (stąd data końcowa
+             * wydarzenia), a kolejne tracą przypomnienie.
+             *
+             * Niedziela handlowa przerywa ciąg z obu stron: jest informacją
+             * odwrotną i nie ma po co jej doklejać do ostrzeżenia o zamkniętych
+             * sklepach.
+             */
+            @VisibleForTesting
+            internal fun skipReminderForConsecutiveDays(list: ArrayList<Day>): ArrayList<Day> {
                 val iterator: ListIterator<Day> = list.listIterator()
                 if (iterator.hasNext()) {
                     var nextDay = iterator.next()
