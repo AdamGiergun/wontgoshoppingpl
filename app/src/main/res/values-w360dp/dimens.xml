@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+        Skala typograficzna wiersza dla ekranów od 360 dp wzwyż, czyli dla
+        wszystkiego poza wąskim przypadkiem opisanym w values/dimens.xml.
+        Odpowiada rolom Material 3: TitleMedium 16, BodyMedium 14,
+        LabelMedium 12. Wariant zwarty schodzi o stopień niżej.
+
+        Katalog idzie w parze z layout-w360dp — tam wiersz mieści datę,
+        godzinę i nazwę w jednej linii, tu ta linia dostaje pełne rozmiary.
+    -->
+    <dimen name="day_text_name">16sp</dimen>
+    <dimen name="day_text_date">14sp</dimen>
+    <dimen name="day_text_time">12sp</dimen>
+    <dimen name="day_text_name_compact">14sp</dimen>
+    <dimen name="day_text_date_compact">12sp</dimen>
+    <dimen name="day_text_time_compact">11sp</dimen>
+
+</resources>

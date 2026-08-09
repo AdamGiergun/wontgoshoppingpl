@@ -1,6 +1,7 @@
 package eu.adamgiergun.wontgoshoppingpl.main.utils
 
 import android.content.res.ColorStateList
+import android.util.TypedValue
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.updatePadding
@@ -31,6 +32,20 @@ internal fun MaterialCardView.applyDayLook(day: Day, isCompact: Boolean): Int {
     getChildAt(0)?.updatePadding(left = poziomy, top = pionowy, right = poziomy, bottom = pionowy)
 
     return ResourcesCompat.getColor(resources, day.onContainerColorResource, context.theme)
+}
+
+/**
+ * Rozmiar tekstu wiersza wybrany gęstością listy.
+ *
+ * Wartości są w sp, a [android.content.res.Resources.getDimension] zwraca je już
+ * przeskalowane bieżącym ustawieniem rozmiaru czcionki — stąd
+ * [TypedValue.COMPLEX_UNIT_PX]. Podanie ich jako SP przeskalowałoby drugi raz.
+ */
+internal fun TextView.applyDayTextSize(isCompact: Boolean, normalny: Int, zwarty: Int) {
+    setTextSize(
+        TypedValue.COMPLEX_UNIT_PX,
+        resources.getDimension(if (isCompact) zwarty else normalny)
+    )
 }
 
 internal fun TextView.setTimeDescription(isAllDay: Boolean, time: String) {

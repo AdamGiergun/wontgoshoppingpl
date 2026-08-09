@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Wiersz listy dni.
+    Wiersz listy dni dla wąskich ekranów (poniżej 360dp) — wersja z nazwą dnia
+    w osobnej linii. Wariant trzykolumnowy leży w layout-w360dp.
 
-    Kolumny stały wcześniej na wagach LinearLayoutu 13/6/13, czyli na stałym
-    podziale szerokości niezależnym od treści. Na wąskim ekranie „Whole day"
-    łamało się na dwie linie, chociaż miejsce obok było puste, a na tablecie
-    kolumny rozjeżdżały się na całą szerokość. Teraz data i godzina zajmują
-    tyle, ile potrzebują, a nazwa dnia bierze resztę i to ona łamie się jako
-    ostatnia.
+    Powód: przy 320dp i powiększonym rozmiarze wyświetlacza na kolumnę nazwy
+    zostaje około 90dp, a „niehandlowa" potrzebuje 120dp. TextView łamie wtedy
+    słowo w środku — „Niedziela n / iehandlowa" — co wygląda na błąd, a nie na
+    zawijanie. Nazwa dostaje tu całą szerokość karty.
 -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,13 +27,10 @@
         <TextView
             android:id="@+id/date"
             style="@style/DayRowDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/spacing_xs"
-            android:minWidth="@dimen/day_date_column_min"
             android:textAlignment="viewStart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintEnd_toStartOf="@id/time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,28 +40,22 @@
             style="@style/DayRowTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_s"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/name"
-            app:layout_constraintStart_toEndOf="@id/date"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginStart="@dimen/spacing_s"
+            android:textAlignment="viewEnd"
+            app:layout_constraintBottom_toBottomOf="@id/date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/date" />
 
-        <!--
-            Nazwa dnia jako jedyna dostaje 0dp, czyli resztę szerokości.
-            To ona bywa najdłuższa („Wniebowzięcie Najświętszej Maryi Panny")
-            i to ona ma się łamać, a nie „Whole day" obok pustego miejsca.
-        -->
         <TextView
             android:id="@+id/name"
             style="@style/DayRowName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAlignment="viewEnd"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:textAlignment="viewStart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/time"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

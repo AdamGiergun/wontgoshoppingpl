@@ -136,10 +136,15 @@ internal class DaysFragment : Fragment() {
         val dostepnaWysokosc = lista.height - lista.paddingTop - lista.paddingBottom
         if (dostepnaWysokosc <= 0 || dostepnaSzerokosc <= 0) return
 
-        val minimalnaWysokoscWiersza = resources.getDimensionPixelSize(
+        // Minimalna wysokość jest w dp, więc nie wie nic o systemowym rozmiarze
+        // czcionki. Tekst wiersza jest w sp i przy powiększonej czcionce rośnie,
+        // a wysokość komórki narzuca menedżer układu — bez tej korekty wierszy
+        // wychodzi za dużo i tekst zostaje przycięty zamiast dostać miejsce.
+        val skalaCzcionki = resources.configuration.fontScale.coerceAtLeast(1f)
+        val minimalnaWysokoscWiersza = (resources.getDimensionPixelSize(
             if (viewModel.isListCompact) R.dimen.day_row_min_height_compact
             else R.dimen.day_row_min_height
-        )
+        ) * skalaCzcionki).toInt()
         val wiersze = (dostepnaWysokosc / minimalnaWysokoscWiersza).coerceAtLeast(1)
         // Marginesy karty leżą poza jej szerokością, więc bez ich odjęcia dwie
         // kolumny nie mieszczą się w liście i druga wystaje poza ekran.

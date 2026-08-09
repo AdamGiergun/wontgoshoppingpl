@@ -7,11 +7,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.databinding.DayListItemBinding
 import eu.adamgiergun.wontgoshoppingpl.day.Day
 import eu.adamgiergun.wontgoshoppingpl.db.Event
 import eu.adamgiergun.wontgoshoppingpl.main.utils.setAddedToCalendar
 import eu.adamgiergun.wontgoshoppingpl.main.utils.applyDayLook
+import eu.adamgiergun.wontgoshoppingpl.main.utils.applyDayTextSize
 import eu.adamgiergun.wontgoshoppingpl.main.utils.setTimeDescription
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.DaysFragmentViewModel
 
@@ -71,15 +73,19 @@ internal class DaysRecyclerViewAdapter(private val viewModel: DaysFragmentViewMo
                     height = if (waz) ViewGroup.LayoutParams.MATCH_PARENT
                     else ViewGroup.LayoutParams.WRAP_CONTENT
                 }
-                val kolorTresci = cardView.applyDayLook(day, viewModel.isListCompact || waz)
+                val zwarty = viewModel.isListCompact || waz
+                val kolorTresci = cardView.applyDayLook(day, zwarty)
                 cardView.setOnClickListener { viewModel.setLastTouchedItem(day, position, false) }
                 date.text = day.dateAndWeekdayString
                 date.setTextColor(kolorTresci)
+                date.applyDayTextSize(zwarty, R.dimen.day_text_date, R.dimen.day_text_date_compact)
                 date.setAddedToCalendar(day.isAddedToCalendar, kolorTresci)
                 time.setTimeDescription(day.allDay, day.time)
                 time.setTextColor(kolorTresci)
+                time.applyDayTextSize(zwarty, R.dimen.day_text_time, R.dimen.day_text_time_compact)
                 name.text = day.name
                 name.setTextColor(kolorTresci)
+                name.applyDayTextSize(zwarty, R.dimen.day_text_name, R.dimen.day_text_name_compact)
             }
         }
 
