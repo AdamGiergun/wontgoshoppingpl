@@ -1,119 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ekran pomocy.
+
+    Wcześniej: NestedScrollView z marginesami 5dp (marginesy, nie wypełnienie,
+    więc tekst kleił się do krawędzi po wyliczeniu insetów), akapity rozdzielone
+    pięcioma pustymi TextView udającymi odstęp, wszystko pogrubione i bez
+    przypisanej roli typograficznej, czyli w domyślnym rozmiarze widoku.
+
+    Teraz: wypełnienie zamiast marginesów, odstęp z marginesu akapitu, rola
+    BodyLarge i normalna grubość — pogrubiona zostaje tylko treść, która ma się
+    wyróżniać, czyli odnośnik do polityki prywatności. Kolumna nie rozciąga się
+    na tablecie poza szerokość czytelną dla oka.
+-->
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="5dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginBottom="8dp"
+    android:clipToPadding="false"
+    android:paddingHorizontal="@dimen/help_padding_horizontal"
+    android:paddingVertical="@dimen/help_padding_vertical"
     tools:context=".help.HelpActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/privacyPolicyLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/HelpParagraph"
+            android:layout_marginTop="0dp"
             android:text="@string/privacy_policy_link"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/spacer0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spacer0"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/reminder_dialog_spacing"
-            app:layout_constraintBottom_toTopOf="@+id/helpTextView1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/privacyPolicyLink" />
+            android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/helpTextView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/help_text_1"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/spacer1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spacer0" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spacer1"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/reminder_dialog_spacing"
-            app:layout_constraintBottom_toTopOf="@+id/helpTextView2"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/helpTextView1" />
+            style="@style/HelpParagraph"
+            android:text="@string/help_text_1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/helpTextView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/help_text_2"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/spacer2"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spacer1" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spacer2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/reminder_dialog_spacing"
-            app:layout_constraintBottom_toTopOf="@+id/helpTextView3"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/helpTextView2" />
+            style="@style/HelpParagraph"
+            android:text="@string/help_text_2" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/helpTextView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/help_text_3"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/spacer3"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spacer2" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spacer3"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/reminder_dialog_spacing"
-            app:layout_constraintBottom_toTopOf="@+id/helpTextView4"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/helpTextView3" />
+            style="@style/HelpParagraph"
+            android:text="@string/help_text_3" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/helpTextView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/help_text_4"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/spacer4"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spacer3" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spacer4"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/reminder_dialog_spacing"
-            app:layout_constraintBottom_toTopOf="@+id/helpTextView5"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/helpTextView4" />
+            style="@style/HelpParagraph"
+            android:text="@string/help_text_4" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/helpTextView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/help_text_5"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/helpTextView4"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spacer4" />
+            style="@style/HelpParagraph"
+            android:text="@string/help_text_5" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

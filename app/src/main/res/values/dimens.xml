@@ -61,6 +61,13 @@
          i zostaje wyśrodkowany; na telefonie ograniczenie nigdy nie działa. -->
     <dimen name="content_max_width">720dp</dimen>
 
+    <!-- Ekran pomocy. Poprzednio 5dp marginesu na NestedScrollView, przez co
+         tekst kleił się do krawędzi ekranu. -->
+    <dimen name="help_padding_horizontal">16dp</dimen>
+    <dimen name="help_padding_vertical">12dp</dimen>
+    <dimen name="help_paragraph_spacing">16dp</dimen>
+    <dimen name="help_max_width">640dp</dimen>
+
     <dimen name="reminder_view_padding">16dp</dimen>
     <dimen name="reminder_dialog_spacing">12dp</dimen>
 

@@ -1,5 +1,6 @@
 package eu.adamgiergun.wontgoshoppingpl.common
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -57,17 +58,27 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
      * przekazuje w dół inset powiększony o wysokość paska akcji. Wcześniej
      * dokładaliśmy tu jeszcze actionBarSize i pasek zostawiał pod sobą pustą
      * wstęgę wysokości całego paska.
+     *
+     * Inset **dodajemy** do wypełnienia zapisanego w layoucie, a nie wstawiamy
+     * w jego miejsce. Wersja podmieniająca kasowała wypełnienie z XML-a: ekran
+     * pomocy deklarował 16 dp marginesu na tekst, a nasłuch ustawiał je na
+     * wartość insetu, czyli na urządzeniu bez wcięć na zero — tekst dotykał
+     * krawędzi ekranu. Wartość początkową trzeba zapamiętać, bo nasłuch bywa
+     * wołany wielokrotnie i za drugim razem czytałby własny wynik.
      */
     protected fun applySystemBarInsets(view: View) {
+        val wyjsciowe = Rect(
+            view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom
+        )
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
             val insets = windowInsets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
             )
             v.updatePadding(
-                left = insets.left,
-                top = insets.top,
-                right = insets.right,
-                bottom = insets.bottom
+                left = wyjsciowe.left + insets.left,
+                top = wyjsciowe.top + insets.top,
+                right = wyjsciowe.right + insets.right,
+                bottom = wyjsciowe.bottom + insets.bottom
             )
             windowInsets
         }

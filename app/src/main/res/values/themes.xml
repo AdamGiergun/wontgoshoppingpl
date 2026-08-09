@@ -43,6 +43,23 @@
              MaterialAlertDialogBuilder, więc bez tego zostają kanciaste i białe
              obok zaokrąglonych dialogów reszty aplikacji. -->
         <item name="alertDialogTheme">@style/PreferenceAlertDialog</item>
+
+        <item name="actionBarStyle">@style/AppActionBar</item>
+    </style>
+
+    <!--
+        Tytuł paska ma domyślnie 22sp (rola TitleLarge). Nazwa aplikacji jest
+        długa: „Bez zakupów w PL" przy 360 dp i trzech akcjach obok nie mieści
+        się i zostaje ucięta wielokropkiem. 20sp mieści ją w całości, a przy
+        tłumaczeniach dłuższych od polskiego zostaje jeszcze zapas.
+    -->
+    <style name="AppActionBar" parent="Widget.Material3.ActionBar.Solid">
+        <item name="titleTextStyle">@style/AppActionBarTitle</item>
+    </style>
+
+    <style name="AppActionBarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
     <style name="PreferenceAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">

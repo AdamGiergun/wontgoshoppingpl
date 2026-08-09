@@ -4,19 +4,19 @@
 
     <item
         android:id="@+id/calendar"
-        android:icon="@android:drawable/ic_menu_today"
+        android:icon="@drawable/ic_calendar"
         android:title="@string/title_add_to_calendar"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/settings"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@drawable/ic_settings"
         android:title="@string/title_activity_settings"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/help"
-        android:icon="@android:drawable/ic_menu_help"
+        android:icon="@drawable/ic_help"
         android:title="@string/title_activity_help"
         app:showAsAction="ifRoom" />
 </menu>

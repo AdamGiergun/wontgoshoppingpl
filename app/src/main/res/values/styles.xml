@@ -29,6 +29,21 @@
 
     <style name="DayRowTime" parent="TextAppearance.Material3.LabelMedium" />
 
+    <!--
+        Akapit pomocy. Szerokość ograniczona, bo wiersz dłuższy niż mniej więcej
+        siedemdziesiąt znaków oko gubi przy przejściu do następnego — na telefonie
+        limit nigdy nie działa, na tablecie zatrzymuje kolumnę tekstu.
+        Odstęp między akapitami to margines górny, a nie puste widoki.
+    -->
+    <style name="HelpParagraph" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxWidth">@dimen/help_max_width</item>
+        <item name="android:layout_marginTop">@dimen/help_paragraph_spacing</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
     <style name="DialogLabel" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:layout_margin">@dimen/spacing_xs</item>
     </style>
