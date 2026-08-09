@@ -25,6 +25,9 @@ internal object ReminderTimeDialog {
             // Zegar 24-godzinny jak dotąd — reszta aplikacji pokazuje godziny
             // w tym formacie niezależnie od ustawień systemu.
             .setTimeFormat(TimeFormat.CLOCK_24H)
+            // Tarcza, nie klawiatura: MaterialTimePicker sam przechodzi na wpisywanie
+            // z klawiatury, gdy uzna, że jest za mało miejsca.
+            .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
             .setHour(time?.hour ?: DEFAULT_HOUR)
             .setMinute(time?.minute ?: DEFAULT_MINUTE)
             .build()

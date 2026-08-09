@@ -78,6 +78,9 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
         val czas = preference.time
         MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
+            // Tarcza, nie klawiatura: MaterialTimePicker sam przechodzi na wpisywanie
+            // z klawiatury, gdy uzna, że jest za mało miejsca.
+            .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
             .setHour(czas.hour)
             .setMinute(czas.minute)
             .setTitleText(preference.dialogTitle ?: preference.title)

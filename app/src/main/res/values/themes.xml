@@ -47,6 +47,11 @@
 
     <style name="PreferenceAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="android:windowBackground">@drawable/dialog_background</item>
+        <!-- Szerokość okna to szerokość treści, ale nie mniej niż te wartości.
+             Domyślne (95% w pionie) rozdmuchiwały dialog z jednym pokrętłem na
+             prawie cały ekran. Tytuł łamie się wtedy na dwie linie i tak ma być. -->
+        <item name="android:windowMinWidthMinor">60%</item>
+        <item name="android:windowMinWidthMajor">40%</item>
     </style>
 
 </resources>
