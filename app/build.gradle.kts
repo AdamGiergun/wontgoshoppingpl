@@ -175,7 +175,26 @@ dependencies {
     // wywołanie rzuca „not mocked". Reszta testów zostaje na czystym JVM.
     testImplementation(libs.robolectric)
 
+    constraints {
+        // room-testing 2.8.4 czyta wyeksportowane schematy przez kotlinx-serialization
+        // i wymaga 1.8.1. Firebase i Navigation wnoszą 1.7.3, a AGP przypina klasy
+        // testowe do wersji z runtime aplikacji („consistent resolution"), więc samo
+        // podbicie w androidTest nie zadziała — trzeba podnieść obie ścieżki naraz.
+        //
+        // Bez tego testy migracji padają na `AbstractMethodError` przy
+        // `GeneratedSerializer.typeParametersSerializers` — sygnaturze, która
+        // zmieniła się między 1.7 a 1.8. Objaw myli, bo wygląda na błąd schematu.
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
+    }
+
+    // Testy instrumentalne. Uruchamiane świadomie przed wydaniem, nie przy każdym
+    // commicie — wymagają urządzenia albo emulatora, a CI nie ma.
+    //
+    // Espresso wypadło: przy dwóch ekranach i reklamie pełnoekranowej, która
+    // potrafi przechwycić dotknięcie, koszt utrzymania takich testów nie ma
+    // pokrycia. To, co naprawdę wymaga Androida, sprawdzamy niżej.
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
+    // MigrationTestHelper — prawdziwe SQLite, jedyny sposób na sprawdzenie migracji.
+    androidTestImplementation(libs.androidx.room.testing)
 }

@@ -3,6 +3,7 @@ package eu.adamgiergun.wontgoshoppingpl.db
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -23,17 +24,17 @@ internal abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase {
-            val rdc: Callback = object : Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    // Świeża instalacja dostaje wyłącznie dane bieżące. Lat historycznych
-                    // nie ma po co wstawiać: zapytania filtrują `item >= dziś`, więc i tak
-                    // nigdy się nie pokażą.
-                    seedFromResources(db, context)
-                }
-            }
-
-            val migration5to6: Migration = object : Migration(5, 6) {
+        /**
+         * Migracje jako osobna, testowalna lista.
+         *
+         * Wcześniej powstawały jako zmienne lokalne wewnątrz [getInstance], więc
+         * jedyną drogą do nich było zbudowanie prawdziwej bazy pod prawdziwą
+         * nazwą pliku — czyli nie dało się ich sprawdzić `MigrationTestHelper`em.
+         * A stawka jest wysoka, patrz komentarz przy `fallbackToDestructiveMigration`.
+         */
+        @VisibleForTesting
+        internal fun migrations(context: Context): Array<Migration> = arrayOf(
+            object : Migration(5, 6) {
                 override fun migrate(db: SupportSQLiteDatabase) {
                     db.execSQL(
                         "CREATE INDEX IF NOT EXISTS index_${Event.TABLE_NAME}_${Event.COLUMN_ITEM} " +
@@ -41,29 +42,36 @@ internal abstract class AppDatabase : RoomDatabase() {
                     )
                     seedFromResources(db, context)
                 }
-            }
-
-            val migration3to5: Migration = object : Migration(3, 5) {
+            },
+            object : Migration(4, 5) {
                 override fun migrate(db: SupportSQLiteDatabase) {
                     update6thDecember2020(db, context)
                 }
-            }
-
-            val migration4to5: Migration = object : Migration(4, 5) {
+            },
+            object : Migration(3, 5) {
                 override fun migrate(db: SupportSQLiteDatabase) {
                     update6thDecember2020(db, context)
                 }
-            }
-
-            val migration2to5: Migration = object : Migration(2, 5) {
+            },
+            object : Migration(2, 5) {
                 override fun migrate(db: SupportSQLiteDatabase) {
                     addEventsToDb(arrayOf(2021, 2022, 2023), context)
                 }
-            }
-
-            val migration1to5: Migration = object : Migration(1, 5) {
+            },
+            object : Migration(1, 5) {
                 override fun migrate(db: SupportSQLiteDatabase) {
                     addEventsToDb(arrayOf(2020, 2021, 2022, 2023), context)
+                }
+            },
+        )
+
+        fun getInstance(context: Context): AppDatabase {
+            val rdc: Callback = object : Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    // Świeża instalacja dostaje wyłącznie dane bieżące. Lat historycznych
+                    // nie ma po co wstawiać: zapytania filtrują `item >= dziś`, więc i tak
+                    // nigdy się nie pokażą.
+                    seedFromResources(db, context)
                 }
             }
 
@@ -76,10 +84,11 @@ internal abstract class AppDatabase : RoomDatabase() {
                             "events.db"
                     )
                             .addCallback(rdc)
-                            .addMigrations(
-                                migration5to6,
-                                migration4to5, migration3to5, migration2to5, migration1to5
-                            )
+                            .addMigrations(*migrations(context))
+                            // Siatka bezpieczeństwa na ścieżki, których nie przewidziano.
+                            // Kosztem jest skasowanie bazy użytkownika razem z powiązaniami
+                            // do Kalendarza Google i przypomnieniami, więc każda migracja
+                            // musi kończyć się bez wyjątku nawet przy nieoczekiwanej treści.
                             .fallbackToDestructiveMigration(dropAllTables = true)
                             .build()
                     INSTANCE = instance
@@ -147,9 +156,21 @@ internal abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * Poprawka pojedynczej daty z 2020 roku, wołana z migracji 3→5 i 4→5.
+         *
+         * Każde wyjście przez wyjątek jest tu **destrukcyjne**: Room łapie błąd
+         * migracji i sięga po `fallbackToDestructiveMigration(dropAllTables = true)`,
+         * czyli kasuje bazę użytkownika razem z powiązaniami do Kalendarza Google
+         * i przypomnieniami. Dlatego brak wiersza albo brak wpisu w zasobach musi
+         * kończyć się cichym wyjściem, a nie rzuceniem.
+         *
+         * Wcześniej wynik `moveToFirst()` był ignorowany i pusty kursor prowadził
+         * wprost do `CursorIndexOutOfBoundsException`.
+         */
         private fun update6thDecember2020(db: SupportSQLiteDatabase, context: Context) {
             db.query("SELECT * FROM events WHERE item LIKE '2020_12_06%' ORDER BY item LIMIT 1").use { cursor ->
-                cursor.moveToFirst()
+                if (!cursor.moveToFirst()) return
                 val oldEvent = Event(
                         cursor.getInt(0),
                         cursor.getInt(1),
@@ -163,7 +184,7 @@ internal abstract class AppDatabase : RoomDatabase() {
                     it.startsWith("2020_12_06")
                 }.map {
                     Event(oldEvent.id, getEventTypeId(arrayId), it, null, null)
-                }.first()
+                }.firstOrNull() ?: return
 
                 val query = "UPDATE ${Event.TABLE_NAME} " +
                         "SET ${Event.COLUMN_TYPE_ID} = ${newEvent.typeId}, ${Event.COLUMN_ITEM} = '${newEvent.item}' " +
