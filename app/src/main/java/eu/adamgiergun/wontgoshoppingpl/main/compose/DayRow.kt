@@ -154,21 +154,32 @@ private fun WierszPietrowy(day: Day, r: RozmiaryTekstu, tresc: Color) {
  */
 @Composable
 private fun WierszTrzykolumnowy(day: Day, r: RozmiaryTekstu, tresc: Color) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Minimalna szerokość kolumny daty: bez niej godzina przeskakiwała w bok
-        // o kilka pikseli między wierszami, zależnie od tego, czy dzień miesiąca
-        // ma jedną cyfrę czy dwie.
-        Data(day, r.data, tresc, Modifier.widthIn(min = 112.dp))
+    Row(modifier = Modifier.fillMaxWidth()) {
+        // Wszystkie trzy kolumny stoją na WSPÓLNEJ LINII PISMA, a nie są
+        // środkowane względem siebie.
+        //
+        // Data ma dwa wiersze (`dateAndWeekdayString` niesie twardy znak nowej
+        // linii), godzina i nazwa po jednym. Przy środkowaniu te jednowierszowe
+        // wisiały dokładnie pomiędzy wierszami daty, nie trzymając się żadnego —
+        // przy większym tekście, czyli w trybie standardowym na szerokiej karcie,
+        // wyglądało to jakby nic nie stało w jednym rzędzie. `alignByBaseline`
+        // sadza je na linii pierwszego wiersza daty, a dzień tygodnia zwisa pod
+        // spodem jako dopisek, którym jest.
+        Data(
+            day, r.data, tresc,
+            Modifier
+                .widthIn(min = 112.dp)
+                .alignByBaseline(),
+        )
         Text(
             text = opisGodziny(day),
             style = MaterialTheme.typography.labelMedium,
             fontSize = r.godzina,
             color = tresc,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 8.dp),
+            modifier = Modifier
+                .alignByBaseline()
+                .padding(horizontal = 8.dp),
         )
         Text(
             text = day.name,
@@ -176,7 +187,9 @@ private fun WierszTrzykolumnowy(day: Day, r: RozmiaryTekstu, tresc: Color) {
             fontSize = r.nazwa,
             color = tresc,
             textAlign = TextAlign.End,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .alignByBaseline(),
         )
     }
 }

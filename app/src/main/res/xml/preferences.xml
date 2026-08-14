@@ -12,8 +12,13 @@
         android:defaultValue="true"
         android:key="@string/include_commerce_sundays_preference_key" />
 
+    <!-- Wartość musi zgadzać się z pref_look.xml ORAZ z AppPreferences.isListCompact.
+         Ten plik jest kopią wszystkich kluczy dla PreferenceManager.setDefaultValues,
+         pref_look.xml buduje ekran, a kod czyta preferencję zanim ekran ustawień
+         zostanie choć raz otwarty. Rozjazd między nimi znaczy, że ustawienia
+         pokazują co innego, niż robi lista. -->
     <androidx.preference.SwitchPreferenceCompat
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:key="@string/list_density_preference_key" />
 
     <!-- A 'parent' preference, which enables/disables child preferences (below)
