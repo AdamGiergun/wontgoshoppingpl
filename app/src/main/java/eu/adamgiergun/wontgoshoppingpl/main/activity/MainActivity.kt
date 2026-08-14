@@ -13,10 +13,7 @@ import eu.adamgiergun.wontgoshoppingpl.common.ActivityWithThemeAndPermissions
 import eu.adamgiergun.wontgoshoppingpl.common.AdsContainer
 import eu.adamgiergun.wontgoshoppingpl.common.DaysRepository
 import eu.adamgiergun.wontgoshoppingpl.databinding.ActivityMainBinding
-import eu.adamgiergun.wontgoshoppingpl.main.dialogs.DayTypesAddedToCalendarDialog
 import eu.adamgiergun.wontgoshoppingpl.main.viewModel.MainViewModel
-import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsAndDateTillDialog
-import eu.adamgiergun.wontgoshoppingpl.main.dialogs.ReminderSettingsDialog
 import eu.adamgiergun.wontgoshoppingpl.main.fragments.WidgetInfoFragmentDirections
 import kotlinx.coroutines.launch
 
@@ -77,18 +74,14 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
                     Actions.CHECK_PERMISSIONS_LIST -> checkCalendarPermissions(Actions.CHECK_CALENDAR_SETTINGS_LIST)
                     Actions.CHECK_CALENDAR_SETTINGS_DAY -> checkCalendarSettings(Actions.ASK_FOR_REMINDER_SETTINGS)
                     Actions.CHECK_CALENDAR_SETTINGS_LIST -> checkCalendarSettings(Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR)
-                    Actions.ASK_FOR_REMINDER_SETTINGS -> {
-                        ReminderSettingsDialog().show(supportFragmentManager, "")
-                        setNextAction(Actions.NONE)
-                    }
-                    Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR -> {
-                        askForDayTypesAddedToCalendar()
-                        setNextAction(Actions.NONE)
-                    }
-                    Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL -> {
-                        ReminderSettingsAndDateTillDialog().show(supportFragmentManager, "")
-                        setNextAction(Actions.NONE)
-                    }
+                    // Trzy akcje pytające pokazuje warstwa Compose ekranu listy.
+                    // Akcja MUSI tu zostać niezmieniona: to ona jest stanem
+                    // widoczności dialogu, a zerowanie należy do tego, kto go
+                    // zamyka. Wcześniej aktywność pokazywała dialog i zaraz
+                    // ustawiała NONE, bo widoczność trzymał menedżer fragmentów.
+                    Actions.ASK_FOR_REMINDER_SETTINGS,
+                    Actions.ASK_FOR_DAY_TYPES_ADDED_TO_CALENDAR,
+                    Actions.ASK_FOR_REMINDER_SETTINGS_AND_DATE_TILL -> Unit
                     Actions.START_SETTINGS_ACTIVITY_IN_NOTIFICATIONS -> {
                         startActivity(getSettingsActivityIntentAtNotifications())
                         setNextAction(Actions.NONE)
@@ -188,9 +181,6 @@ internal class MainActivity : ActivityWithThemeAndPermissions() {
         )
     }
 
-    private fun askForDayTypesAddedToCalendar() {
-        DayTypesAddedToCalendarDialog().show(supportFragmentManager, "dialog")
-    }
     //endregion
 
     enum class Actions {

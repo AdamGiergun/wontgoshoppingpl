@@ -30,12 +30,32 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
     val events: LiveData<List<Event>>
         get() = _events
 
-    private val _idOfDialogToShow = MutableLiveData<Int>()
-    val idOfDialogToShow: LiveData<Int>
-        get() = _idOfDialogToShow
+    /**
+     * Akcja aktywności, która decyduje, który dialog jest widoczny.
+     *
+     * Ta sama wartość, którą obserwuje [MainActivity]; wystawiona tutaj, bo
+     * dialogi przeniosły się do warstwy Compose hostowanej przez ekran listy,
+     * a ta ma pod ręką ten ViewModel, nie MainViewModel.
+     */
+    val nextAction: LiveData<MainActivity.Actions>
+        get() = MainActivityActions.nextAction
 
-    fun setIdOfDialogToShow(id: Int) {
-        _idOfDialogToShow.value = id
+    /**
+     * Selektor otwarty z wnętrza dialogu przypomnienia.
+     *
+     * Dawniej był to `Int` niosący `R.id` widoku, w który użytkownik kliknął —
+     * identyfikator layoutu w roli identyfikatora dialogu. Layouty zniknęły razem
+     * z fragmentami dialogowymi, a wraz z nimi powód, żeby stan trzymać w typie,
+     * który o nim nic nie mówi.
+     */
+    enum class NestedDialog { NONE, DAYS_BEFORE, TIME, TILL_DATE }
+
+    private val _nestedDialog = MutableLiveData(NestedDialog.NONE)
+    val nestedDialog: LiveData<NestedDialog>
+        get() = _nestedDialog
+
+    fun showNestedDialog(dialog: NestedDialog) {
+        _nestedDialog.value = dialog
     }
 
     private val _isDbChanged = MutableLiveData<Boolean>()

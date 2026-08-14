@@ -7,11 +7,12 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.onSizeChanged
@@ -21,29 +22,40 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 
 /**
- * Usuwanie wpisu z kalendarza gestem odrzucenia.
+ * Usunięcie dnia z Kalendarza Google gestem odrzucenia.
  *
- * Napisane ręcznie, i to jest jedyne miejsce w tej migracji, gdzie Compose **nie**
- * dał gotowca. `SwipeToDismissBox` z Material 3 obsługuje wyłącznie gest poziomy,
- * a przy wężu lista przewija się w bok — gest usuwania musi być prostopadły do
- * kierunku przewijania, inaczej przewijanie go przechwyci i usunięcie stanie się
- * niemożliwe. Stąd parametr [poziomo] i własna obsługa zamiast komponentu
- * bibliotecznego.
+ * Napisane ręcznie, bo `SwipeToDismissBox` z Material 3 obsługuje wyłącznie gest
+ * poziomy, a przy wężu lista przewija się w bok — gest musi być prostopadły do
+ * kierunku przewijania, inaczej przewijanie go przechwyci. Stąd parametr [poziomo].
  *
- * Próg to jedna trzecia rozmiaru wzdłuż osi gestu. Poniżej progu element wraca
- * na miejsce z animacją, powyżej — odjeżdża do końca i dopiero wtedy woła
- * [onDelete], więc kasowanie widać, zamiast żeby wiersz znikał w połowie ruchu.
+ * **Karta zawsze wraca na miejsce.** To nie jest ustępstwo, tylko odwzorowanie
+ * tego, co robi aplikacja: „usunięcie" zrywa powiązanie z kalendarzem, ale dzień
+ * zostaje na liście — zmienia mu się tylko znacznik. Pierwsza wersja kazała
+ * karcie odjechać poza ekran przed powrotem i to był błąd w dwóch warstwach.
+ * Semantycznie sugerowała zniknięcie wpisu, którego nie ma. Technicznie zaś
+ * `onDragStopped` biegnie w zakresie należącym do gestu: usunięcie ustawia
+ * `isDbChanged`, to przeładowuje listę, a przeładowanie potrafi anulować ten
+ * zakres, zanim wykona się powrót — karta zostawała wtedy poza ekranem
+ * całkowicie albo w połowie.
+ *
+ * [resetKey] jest drugim zabezpieczeniem tej samej rzeczy: przy zmianie danych
+ * wiersza przesunięcie wraca do zera bez udziału zakresu gestu. Klucz LazyColumn
+ * opiera się na dacie, więc po przeładowaniu ten sam slot dostaje ten sam
+ * zapamiętany [Animatable] i bez zerowania odziedziczyłby jego przesunięcie.
  */
 @Composable
 internal fun SwipeToDelete(
     poziomo: Boolean,
     onDelete: () -> Unit,
+    resetKey: Any?,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     val przesuniecie = remember { Animatable(0f) }
     val zakres = rememberCoroutineScope()
     var rozmiar by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(resetKey) { przesuniecie.snapTo(0f) }
 
     Box(
         modifier = modifier
@@ -54,7 +66,7 @@ internal fun SwipeToDelete(
             }
             .alpha(
                 if (rozmiar == 0) 1f
-                else (1f - przesuniecie.value.absoluteValue / rozmiar).coerceIn(0.2f, 1f)
+                else (1f - przesuniecie.value.absoluteValue / rozmiar).coerceIn(0.35f, 1f)
             )
             .draggable(
                 orientation = if (poziomo) Orientation.Horizontal else Orientation.Vertical,
@@ -63,17 +75,12 @@ internal fun SwipeToDelete(
                 },
                 onDragStopped = {
                     val prog = rozmiar / 3f
-                    if (rozmiar > 0 && przesuniecie.value.absoluteValue > prog) {
-                        val cel = if (przesuniecie.value > 0) rozmiar.toFloat() else -rozmiar.toFloat()
-                        przesuniecie.animateTo(cel)
-                        onDelete()
-                        // Element zostaje na liście, dopóki baza nie zgłosi zmiany —
-                        // przywrócenie pozycji jest więc konieczne, inaczej po
-                        // nieudanym usunięciu wiersz zostałby niewidoczny.
-                        przesuniecie.snapTo(0f)
-                    } else {
-                        przesuniecie.animateTo(0f)
-                    }
+                    val przekroczony = rozmiar > 0 && przesuniecie.value.absoluteValue > prog
+                    // Powrót najpierw, dopiero potem skutek uboczny — gdyby
+                    // kolejność była odwrotna, przeładowanie listy mogłoby anulować
+                    // animację i zostawić kartę przesuniętą.
+                    przesuniecie.animateTo(0f)
+                    if (przekroczony) onDelete()
                 },
             ),
     ) {

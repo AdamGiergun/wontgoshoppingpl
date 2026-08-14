@@ -17,7 +17,10 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed as siatkaItemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +34,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.LifecycleEventEffect
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.day.Day
@@ -65,7 +71,7 @@ internal fun DaysScreen(
     scope: CoroutineScope,
     modifier: Modifier = Modifier,
 ) {
-    val events by viewModel.events.observeAsState(emptyList())
+    val events by viewModel.events.obserwujBezPorownywania(emptyList())
 
     // Obserwator, który wcześniej siedział w `init` adaptera. Bez niego lista nie
     // odświeżyłaby się po zapisie do kalendarza. Odczyt z bazy jest tu konieczny,
@@ -110,6 +116,8 @@ internal fun DaysScreen(
             }
         }
     }
+
+    Dialogi(viewModel)
 }
 
 @Composable
@@ -131,6 +139,7 @@ private fun ListaPionowa(
             SwipeToDelete(
                 poziomo = true,
                 onDelete = { scope.launch { viewModel.deleteFromCalendar(day) } },
+                resetKey = day,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 DayRow(
@@ -171,11 +180,25 @@ private fun Waz(
         // kolumna węża ma około 220 dp, więc wiersz układa się piętrowo, a data
         // z dniem tygodnia to już dwie linie (`dateAndWeekdayString` ma twardy \n).
         // Z nazwą dnia daje to trzy linie. Przy 56 dp nazwa była ucięta w połowie liter.
-        val minimalnaWysokosc = (if (zwarty) 76.dp else 92.dp) * skalaCzcionki
-        val wiersze = (maxHeight / minimalnaWysokosc).toInt().coerceAtLeast(1)
         // Odstępy leżą poza szerokością karty, więc bez ich odjęcia druga kolumna
         // wystaje poza ekran.
         val szerokoscKolumny = (maxWidth / kolumny) - 16.dp
+
+        // Minimalna wysokość zależy od tego, KTÓRY układ wypadnie w tej kolumnie,
+        // a nie od samej gęstości. Wiersz piętrowy ma trzy linie, bo
+        // `dateAndWeekdayString` niesie twardy znak nowej linii, a pod nim jest
+        // jeszcze nazwa dnia; trzykolumnowy mieści się w jednej. Pierwsza wersja
+        // podnosiła minimum zawsze i na tablecie, gdzie kolumna ma około 500 dp,
+        // karty wychodziły przez to bez potrzeby wysokie. Próg 320 dp ten sam
+        // co w DayRow — to jedna i ta sama decyzja.
+        val pietrowy = szerokoscKolumny < 320.dp
+        val minimalnaWysokosc = when {
+            pietrowy && zwarty -> 76.dp
+            pietrowy -> 92.dp
+            zwarty -> 56.dp
+            else -> 68.dp
+        } * skalaCzcionki
+        val wiersze = (maxHeight / minimalnaWysokosc).toInt().coerceAtLeast(1)
 
         val stan = rememberLazyGridState()
         LazyHorizontalGrid(
@@ -195,6 +218,7 @@ private fun Waz(
                 SwipeToDelete(
                     poziomo = false,
                     onDelete = { scope.launch { viewModel.deleteFromCalendar(day) } },
+                    resetKey = day,
                     modifier = Modifier
                         .width(szerokoscKolumny)
                         .fillMaxHeight(),
@@ -213,6 +237,34 @@ private fun Waz(
             }
         }
     }
+}
+
+/**
+ * Obserwacja [LiveData] **z pominięciem porównania strukturalnego**.
+ *
+ * Zwykłe `observeAsState` trzyma wartość w stanie o domyślnej polityce
+ * `structuralEqualityPolicy`: przypisanie wartości równej poprzedniej nie
+ * unieważnia kompozycji. Dla listy dni to jest pułapka śmiertelna, bo
+ * `List.equals` porównuje elementy przez `Event.equals`, a ta **patrzy wyłącznie
+ * na datę** — `calendarEventId` jest poza tożsamością wpisu.
+ *
+ * Skutek bez tej funkcji: po dodaniu dnia do kalendarza baza zwracała nowe
+ * obiekty z ustawionym `calendarEventId`, `_events.value` je dostawało, a Compose
+ * uznawał listę za niezmienioną i **nie przerysowywał niczego**. Znacznik
+ * „w kalendarzu" pojawiał się dopiero po ponownym uruchomieniu aplikacji.
+ * Ta sama własność `Event` wymusza wyliczanie klucza [pamietajDzien] z pól
+ * wprost — to jedna pułapka widoczna w dwóch miejscach.
+ */
+@Composable
+private fun <T> LiveData<T>.obserwujBezPorownywania(poczatkowa: T): State<T> {
+    val wlascicielCyklu = LocalLifecycleOwner.current
+    val stan = remember(this) { mutableStateOf(poczatkowa, neverEqualPolicy()) }
+    DisposableEffect(this, wlascicielCyklu) {
+        val obserwator = Observer<T> { stan.value = it }
+        observe(wlascicielCyklu, obserwator)
+        onDispose { removeObserver(obserwator) }
+    }
+    return stan
 }
 
 /**
