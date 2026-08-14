@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Pokrętło w ramce, a nie jako korzeń widoku. Jako korzeń dostawało od
-    AlertDialogu pełną szerokość okna i jego kreski podziału ciągnęły się przez
-    cały dialog, przez co wyglądał jak tabela, a nie jak wybór jednej liczby.
+    Rząd żetonów zamiast pokrętła.
+
+    Wcześniej stał tu platformowy NumberPicker: walec z dwiema poziomymi kreskami
+    wokół wybranej wartości, pokazujący trzy liczby naraz. Kreski to styl sprzed
+    Material Design, a sam walec wymaga przewijania po to, żeby wybrać jedną
+    z ośmiu możliwości. W dialogu, który poza tym jest już Material 3, wyglądał
+    jak ciało obce.
+
+    Żetony pokazują wszystkie wartości naraz i wybór to jedno dotknięcie. Ta sama
+    decyzja co przy selektorze liczby dni na ekranie listy — tam w Compose,
+    tutaj w widokach, bo tu żyje androidx.preference.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/spacing_s"
     android:paddingTop="@dimen/spacing_s"
     android:paddingBottom="@dimen/spacing_s">
 
-    <NumberPicker
-        android:id="@+id/numberPicker"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        app:chipSpacingHorizontal="@dimen/spacing_s"
+        app:selectionRequired="true"
+        app:singleSelection="true" />
 </FrameLayout>

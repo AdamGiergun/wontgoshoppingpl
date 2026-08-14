@@ -92,8 +92,13 @@ internal class NotificationPreferenceFragment : SettingsFragment() {
     }
 
     /**
-     * Po obrocie ekranu menedżer fragmentów odtwarza selektor bez nasłuchów —
-     * tak samo jak na ekranie głównym, patrz ReminderTimeDialog.
+     * Po obrocie ekranu menedżer fragmentów odtwarza selektor bez nasłuchów,
+     * więc trzeba je podpiąć ponownie.
+     *
+     * Ekran listy miał ten sam problem i **przestał go mieć**, bo jego selektory
+     * przeszły na Compose, gdzie stan przeżywa obrót sam. Tutaj obejście zostaje:
+     * ustawienia stoją na androidx.preference, a ta biblioteka nie ma
+     * odpowiednika w Compose i zostaje w warstwie widoków świadomie.
      */
     private fun podepnijSelektorGodzinyPonownie() {
         val selektor = parentFragmentManager
