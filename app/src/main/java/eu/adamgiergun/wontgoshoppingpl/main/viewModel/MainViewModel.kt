@@ -55,11 +55,30 @@ internal class MainViewModel(application: Application) : AppViewModel(applicatio
     // Pierwsze uruchomienie i „widget jeszcze nieopisany" prowadzą dziś do tego
     // samego miejsca — ekran wyboru wyglądu, który je rozdzielał, zniknął razem
     // z parą rich/mini.
+    //
+    // Wybór zapada RAZ na instancję ViewModelu, a nie przy każdym odczycie.
+    // Powód jest twardy: zamknięcie ekranu o widżecie zapisuje preferencję, więc
+    // kolejny odczyt zwróciłby już drugi graf. Przy odtworzeniu aktywności
+    // NavController próbuje wtedy przywrócić stos zapisany w grafie pierwszego
+    // uruchomienia do grafu, który tamtych miejsc nie zna, i przewraca aplikację:
+    //
+    //   IllegalStateException: Restoring the Navigation back stack failed:
+    //   destination main_navigation_widget_info cannot be found
+    //
+    // Dotyczy każdego odtworzenia po zamknięciu tego ekranu — obrotu ekranu,
+    // zmiany trybu nocnego, zmiany zestawu kolorystycznego. ViewModel przeżywa
+    // odtworzenie, więc trzyma tę decyzję dokładnie tak długo, jak trzeba;
+    // nowe uruchomienie aplikacji tworzy nowy ViewModel i czyta preferencję
+    // od nowa.
+    private var wybranyGraf: Int? = null
+
     val mainNavigationId: Int
-        get() = if (isFirstRun || !AppPreferences.wasAppWidgetInfoDisplayed(appContext))
-            R.navigation.main_navigation_widget_info
-        else
-            R.navigation.main_navigation
+        get() = wybranyGraf ?: (
+                if (isFirstRun || !AppPreferences.wasAppWidgetInfoDisplayed(appContext))
+                    R.navigation.main_navigation_widget_info
+                else
+                    R.navigation.main_navigation
+                ).also { wybranyGraf = it }
 
     val wasWidgetInfoDisplayed
         get() = AppPreferences.wasAppWidgetInfoDisplayed(appContext)
