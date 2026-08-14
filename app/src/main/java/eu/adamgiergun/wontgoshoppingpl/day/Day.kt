@@ -152,10 +152,41 @@ internal class Day(private val event: Event, context: Context) : Comparable<Day>
     val descriptionForDialog: String
         get() = if (type == Type.HOLIDAY) name else dateAndWeekdayString
 
+    /**
+     * Nazwa typu dnia dla święta — „Święto" zamiast nazwy własnej.
+     *
+     * Rozwiązywana w konstruktorze, bo [widgetText] czyta ją z odbiornika
+     * widgetu, gdzie [Context] już nie sięga, a przechowywanie go w [Day]
+     * byłoby drogą do wycieku: dzień powstaje też z kontekstem fragmentu.
+     *
+     * Sięga do zasobów wyłącznie dla świąt. Nie jest to mikrooptymalizacja,
+     * tylko utrzymanie założenia testów jednostkowych, które budują [Day]
+     * na atrapie kontekstu i polegają na tym, że nikt jej nie woła.
+     */
+    private val holidayTypeName =
+        if (Type.getType(event.typeId) == Type.HOLIDAY)
+            context.getString(R.string.day_name_holiday)
+        else
+            null
+
+    /**
+     * Treść widgetu: data i typ dnia.
+     *
+     * Nazwy własne świąt zostają na liście, a widget dostaje sam typ. Powód jest
+     * wymiarowy: „Wniebowzięcie Najświętszej Maryi Panny" ma 38 znaków, a „dzień
+     * po Święcie Stulecia Niepodległości" 40, i to te dwa wyjątki decydowały
+     * o szerokości kafelka dla wszystkich 126 wpisów. Po skróceniu najdłuższym
+     * tekstem jest „Niedziela niehandlowa" (21) i mieści się w jednym wierszu.
+     *
+     * Niedziele zachowują pełne nazwy, bo one już są krótkie — skrót dotyczy
+     * wyłącznie świąt. Odpadł też przedrostek „PL:", zbędny w aplikacji, która
+     * nazywa się „Bez zakupów w PL"; był twardym literałem, nie zasobem, więc
+     * jego usunięcie nie ruszyło żadnego tłumaczenia.
+     */
     val widgetText: CharSequence
         get() = """
                $date
-               PL: $name
+               ${holidayTypeName ?: name}
                """.trimIndent()
 
     /**

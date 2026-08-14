@@ -13,24 +13,25 @@
     targetCellWidth/Height to rozmiar początkowy w siatce launchera (Android 12+);
     starsze wersje biorą minWidth/minHeight.
 
-    Rozmiar wyjściowy urósł ze 110x40 dp, bo przy tamtym najdłuższe nazwy dni nie
-    mieściły się i ostatni wiersz był ucięty w połowie wysokości liter —
-    „Wniebowzięcie Najświętszej Maryi Panny" zajmuje trzy wiersze. Póki tekst
-    leżał na grafice, ucięcie ginęło w tle; na jednolitym kafelku jest widoczne
-    od razu. minResize zostaje przy starych wartościach, więc zmniejszyć nadal
-    wolno — tyle że teraz to wybór użytkownika, a nie stan wyjściowy.
+    Rozmiar wyjściowy wynika z długości tekstu, a ta spadła: widget pokazuje typ
+    dnia, nie nazwę własną święta, więc najdłuższym napisem jest „Niedziela
+    niehandlowa" zamiast „dzień po Święcie Stulecia Niepodległości". Dwie kratki
+    mieszczą to w dwóch wierszach z zapasem — sprawdzone na renderach po polsku,
+    czyli w najdłuższym z dwunastu języków. minResize zostaje niżej, żeby dało się
+    zejść jeszcze bardziej; skalowanie w ogóle było wcześniej niemożliwe
+    (resizeMode="none").
 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/app_widget_non_commerce"
     android:initialLayout="@layout/app_widget_non_commerce"
-    android:minWidth="180dp"
-    android:minHeight="70dp"
+    android:minWidth="150dp"
+    android:minHeight="60dp"
     android:minResizeWidth="110dp"
     android:minResizeHeight="40dp"
     android:previewImage="@drawable/app_widget_preview"
     android:previewLayout="@layout/app_widget_non_commerce"
     android:resizeMode="horizontal|vertical"
-    android:targetCellWidth="3"
-    android:targetCellHeight="2"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
     android:updatePeriodMillis="@integer/app_widget_update_period_millis"
     android:widgetCategory="home_screen" />

@@ -69,6 +69,7 @@
     <string name="large">Duży</string>
 
     <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_holiday">Święto</string>
     <string name="day_name_non_commerce_sunday">Niedziela niehandlowa</string>
     <string name="day_name_commerce_sunday">Niedziela handlowa</string>
     <string name="day_name_new_year">Nowy Rok</string>

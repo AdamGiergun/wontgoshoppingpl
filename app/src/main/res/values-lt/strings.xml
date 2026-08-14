@@ -71,6 +71,7 @@
     <string name="large">Didelis</string>
 
     <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_holiday">Šventė</string>
     <string name="day_name_non_commerce_sunday">Ne prekybos sekmadienis</string>
     <string name="day_name_commerce_sunday">Prekybos sekmadienis</string>
     <string name="day_name_new_year">Naujųjų metų diena</string>

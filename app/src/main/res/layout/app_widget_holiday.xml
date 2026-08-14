@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Widget dla święta. Uzasadnienie podziału na trzy pliki:
+<!-- Widget dla święta. Uzasadnienie podziału na trzy pliki i braku android:tint:
      app_widget_non_commerce.xml. -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/appwidget_text"
-    style="@style/AppWidgetText"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_bg_holiday"
-    android:textColor="@color/day_on_holiday_container" />
+    android:background="@drawable/widget_bg_holiday">
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        style="@style/AppWidgetText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/day_on_holiday_container" />
+
+    <ImageView
+        android:layout_width="@dimen/widget_icon_size"
+        android:layout_height="@dimen/widget_icon_size"
+        android:layout_gravity="top|start"
+        android:layout_margin="@dimen/widget_icon_margin"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_widget_cart_off_holiday" />
+
+</FrameLayout>

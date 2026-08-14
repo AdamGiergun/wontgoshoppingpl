@@ -57,6 +57,7 @@
     <string name="large">Grand</string>
 
     <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_holiday">Jour férié</string>
     <string name="day_name_non_commerce_sunday">Dimanche sans commerce</string>
     <string name="day_name_commerce_sunday">Dimanche du commerce</string>
     <string name="day_name_new_year">Jour de l\’année</string>

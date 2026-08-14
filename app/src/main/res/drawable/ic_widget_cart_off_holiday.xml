@@ -1,0 +1,37 @@
+<!--
+    Wózek z zakazem, wariant dla święta. Uzasadnienie osobnego pliku na typ dnia:
+    ic_widget_cart_off_non_commerce.xml.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M2.6,3.6h2.1l2.7,9.6h9.5l2.3,-7.2H5.3"
+        android:strokeColor="@color/day_on_holiday_container"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.9" />
+    <path
+        android:fillColor="@color/day_on_holiday_container"
+        android:pathData="M9,17.6m-1.55,0a1.55,1.55 0 1,0 3.1,0a1.55,1.55 0 1,0 -3.1,0" />
+    <path
+        android:fillColor="@color/day_on_holiday_container"
+        android:pathData="M16.4,17.6m-1.55,0a1.55,1.55 0 1,0 3.1,0a1.55,1.55 0 1,0 -3.1,0" />
+
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M20.3,3.7L3.7,20.3"
+        android:strokeColor="@color/day_holiday_container"
+        android:strokeLineCap="round"
+        android:strokeWidth="4.4" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M20.3,3.7L3.7,20.3"
+        android:strokeColor="@color/day_on_holiday_container"
+        android:strokeLineCap="round"
+        android:strokeWidth="2" />
+</vector>

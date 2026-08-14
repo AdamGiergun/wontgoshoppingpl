@@ -1,0 +1,29 @@
+<!--
+    Wózek bez przekreślenia — jedyny typ dnia, w którym zrobisz zakupy.
+
+    Kolor wpisany wprost, jak w wariantach przekreślonych, mimo że tutaj
+    wystarczyłby jeden. Powód jest praktyczny: android:tint w layoucie widgetu
+    zgłasza lint jako błąd (UseAppTint), a podpowiadane app:tint jest atrybutem
+    AppCompat — launcher rozwija RemoteViews zwykłym inflaterem i barwienie by
+    zniknęło. Ta sama pułapka co app:autoSizeTextType, który w tym widgecie
+    nigdy nie działał. Kolor w wektorze omija spór w całości.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M2.6,3.6h2.1l2.7,9.6h9.5l2.3,-7.2H5.3"
+        android:strokeColor="@color/day_on_commerce_container"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.9" />
+    <path
+        android:fillColor="@color/day_on_commerce_container"
+        android:pathData="M9,17.6m-1.55,0a1.55,1.55 0 1,0 3.1,0a1.55,1.55 0 1,0 -3.1,0" />
+    <path
+        android:fillColor="@color/day_on_commerce_container"
+        android:pathData="M16.4,17.6m-1.55,0a1.55,1.55 0 1,0 3.1,0a1.55,1.55 0 1,0 -3.1,0" />
+</vector>

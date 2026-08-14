@@ -81,6 +81,7 @@
     <string name="privacy_policy_link"><a href="https://www.adamgiergun.eu/privacy_policy/privacy-policy-for-no-shopping-in-pl">Privacy Policy</a></string>
 
     <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_holiday">Holiday</string>
     <string name="day_name_non_commerce_sunday">Non-commerce Sunday</string>
     <string name="day_name_commerce_sunday">Commerce Sunday</string>
     <string name="day_name_new_year">New Year\'s Day</string>

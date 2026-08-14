@@ -222,9 +222,9 @@ internal class DayTest {
             }
 
             @Test
-            @DisplayName("Then widgetText is 5 sty 2020\nPL: Non-commerce Sunday")
+            @DisplayName("Then widgetText is 5 sty 2020\nNon-commerce Sunday")
             override fun getWidgetText() {
-                expectedWidgetText = "5 sty 2020\nPL: Non-commerce Sunday"
+                expectedWidgetText = "5 sty 2020\nNon-commerce Sunday"
                 super.getWidgetText()
             }
 
@@ -328,9 +328,9 @@ internal class DayTest {
             }
 
             @Test
-            @DisplayName("Then widgetText is 11 kwi 2020\nPL: Holy Saturday")
+            @DisplayName("Then widgetText is 11 kwi 2020\nHoly Saturday")
             override fun getWidgetText() {
-                expectedWidgetText = "11 kwi 2020\nPL: Holy Saturday"
+                expectedWidgetText = "11 kwi 2020\nHoly Saturday"
                 super.getWidgetText()
             }
 

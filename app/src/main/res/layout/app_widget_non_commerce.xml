@@ -3,8 +3,8 @@
     Widget dla dnia bez handlu — przypadek zdecydowanie najczęstszy, więc to on
     jest układem początkowym i podglądem w wyborniku widżetów.
 
-    Trzy layouty różnią się wyłącznie parą kolorów; wybiera je WidgetViewModel
-    po typie dnia. Podział na osobne pliki zamiast jednego z kolorem ustawianym
+    Trzy layouty różnią się parą kolorów i ikoną; wybiera je WidgetViewModel po
+    typie dnia. Podział na osobne pliki zamiast jednego z kolorem ustawianym
     z kodu jest celowy: RemoteViews są rozwijane w procesie launchera i rozwijane
     ponownie przy zmianie konfiguracji. Kolor wyliczony u nas i wysłany jako int
     zostałby wtedy dzienny, podczas gdy tło z zasobu przeskoczyłoby na nocne —
@@ -14,14 +14,30 @@
     wywołania setTextViewText: przez previewLayout w wyborniku widżetów i przez
     initialLayout, zanim pierwsze odświeżenie zdąży wstawić datę. Bez tego
     wybornik pokazywał pusty kafelek. Wartość jest istniejącym, przetłumaczonym
-    zasobem — nazwą typu dnia, którą widget i tak wypisuje w drugim wierszu —
-    więc nie przybywa ciągu do przetłumaczenia.
+    zasobem — nazwą typu dnia, którą widget i tak wypisuje w drugim wierszu.
+
+    Ikona nie ma android:tint: kolory siedzą wprost w wektorze, bo przekreślenie
+    potrzebuje obu ról naraz, a tint jest filtrem na całą warstwę.
 -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/appwidget_text"
-    style="@style/AppWidgetText"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_bg_non_commerce"
-    android:text="@string/day_name_non_commerce_sunday"
-    android:textColor="@color/day_on_non_commerce_container" />
+    android:background="@drawable/widget_bg_non_commerce">
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        style="@style/AppWidgetText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/day_name_non_commerce_sunday"
+        android:textColor="@color/day_on_non_commerce_container" />
+
+    <ImageView
+        android:layout_width="@dimen/widget_icon_size"
+        android:layout_height="@dimen/widget_icon_size"
+        android:layout_gravity="top|start"
+        android:layout_margin="@dimen/widget_icon_margin"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_widget_cart_off_non_commerce" />
+
+</FrameLayout>

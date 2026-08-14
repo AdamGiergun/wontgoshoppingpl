@@ -56,6 +56,7 @@
     <string name="large">Grande</string>
 
     <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
+    <string name="day_name_holiday">Festivo</string>
     <string name="day_name_non_commerce_sunday">Domenica non commerciale</string>
     <string name="day_name_commerce_sunday">Commercio domenica</string>
     <string name="day_name_new_year">Capodanno</string>

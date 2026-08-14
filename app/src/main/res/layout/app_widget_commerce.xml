@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Widget dla niedzieli handlowej. Uzasadnienie podziału na trzy pliki:
-     app_widget_non_commerce.xml. -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/appwidget_text"
-    style="@style/AppWidgetText"
+<!--
+    Widget dla niedzieli handlowej — jedyny typ dnia z wózkiem bez przekreślenia.
+    To on niesie sens pary: przekreślenie znaczy „tu zakupów nie zrobisz", więc
+    musi mieć swoje zaprzeczenie, inaczej byłoby tylko ozdobnikiem.
+
+    Żadna z trzech ikon nie używa android:tint — kolory siedzą wprost
+    w wektorach. Uzasadnienie: ic_widget_cart_commerce.xml.
+    Uzasadnienie podziału na trzy pliki: app_widget_non_commerce.xml.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_bg_commerce"
-    android:textColor="@color/day_on_commerce_container" />
+    android:background="@drawable/widget_bg_commerce">
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        style="@style/AppWidgetText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/day_on_commerce_container" />
+
+    <ImageView
+        android:layout_width="@dimen/widget_icon_size"
+        android:layout_height="@dimen/widget_icon_size"
+        android:layout_gravity="top|start"
+        android:layout_margin="@dimen/widget_icon_margin"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_widget_cart_commerce" />
+
+</FrameLayout>

@@ -77,6 +77,12 @@
          gniazdo, a odstęp od treści daje widget_padding. -->
     <dimen name="appwidget_text_size">12sp</dimen>
     <dimen name="widget_padding">10dp</dimen>
+    <!-- 22dp to najmniejszy rozmiar, przy którym przekreślenie wózka czyta się
+         jako osobny gest, a nie jako zamazanie rysunku. Przy 18dp ginęło,
+         przy 26dp przerwa pod ukośnikiem robi się tak szeroka, że wózek wygląda
+         na rozcięty. Sprawdzone na trzech renderach. -->
+    <dimen name="widget_icon_size">22dp</dimen>
+    <dimen name="widget_icon_margin">8dp</dimen>
     <!-- Od Androida 12 launcher zna wartość, którą sam stosuje do obrysu i cienia
          widgetu — użycie jej sprawia, że nasze tło pokrywa się z jego kształtem
          zamiast wystawać rogami. Niżej takiej stałej nie ma, więc 16dp na sztywno.
