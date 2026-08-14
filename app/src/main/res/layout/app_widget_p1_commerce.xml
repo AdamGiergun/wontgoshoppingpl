@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Widget dla niedzieli handlowej — jedyny typ dnia z wózkiem bez przekreślenia.
-    To on niesie sens pary: przekreślenie znaczy „tu zakupów nie zrobisz", więc
-    musi mieć swoje zaprzeczenie, inaczej byłoby tylko ozdobnikiem.
+    Widget: niedziela handlowa, zestaw 1, pigmenty.
 
-    Żadna z trzech ikon nie używa android:tint — kolory siedzą wprost
-    w wektorach. Uzasadnienie: ic_widget_cart_commerce.xml.
-    Uzasadnienie podziału na trzy pliki: app_widget_non_commerce.xml.
+    Sześć layoutów to trzy typy dnia razy dwa zestawy kolorystyczne. Podział jest
+    konieczny, nie wygodny: RemoteViews rozwija launcher i rozwija je ponownie
+    przy zmianie konfiguracji, więc kolor wyliczony w aplikacji i wysłany jako
+    int rozjechałby się z tłem po przełączeniu trybu nocnego. Wszystko idzie
+    przez zasoby, a stan wybiera layout.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_bg_commerce">
+    android:background="@drawable/widget_bg_p1_commerce">
 
     <TextView
         android:id="@+id/appwidget_text"
         style="@style/AppWidgetText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/day_on_commerce_container" />
+        android:textColor="@color/p1_day_on_commerce_container" />
 
     <ImageView
         android:layout_width="@dimen/widget_icon_size"
@@ -26,6 +26,6 @@
         android:layout_gravity="top|start"
         android:layout_margin="@dimen/widget_icon_margin"
         android:contentDescription="@null"
-        android:src="@drawable/ic_widget_cart_commerce" />
+        android:src="@drawable/ic_widget_cart_p1_commerce" />
 
 </FrameLayout>

@@ -44,11 +44,47 @@ internal abstract class ActivityWithThemeAndPermissions : AppCompatActivityWithH
             }
         }
 
+    /**
+     * Motyw wybranego zestawu kolorystycznego.
+     *
+     * Ustawiany PRZED `super.onCreate`, bo po nim jest już za późno: widoki
+     * rozwijają się z motywem, który obowiązywał w momencie tworzenia okna.
+     *
+     * Preferencja czytana jest wprost z SharedPreferences, a nie przez
+     * ViewModel. To nie jest skrót — `mViewModel` powstaje przez `by lazy`,
+     * więc sięgnięcie po niego tutaj tworzyłoby ViewModel w trakcie
+     * rozwiązywania motywu, zanim aktywność jest gotowa.
+     */
+    /** Zestaw, z którym powstało bieżące okno — patrz [onResume]. */
+    private var zastosowanyZestaw: AppPreferences.ColourSet? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val zestaw = AppPreferences.colourSet(applicationContext)
+        zastosowanyZestaw = zestaw
+        setTheme(
+            when (zestaw) {
+                AppPreferences.ColourSet.PIGMENTS -> R.style.AppTheme_Pigmenty
+                AppPreferences.ColourSet.CANDY -> R.style.AppTheme_Cukierki
+            }
+        )
         super.onCreate(savedInstanceState)
         // Od targetSdk 35 edge-to-edge jest wymuszone i nie da się z niego zrezygnować.
         // Musi być przed setContentView w klasach pochodnych.
         enableEdgeToEdge()
+    }
+
+    /**
+     * Zestaw kolorystyczny mógł się zmienić, gdy aktywność stała zatrzymana.
+     *
+     * Zmiana zachodzi w ekranie ustawień, a on odtwarza tylko siebie. Aktywność
+     * pod spodem trzyma okno rozwinięte ze starym motywem i sama się o zmianie
+     * nie dowie: preferencje czytamy w `onCreate`, a `onCreate` się nie powtórzy.
+     * Bez tego lista po powrocie z ustawień zostaje w poprzednich kolorach —
+     * dopóki użytkownik jej nie ubije.
+     */
+    override fun onResume() {
+        super.onResume()
+        if (zastosowanyZestaw != AppPreferences.colourSet(applicationContext)) recreate()
     }
 
     /**

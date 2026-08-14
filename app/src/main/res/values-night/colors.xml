@@ -1,80 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Warianty nocne obu zestawów. Barwy te same co w wariancie jasnym, role
+    jasnościowe odwrócone, kolejność jasności dni zachowana.
+    Uzasadnienie zestawów: values/colors.xml.
+-->
 <resources>
 
-    <!-- ============ Paleta Material 3, wariant ciemny ============
-         Katalog values-night istniał w projekcie od 2020 roku i był pusty —
-         aplikacja nie miała trybu ciemnego w ogóle.
+    <!-- ======== ZESTAW 1 - pigmenty ======== -->
+    <color name="p1_day_holiday_container">#64251E</color>
+    <color name="p1_day_on_holiday_container">#E8C4BE</color>
+    <color name="p1_day_non_commerce_container">#825B31</color>
+    <color name="p1_day_on_non_commerce_container">#FFFCF8</color>
+    <color name="p1_day_commerce_container">#305932</color>
+    <color name="p1_day_on_commerce_container">#E1F6E0</color>
+    <color name="p1_md_primary">#F6B8A2</color>
+    <color name="p1_md_on_primary">#5F1411</color>
+    <color name="p1_md_primary_container">#7B2D26</color>
+    <color name="p1_md_on_primary_container">#FDDBD0</color>
+    <color name="p1_md_secondary">#DBC1B4</color>
+    <color name="p1_md_on_secondary">#3F2C22</color>
+    <color name="p1_md_secondary_container">#564238</color>
+    <color name="p1_md_on_secondary_container">#F7DDD0</color>
+    <color name="p1_md_background">#201A17</color>
+    <color name="p1_md_on_background">#E9E1DD</color>
+    <color name="p1_md_surface">#201A17</color>
+    <color name="p1_md_on_surface">#E9E1DD</color>
+    <color name="p1_md_surface_variant">#50443E</color>
+    <color name="p1_md_on_surface_variant">#D2C3BC</color>
+    <color name="p1_md_outline">#9C8E87</color>
+    <color name="p1_md_error">#FFB3B0</color>
+    <color name="p1_md_on_error">#660417</color>
+    <color name="p1_md_surface_container_lowest">#18120E</color>
+    <color name="p1_md_surface_container_low">#241E1B</color>
+    <color name="p1_md_surface_container">#29221F</color>
+    <color name="p1_md_surface_container_high">#322A26</color>
+    <color name="p1_md_surface_container_highest">#3C332E</color>
+    <color name="p1_md_surface_dim">#201A17</color>
+    <color name="p1_md_surface_bright">#4A403B</color>
+    <color name="p1_md_outline_variant">#50443E</color>
+    <color name="p1_md_inverse_surface">#E9E1DD</color>
+    <color name="p1_md_inverse_on_surface">#362F2C</color>
+    <color name="p1_md_inverse_primary">#9D4137</color>
+    <color name="p1_md_tertiary">#B8CDAA</color>
+    <color name="p1_md_on_tertiary">#223517</color>
+    <color name="p1_md_tertiary_container">#384C2D</color>
+    <color name="p1_md_on_tertiary_container">#D8E7CE</color>
+    <color name="p1_md_error_container">#822528</color>
+    <color name="p1_md_on_error_container">#FFD8D4</color>
 
-         Te same barwy co w wariancie jasnym (glina 34°, neutralne 55°), tylko
-         role jasnościowe odwrócone. Uzasadnienie przeniesienia chromu do rodziny
-         pigmentów — patrz values/colors.xml.
-
-         Kontrasty: treść na powierzchni 13,3:1, treść wariantu 10,1:1,
-         onPrimary na primary 7,7:1, obrys wobec tła 5,4:1. -->
-
-    <color name="md_primary">#F6B8A2</color>
-    <color name="md_on_primary">#5F1411</color>
-    <color name="md_primary_container">#7B2D26</color>
-    <color name="md_on_primary_container">#FDDBD0</color>
-
-    <color name="md_secondary">#DBC1B4</color>
-    <color name="md_on_secondary">#3F2C22</color>
-    <color name="md_secondary_container">#564238</color>
-    <color name="md_on_secondary_container">#F7DDD0</color>
-
-    <color name="md_background">#201A17</color>
-    <color name="md_on_background">#E9E1DD</color>
-    <color name="md_surface">#201A17</color>
-    <color name="md_on_surface">#E9E1DD</color>
-    <color name="md_surface_variant">#50443E</color>
-    <color name="md_on_surface_variant">#D2C3BC</color>
-    <color name="md_outline">#9C8E87</color>
-
-    <color name="md_error">#FFB3B0</color>
-    <color name="md_on_error">#660417</color>
-
-    <!-- Pozostałe role Material 3 — uzasadnienie w values/colors.xml. -->
-    <color name="md_surface_container_lowest">#18120E</color>
-    <color name="md_surface_container_low">#241E1B</color>
-    <color name="md_surface_container">#29221F</color>
-    <color name="md_surface_container_high">#322A26</color>
-    <color name="md_surface_container_highest">#3C332E</color>
-    <color name="md_surface_dim">#201A17</color>
-    <color name="md_surface_bright">#4A403B</color>
-    <color name="md_outline_variant">#50443E</color>
-    <color name="md_inverse_surface">#E9E1DD</color>
-    <color name="md_inverse_on_surface">#362F2C</color>
-    <color name="md_inverse_primary">#9D4137</color>
-    <color name="md_tertiary">#B8CDAA</color>
-    <color name="md_on_tertiary">#223517</color>
-    <color name="md_tertiary_container">#384C2D</color>
-    <color name="md_on_tertiary_container">#D8E7CE</color>
-    <color name="md_error_container">#822528</color>
-    <color name="md_on_error_container">#FFD8D4</color>
-
-    <!-- Te same trzy pigmenty co w wariancie jasnym — glina, ochra, mech —
-         wzięte z ciemnego końca skali. Tekst robi się jasny, więc para
-         container/onContainer odwraca role, ale barwa zostaje ta sama, żeby
-         dzień rozpoznawało się tak samo w obu trybach.
-
-         KLUCZOWE: rozrzut jasności musi być zachowany. Pierwsza wersja dawała
-         wszystkim trzem tę samą jasność 30 i to samo nasycenie 20, przez co
-         różniła je wyłącznie barwa — a ciemne, mało nasycone brązy różnią się
-         barwą ledwie zauważalnie. Kontrast par wynosił wtedy 1,00-1,01:1,
-         czyli zero. Teraz jasności 24 / 42 / 34 odwzorowują porządek z trybu
-         jasnego (święto najciemniejsze, dzień bez handlu najjaśniejszy),
-         a nasycenie idzie w górę do 30-34, bo na ciemnym tle jest na nie
-         miejsce. Kontrast par 1,91 / 1,42 / 1,34 — lepiej niż w trybie jasnym.
-
-         Kontrast tekstu 5,9-7,2:1. -->
-
-    <color name="day_holiday_container">#64251E</color>
-    <color name="day_on_holiday_container">#E8C4BE</color>
-
-    <color name="day_non_commerce_container">#825B31</color>
-    <color name="day_on_non_commerce_container">#FFFCF8</color>
-
-    <color name="day_commerce_container">#305932</color>
-    <color name="day_on_commerce_container">#E1F6E0</color>
+    <!-- ======== ZESTAW 2 - cukierki ======== -->
+    <color name="p2_day_holiday_container">#8E1026</color>
+    <color name="p2_day_on_holiday_container">#FFDAD8</color>
+    <color name="p2_day_non_commerce_container">#876110</color>
+    <color name="p2_day_on_non_commerce_container">#FCEFDE</color>
+    <color name="p2_day_commerce_container">#0F6443</color>
+    <color name="p2_day_on_commerce_container">#D4EEE0</color>
+    <color name="p2_md_primary">#F79694</color>
+    <color name="p2_md_on_primary">#630B19</color>
+    <color name="p2_md_primary_container">#942831</color>
+    <color name="p2_md_on_primary_container">#FFD6D3</color>
+    <color name="p2_md_secondary">#B0CDBD</color>
+    <color name="p2_md_on_secondary">#213A2D</color>
+    <color name="p2_md_secondary_container">#375143</color>
+    <color name="p2_md_on_secondary_container">#CEE8DA</color>
+    <color name="p2_md_background">#181E1B</color>
+    <color name="p2_md_on_background">#DDE4E0</color>
+    <color name="p2_md_surface">#181E1B</color>
+    <color name="p2_md_on_surface">#DDE4E0</color>
+    <color name="p2_md_surface_variant">#3B4B43</color>
+    <color name="p2_md_on_surface_variant">#B8CBC0</color>
+    <color name="p2_md_outline">#84968C</color>
+    <color name="p2_md_error">#FFB3B0</color>
+    <color name="p2_md_on_error">#660417</color>
+    <color name="p2_md_surface_container_lowest">#0E1511</color>
+    <color name="p2_md_surface_container_low">#1C221F</color>
+    <color name="p2_md_surface_container">#1F2622</color>
+    <color name="p2_md_surface_container_high">#272F2A</color>
+    <color name="p2_md_surface_container_highest">#2F3833</color>
+    <color name="p2_md_surface_dim">#181E1B</color>
+    <color name="p2_md_surface_bright">#3B4640</color>
+    <color name="p2_md_outline_variant">#3B4B43</color>
+    <color name="p2_md_inverse_surface">#DDE4E0</color>
+    <color name="p2_md_inverse_on_surface">#2B322E</color>
+    <color name="p2_md_inverse_primary">#C03944</color>
+    <color name="p2_md_tertiary">#42D397</color>
+    <color name="p2_md_on_tertiary">#003A1E</color>
+    <color name="p2_md_tertiary_container">#045C3D</color>
+    <color name="p2_md_on_tertiary_container">#C0ECD4</color>
+    <color name="p2_md_error_container">#822528</color>
+    <color name="p2_md_on_error_container">#FFD8D4</color>
 
 </resources>

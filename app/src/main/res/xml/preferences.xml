@@ -12,6 +12,10 @@
         android:defaultValue="true"
         android:key="@string/include_commerce_sundays_preference_key" />
 
+    <androidx.preference.ListPreference
+        android:defaultValue="1"
+        android:key="@string/colour_set_preference_key" />
+
     <!-- Wartość musi zgadzać się z pref_look.xml ORAZ z AppPreferences.isListCompact.
          Ten plik jest kopią wszystkich kluczy dla PreferenceManager.setDefaultValues,
          pref_look.xml buduje ekran, a kod czyta preferencję zanim ekran ustawień

@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.widget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.util.Log
 import android.widget.RemoteViews
@@ -43,21 +44,8 @@ class Widget : AppWidgetProvider() {
         }
     }
 
-    private suspend fun newRemoteViews(context: Context): RemoteViews {
-        val widgetViewModel = WidgetViewModel.newInstance(context.applicationContext)
-        return RemoteViews(
-            context.packageName,
-            widgetViewModel.layoutId
-        ).apply {
-            setTextViewText(WidgetViewModel.widgetTextViewId, widgetViewModel.text)
-            setTextViewTextSize(
-                WidgetViewModel.widgetTextViewId,
-                WidgetViewModel.widgetTextSizeUnit,
-                widgetViewModel.textSize
-            )
-            setOnClickPendingIntent(WidgetViewModel.widgetTextViewId, widgetViewModel.pendingIntent)
-        }
-    }
+    private suspend fun newRemoteViews(context: Context): RemoteViews =
+        Companion.newRemoteViews(context)
 
     override fun onEnabled(context: Context) {
         WidgetViewModel.logFirstAdded(context.applicationContext)
@@ -67,7 +55,38 @@ class Widget : AppWidgetProvider() {
         WidgetViewModel.logLastRemoved(context.applicationContext)
     }
 
-    private companion object {
-        const val TAG = "WGS_Widget"
+    companion object {
+        private const val TAG = "WGS_Widget"
+
+        /**
+         * Odświeżenie widgetu na żądanie aplikacji.
+         *
+         * Potrzebne po zmianie zestawu kolorystycznego: widget sam z siebie
+         * odczeka do sześciu godzin, a broadcastu APPWIDGET_UPDATE nie da się
+         * wysłać — jest chroniony. Ale RemoteViews możemy zbudować i wypchnąć
+         * bezpośrednio, bo jesteśmy w procesie właściciela widgetu.
+         */
+        suspend fun refresh(appContext: Context) {
+            val manager = AppWidgetManager.getInstance(appContext)
+            val ids = manager.getAppWidgetIds(ComponentName(appContext, Widget::class.java))
+            if (ids.isEmpty()) return
+            val views = newRemoteViews(appContext)
+            ids.forEach { manager.updateAppWidget(it, views) }
+        }
+
+        private suspend fun newRemoteViews(context: Context): RemoteViews {
+            val widgetViewModel = WidgetViewModel.newInstance(context.applicationContext)
+            return RemoteViews(context.packageName, widgetViewModel.layoutId).apply {
+                setTextViewText(WidgetViewModel.widgetTextViewId, widgetViewModel.text)
+                setTextViewTextSize(
+                    WidgetViewModel.widgetTextViewId,
+                    WidgetViewModel.widgetTextSizeUnit,
+                    widgetViewModel.textSize
+                )
+                setOnClickPendingIntent(
+                    WidgetViewModel.widgetTextViewId, widgetViewModel.pendingIntent
+                )
+            }
+        }
     }
 }

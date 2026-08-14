@@ -320,4 +320,12 @@
         <item>14</item>
         <item>16</item>
     </string-array>
+    <string-array name="colour_set_names">
+        <item>Pigments</item>
+        <item>Candy</item>
+    </string-array>
+    <string-array name="colour_set_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

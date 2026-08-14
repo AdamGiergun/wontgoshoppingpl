@@ -102,6 +102,7 @@
     <string name="default_time_preference_title">Час</string>
     <string name="default_days_before_event_preference_title">Кількість днів до події</string>
     <string name="default_reminder_settings_preference_category_title">Налаштування нагадування за умовчанням</string>
+    <string name="title_colour_set">Набір кольорів</string>
     <string name="title_list_density">Щільність списку</string>
     <string name="summary_list_density_compact">Компактна</string>
     <string name="summary_list_density_standard">Стандартна</string>

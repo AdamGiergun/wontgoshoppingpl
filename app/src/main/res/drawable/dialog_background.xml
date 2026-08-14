@@ -7,6 +7,9 @@
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/md_surface" />
+    <!-- Kolor z ROLI MOTYWU, nie z zasobu: zestawy kolorystyczne podmieniają
+         motyw, więc wskazanie konkretnego koloru przywiązałoby dialog do jednego
+         z nich. Drawable rozwijany jest z kontekstem okna, więc ?attr działa. -->
+    <solid android:color="?attr/colorSurface" />
     <corners android:radius="28dp" />
 </shape>

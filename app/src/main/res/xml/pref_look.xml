@@ -1,6 +1,18 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Zestaw kolorystyczny. Wartość domyślna musi zgadzać się z preferences.xml
+         ORAZ z AppPreferences.colourSet — kod czyta ją przy wyborze motywu,
+         zanim ekran ustawień zostanie choć raz otwarty. -->
+    <androidx.preference.ListPreference
+        android:defaultValue="1"
+        android:entries="@array/colour_set_names"
+        android:entryValues="@array/colour_set_values"
+        android:key="@string/colour_set_preference_key"
+        android:title="@string/title_colour_set"
+        app:useSimpleSummaryProvider="true"
+        app:iconSpaceReserved="false" />
+
     <!-- Domyślnie kompakt: przy standardzie karta jest wyższa, a treści w niej
          tyle samo, więc na ekran wchodzi mniej dni bez zysku czytelności. -->
     <androidx.preference.SwitchPreferenceCompat

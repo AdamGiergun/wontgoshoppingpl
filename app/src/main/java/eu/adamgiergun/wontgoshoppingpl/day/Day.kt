@@ -42,24 +42,9 @@ internal class Day(private val event: Event, context: Context) : Comparable<Day>
     val allDay: Boolean
         get() = time == "00:00"
 
-    private val type: Type
+    /** Widoczny w module, bo o kolor i layout pyta teraz [DayPalette]. */
+    internal val type: Type
         get() = Type.getType(event.typeId)!!
-
-    // Kolor jest tu nośnikiem informacji, nie dekoracją: czerwony to święto,
-    // pomarańczowy dzień bez handlu, zielony niedziela handlowa. Dlatego pozostaje
-    // stały niezależnie od motywu systemu, a za czytelność odpowiada para
-    // container / onContainer, osobna dla trybu jasnego i ciemnego.
-    val containerColorResource = when (type) {
-        Type.HOLIDAY -> R.color.day_holiday_container
-        Type.NON_COMMERCE_DAY -> R.color.day_non_commerce_container
-        Type.COMMERCE_SUNDAY -> R.color.day_commerce_container
-    }
-
-    val onContainerColorResource = when (type) {
-        Type.HOLIDAY -> R.color.day_on_holiday_container
-        Type.NON_COMMERCE_DAY -> R.color.day_on_non_commerce_container
-        Type.COMMERCE_SUNDAY -> R.color.day_on_commerce_container
-    }
 
     // Trzy pola poniżej wypełnia [List.skipReminderForConsecutiveDays] i tylko
     // ona. Są widoczne w module, żeby dało się tę regułę przetestować — jej
@@ -188,21 +173,6 @@ internal class Day(private val event: Event, context: Context) : Comparable<Day>
                $date
                ${holidayTypeName ?: name}
                """.trimIndent()
-
-    /**
-     * Layout widgetu dla tego typu dnia.
-     *
-     * Widget nosi ten sam pigment co wiersz listy, ale nie może wziąć go
-     * z [containerColorResource] — [android.widget.RemoteViews] nie ustawiają
-     * koloru z zasobu przed API 31, a wyliczony u nas int rozjechałby się z tłem
-     * po przełączeniu trybu nocnego. Stan niesie więc wybór layoutu, a kolory
-     * siedzą w nim jako odwołania do zasobów.
-     */
-    val widgetLayoutResource = when (type) {
-        Type.HOLIDAY -> R.layout.app_widget_holiday
-        Type.NON_COMMERCE_DAY -> R.layout.app_widget_non_commerce
-        Type.COMMERCE_SUNDAY -> R.layout.app_widget_commerce
-    }
 
     val isCommerceSunday: Boolean
         get() = type == Type.COMMERCE_SUNDAY

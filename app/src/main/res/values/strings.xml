@@ -125,6 +125,8 @@
     <string name="default_time_preference_title">Time</string>
     <string name="default_days_before_event_preference_title">Number of days before event</string>
     <string name="default_reminder_settings_preference_category_title">Default reminder settings</string>
+    <string name="colour_set_preference_key" translatable="false">colour_set</string>
+    <string name="title_colour_set">Colour set</string>
     <string name="title_list_density">List density</string>
     <string name="summary_list_density_compact">Compact</string>
     <string name="summary_list_density_standard">Standard</string>

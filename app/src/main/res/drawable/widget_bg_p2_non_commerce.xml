@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Tło kafelka widgetu: dzień bez handlu, zestaw 2, cukierki.
+    Kolor jest podany zasobem, nie wartością — dzięki temu wariant nocny wybiera
+    launcher przy rozwijaniu RemoteViews, a nie my przy ich budowaniu.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/p2_day_non_commerce_container" />
+    <corners android:radius="@dimen/widget_corner_radius" />
+</shape>

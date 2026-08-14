@@ -104,6 +104,7 @@
     <string name="default_time_preference_title">Zeit</string>
     <string name="default_days_before_event_preference_title">Anzahl der Tage vor dem Ereignis</string>
     <string name="default_reminder_settings_preference_category_title">Standard-Erinnerungseinstellungen</string>
+    <string name="title_colour_set">Farbsatz</string>
     <string name="title_list_density">Listendichte</string>
     <string name="summary_list_density_compact">Kompakt</string>
     <string name="summary_list_density_standard">Standard</string>

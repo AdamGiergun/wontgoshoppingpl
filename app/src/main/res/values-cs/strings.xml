@@ -88,6 +88,7 @@
     <string name="default_time_preference_title">Čas</string>
     <string name="default_days_before_event_preference_title">Počet dnů před událostí</string>
     <string name="default_reminder_settings_preference_category_title">Výchozí nastavení připomenutí</string>
+    <string name="title_colour_set">Barevná sada</string>
     <string name="title_list_density">Hustota seznamu</string>
     <string name="summary_list_density_compact">Kompaktní</string>
     <string name="summary_list_density_standard">Standardní</string>

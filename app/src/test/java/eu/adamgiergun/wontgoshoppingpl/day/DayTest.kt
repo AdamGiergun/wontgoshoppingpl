@@ -2,6 +2,7 @@ package eu.adamgiergun.wontgoshoppingpl.day
 
 import android.content.Context
 import eu.adamgiergun.wontgoshoppingpl.R
+import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences.ColourSet
 import eu.adamgiergun.wontgoshoppingpl.db.Event
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
@@ -62,11 +63,11 @@ internal class DayTest {
             }
 
             open fun getContainerColorResource() {
-                assertThat(day.containerColorResource, `is`(expectedContainerColorResource))
+                assertThat(DayPalette.container(day.type, ColourSet.PIGMENTS), `is`(expectedContainerColorResource))
             }
 
             open fun getOnContainerColorResource() {
-                assertThat(day.onContainerColorResource, `is`(expectedOnContainerColorResource))
+                assertThat(DayPalette.onContainer(day.type, ColourSet.PIGMENTS), `is`(expectedOnContainerColorResource))
             }
 
             open fun compareToSameDay() {
@@ -158,14 +159,14 @@ internal class DayTest {
             @Test
             @DisplayName("Then containerColorResource is day_non_commerce_container")
             override fun getContainerColorResource() {
-                expectedContainerColorResource = R.color.day_non_commerce_container
+                expectedContainerColorResource = R.color.p1_day_non_commerce_container
                 super.getContainerColorResource()
             }
 
             @Test
             @DisplayName("Then onContainerColorResource is day_on_non_commerce_container")
             override fun getOnContainerColorResource() {
-                expectedOnContainerColorResource = R.color.day_on_non_commerce_container
+                expectedOnContainerColorResource = R.color.p1_day_on_non_commerce_container
                 super.getOnContainerColorResource()
             }
 
@@ -296,14 +297,14 @@ internal class DayTest {
             @Test
             @DisplayName("Then containerColorResource is day_non_commerce_container")
             override fun getContainerColorResource() {
-                expectedContainerColorResource = R.color.day_non_commerce_container
+                expectedContainerColorResource = R.color.p1_day_non_commerce_container
                 super.getContainerColorResource()
             }
 
             @Test
             @DisplayName("Then onContainerColorResource is day_on_non_commerce_container")
             override fun getOnContainerColorResource() {
-                expectedOnContainerColorResource = R.color.day_on_non_commerce_container
+                expectedOnContainerColorResource = R.color.p1_day_on_non_commerce_container
                 super.getOnContainerColorResource()
             }
 

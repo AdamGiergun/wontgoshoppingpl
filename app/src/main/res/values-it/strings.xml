@@ -88,6 +88,7 @@
     <string name="default_time_preference_title">Tempo</string>
     <string name="default_days_before_event_preference_title">Numero di giorni prima dell\'evento</string>
     <string name="default_reminder_settings_preference_category_title">Impostazioni di promemoria predefinite</string>
+    <string name="title_colour_set">Set di colori</string>
     <string name="title_list_density">Densità dell\'elenco</string>
     <string name="summary_list_density_compact">Compatta</string>
     <string name="summary_list_density_standard">Standard</string>

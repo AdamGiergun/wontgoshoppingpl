@@ -29,7 +29,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.adamgiergun.wontgoshoppingpl.R
+import androidx.compose.ui.platform.LocalContext
+import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.day.Day
+import eu.adamgiergun.wontgoshoppingpl.day.DayPalette
 
 /**
  * Rozmiary tekstu wiersza.
@@ -74,8 +77,11 @@ internal fun DayRow(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val tlo = colorResource(day.containerColorResource)
-    val tresc = colorResource(day.onContainerColorResource)
+    // Zestaw kolorystyczny czytany przy rysowaniu, nie trzymany w [Day] —
+    // uzasadnienie w DayPalette.
+    val zestaw = AppPreferences.colourSet(LocalContext.current)
+    val tlo = colorResource(DayPalette.container(day.type, zestaw))
+    val tresc = colorResource(DayPalette.onContainer(day.type, zestaw))
 
     Card(
         modifier = modifier,

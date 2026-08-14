@@ -1,110 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    DWA ZESTAWY KOLORYSTYCZNE, wybierane w Ustawieniach → Wygląd.
+
+    Paleta jest własna, nie dynamiczna. Sensem aplikacji jest odczytanie koloru
+    dnia jednym spojrzeniem, a paleta pobrana z tapety użytkownika weszłaby
+    w konflikt z kolorami niosącymi znaczenie.
+
+    ZESTAW 1 (p1) - pigmenty: glina, ochra, mech. Barwy ziemi, nasycenie 26-38,
+    chrom w tej samej rodzinie (primary na glinie, neutralne 55°).
+
+    ZESTAW 2 (p2) - cukierki: wiśnia, bursztyn, szmaragd. Intensywne i wyraziste,
+    niekoniecznie jasne. Każda barwa dostaje 85% swojego sufitu nasycenia
+    w gamucie sRGB przy zadanej jasności — to REGUŁA, nie dobór na oko.
+    Bezładne maksymalizowanie nasycenia daje neon, czyli dokładnie ten kicz,
+    którego zestaw ma unikać; wyrazistość ma być systemowa.
+
+    WSPÓLNA ZASADA OBU ZESTAWÓW: rozróżnialność dni niesie ROZRZUT JASNOŚCI,
+    nie barwa. W obu święto jest najciemniejsze, dzień bez handlu najjaśniejszy.
+    Zestaw 2 ma ten rozrzut szerszy i wypada lepiej także w symulacji
+    deuteranopii (pary 2,83/2,18/1,30 wobec 1,75/1,30/1,35 w zestawie 1).
+
+    Wartości liczone tools/paleta.py. Przy zmianie zaczynać stamtąd, nie od oka.
+-->
 <resources>
 
-    <!-- ============ Paleta Material 3, wariant jasny ============
-         Własna, nie dynamiczna. Sensem aplikacji jest odczytanie koloru dnia
-         jednym spojrzeniem, a paleta pobrana z tapety użytkownika weszłaby
-         w konflikt z kolorami niosącymi znaczenie.
+    <!-- ======== ZESTAW 1 - pigmenty ======== -->
+    <color name="p1_day_holiday_container">#CE7A6D</color>
+    <color name="p1_day_on_holiday_container">#230D06</color>
+    <color name="p1_day_non_commerce_container">#E8B78F</color>
+    <color name="p1_day_on_non_commerce_container">#422E1D</color>
+    <color name="p1_day_commerce_container">#93AE82</color>
+    <color name="p1_day_on_commerce_container">#131F07</color>
+    <color name="p1_md_primary">#9D4137</color>
+    <color name="p1_md_on_primary">#FFFFFF</color>
+    <color name="p1_md_primary_container">#FDDBD0</color>
+    <color name="p1_md_on_primary_container">#451712</color>
+    <color name="p1_md_secondary">#6F5A4F</color>
+    <color name="p1_md_on_secondary">#FFFFFF</color>
+    <color name="p1_md_secondary_container">#F4DED3</color>
+    <color name="p1_md_on_secondary_container">#332218</color>
+    <color name="p1_md_background">#F7F3EF</color>
+    <color name="p1_md_on_background">#201A17</color>
+    <color name="p1_md_surface">#F7F3EF</color>
+    <color name="p1_md_on_surface">#201A17</color>
+    <color name="p1_md_surface_variant">#EFDFD7</color>
+    <color name="p1_md_on_surface_variant">#50443E</color>
+    <color name="p1_md_outline">#82746D</color>
+    <color name="p1_md_error">#B4252D</color>
+    <color name="p1_md_on_error">#FFFFFF</color>
+    <color name="p1_md_surface_container_lowest">#FFFFFF</color>
+    <color name="p1_md_surface_container_low">#F3EFEA</color>
+    <color name="p1_md_surface_container">#ECE4DF</color>
+    <color name="p1_md_surface_container_high">#E7DED8</color>
+    <color name="p1_md_surface_container_highest">#E2D7D0</color>
+    <color name="p1_md_surface_dim">#D9CDC5</color>
+    <color name="p1_md_surface_bright">#F7F3EF</color>
+    <color name="p1_md_outline_variant">#D3C4BC</color>
+    <color name="p1_md_inverse_surface">#362F2C</color>
+    <color name="p1_md_inverse_on_surface">#F5F0EB</color>
+    <color name="p1_md_inverse_primary">#F6B8A2</color>
+    <color name="p1_md_tertiary">#4F6443</color>
+    <color name="p1_md_on_tertiary">#FFFFFF</color>
+    <color name="p1_md_tertiary_container">#D8E7CE</color>
+    <color name="p1_md_on_tertiary_container">#1C2914</color>
+    <color name="p1_md_error_container">#FFD8D4</color>
+    <color name="p1_md_on_error_container">#611117</color>
 
-         Chrom jest z tej samej rodziny barw co pigmenty dni. Wcześniej nie był
-         i to było widać: wszystkie role motywu siedziały na barwie ~290°
-         (chłodny fiolet, domyślny odcień szablonów Material 3), a pigmenty na
-         34-132° (glina, ochra, mech). Dwie niepowiązane rodziny postawione obok
-         siebie — pasek i ustawienia nie miały nic wspólnego z listą.
-
-         Przeniesienie zrobione z jedną zasadą: **jasności zostają co do
-         dziesiątej, zmienia się wyłącznie barwa i nasycenie**. Dzięki temu
-         wszystkie relacje kontrastu są takie jak były, a separacja kafelków od
-         tła nie drgnęła nawet o setną. Barwy: primary na glinie (34°),
-         neutralne między gliną a ochrą (55°), tło lekko cieplejsze (70-75°).
-
-         Tło NIE jest bielą i to jest decyzja: przy L* 98,8 kafelki unosiły się
-         nad pustką zamiast na niej leżeć. Zeszło do L* 96, przez co ochra —
-         najjaśniejszy pigment, a zarazem 124 ze 126 wpisów — traci 0,10 kontrastu
-         wobec tła. Wymiana warta świeczki, bo kafelek ma jeszcze cień 3 dp.
-
-         Razem z tłem przesunęła się CAŁA DRABINA powierzchni. Pasek górny bierze
-         kolor z surfaceContainer, który jest ciemniejszy od tła; samo
-         przyciemnienie tła spłaszczyłoby tę różnicę i pasek zlałby się z treścią.
-
-         Kontrasty: treść na powierzchni 15,7:1, treść wariantu 8,6:1, biel na
-         primary 6,5:1, obrys wobec tła 4,1:1. Skrypt do liczenia palet leży
-         w narzędziach sesji (paleta.py) — przy kolejnej zmianie zaczynać stamtąd,
-         nie od oka. -->
-
-    <color name="md_primary">#9D4137</color>
-    <color name="md_on_primary">#FFFFFF</color>
-    <color name="md_primary_container">#FDDBD0</color>
-    <color name="md_on_primary_container">#451712</color>
-
-    <color name="md_secondary">#6F5A4F</color>
-    <color name="md_on_secondary">#FFFFFF</color>
-    <color name="md_secondary_container">#F4DED3</color>
-    <color name="md_on_secondary_container">#332218</color>
-
-    <color name="md_background">#F7F3EF</color>
-    <color name="md_on_background">#201A17</color>
-    <color name="md_surface">#F7F3EF</color>
-    <color name="md_on_surface">#201A17</color>
-    <color name="md_surface_variant">#EFDFD7</color>
-    <color name="md_on_surface_variant">#50443E</color>
-    <color name="md_outline">#82746D</color>
-
-    <color name="md_error">#B4252D</color>
-    <color name="md_on_error">#FFFFFF</color>
-
-    <!-- Pozostałe role Material 3. Bez nich pasek górny i tła kontenerów brały
-         wartości z bazowej palety biblioteki, czyli z fioletu ~290° — i dlatego
-         po przestawieniu siedemnastu ról podstawowych pasek nadal nie pasował
-         do reszty. Te same barwy co wyżej: glina 34°, neutralne 55°.
-         Rola tertiary dostała mech 132°, czyli trzeci pigment dni. -->
-    <color name="md_surface_container_lowest">#FFFFFF</color>
-    <color name="md_surface_container_low">#F0EBE6</color>
-    <color name="md_surface_container">#ECE4DF</color>
-    <color name="md_surface_container_high">#E8DED8</color>
-    <color name="md_surface_container_highest">#E5D8D1</color>
-    <color name="md_surface_dim">#DCD0C8</color>
-    <color name="md_surface_bright">#F7F3EF</color>
-    <color name="md_outline_variant">#D3C4BC</color>
-    <color name="md_inverse_surface">#362F2C</color>
-    <color name="md_inverse_on_surface">#F5F0EB</color>
-    <color name="md_inverse_primary">#F6B8A2</color>
-    <color name="md_tertiary">#4F6443</color>
-    <color name="md_on_tertiary">#FFFFFF</color>
-    <color name="md_tertiary_container">#D8E7CE</color>
-    <color name="md_on_tertiary_container">#1C2914</color>
-    <color name="md_error_container">#FFD8D4</color>
-    <color name="md_on_error_container">#611117</color>
-
-    <!-- ============ Kolory znaczące dni ============
-
-         Rejestr pigmentów: glina, ochra, mech. Poprzednie wartości
-         (#FF8A80, #FFC98F, #7EDC96) były pastelami z palety akcentów
-         Material 2 — jasność 70-85, nasycenie 38-50, do tego układ barw
-         czerwony-pomarańczowy-zielony. Pastel plus sygnalizacja świetlna
-         daje wrażenie plastikowej zabawki, i to nie było wrażenie samego
-         nasycenia: samo jego obniżenie dawało te same barwy, tylko wyblakłe.
-
-         Zmieniły to dwa przesunięcia. Jasność zeszła do 60-78, czyli tam,
-         gdzie leżą prawdziwe pigmenty — materiał ma ciężar, cukierek nie.
-         Barwy odsunęły się od podstawowych: zieleń ze 149° na 132°, z mięty
-         w mech; czerwień z 30° na 34°, z łososia w glinę.
-
-         Rozróżnialność wyszła przy okazji lepsza niż wcześniej. Kontrast
-         jasności par sąsiednich: święto/bez handlu 1,75 (było 1,52),
-         święto/handlowa 1,30 (1,37), bez handlu/handlowa 1,35 (1,11).
-
-         Tekst jest w tej samej barwie co tło, tylko mocno przyciemniony —
-         nie czarny. Stąd wrażenie jednego pigmentu w dwóch stężeniach.
-         Kontrast 5,9-7,1:1, z zapasem ponad wymagane 4,5:1. -->
-
-    <color name="day_holiday_container">#CE7A6D</color>
-    <color name="day_on_holiday_container">#230D06</color>
-
-    <color name="day_non_commerce_container">#E8B78F</color>
-    <color name="day_on_non_commerce_container">#422E1D</color>
-
-    <color name="day_commerce_container">#93AE82</color>
-    <color name="day_on_commerce_container">#131F07</color>
+    <!-- ======== ZESTAW 2 - cukierki ======== -->
+    <color name="p2_day_holiday_container">#D72D43</color>
+    <color name="p2_day_on_holiday_container">#FFFFFF</color>
+    <color name="p2_day_non_commerce_container">#FCBB39</color>
+    <color name="p2_day_on_non_commerce_container">#372500</color>
+    <color name="p2_day_commerce_container">#3CC48B</color>
+    <color name="p2_day_on_commerce_container">#00301A</color>
+    <color name="p2_md_primary">#CA293E</color>
+    <color name="p2_md_on_primary">#FFFFFF</color>
+    <color name="p2_md_primary_container">#FFD6D3</color>
+    <color name="p2_md_on_primary_container">#4E0B13</color>
+    <color name="p2_md_secondary">#446B57</color>
+    <color name="p2_md_on_secondary">#FFFFFF</color>
+    <color name="p2_md_secondary_container">#CEE8DA</color>
+    <color name="p2_md_on_secondary_container">#122A1F</color>
+    <color name="p2_md_background">#F4FBF7</color>
+    <color name="p2_md_on_background">#181E1B</color>
+    <color name="p2_md_surface">#F4FBF7</color>
+    <color name="p2_md_on_surface">#181E1B</color>
+    <color name="p2_md_surface_variant">#D5E8DE</color>
+    <color name="p2_md_on_surface_variant">#3B4B43</color>
+    <color name="p2_md_outline">#6B7C73</color>
+    <color name="p2_md_error">#B4252D</color>
+    <color name="p2_md_on_error">#FFFFFF</color>
+    <color name="p2_md_surface_container_lowest">#FFFFFF</color>
+    <color name="p2_md_surface_container_low">#EBF4EF</color>
+    <color name="p2_md_surface_container">#E3EEE7</color>
+    <color name="p2_md_surface_container_high">#DAE7E0</color>
+    <color name="p2_md_surface_container_highest">#D1E0D8</color>
+    <color name="p2_md_surface_dim">#C9D8D0</color>
+    <color name="p2_md_surface_bright">#F4FBF7</color>
+    <color name="p2_md_outline_variant">#B8CBC0</color>
+    <color name="p2_md_inverse_surface">#2B322E</color>
+    <color name="p2_md_inverse_on_surface">#EDF6F1</color>
+    <color name="p2_md_inverse_primary">#F1B9B6</color>
+    <color name="p2_md_tertiary">#1F7652</color>
+    <color name="p2_md_on_tertiary">#FFFFFF</color>
+    <color name="p2_md_tertiary_container">#C0ECD4</color>
+    <color name="p2_md_on_tertiary_container">#042C1C</color>
+    <color name="p2_md_error_container">#FFD8D4</color>
+    <color name="p2_md_on_error_container">#611117</color>
 
 </resources>

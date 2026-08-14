@@ -308,4 +308,8 @@
         <item>2023_08_27,00:00,&commerce_sunday;</item>
         <item>2023_12_17,00:00,&commerce_sunday;</item>
     </string-array>
+    <string-array name="colour_set_names">
+        <item>Pigmenti</item>
+        <item>Caramelle</item>
+    </string-array>
 </resources>

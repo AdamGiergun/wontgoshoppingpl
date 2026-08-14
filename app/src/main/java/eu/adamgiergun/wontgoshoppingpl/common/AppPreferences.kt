@@ -28,6 +28,35 @@ internal object AppPreferences : MyAppPreferences() {
         return getBoolean(context, key, true)
     }
 
+    /**
+     * Wybrany zestaw kolorystyczny.
+     *
+     * Wartość jest ciągiem, a nie przełącznikiem logicznym, bo zestawów może
+     * z czasem przybyć — a klucza preferencji nie da się potem zmienić bez
+     * skasowania ustawienia użytkownika.
+     *
+     * Wartość domyślna, tak jak przy gęstości listy, żyje w trzech miejscach
+     * i wszystkie muszą się zgadzać: tutaj, w xml/pref_look.xml
+     * i w xml/preferences.xml.
+     */
+    fun colourSet(context: Context): ColourSet {
+        val key = context.getString(R.string.colour_set_preference_key)
+        return ColourSet.fromValue(getString(context, key, ColourSet.PIGMENTS.value))
+    }
+
+    /**
+     * Zestawy kolorystyczne. `value` trafia do SharedPreferences i **nie wolno
+     * go zmieniać** — zmiana skasowałaby wybór użytkownika.
+     */
+    enum class ColourSet(val value: String) {
+        PIGMENTS("1"),
+        CANDY("2");
+
+        companion object {
+            fun fromValue(v: String?) = entries.firstOrNull { it.value == v } ?: PIGMENTS
+        }
+    }
+
     fun storedDayTypeSet(context: Context): Day.Type.Set {
         return newSet(
                 showNonCommerceDays(context),

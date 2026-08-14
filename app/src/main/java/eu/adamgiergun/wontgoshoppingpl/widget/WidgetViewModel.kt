@@ -10,6 +10,7 @@ import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
 import eu.adamgiergun.wontgoshoppingpl.common.today
 import eu.adamgiergun.wontgoshoppingpl.day.Day
+import eu.adamgiergun.wontgoshoppingpl.day.DayPalette
 import eu.adamgiergun.wontgoshoppingpl.db.AppDatabase
 import eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity
 
@@ -31,11 +32,13 @@ internal class WidgetViewModel private constructor(
             if (AppPreferences.isFirstRun(appContext)) {
                 AppDatabase.getInstance(appContext).eventDao().initialize()
             }
-            var layoutId = R.layout.app_widget_non_commerce
+            // Zestaw kolorystyczny czyta ten, kto rysuje — patrz DayPalette.
+            val zestaw = AppPreferences.colourSet(appContext)
+            var layoutId = DayPalette.widgetLayout(Day.Type.NON_COMMERCE_DAY, zestaw)
             var widgetText: CharSequence = ""
             val textSize = AppPreferences.getAppWidgetTextSize(appContext).toFloat()
             getNearestDay(appContext)?.let {
-                layoutId = it.widgetLayoutResource
+                layoutId = DayPalette.widgetLayout(it.type, zestaw)
                 widgetText = it.widgetText
             }
             val intent = Intent(appContext, MainActivity::class.java)
