@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -109,6 +110,15 @@ internal fun DayRow(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    // Wysokość też, ale tylko gdy karta wypełnia komórkę.
+                    // Bez tego Box dostaje wysokość swojej treści i ląduje przy
+                    // GÓRZE karty, a jego contentAlignment centruje treść
+                    // względem niego samego — czyli nie robi nic. Widać to
+                    // wyłącznie tam, gdzie komórka jest wyższa od treści, czyli
+                    // w wężu: tekst siedział przy górze, a pod nim zostawał pusty
+                    // pas. Najmocniej na tablecie w poziomie w trybie standardowym,
+                    // gdzie minimum komórki (68 dp) najbardziej przewyższa treść.
+                    .then(if (wypelniaWysokosc) Modifier.fillMaxHeight() else Modifier)
                     .padding(horizontal = 12.dp, vertical = pionowo),
                 contentAlignment = Alignment.CenterStart,
             ) {
