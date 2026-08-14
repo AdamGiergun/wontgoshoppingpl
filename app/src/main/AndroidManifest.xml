@@ -43,6 +43,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <!-- Bez tego widget po aktualizacji aplikacji zostaje ze starymi
+                     RemoteViews aż do najbliższego updatePeriodMillis, czyli do
+                     sześciu godzin. Uzasadnienie w Widget.onReceive. -->
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"

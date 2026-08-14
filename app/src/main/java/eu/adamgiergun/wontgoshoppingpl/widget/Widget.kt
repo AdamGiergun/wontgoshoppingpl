@@ -44,6 +44,38 @@ class Widget : AppWidgetProvider() {
         }
     }
 
+    /**
+     * Po aktualizacji aplikacji widget trzeba przerysować natychmiast.
+     *
+     * Launcher trzyma ostatnie RemoteViews, a te niosą IDENTYFIKATORY zasobów
+     * z poprzedniego APK. Przy zmianie layoutów identyfikatory się przesuwają
+     * i stary obiekt zaczyna wskazywać co innego albo nic — widget zostaje
+     * z pustym albo błędnym kafelkiem. Sam z siebie odświeży się dopiero po
+     * `updatePeriodMillis`, czyli do sześciu godzin.
+     *
+     * Zaobserwowane na Androidzie 7 przy tej wersji, która przemianowała
+     * wszystkie sześć layoutów: po instalacji widget pokazywał tekst zastępczy
+     * z `android:text`, a `dumpsys appwidget` nie miał dla niego linii `views=`.
+     *
+     * MY_PACKAGE_REPLACED dostaje wyłącznie aplikacja, której dotyczy, więc nie
+     * trzeba go filtrować po nazwie pakietu.
+     */
+    override fun onReceive(context: Context?, intent: android.content.Intent?) {
+        super.onReceive(context, intent)
+        if (context == null || intent?.action != android.content.Intent.ACTION_MY_PACKAGE_REPLACED) return
+        val pendingResult = goAsync()
+        val appContext = context.applicationContext
+        CoroutineScope(Dispatchers.Default + SupervisorJob()).launch {
+            try {
+                refresh(appContext)
+            } catch (throwable: Throwable) {
+                Log.w(TAG, "Nie udało się odświeżyć widgetu po aktualizacji", throwable)
+            } finally {
+                pendingResult.finish()
+            }
+        }
+    }
+
     private suspend fun newRemoteViews(context: Context): RemoteViews =
         Companion.newRemoteViews(context)
 
