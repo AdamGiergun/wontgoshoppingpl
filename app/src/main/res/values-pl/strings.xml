@@ -102,7 +102,4 @@
     <string name="default_days_before_event_preference_title">Liczba dni przed wydarzeniem</string>
     <string name="default_reminder_settings_preference_category_title">Domyślne ustawienia przypomnienia</string>
     <string name="title_colour_set">Zestaw kolorów</string>
-    <string name="title_list_density">Gęstość listy</string>
-    <string name="summary_list_density_compact">Kompaktowa</string>
-    <string name="summary_list_density_standard">Standardowa</string>
 </resources>

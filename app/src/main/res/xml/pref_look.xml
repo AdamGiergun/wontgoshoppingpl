@@ -13,16 +13,6 @@
         app:useSimpleSummaryProvider="true"
         app:iconSpaceReserved="false" />
 
-    <!-- Domyślnie kompakt: przy standardzie karta jest wyższa, a treści w niej
-         tyle samo, więc na ekran wchodzi mniej dni bez zysku czytelności. -->
-    <androidx.preference.SwitchPreferenceCompat
-        android:defaultValue="true"
-        android:key="@string/list_density_preference_key"
-        android:summaryOff="@string/summary_list_density_standard"
-        android:summaryOn="@string/summary_list_density_compact"
-        android:title="@string/title_list_density"
-        app:iconSpaceReserved="false" />
-
     <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
         android:key="@string/include_holidays_preference_key"

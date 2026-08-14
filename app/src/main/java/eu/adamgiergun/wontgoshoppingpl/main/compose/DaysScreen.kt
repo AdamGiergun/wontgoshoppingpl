@@ -87,10 +87,8 @@ internal fun DaysScreen(
     // o zmianie sama z siebie. Odczyt przy wznowieniu zastępuje `onResume` plus
     // `odswiezPoZmianieGestosci` plus pole śledzące poprzednią wartość: tutaj
     // wystarczy, że stan się zmieni, a przerysuje się to, co go czyta.
-    var zwarty by remember { mutableStateOf(viewModel.isListCompact) }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         viewModel.updateDisplayedDataSetIfNeeded()
-        zwarty = viewModel.isListCompact
     }
 
     val kolumny = integerResource(R.integer.list_span_count)
@@ -110,9 +108,9 @@ internal fun DaysScreen(
                 .fillMaxSize()
         ) {
             if (kolumny <= 1) {
-                ListaPionowa(events, viewModel, zwarty, scope)
+                ListaPionowa(events, viewModel, scope)
             } else {
-                Waz(events, viewModel, zwarty, kolumny, scope)
+                Waz(events, viewModel, kolumny, scope)
             }
         }
     }
@@ -124,7 +122,6 @@ internal fun DaysScreen(
 private fun ListaPionowa(
     events: List<Event>,
     viewModel: DaysFragmentViewModel,
-    zwarty: Boolean,
     scope: CoroutineScope,
 ) {
     LazyColumn(
@@ -144,7 +141,6 @@ private fun ListaPionowa(
             ) {
                 DayRow(
                     day = day,
-                    zwarty = zwarty,
                     wypelniaWysokosc = false,
                     onClick = { viewModel.setLastTouchedItem(day, index, false) },
                     modifier = Modifier.fillMaxWidth(),
@@ -166,7 +162,6 @@ private fun ListaPionowa(
 private fun Waz(
     events: List<Event>,
     viewModel: DaysFragmentViewModel,
-    zwarty: Boolean,
     kolumny: Int,
     scope: CoroutineScope,
 ) {
@@ -192,12 +187,7 @@ private fun Waz(
         // karty wychodziły przez to bez potrzeby wysokie. Próg 320 dp ten sam
         // co w DayRow — to jedna i ta sama decyzja.
         val pietrowy = szerokoscKolumny < 320.dp
-        val minimalnaWysokosc = when {
-            pietrowy && zwarty -> 76.dp
-            pietrowy -> 92.dp
-            zwarty -> 56.dp
-            else -> 68.dp
-        } * skalaCzcionki
+        val minimalnaWysokosc = (if (pietrowy) 92.dp else 68.dp) * skalaCzcionki
         val wiersze = (maxHeight / minimalnaWysokosc).toInt().coerceAtLeast(1)
 
         val stan = rememberLazyGridState()
@@ -230,7 +220,6 @@ private fun Waz(
                         // preferencji, a wysokość komórki liczył już z niej —
                         // w trybie standardowym dawało to wysokie karty z małym
                         // napisem. O wypełnieniu decyduje wypelniaWysokosc.
-                        zwarty = zwarty,
                         wypelniaWysokosc = true,
                         onClick = { viewModel.setLastTouchedItem(day, index, false) },
                         modifier = Modifier.fillMaxSize(),

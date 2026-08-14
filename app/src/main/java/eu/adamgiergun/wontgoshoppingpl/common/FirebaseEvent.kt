@@ -11,11 +11,6 @@ internal object FirebaseEvent {
      * Zastąpiło logAppTheme. Wyboru „rich"/„mini" już nie ma — zamiast dwóch
      * wyglądów jest gęstość listy, i to ją warto mierzyć.
      */
-    fun logListDensity(appContext: Context, isCompact: Boolean) {
-        val fullText = if (isCompact) Density.COMPACT else Density.COMFORTABLE
-        log(appContext, Type.LIST_DENSITY, fullText)
-    }
-
     fun logCalendarEvent(appContext: Context, listAdded: Boolean, result: Boolean) {
         val fullText = (if (listAdded) CalendarEvent.LIST else CalendarEvent.SINGLE) + if (result) "" else CalendarEvent.FAILED
         log(appContext, Type.CALENDAR_EVENT, fullText)
@@ -45,15 +40,10 @@ internal object FirebaseEvent {
     }
 
     private object Type {
-        const val LIST_DENSITY = "list_density"
         const val CALENDAR_EVENT = "calendar_event"
         const val APP_WIDGET = "app_widget"
     }
 
-    private object Density {
-        const val COMPACT = "compact"
-        const val COMFORTABLE = "comfortable"
-    }
 
     private object CalendarEvent {
         const val SINGLE = "single"

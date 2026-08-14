@@ -106,7 +106,4 @@
     <string name="default_days_before_event_preference_title">Колькасць дзён да падзеі</string>
     <string name="default_reminder_settings_preference_category_title">Налады па змаўчанні напамінку</string>
     <string name="title_colour_set">Набор колераў</string>
-    <string name="title_list_density">Шчыльнасць спісу</string>
-    <string name="summary_list_density_compact">Кампактная</string>
-    <string name="summary_list_density_standard">Стандартная</string>
 </resources>

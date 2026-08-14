@@ -104,7 +104,4 @@
     <string name="default_days_before_event_preference_title">Prieš dienų skaičių</string>
     <string name="default_reminder_settings_preference_category_title">Numatytieji priminimo nustatymai</string>
     <string name="title_colour_set">Spalvų rinkinys</string>
-    <string name="title_list_density">Sąrašo tankis</string>
-    <string name="summary_list_density_compact">Kompaktiškas</string>
-    <string name="summary_list_density_standard">Standartinis</string>
 </resources>

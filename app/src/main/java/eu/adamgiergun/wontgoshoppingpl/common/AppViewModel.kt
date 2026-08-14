@@ -17,9 +17,6 @@ internal abstract class AppViewModel(application: Application) : AndroidViewMode
     protected val appContext: Context
         get() = getApplication<Application>().applicationContext
 
-    val isListCompact: Boolean
-        get() = AppPreferences.isListCompact(appContext)
-
     private var _allPermissionsGranted = MutableLiveData<Boolean>()
     val allPermissionsGranted: LiveData<Boolean>
         get() = _allPermissionsGranted

@@ -181,10 +181,6 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
     private fun logCalendarEvent(result: Boolean) {
         FirebaseEvent.logCalendarEvent(appContext, MainActivityActions.lastActionIsAddList, result)
     }
-
-    fun logListDensity() {
-        FirebaseEvent.logListDensity(appContext, isListCompact)
-    }
     //endregion
 
     fun setActionNone() {

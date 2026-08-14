@@ -8,25 +8,6 @@ import eu.adamgiergun.wontgoshoppingpl.day.Day.Type.Companion.newSet
 
 internal object AppPreferences : MyAppPreferences() {
 
-    /**
-     * Zwarta lista mieści więcej wierszy na ekranie kosztem oddechu między nimi.
-     * Zastąpiła dawny wybór „rich/mini", który różnił kart gradientem od płaskiego
-     * koloru — przy trybie ciemnym oznaczałby cztery kombinacje do zaprojektowania,
-     * a nie wnosił nic poza dekoracją.
-     *
-     * **Domyślnie zwarta.** Przy standardzie karta jest wyższa, a treści w niej
-     * tyle samo, więc na ekran wchodzi mniej dni bez zysku czytelności.
-     *
-     * Wartość domyślna żyje w TRZECH miejscach i wszystkie muszą się zgadzać:
-     * tutaj (bo kod czyta preferencję, zanim ekran ustawień zostanie choć raz
-     * otwarty), w `xml/pref_look.xml` (buduje ekran) i w `xml/preferences.xml`
-     * (kopia kluczy dla `PreferenceManager.setDefaultValues`). Zmiana tylko
-     * w XML-u nie działa — to sprawdzone na świeżej instalacji.
-     */
-    fun isListCompact(context: Context): Boolean {
-        val key = context.getString(R.string.list_density_preference_key)
-        return getBoolean(context, key, true)
-    }
 
     /**
      * Wybrany zestaw kolorystyczny.

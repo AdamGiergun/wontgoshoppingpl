@@ -36,7 +36,6 @@ internal class DaysFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val model = viewModel
-        model.logListDensity()
 
         return ComposeView(requireContext()).apply {
             // Bez tego kompozycja żyje dłużej niż widok fragmentu i po powrocie

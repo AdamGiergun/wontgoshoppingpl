@@ -89,7 +89,4 @@
     <string name="default_days_before_event_preference_title">Počet dní pred udalosťou</string>
     <string name="default_reminder_settings_preference_category_title">Predvolené nastavenia pripomienok</string>
     <string name="title_colour_set">Farebná sada</string>
-    <string name="title_list_density">Hustota zoznamu</string>
-    <string name="summary_list_density_compact">Kompaktné</string>
-    <string name="summary_list_density_standard">Štandardné</string>
 </resources>

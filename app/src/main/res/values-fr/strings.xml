@@ -90,7 +90,4 @@
     <string name="default_days_before_event_preference_title">Nombre de jours avant l\'événement</string>
     <string name="default_reminder_settings_preference_category_title">Paramètres de rappel par défaut</string>
     <string name="title_colour_set">Jeu de couleurs</string>
-    <string name="title_list_density">Densité de la liste</string>
-    <string name="summary_list_density_compact">Compacte</string>
-    <string name="summary_list_density_standard">Standard</string>
 </resources>

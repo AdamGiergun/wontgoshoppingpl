@@ -45,17 +45,14 @@ import eu.adamgiergun.wontgoshoppingpl.day.DayPalette
  * którą w warstwie widoków trzeba było podawać `TypedValue.COMPLEX_UNIT_PX`
  * zamiast `SP`. Jako `TextUnit` w kodzie problem nie istnieje.
  *
- * Wartości bez zmian: role Material 3 (TitleMedium 16, BodyMedium 14,
- * LabelMedium 12), a warianty wąski i zwarty schodzą o stopień niżej.
+ * Wartości to role Material 3 (TitleMedium 16, BodyMedium 14, LabelMedium 12),
+ * a wariant wąski schodzi o stopień niżej — tam nazwa dnia dzieli szerokość
+ * z datą i godziną, więc pełny rozmiar łamałby ją w środku słowa.
  */
 private data class RozmiaryTekstu(val nazwa: TextUnit, val data: TextUnit, val godzina: TextUnit)
 
-private fun rozmiary(waski: Boolean, zwarty: Boolean): RozmiaryTekstu = when {
-    waski && zwarty -> RozmiaryTekstu(13.sp, 11.sp, 10.sp)
-    waski -> RozmiaryTekstu(14.sp, 12.sp, 11.sp)
-    zwarty -> RozmiaryTekstu(14.sp, 12.sp, 11.sp)
-    else -> RozmiaryTekstu(16.sp, 14.sp, 12.sp)
-}
+private fun rozmiary(waski: Boolean): RozmiaryTekstu =
+    if (waski) RozmiaryTekstu(14.sp, 12.sp, 11.sp) else RozmiaryTekstu(16.sp, 14.sp, 12.sp)
 
 /**
  * Wiersz listy dni.
@@ -73,7 +70,6 @@ private fun rozmiary(waski: Boolean, zwarty: Boolean): RozmiaryTekstu = when {
 @Composable
 internal fun DayRow(
     day: Day,
-    zwarty: Boolean,
     wypelniaWysokosc: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -85,20 +81,7 @@ internal fun DayRow(
     val tresc = colorResource(DayPalette.onContainer(day.type, zestaw))
 
     Card(
-        // Minimalna wysokość karty. Te same 56 / 68 dp, które miała warstwa
-        // widoków (`day_row_min_height*`) i które do dziś stosuje wąż w
-        // DaysScreen — przy przepisywaniu listy pionowej na Compose wypadły
-        // i karta z jednowierszową nazwą dnia kurczyła się do treści.
-        //
-        // Rozwiązuje to dwie rzeczy naraz. Widoczną: kafelek przy krótkiej
-        // nazwie robił się wyraźnie za niski. I mierzalną: Material rezerwuje
-        // klikalnemu elementowi 48 dp na cel dotyku niezależnie od tego, ile
-        // z niego maluje, więc karta na ~42 dp zostawiała 6 dp pustki, która
-        // dokładała się do odstępu — przerwa między kartami rosła z 12 dp na
-        // 18 dp i kafelki wyglądały na mniejsze i porozsuwane.
-        //
-        // W wężu minimum nie działa, bo tam kartę rozciąga wysokość komórki.
-        modifier = modifier.heightIn(min = if (zwarty) 56.dp else 68.dp),
+        modifier = modifier,
         // Kształt z MaterialTheme.shapes.medium to te same 12 dp co dawne
         // `day_card_corner`. Cień 3 dp musi zmieścić się w odstępie między
         // kartami, inaczej lista go przycina — dlatego odstępy w DaysScreen
@@ -118,27 +101,36 @@ internal fun DayRow(
             // Przy wężu kolumna ma około 220 dp i też wypada piętrowo, co jest
             // poprawną odpowiedzią na pytanie, którego kwalifikator nie zadawał.
             val waski = maxWidth < 320.dp
-            val r = rozmiary(waski, zwarty)
-            // Wypełnienie pionowe i rozmiar tekstu to DWIE różne rzeczy, choć
-            // w warstwie widoków sterowała nimi jedna flaga. Kiedy wysokość
-            // komórki narzuca układ (wąż), duże wypełnienie niczego nie podnosi —
-            // tylko wypycha tekst z karty. Ale rozmiar tekstu ma wtedy nadal iść
-            // za preferencją gęstości, inaczej w trybie standardowym wychodzą
-            // wysokie karty z małym napisem i pustką dookoła.
-            val pionowo = if (zwarty || wypelniaWysokosc) 6.dp else 14.dp
+            val r = rozmiary(waski)
+            // Kiedy wysokość komórki narzuca układ (wąż), duże wypełnienie
+            // niczego nie podnosi — tylko wypycha tekst z karty.
+            val pionowo = if (wypelniaWysokosc) 6.dp else 12.dp
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    // Wysokość też, ale tylko gdy karta wypełnia komórkę.
-                    // Bez tego Box dostaje wysokość swojej treści i ląduje przy
-                    // GÓRZE karty, a jego contentAlignment centruje treść
-                    // względem niego samego — czyli nie robi nic. Widać to
-                    // wyłącznie tam, gdzie komórka jest wyższa od treści, czyli
-                    // w wężu: tekst siedział przy górze, a pod nim zostawał pusty
-                    // pas. Najmocniej na tablecie w poziomie w trybie standardowym,
-                    // gdzie minimum komórki (68 dp) najbardziej przewyższa treść.
-                    .then(if (wypelniaWysokosc) Modifier.fillMaxHeight() else Modifier)
+                    // Minimum wysokości siedzi TUTAJ, a nie na karcie, i to jest
+                    // różnica, nie szczegół. Na karcie rozciągało ją poprawnie,
+                    // ale ten Box zostawał przy wysokości treści i lądował przy
+                    // GÓRZE karty — nadmiar wychodził pustym pasem pod spodem,
+                    // a `contentAlignment` centrował treść względem Boxa, czyli
+                    // nie robił nic. Tutaj minimum i centrowanie dotyczą tego
+                    // samego pudełka, więc tekst siedzi w środku kafelka.
+                    //
+                    // Wartość 68 dp to `day_row_min_height` z warstwy widoków;
+                    // wąż w DaysScreen używa jej do dziś. Przy przepisywaniu
+                    // listy pionowej na Compose wypadła i kafelek z krótką nazwą
+                    // dnia kurczył się do treści.
+                    //
+                    // Przy okazji znika zjawisko, które trudno było nazwać:
+                    // Material rezerwuje klikalnemu elementowi 48 dp na cel
+                    // dotyku niezależnie od tego, ile z niego maluje, więc karta
+                    // schodząca poniżej zostawiała pustkę doklejaną do odstępu
+                    // między kartami.
+                    .then(
+                        if (wypelniaWysokosc) Modifier.fillMaxHeight()
+                        else Modifier.heightIn(min = 68.dp)
+                    )
                     .padding(horizontal = 12.dp, vertical = pionowo),
                 contentAlignment = Alignment.CenterStart,
             ) {
