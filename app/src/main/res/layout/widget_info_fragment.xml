@@ -1,52 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ekran powitalny: zachęta do dodania widgetu na ekran domowy.
+
+    Wcześniej obrazek zajmował kolumnę dociśniętą do lewej krawędzi, a przycisk
+    „dalej" stał obok niego w drugiej kolumnie, przez co między nimi zostawał
+    pusty pas na jedną trzecią szerokości. Teraz obrazek jest wyśrodkowany
+    i dostaje całą wysokość, a FloatingActionButton wraca tam, gdzie zgodnie
+    z Material 3 należy — nad treścią, w dolnym rogu od strony końca wiersza.
+-->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/widgetInfoLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/widgetInfoTextView"
+        style="@style/HelpParagraph"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/help_padding_horizontal"
+        android:layout_marginEnd="@dimen/help_padding_horizontal"
+        android:layout_marginTop="@dimen/help_padding_horizontal"
+        android:text="@string/info_about_app_widget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/help_padding_horizontal"
+        android:layout_marginEnd="@dimen/help_padding_horizontal"
+        android:layout_marginTop="@dimen/help_paragraph_spacing"
+        android:layout_marginBottom="@dimen/help_padding_horizontal"
+        android:contentDescription="@string/info_about_app_widget"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widgetInfoTextView"
-        app:srcCompat="@drawable/app_widget"
-        android:contentDescription="@string/info_about_app_widget" />
+        app:layout_constraintTop_toBottomOf="@id/widgetInfoTextView"
+        app:srcCompat="@drawable/app_widget" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_margin="@dimen/help_padding_horizontal"
         android:clickable="true"
         android:contentDescription="@android:string/ok"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_media_play" />
-
-    <TextView
-        android:id="@+id/widgetInfoTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/info_about_app_widget"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:srcCompat="@drawable/ic_arrow_forward" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

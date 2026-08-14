@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     previewLayout pokazuje w wyborniku widżetów prawdziwy układ zamiast zrzutu
-    z 2020 roku; previewImage zostaje dla Androida 11 i starszych.
+    ekranu; previewImage zostaje dla Androida 11 i starszych, które previewLayout
+    nie znają.
+
+    Wcześniej istniał drugi wariant tego pliku w xml-large — bez previewLayout
+    i z innym minWidth, bez wyjaśnienia dlaczego. Na tablecie z Androidem 12+
+    wygrywał kwalifikator, więc wybornik pokazywał tam zrzut zamiast układu.
+    Skoro widget da się teraz skalować, o rozmiarze decyduje użytkownik i osobny
+    wariant dla dużych ekranów nie ma czego rozstrzygać.
+
+    targetCellWidth/Height to rozmiar początkowy w siatce launchera (Android 12+);
+    starsze wersje biorą minWidth/minHeight.
+
+    Rozmiar wyjściowy urósł ze 110x40 dp, bo przy tamtym najdłuższe nazwy dni nie
+    mieściły się i ostatni wiersz był ucięty w połowie wysokości liter —
+    „Wniebowzięcie Najświętszej Maryi Panny" zajmuje trzy wiersze. Póki tekst
+    leżał na grafice, ucięcie ginęło w tle; na jednolitym kafelku jest widoczne
+    od razu. minResize zostaje przy starych wartościach, więc zmniejszyć nadal
+    wolno — tyle że teraz to wybór użytkownika, a nie stan wyjściowy.
 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialKeyguardLayout="@layout/app_widget_no_shopping"
-    android:initialLayout="@layout/app_widget_no_shopping"
-    android:minWidth="110dp"
-    android:minHeight="40dp"
+    android:initialKeyguardLayout="@layout/app_widget_non_commerce"
+    android:initialLayout="@layout/app_widget_non_commerce"
+    android:minWidth="180dp"
+    android:minHeight="70dp"
+    android:minResizeWidth="110dp"
+    android:minResizeHeight="40dp"
     android:previewImage="@drawable/app_widget_preview"
-    android:previewLayout="@layout/app_widget_no_shopping"
-    android:resizeMode="none"
+    android:previewLayout="@layout/app_widget_non_commerce"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellWidth="3"
+    android:targetCellHeight="2"
     android:updatePeriodMillis="@integer/app_widget_update_period_millis"
     android:widgetCategory="home_screen" />

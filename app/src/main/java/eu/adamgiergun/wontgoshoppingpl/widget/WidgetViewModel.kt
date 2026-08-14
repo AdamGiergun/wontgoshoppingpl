@@ -31,12 +31,11 @@ internal class WidgetViewModel private constructor(
             if (AppPreferences.isFirstRun(appContext)) {
                 AppDatabase.getInstance(appContext).eventDao().initialize()
             }
-            var layoutId = R.layout.app_widget_no_shopping
+            var layoutId = R.layout.app_widget_non_commerce
             var widgetText: CharSequence = ""
             val textSize = AppPreferences.getAppWidgetTextSize(appContext).toFloat()
             getNearestDay(appContext)?.let {
-                layoutId =
-                    if (it.isCommerceSunday) R.layout.app_widget_shopping else R.layout.app_widget_no_shopping
+                layoutId = it.widgetLayoutResource
                 widgetText = it.widgetText
             }
             val intent = Intent(appContext, MainActivity::class.java)

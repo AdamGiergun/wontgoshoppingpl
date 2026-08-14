@@ -51,9 +51,4 @@
     <color name="day_commerce_container">#305932</color>
     <color name="day_on_commerce_container">#E1F6E0</color>
 
-
-    <!-- Widget: RemoteViews nie widzi atrybutów motywu, kolory wprost -->
-    <color name="widget_text">#FFFFFFFF</color>
-    <color name="widget_text_shadow">#CC000000</color>
-
 </resources>

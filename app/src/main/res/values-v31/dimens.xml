@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Promień zaokrąglenia widgetu podany przez system. Launcher rysuje tym
+         samym promieniem swój cień i obrys, więc tło widgetu musi go użyć,
+         inaczej róg tła wystaje poza kształt gniazda. -->
+    <dimen name="widget_corner_radius">@android:dimen/system_app_widget_background_radius</dimen>
+
+</resources>

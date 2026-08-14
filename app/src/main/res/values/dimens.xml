@@ -73,7 +73,14 @@
     <dimen name="reminder_view_padding">16dp</dimen>
     <dimen name="reminder_dialog_spacing">12dp</dimen>
 
-    <dimen name="widget_margin">0dp</dimen>
+    <!-- widget_margin (0dp) odpadł razem ze starym układem: kafelek wypełnia
+         gniazdo, a odstęp od treści daje widget_padding. -->
     <dimen name="appwidget_text_size">12sp</dimen>
+    <dimen name="widget_padding">10dp</dimen>
+    <!-- Od Androida 12 launcher zna wartość, którą sam stosuje do obrysu i cienia
+         widgetu — użycie jej sprawia, że nasze tło pokrywa się z jego kształtem
+         zamiast wystawać rogami. Niżej takiej stałej nie ma, więc 16dp na sztywno.
+         Wariant v31 leży w values-v31/dimens.xml. -->
+    <dimen name="widget_corner_radius">16dp</dimen>
 
 </resources>

@@ -68,18 +68,20 @@
 
     <!--
         Widget stoi na RemoteViews, więc nie widzi motywu aplikacji ani atrybutów
-        typu ?attr/colorOnSurface — kolory muszą być podane wprost. Wariant ciemny
-        siedzi w values-night/colors.xml.
+        typu ?attr/colorOnSurface. Kolor pary container/onContainer wnosi layout —
+        po jednym na typ dnia — a ten styl trzyma to, co dla wszystkich wspólne.
+
+        Nie ma tu już koloru tekstu ani cienia pod nim. Cień był obejściem
+        kontrastu białego napisu leżącego na kolorowej grafice; kiedy tłem jest
+        jednolity pigment, a tekstem jego ciemne stężenie, kontrast wynosi
+        5,9-7,2:1 sam z siebie. To ta sama zmiana, którą reszta aplikacji
+        przeszła w Etapie 2 razem z usunięciem ShadowedText.
     -->
     <style name="AppWidgetText">
-        <item name="android:paddingLeft">2dp</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="android:textColor">@color/widget_text</item>
-        <item name="android:shadowColor">@color/widget_text_shadow</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">2</item>
+        <item name="android:padding">@dimen/widget_padding</item>
+        <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/appwidget_text_size</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
     </style>
 
 </resources>

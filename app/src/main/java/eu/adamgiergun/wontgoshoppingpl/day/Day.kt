@@ -158,6 +158,21 @@ internal class Day(private val event: Event, context: Context) : Comparable<Day>
                PL: $name
                """.trimIndent()
 
+    /**
+     * Layout widgetu dla tego typu dnia.
+     *
+     * Widget nosi ten sam pigment co wiersz listy, ale nie może wziąć go
+     * z [containerColorResource] — [android.widget.RemoteViews] nie ustawiają
+     * koloru z zasobu przed API 31, a wyliczony u nas int rozjechałby się z tłem
+     * po przełączeniu trybu nocnego. Stan niesie więc wybór layoutu, a kolory
+     * siedzą w nim jako odwołania do zasobów.
+     */
+    val widgetLayoutResource = when (type) {
+        Type.HOLIDAY -> R.layout.app_widget_holiday
+        Type.NON_COMMERCE_DAY -> R.layout.app_widget_non_commerce
+        Type.COMMERCE_SUNDAY -> R.layout.app_widget_commerce
+    }
+
     val isCommerceSunday: Boolean
         get() = type == Type.COMMERCE_SUNDAY
 

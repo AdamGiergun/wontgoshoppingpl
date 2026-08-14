@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget dla niedzieli handlowej. Uzasadnienie podziału na trzy pliki:
+     app_widget_non_commerce.xml. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/appwidget_text"
+    style="@style/AppWidgetText"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg_commerce"
+    android:textColor="@color/day_on_commerce_container" />
