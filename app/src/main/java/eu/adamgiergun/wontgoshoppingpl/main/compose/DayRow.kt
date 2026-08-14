@@ -154,32 +154,29 @@ private fun WierszPietrowy(day: Day, r: RozmiaryTekstu, tresc: Color) {
  */
 @Composable
 private fun WierszTrzykolumnowy(day: Day, r: RozmiaryTekstu, tresc: Color) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        // Wszystkie trzy kolumny stoją na WSPÓLNEJ LINII PISMA, a nie są
-        // środkowane względem siebie.
-        //
-        // Data ma dwa wiersze (`dateAndWeekdayString` niesie twardy znak nowej
-        // linii), godzina i nazwa po jednym. Przy środkowaniu te jednowierszowe
-        // wisiały dokładnie pomiędzy wierszami daty, nie trzymając się żadnego —
-        // przy większym tekście, czyli w trybie standardowym na szerokiej karcie,
-        // wyglądało to jakby nic nie stało w jednym rzędzie. `alignByBaseline`
-        // sadza je na linii pierwszego wiersza daty, a dzień tygodnia zwisa pod
-        // spodem jako dopisek, którym jest.
-        Data(
-            day, r.data, tresc,
-            Modifier
-                .widthIn(min = 112.dp)
-                .alignByBaseline(),
-        )
+    // Środkowanie, nie wspólna linia pisma.
+    //
+    // Data ma dwa wiersze (`dateAndWeekdayString` niesie twardy znak nowej linii),
+    // godzina i nazwa po jednym — więc żadne wyrównanie nie jest tu oczywiste.
+    // Próba z `alignByBaseline` sadzała wszystko na linii PIERWSZEGO wiersza daty
+    // i wychodził wiersz przechylony do góry, z pustym dołem po prawej stronie.
+    //
+    // Przy środkowaniu kluczowe jest, żeby dwuwierszowa data czytała się jako
+    // JEDEN blok, a nie dwie osobne linijki, między którymi coś wisi. Stąd
+    // ściśnięta interlinia w [Data]: bliżej siebie oba wiersze tworzą jedną bryłę
+    // i środek wypada tam, gdzie oko go szuka.
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Data(day, r.data, tresc, Modifier.widthIn(min = 112.dp))
         Text(
             text = opisGodziny(day),
             style = MaterialTheme.typography.labelMedium,
             fontSize = r.godzina,
             color = tresc,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .alignByBaseline()
-                .padding(horizontal = 8.dp),
+            modifier = Modifier.padding(horizontal = 8.dp),
         )
         Text(
             text = day.name,
@@ -187,9 +184,7 @@ private fun WierszTrzykolumnowy(day: Day, r: RozmiaryTekstu, tresc: Color) {
             fontSize = r.nazwa,
             color = tresc,
             textAlign = TextAlign.End,
-            modifier = Modifier
-                .weight(1f)
-                .alignByBaseline(),
+            modifier = Modifier.weight(1f),
         )
     }
 }
@@ -214,6 +209,10 @@ private fun Data(day: Day, rozmiar: TextUnit, tresc: Color, modifier: Modifier =
             text = day.dateAndWeekdayString,
             style = MaterialTheme.typography.bodyMedium,
             fontSize = rozmiar,
+            // Interlinia ściśnięta względem domyślnej dla BodyMedium: data i dzień
+            // tygodnia mają się czytać jako jeden blok, bo tak działa środkowanie
+            // pozostałych kolumn względem nich.
+            lineHeight = rozmiar * 1.18f,
             color = tresc,
         )
     }
