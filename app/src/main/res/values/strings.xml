@@ -64,11 +64,6 @@
 
     <string name="key_app_widget_info_displayed" translatable="false">app_widget_info_displayed</string>
 
-    <string name="key_app_widget_text_size" translatable="false">key_app_widget_text_size</string>
-    <string name="title_app_widget_text_size">App widget text size</string>
-    <string name="small">Small</string>
-    <string name="medium">Medium</string>
-    <string name="large">Large</string>
 
     <string name="key_use_pl_time_zone" translatable="false">use_pl_time_zone</string>
     <string name="title_time_zone">Time zone</string>

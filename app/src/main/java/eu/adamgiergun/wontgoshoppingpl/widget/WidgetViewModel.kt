@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
-import android.util.TypedValue.COMPLEX_UNIT_SP
 import eu.adamgiergun.wontgoshoppingpl.R
 import eu.adamgiergun.wontgoshoppingpl.common.AppPreferences
 import eu.adamgiergun.wontgoshoppingpl.common.FirebaseEvent
@@ -17,7 +16,6 @@ import eu.adamgiergun.wontgoshoppingpl.main.activity.MainActivity
 internal class WidgetViewModel private constructor(
     val layoutId: Int,
     val text: CharSequence,
-    val textSize: Float,
     val pendingIntent: PendingIntent
 ) {
 
@@ -26,7 +24,6 @@ internal class WidgetViewModel private constructor(
         // przy nietranzytywnych klasach R w AGP 9, a próba jego zwinięcia wywraca
         // ewaluator stałych Kotlina (AssertionError w buildzie przyrostowym).
         val widgetTextViewId = R.id.appwidget_text
-        const val widgetTextSizeUnit = COMPLEX_UNIT_SP
 
         suspend fun newInstance(appContext: Context): WidgetViewModel {
             if (AppPreferences.isFirstRun(appContext)) {
@@ -36,14 +33,13 @@ internal class WidgetViewModel private constructor(
             val zestaw = AppPreferences.colourSet(appContext)
             var layoutId = DayPalette.widgetLayout(Day.Type.NON_COMMERCE_DAY, zestaw)
             var widgetText: CharSequence = ""
-            val textSize = AppPreferences.getAppWidgetTextSize(appContext).toFloat()
             getNearestDay(appContext)?.let {
                 layoutId = DayPalette.widgetLayout(it.type, zestaw)
                 widgetText = it.widgetText
             }
             val intent = Intent(appContext, MainActivity::class.java)
             val pendingIntent = PendingIntent.getActivity(appContext, 0, intent, FLAG_IMMUTABLE)
-            return WidgetViewModel(layoutId, widgetText, textSize, pendingIntent)
+            return WidgetViewModel(layoutId, widgetText, pendingIntent)
         }
 
         private suspend fun getNearestDay(appContext: Context): Day? {

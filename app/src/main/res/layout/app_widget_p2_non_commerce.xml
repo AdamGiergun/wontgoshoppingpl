@@ -7,6 +7,20 @@
     przy zmianie konfiguracji, więc kolor wyliczony w aplikacji i wysłany jako
     int rozjechałby się z tłem po przełączeniu trybu nocnego. Wszystko idzie
     przez zasoby, a stan wybiera layout.
+    Rozmiar tekstu dobiera się sam: android:autoSizeTextType to atrybut
+    PLATFORMY i launcher go honoruje. Wcześniejsza próba przez app:autoSizeTextType
+    nie działała, bo to wersja z AppCompat, która wymaga AppCompatTextView —
+    a RemoteViews rozwija zwykły TextView. To są dwa różne atrybuty o tej samej
+    nazwie i łatwo wyciągnąć z tamtej porażki fałszywy wniosek.
+
+    Zastąpiło to ustawienie rozmiaru w preferencjach (12/14/16 sp). Ustawienie
+    było globalne, więc dwa widgety różnej wielkości musiały dzielić jedną
+    wartość, a przy zmniejszeniu widgetu i tak trzeba było iść do ustawień,
+    żeby tekst przestał być przycinany. Teraz skaluje się per instancja.
+
+    Atrybut istnieje od API 26, a minSdk to 24. Na 24-25 jest ignorowany i tekst
+    zostaje przy android:textSize ze stylu AppWidgetText — czyli zachowuje się
+    dokładnie jak przed zmianą.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -16,6 +30,10 @@
     <TextView
         android:id="@+id/appwidget_text"
         style="@style/AppWidgetText"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="9sp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeStepGranularity="1sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor="@color/p2_day_on_non_commerce_container" />

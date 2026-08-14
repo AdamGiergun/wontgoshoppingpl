@@ -51,10 +51,6 @@
     <string name="summary_use_pl_time_zone_on">Utiliser le fuseau horaire polonais</string>
     <string name="title_time_zone">Fuseau horaire</string>
     <string name="set_as_default">définir par défaut</string>
-    <string name="title_app_widget_text_size">Taille du texte du widget d\'application</string>
-    <string name="small">Petit</string>
-    <string name="medium">Moyen</string>
-    <string name="large">Grand</string>
 
     <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
     <string name="day_name_holiday">Jour férié</string>

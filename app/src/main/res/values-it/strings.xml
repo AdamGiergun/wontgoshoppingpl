@@ -50,10 +50,6 @@
     <string name="summary_use_pl_time_zone_on">Usa il fuso orario polacco</string>
     <string name="title_time_zone">Fuso orario</string>
     <string name="set_as_default">imposta come predefinito</string>
-    <string name="title_app_widget_text_size">Dimensioni del testo del widget dell\'app</string>
-    <string name="small">Piccolo</string>
-    <string name="medium">Medio</string>
-    <string name="large">Grande</string>
 
     <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
     <string name="day_name_holiday">Festivo</string>

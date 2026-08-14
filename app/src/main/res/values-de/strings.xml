@@ -65,10 +65,6 @@
     <string name="summary_use_pl_time_zone_on">Verwenden Sie die polnische Zeitzone</string>
     <string name="title_time_zone">Zeitzone</string>
     <string name="set_as_default">als Standard einstellen</string>
-    <string name="title_app_widget_text_size">Textgröße des App-Widgets</string>
-    <string name="small">Klein</string>
-    <string name="medium">Mittel</string>
-    <string name="large">Groß</string>
 
     <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
     <string name="day_name_holiday">Feiertag</string>

@@ -309,17 +309,7 @@
         <item>2023_12_17,00:00,&commerce_sunday;</item>
     </string-array>
 
-    <string-array name="app_widget_text_size_names">
-        <item>@string/small</item>
-        <item>@string/medium</item>
-        <item>@string/large</item>
-    </string-array>
 
-    <string-array name="app_widget_text_size_values">
-        <item>12</item>
-        <item>14</item>
-        <item>16</item>
-    </string-array>
     <string-array name="colour_set_names">
         <item>Pigments</item>
         <item>Candy</item>

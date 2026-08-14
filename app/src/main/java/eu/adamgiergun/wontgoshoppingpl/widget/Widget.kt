@@ -78,11 +78,6 @@ class Widget : AppWidgetProvider() {
             val widgetViewModel = WidgetViewModel.newInstance(context.applicationContext)
             return RemoteViews(context.packageName, widgetViewModel.layoutId).apply {
                 setTextViewText(WidgetViewModel.widgetTextViewId, widgetViewModel.text)
-                setTextViewTextSize(
-                    WidgetViewModel.widgetTextViewId,
-                    WidgetViewModel.widgetTextSizeUnit,
-                    widgetViewModel.textSize
-                )
                 setOnClickPendingIntent(
                     WidgetViewModel.widgetTextViewId, widgetViewModel.pendingIntent
                 )

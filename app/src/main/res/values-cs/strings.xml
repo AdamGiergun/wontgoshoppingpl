@@ -50,10 +50,6 @@
     <string name="summary_use_pl_time_zone_on">Použijte polské časové pásmo</string>
     <string name="title_time_zone">Časové pásmo</string>
     <string name="set_as_default">nastavit jako výchozí</string>
-    <string name="title_app_widget_text_size">Velikost textu widgetu aplikace</string>
-    <string name="small">Malý</string>
-    <string name="medium">Střední</string>
-    <string name="large">Velký</string>
 
     <!-- nazwy dni; klucze odpowiadają polu "key" w res/raw/days.json -->
     <string name="day_name_holiday">Svátek</string>
