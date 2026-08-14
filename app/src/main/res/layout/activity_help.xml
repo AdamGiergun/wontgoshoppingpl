@@ -11,6 +11,14 @@
     BodyLarge i normalna grubość — pogrubiona zostaje tylko treść, która ma się
     wyróżniać, czyli odnośnik do polityki prywatności. Kolumna nie rozciąga się
     na tablecie poza szerokość czytelną dla oka.
+
+    UWAGA HISTORYCZNA: powyższe przepisanie przez długi czas NIE DZIAŁAŁO na
+    żadnym urządzeniu z API 26 wzwyż, bo obok istniał layout-v26/activity_help.xml
+    — kopia starej wersji, wygrywająca kwalifikatorem. Jedyne, co wnosiła, to
+    android:justificationMode="inter_word". Osobny plik nigdy nie był do tego
+    potrzebny (nieznane atrybuty są przy rozwijaniu ignorowane), a przy okazji
+    justowanie w wąskiej kolumnie z długimi polskimi słowami robi rzeki
+    w tekście. Zostaje wyrównanie do lewej.
 -->
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
