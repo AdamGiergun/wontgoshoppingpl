@@ -225,10 +225,12 @@ private fun Waz(
                 ) {
                     DayRow(
                         day = day,
-                        // Przy wężu wysokość komórki narzuca układ, więc duże
-                        // wypełnienie pionowe nie podnosi wiersza, tylko wypycha
-                        // z niego tekst. Gęstość steruje wtedy liczbą wierszy.
-                        zwarty = true,
+                        // Gęstość idzie tu tak samo jak w liście pionowej.
+                        // Wcześniej wąż wymuszał tekst kompaktowy niezależnie od
+                        // preferencji, a wysokość komórki liczył już z niej —
+                        // w trybie standardowym dawało to wysokie karty z małym
+                        // napisem. O wypełnieniu decyduje wypelniaWysokosc.
+                        zwarty = zwarty,
                         wypelniaWysokosc = true,
                         onClick = { viewModel.setLastTouchedItem(day, index, false) },
                         modifier = Modifier.fillMaxSize(),

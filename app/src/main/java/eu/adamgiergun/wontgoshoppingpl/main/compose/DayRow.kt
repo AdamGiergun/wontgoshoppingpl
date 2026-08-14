@@ -98,7 +98,13 @@ internal fun DayRow(
             // poprawną odpowiedzią na pytanie, którego kwalifikator nie zadawał.
             val waski = maxWidth < 320.dp
             val r = rozmiary(waski, zwarty)
-            val pionowo = if (zwarty) 6.dp else 14.dp
+            // Wypełnienie pionowe i rozmiar tekstu to DWIE różne rzeczy, choć
+            // w warstwie widoków sterowała nimi jedna flaga. Kiedy wysokość
+            // komórki narzuca układ (wąż), duże wypełnienie niczego nie podnosi —
+            // tylko wypycha tekst z karty. Ale rozmiar tekstu ma wtedy nadal iść
+            // za preferencją gęstości, inaczej w trybie standardowym wychodzą
+            // wysokie karty z małym napisem i pustką dookoła.
+            val pionowo = if (zwarty || wypelniaWysokosc) 6.dp else 14.dp
 
             Box(
                 modifier = Modifier
