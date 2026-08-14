@@ -18,8 +18,17 @@
          tła nie drgnęła nawet o setną. Barwy: primary na glinie (34°),
          neutralne między gliną a ochrą (55°), tło lekko cieplejsze (70-75°).
 
-         Kontrasty: treść na powierzchni 16,7:1, treść wariantu 9,1:1, biel na
-         primary 6,5:1, obrys wobec tła 4,4:1. Skrypt do liczenia palet leży
+         Tło NIE jest bielą i to jest decyzja: przy L* 98,8 kafelki unosiły się
+         nad pustką zamiast na niej leżeć. Zeszło do L* 96, przez co ochra —
+         najjaśniejszy pigment, a zarazem 124 ze 126 wpisów — traci 0,10 kontrastu
+         wobec tła. Wymiana warta świeczki, bo kafelek ma jeszcze cień 3 dp.
+
+         Razem z tłem przesunęła się CAŁA DRABINA powierzchni. Pasek górny bierze
+         kolor z surfaceContainer, który jest ciemniejszy od tła; samo
+         przyciemnienie tła spłaszczyłoby tę różnicę i pasek zlałby się z treścią.
+
+         Kontrasty: treść na powierzchni 15,7:1, treść wariantu 8,6:1, biel na
+         primary 6,5:1, obrys wobec tła 4,1:1. Skrypt do liczenia palet leży
          w narzędziach sesji (paleta.py) — przy kolejnej zmianie zaczynać stamtąd,
          nie od oka. -->
 
@@ -33,9 +42,9 @@
     <color name="md_secondary_container">#F4DED3</color>
     <color name="md_on_secondary_container">#332218</color>
 
-    <color name="md_background">#FFFBF7</color>
+    <color name="md_background">#F7F3EF</color>
     <color name="md_on_background">#201A17</color>
-    <color name="md_surface">#FFFBF7</color>
+    <color name="md_surface">#F7F3EF</color>
     <color name="md_on_surface">#201A17</color>
     <color name="md_surface_variant">#EFDFD7</color>
     <color name="md_on_surface_variant">#50443E</color>
@@ -50,12 +59,12 @@
          do reszty. Te same barwy co wyżej: glina 34°, neutralne 55°.
          Rola tertiary dostała mech 132°, czyli trzeci pigment dni. -->
     <color name="md_surface_container_lowest">#FFFFFF</color>
-    <color name="md_surface_container_low">#F8F3EE</color>
-    <color name="md_surface_container">#F4ECE7</color>
-    <color name="md_surface_container_high">#F0E6E0</color>
-    <color name="md_surface_container_highest">#EDE0D9</color>
-    <color name="md_surface_dim">#E4D8D0</color>
-    <color name="md_surface_bright">#FFFBF7</color>
+    <color name="md_surface_container_low">#F0EBE6</color>
+    <color name="md_surface_container">#ECE4DF</color>
+    <color name="md_surface_container_high">#E8DED8</color>
+    <color name="md_surface_container_highest">#E5D8D1</color>
+    <color name="md_surface_dim">#DCD0C8</color>
+    <color name="md_surface_bright">#F7F3EF</color>
     <color name="md_outline_variant">#D3C4BC</color>
     <color name="md_inverse_surface">#362F2C</color>
     <color name="md_inverse_on_surface">#F5F0EB</color>
