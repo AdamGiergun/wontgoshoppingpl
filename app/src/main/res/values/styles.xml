@@ -9,37 +9,6 @@
     -->
 
     <!--
-        Karta wyniesiona zamiast płaskiej. Material 3 wyraża głębię cieniem
-        i tonem powierzchni, a nie fazowaną krawędzią — dawny wygląd „rich"
-        z gradientami i obramowaniem 3D wyleciał w Etapie 2 właśnie dlatego,
-        że taka fazka postarza interfejs bardziej niż cokolwiek innego.
-
-        Tło nadaje kod (kolor typu dnia), więc wariant Elevated wnosi tu wyłącznie
-        cień. W trybie ciemnym cień jest z natury ledwie widoczny i tak ma być:
-        na ciemnym tle rolę odklejenia przejmuje jaśniejszy ton powierzchni.
-    -->
-    <style name="DayCard" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardCornerRadius">@dimen/day_card_corner</item>
-        <item name="cardElevation">@dimen/day_card_elevation</item>
-        <item name="cardUseCompatPadding">false</item>
-        <item name="android:foreground">?attr/selectableItemBackground</item>
-    </style>
-
-    <!--
-        Skala typograficzna Material 3 zamiast dawnych
-        ?attr/textAppearanceLargePopupMenu i ?attr/textAppearanceListItem,
-        czyli krojów przeznaczonych dla menu podręcznego i pozycji listy
-        systemowej. Hierarchia niesie teraz informację: nazwa dnia jest
-        najważniejsza, data ją poprzedza, godzina jest etykietą.
-    -->
-
-    <style name="DayRowName" parent="TextAppearance.Material3.TitleMedium" />
-
-    <style name="DayRowDate" parent="TextAppearance.Material3.BodyMedium" />
-
-    <style name="DayRowTime" parent="TextAppearance.Material3.LabelMedium" />
-
-    <!--
         Akapit pomocy. Szerokość ograniczona, bo wiersz dłuższy niż mniej więcej
         siedemdziesiąt znaków oko gubi przy przejściu do następnego — na telefonie
         limit nigdy nie działa, na tablecie zatrzymuje kolumnę tekstu.

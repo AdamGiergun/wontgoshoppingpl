@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.mannodermaus.junit5)
+    alias(libs.plugins.kotlin.compose)
 }
 
 // Oficjalne testowe identyfikatory AdMob — zawsze w buildzie debug i jako zapas,
@@ -96,6 +97,11 @@ android {
     buildFeatures {
         viewBinding = true
         resValues = true
+        // Compose wchodzi wybiórczo — tylko ekran listy. Ustawienia zostają na
+        // androidx.preference (Compose nie ma odpowiednika), widget na
+        // RemoteViews, baner AdMob przez AndroidView. viewBinding zostaje,
+        // bo używa go cała reszta aplikacji.
+        compose = true
         // Potrzebne dla BuildConfig.DEBUG w DaysRepository — w buildzie debug
         // Remote Config pobiera dane bez throttlingu, żeby dało się je testować.
         buildConfig = true
@@ -136,6 +142,18 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.savedstate.ktx)
+
+    // BOM narzuca zgodne wersje wszystkich artefaktów Compose, więc poniżej
+    // podajemy same moduły bez wersji.
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
     implementation(libs.androidx.lifecycle.common.java8)
     implementation(libs.androidx.lifecycle.livedata.ktx)

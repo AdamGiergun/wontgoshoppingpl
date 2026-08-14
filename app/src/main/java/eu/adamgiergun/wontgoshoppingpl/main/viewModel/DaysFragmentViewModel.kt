@@ -200,6 +200,18 @@ internal class DaysFragmentViewModel(application: Application) : AppViewModel(ap
         }
     }
 
+    /**
+     * Usunięcie dnia z Kalendarza Google gestem odrzucenia.
+     *
+     * Trafiło tutaj z `DaysRecyclerViewAdapter.DayViewHolder`, bo warstwa Compose
+     * nie ma dostępu do `appContext` — jest chroniony w [AppViewModel] i tak ma
+     * zostać. Przy okazji operacja przestała zależeć od pozycji na liście.
+     */
+    suspend fun deleteFromCalendar(day: Day) {
+        day.deleteFromGoogleCalendar(appContext)
+        if (!day.isAddedToCalendar) setLastTouchedItem(null, -1, true)
+    }
+
     fun setLastTouchedItem(day: Day?, position: Int, isDbChanged: Boolean) {
         day?.let {
             LastTouchedDay.value = it
