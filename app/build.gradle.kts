@@ -38,8 +38,8 @@ android {
         applicationId = "eu.adamgiergun.wontgoshoppingpl"
         minSdk = 24
         targetSdk = 37
-        versionCode = 132
-        versionName = "3.8.0"
+        versionCode = 133
+        versionName = "4.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
