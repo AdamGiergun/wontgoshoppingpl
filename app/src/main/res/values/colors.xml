@@ -4,28 +4,68 @@
     <!-- ============ Paleta Material 3, wariant jasny ============
          Własna, nie dynamiczna. Sensem aplikacji jest odczytanie koloru dnia
          jednym spojrzeniem, a paleta pobrana z tapety użytkownika weszłaby
-         w konflikt z kolorami niosącymi znaczenie. -->
+         w konflikt z kolorami niosącymi znaczenie.
 
-    <color name="md_primary">#405AA9</color>
+         Chrom jest z tej samej rodziny barw co pigmenty dni. Wcześniej nie był
+         i to było widać: wszystkie role motywu siedziały na barwie ~290°
+         (chłodny fiolet, domyślny odcień szablonów Material 3), a pigmenty na
+         34-132° (glina, ochra, mech). Dwie niepowiązane rodziny postawione obok
+         siebie — pasek i ustawienia nie miały nic wspólnego z listą.
+
+         Przeniesienie zrobione z jedną zasadą: **jasności zostają co do
+         dziesiątej, zmienia się wyłącznie barwa i nasycenie**. Dzięki temu
+         wszystkie relacje kontrastu są takie jak były, a separacja kafelków od
+         tła nie drgnęła nawet o setną. Barwy: primary na glinie (34°),
+         neutralne między gliną a ochrą (55°), tło lekko cieplejsze (70-75°).
+
+         Kontrasty: treść na powierzchni 16,7:1, treść wariantu 9,1:1, biel na
+         primary 6,5:1, obrys wobec tła 4,4:1. Skrypt do liczenia palet leży
+         w narzędziach sesji (paleta.py) — przy kolejnej zmianie zaczynać stamtąd,
+         nie od oka. -->
+
+    <color name="md_primary">#9D4137</color>
     <color name="md_on_primary">#FFFFFF</color>
-    <color name="md_primary_container">#DBE1FF</color>
-    <color name="md_on_primary_container">#00174B</color>
+    <color name="md_primary_container">#FDDBD0</color>
+    <color name="md_on_primary_container">#451712</color>
 
-    <color name="md_secondary">#585E71</color>
+    <color name="md_secondary">#6F5A4F</color>
     <color name="md_on_secondary">#FFFFFF</color>
-    <color name="md_secondary_container">#DDE1F9</color>
-    <color name="md_on_secondary_container">#151B2C</color>
+    <color name="md_secondary_container">#F4DED3</color>
+    <color name="md_on_secondary_container">#332218</color>
 
-    <color name="md_background">#FEFBFF</color>
-    <color name="md_on_background">#1B1B1F</color>
-    <color name="md_surface">#FEFBFF</color>
-    <color name="md_on_surface">#1B1B1F</color>
-    <color name="md_surface_variant">#E2E1EC</color>
-    <color name="md_on_surface_variant">#45464F</color>
-    <color name="md_outline">#767680</color>
+    <color name="md_background">#FFFBF7</color>
+    <color name="md_on_background">#201A17</color>
+    <color name="md_surface">#FFFBF7</color>
+    <color name="md_on_surface">#201A17</color>
+    <color name="md_surface_variant">#EFDFD7</color>
+    <color name="md_on_surface_variant">#50443E</color>
+    <color name="md_outline">#82746D</color>
 
-    <color name="md_error">#BA1A1A</color>
+    <color name="md_error">#B4252D</color>
     <color name="md_on_error">#FFFFFF</color>
+
+    <!-- Pozostałe role Material 3. Bez nich pasek górny i tła kontenerów brały
+         wartości z bazowej palety biblioteki, czyli z fioletu ~290° — i dlatego
+         po przestawieniu siedemnastu ról podstawowych pasek nadal nie pasował
+         do reszty. Te same barwy co wyżej: glina 34°, neutralne 55°.
+         Rola tertiary dostała mech 132°, czyli trzeci pigment dni. -->
+    <color name="md_surface_container_lowest">#FFFFFF</color>
+    <color name="md_surface_container_low">#F8F3EE</color>
+    <color name="md_surface_container">#F4ECE7</color>
+    <color name="md_surface_container_high">#F0E6E0</color>
+    <color name="md_surface_container_highest">#EDE0D9</color>
+    <color name="md_surface_dim">#E4D8D0</color>
+    <color name="md_surface_bright">#FFFBF7</color>
+    <color name="md_outline_variant">#D3C4BC</color>
+    <color name="md_inverse_surface">#362F2C</color>
+    <color name="md_inverse_on_surface">#F5F0EB</color>
+    <color name="md_inverse_primary">#F6B8A2</color>
+    <color name="md_tertiary">#4F6443</color>
+    <color name="md_on_tertiary">#FFFFFF</color>
+    <color name="md_tertiary_container">#D8E7CE</color>
+    <color name="md_on_tertiary_container">#1C2914</color>
+    <color name="md_error_container">#FFD8D4</color>
+    <color name="md_on_error_container">#611117</color>
 
     <!-- ============ Kolory znaczące dni ============
 

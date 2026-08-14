@@ -3,28 +3,54 @@
 
     <!-- ============ Paleta Material 3, wariant ciemny ============
          Katalog values-night istniał w projekcie od 2020 roku i był pusty —
-         aplikacja nie miała trybu ciemnego w ogóle. -->
+         aplikacja nie miała trybu ciemnego w ogóle.
 
-    <color name="md_primary">#B5C4FF</color>
-    <color name="md_on_primary">#062978</color>
-    <color name="md_primary_container">#274190</color>
-    <color name="md_on_primary_container">#DBE1FF</color>
+         Te same barwy co w wariancie jasnym (glina 34°, neutralne 55°), tylko
+         role jasnościowe odwrócone. Uzasadnienie przeniesienia chromu do rodziny
+         pigmentów — patrz values/colors.xml.
 
-    <color name="md_secondary">#C1C5DD</color>
-    <color name="md_on_secondary">#2A3042</color>
-    <color name="md_secondary_container">#414659</color>
-    <color name="md_on_secondary_container">#DDE1F9</color>
+         Kontrasty: treść na powierzchni 13,3:1, treść wariantu 10,1:1,
+         onPrimary na primary 7,7:1, obrys wobec tła 5,4:1. -->
 
-    <color name="md_background">#1B1B1F</color>
-    <color name="md_on_background">#E4E1E6</color>
-    <color name="md_surface">#1B1B1F</color>
-    <color name="md_on_surface">#E4E1E6</color>
-    <color name="md_surface_variant">#45464F</color>
-    <color name="md_on_surface_variant">#C6C5D0</color>
-    <color name="md_outline">#90909A</color>
+    <color name="md_primary">#F6B8A2</color>
+    <color name="md_on_primary">#5F1411</color>
+    <color name="md_primary_container">#7B2D26</color>
+    <color name="md_on_primary_container">#FDDBD0</color>
 
-    <color name="md_error">#FFB4AB</color>
-    <color name="md_on_error">#690005</color>
+    <color name="md_secondary">#DBC1B4</color>
+    <color name="md_on_secondary">#3F2C22</color>
+    <color name="md_secondary_container">#564238</color>
+    <color name="md_on_secondary_container">#F7DDD0</color>
+
+    <color name="md_background">#201A17</color>
+    <color name="md_on_background">#E9E1DD</color>
+    <color name="md_surface">#201A17</color>
+    <color name="md_on_surface">#E9E1DD</color>
+    <color name="md_surface_variant">#50443E</color>
+    <color name="md_on_surface_variant">#D2C3BC</color>
+    <color name="md_outline">#9C8E87</color>
+
+    <color name="md_error">#FFB3B0</color>
+    <color name="md_on_error">#660417</color>
+
+    <!-- Pozostałe role Material 3 — uzasadnienie w values/colors.xml. -->
+    <color name="md_surface_container_lowest">#18120E</color>
+    <color name="md_surface_container_low">#241E1B</color>
+    <color name="md_surface_container">#29221F</color>
+    <color name="md_surface_container_high">#322A26</color>
+    <color name="md_surface_container_highest">#3C332E</color>
+    <color name="md_surface_dim">#201A17</color>
+    <color name="md_surface_bright">#4A403B</color>
+    <color name="md_outline_variant">#50443E</color>
+    <color name="md_inverse_surface">#E9E1DD</color>
+    <color name="md_inverse_on_surface">#362F2C</color>
+    <color name="md_inverse_primary">#9D4137</color>
+    <color name="md_tertiary">#B8CDAA</color>
+    <color name="md_on_tertiary">#223517</color>
+    <color name="md_tertiary_container">#384C2D</color>
+    <color name="md_on_tertiary_container">#D8E7CE</color>
+    <color name="md_error_container">#822528</color>
+    <color name="md_on_error_container">#FFD8D4</color>
 
     <!-- Te same trzy pigmenty co w wariancie jasnym — glina, ochra, mech —
          wzięte z ciemnego końca skali. Tekst robi się jasny, więc para

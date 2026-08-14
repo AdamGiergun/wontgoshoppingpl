@@ -34,6 +34,34 @@
 
         <item name="colorError">@color/md_error</item>
         <item name="colorOnError">@color/md_on_error</item>
+        <item name="colorErrorContainer">@color/md_error_container</item>
+        <item name="colorOnErrorContainer">@color/md_on_error_container</item>
+
+        <item name="colorTertiary">@color/md_tertiary</item>
+        <item name="colorOnTertiary">@color/md_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/md_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/md_on_tertiary_container</item>
+
+        <!--
+            Role powierzchni wprowadzone w Material 3. Trzeba je nadpisać JAWNIE:
+            bez tego biorą wartości z bazowej palety biblioteki, czyli z fioletu,
+            i pasek górny nie pasuje do reszty, choćby colorPrimary był ciepły.
+            To z nich, a nie z colorSurface, pasek bierze tło. Roli
+            colorSurfaceTint tu nie ma, bo Material 1.14 jej nie zna — barwienie
+            powierzchni cieniem primary zostało porzucone na rzecz właśnie tych
+            jawnych ról kontenerów.
+        -->
+        <item name="colorSurfaceContainerLowest">@color/md_surface_container_lowest</item>
+        <item name="colorSurfaceContainerLow">@color/md_surface_container_low</item>
+        <item name="colorSurfaceContainer">@color/md_surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/md_surface_container_high</item>
+        <item name="colorSurfaceContainerHighest">@color/md_surface_container_highest</item>
+        <item name="colorSurfaceDim">@color/md_surface_dim</item>
+        <item name="colorSurfaceBright">@color/md_surface_bright</item>
+        <item name="colorOutlineVariant">@color/md_outline_variant</item>
+        <item name="colorSurfaceInverse">@color/md_inverse_surface</item>
+        <item name="colorOnSurfaceInverse">@color/md_inverse_on_surface</item>
+        <item name="colorPrimaryInverse">@color/md_inverse_primary</item>
 
         <!-- Wariant Material 3 zamiast PreferenceThemeOverlay.v14.Material,
              który jest przestarzałym aliasem sprzed Material Design 2. -->
