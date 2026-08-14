@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Card
@@ -84,7 +85,20 @@ internal fun DayRow(
     val tresc = colorResource(DayPalette.onContainer(day.type, zestaw))
 
     Card(
-        modifier = modifier,
+        // Minimalna wysokość karty. Te same 56 / 68 dp, które miała warstwa
+        // widoków (`day_row_min_height*`) i które do dziś stosuje wąż w
+        // DaysScreen — przy przepisywaniu listy pionowej na Compose wypadły
+        // i karta z jednowierszową nazwą dnia kurczyła się do treści.
+        //
+        // Rozwiązuje to dwie rzeczy naraz. Widoczną: kafelek przy krótkiej
+        // nazwie robił się wyraźnie za niski. I mierzalną: Material rezerwuje
+        // klikalnemu elementowi 48 dp na cel dotyku niezależnie od tego, ile
+        // z niego maluje, więc karta na ~42 dp zostawiała 6 dp pustki, która
+        // dokładała się do odstępu — przerwa między kartami rosła z 12 dp na
+        // 18 dp i kafelki wyglądały na mniejsze i porozsuwane.
+        //
+        // W wężu minimum nie działa, bo tam kartę rozciąga wysokość komórki.
+        modifier = modifier.heightIn(min = if (zwarty) 56.dp else 68.dp),
         // Kształt z MaterialTheme.shapes.medium to te same 12 dp co dawne
         // `day_card_corner`. Cień 3 dp musi zmieścić się w odstępie między
         // kartami, inaczej lista go przycina — dlatego odstępy w DaysScreen
