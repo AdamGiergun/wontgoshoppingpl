@@ -63,6 +63,9 @@ def holidays(year):
         (dt.date(year, 8, 15), "assumption"),
         (dt.date(year, 11, 1), "all_saints"),
         (dt.date(year, 11, 11), "independence_day"),
+        # Od 2025 Wigilia jest ustawowo dniem wolnym od pracy, więc to święto,
+        # a nie dzień niehandlowy (Dz.U. 2024 poz. 1965).
+        (dt.date(year, 12, 24), "christmas_eve"),
         (dt.date(year, 12, 25), "christmas_day"),
         (dt.date(year, 12, 26), "second_day_of_christmas"),
     ]
@@ -74,24 +77,20 @@ def build(year):
     e = easter(year)
 
     holy_saturday = e - dt.timedelta(days=1)
-    christmas_eve = dt.date(year, 12, 24)
-    # Wigilia bywa niedzielą (np. 2028) — wtedy nie wolno jej wypisać także jako
-    # zwykłej niedzieli niehandlowej, bo ta sama data trafiłaby do danych dwa razy
-    # i przy imporcie jeden wpis nadpisałby drugi.
-    named = {holy_saturday, christmas_eve}
 
+    # Święta (w tym Wigilia, która bywa niedzielą, np. 2028) są pomijane wśród
+    # niedziel niehandlowych, bo ta sama data trafiłaby do danych dwa razy
+    # i przy imporcie jeden wpis nadpisałby drugi.
     non_commerce = [
         (s, "non_commerce_sunday", "00:00")
         for s in sundays(year)
-        if s not in commerce and s not in holiday_dates and s not in named
+        if s not in commerce and s not in holiday_dates
     ]
     # Wielka Sobota: ustawa dopuszcza handel do 14:00, ale podajemy 13:00 celowo.
     # 14:00 to godzina wyjścia pracowników, nie zamknięcia sklepu dla klientów —
     # sklepy zamykają kasy wcześniej, żeby zdążyć z operacjami zamknięcia dnia.
     # Lepiej, żeby klient przyszedł za wcześnie niż pocałował klamkę.
     non_commerce.append((holy_saturday, "holy_saturday", "13:00"))
-    # Od 1.02.2025 Wigilia jest wolna od handlu przez całą dobę (wcześniej do 14:00).
-    non_commerce.append((christmas_eve, "christmas_eve", "00:00"))
     non_commerce.sort()
 
     wszystkie = [d for d, _, _ in non_commerce] + sorted(commerce) + sorted(holiday_dates)

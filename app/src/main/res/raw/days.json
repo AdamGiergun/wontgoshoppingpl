@@ -202,11 +202,6 @@
         "key": "non_commerce_sunday"
       },
       {
-        "date": "2026_12_24",
-        "time": "00:00",
-        "key": "christmas_eve"
-      },
-      {
         "date": "2026_12_27",
         "time": "00:00",
         "key": "non_commerce_sunday"
@@ -309,6 +304,11 @@
         "date": "2026_11_11",
         "time": "00:00",
         "key": "independence_day"
+      },
+      {
+        "date": "2026_12_24",
+        "time": "00:00",
+        "key": "christmas_eve"
       },
       {
         "date": "2026_12_25",
@@ -528,11 +528,6 @@
         "date": "2027_11_28",
         "time": "00:00",
         "key": "non_commerce_sunday"
-      },
-      {
-        "date": "2027_12_24",
-        "time": "00:00",
-        "key": "christmas_eve"
       }
     ],
     "commerceSundays": [
@@ -632,6 +627,11 @@
         "date": "2027_11_11",
         "time": "00:00",
         "key": "independence_day"
+      },
+      {
+        "date": "2027_12_24",
+        "time": "00:00",
+        "key": "christmas_eve"
       },
       {
         "date": "2027_12_25",
